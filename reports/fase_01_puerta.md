@@ -1,7 +1,7 @@
 # Puerta de la fase F1
 
 **Resultado:** fallida  
-**Fecha:** 2026-10-14 · **Versión del código:** git:desconocida  
+**Fecha:** 2026-10-14 · **Versión del código:** git:af9dae0-dirty  
 **Comando:** `sinpop validate --phase 1`
 
 | ID | Comprobación | Resultado | Valor | Umbral |

@@ -2,7 +2,7 @@
 
 Ficheros que no se han podido descargar automáticamente (CLAUDE.md, «Descarga de datos»).
 
-**Motivo (2026-10-14):** la política de red del entorno de ejecución deniega `www.ine.es`, `servicios.ine.es`, `www.cis.es`, `infoelectoral.interior.gob.es` y `www.europeansocialsurvey.org` (decisión D-014). Además, el CIS y la ESS piden registro o aceptación de condiciones.
+**Motivo (2026-10-14):** la política de red del entorno de ejecución deniega `www.ine.es`, `servicios.ine.es`, `www.cis.es`, `infoelectoral.interior.gob.es`, `www.europeansocialsurvey.org`, `ess.sikt.no`, `www.sanidad.gob.es`, `ec.europa.eu`, `ceo.gencat.cat` y `www.ehu.eus` (decisión D-014). Además, el CIS y la ESS piden registro o aceptación de condiciones.
 
 ## Cómo completar una descarga
 

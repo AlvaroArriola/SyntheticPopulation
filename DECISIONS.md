@@ -134,7 +134,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Fecha:** 2026-10-14
 - **Fase:** F1
 - **Estado:** pendiente de decisión humana
-- **Contexto:** la política de red del entorno en la nube deniega (HTTP 403 en el proxy) `www.ine.es`, `servicios.ine.es`, `www.cis.es`, `infoelectoral.interior.gob.es` y `www.europeansocialsurvey.org`. Sin ellas no se puede descargar ninguna fuente P0.
+- **Contexto:** la política de red del entorno en la nube deniega (HTTP 403 en el proxy) `www.ine.es`, `servicios.ine.es`, `www.cis.es`, `infoelectoral.interior.gob.es`, `www.europeansocialsurvey.org`, `ess.sikt.no`, `www.sanidad.gob.es`, `ec.europa.eu`, `ceo.gencat.cat` y `www.ehu.eus`. Sin ellas no se puede descargar ninguna fuente P0.
 - **Alternativas consideradas:**
   1. Buscar copias en otros sitios: **prohibido** por `CLAUDE.md` («no busques copias en sitios no oficiales»).
   2. Que la persona responsable añada esos dominios a la red permitida del entorno.
