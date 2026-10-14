@@ -1,363 +1,1233 @@
 # Diccionario armonizado (docs/02_datos_y_variables.md, sección 3).
-# Estado F0: nombres, prioridades y categorías propuestas por la documentación.
-# Las correspondencias por fuente (`fuentes:` con variable original y recodificación)
-# se añaden en F2, verificadas contra el diseño de registro o el cuestionario oficial.
+# F0: nombres, prioridades y categorías propuestas por la documentación.
+# F1 (2026-10-14): `fuentes` = matriz de cobertura (variable original en cada fuente,
+# verificada contra el diseño de registro). La recodificación se añade en F2.
 # Valores especiales: NS, NC y NP son categorías explícitas, nunca valores de escala.
+# intencion_voto y valoracion_lideres NO son atributos de la persona (D-005).
 
 variables:
-  # ================================================================ 3.1 Persona
   edad:
-    {prioridad: P0, nivel: persona, tipo: numerica, rango: [0, 120],
-     descripcion: Años cumplidos, fuente_principal: censo / padron_continuo}
+    prioridad: P0
+    nivel: persona
+    tipo: numerica
+    rango:
+    - 0
+    - 120
+    descripcion: Años cumplidos
+    fuente_principal: censo / padron_continuo
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: VAREDAD
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: VAREDAD
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+      censo_anual_micro_demograficas:
+        variable_original: VAREDAD
+        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
+      ecp:
+        variable_original: Edad (tablas 59589, 60129)
+        verificado_contra: INEbase, API Tempus
+      ecv:
+        variable_original: RB082
+        verificado_contra: disreg_ecv25 (INE)
+      epa:
+        variable_original: EDAD1
+        verificado_contra: dr_EPA_2026.xlsx (INE)
+        notas: grupos quinquenales
+      tic_h:
+        variable_original: EDAD
+        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
+      encuesta_salud:
+        variable_original: EDADa
+        verificado_contra: dr_ESdEadulto_2023.xlsx (INE)
   edad_5:
     prioridad: P0
     nivel: persona
     tipo: ordinal
     descripcion: Tramos quinquenales de edad (el tramo abierto superior se verifica en F3 con el Padrón)
-    categorias: ["00-04", "05-09", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44",
-                 "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85+"]
+    categorias:
+    - 00-04
+    - 05-09
+    - 10-14
+    - 15-19
+    - 20-24
+    - 25-29
+    - 30-34
+    - 35-39
+    - 40-44
+    - 45-49
+    - 50-54
+    - 55-59
+    - 60-64
+    - 65-69
+    - 70-74
+    - 75-79
+    - 80-84
+    - 85+
     fuente_principal: censo / padron_continuo
     derivada_de: edad
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: VAREDAD
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      ecp:
+        variable_original: Edad
+        verificado_contra: INEbase, API Tempus
+      censo_anual_micro_demograficas:
+        variable_original: VAREDAD
+        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
   edad_4:
     prioridad: P0
     nivel: persona
     tipo: ordinal
     descripcion: Tramos amplios de edad para adultos (NP para menores de 18)
-    categorias: ["18-34", "35-49", "50-64", "65+"]
+    categorias:
+    - 18-34
+    - 35-49
+    - 50-64
+    - 65+
     fuente_principal: censo / padron_continuo
     derivada_de: edad
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: VAREDAD
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      ecp:
+        variable_original: Edad
+        verificado_contra: INEbase, API Tempus
+      censo_anual_micro_demograficas:
+        variable_original: VAREDAD
+        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
   sexo:
-    {prioridad: P0, nivel: persona, tipo: categorica, categorias: [hombre, mujer],
-     descripcion: Sexo según registro, fuente_principal: censo / padron_continuo}
+    prioridad: P0
+    nivel: persona
+    tipo: categorica
+    categorias:
+    - hombre
+    - mujer
+    descripcion: Sexo según registro
+    fuente_principal: censo / padron_continuo
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: SEXO
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: SEXO
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+      censo_anual_micro_demograficas:
+        variable_original: SEXO
+        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
+      ecp:
+        variable_original: Sexo
+        verificado_contra: INEbase, API Tempus
+      ecv:
+        variable_original: RB090
+        verificado_contra: disreg_ecv25 (INE)
+      epa:
+        variable_original: SEXO1
+        verificado_contra: dr_EPA_2026.xlsx (INE)
+      tic_h:
+        variable_original: SEXO
+        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
+      encuesta_salud:
+        variable_original: SEXOa
+        verificado_contra: dr_ESdEadulto_2023.xlsx (INE)
   nacionalidad_grupo:
     prioridad: P0
     nivel: persona
     tipo: categorica
     descripcion: Grupo de nacionalidad (la doble nacionalidad solo si la fuente la identifica)
-    categorias: [espanola, espanola_doble, ue, resto_europa, africa, america_latina, asia, otros]
+    categorias:
+    - espanola
+    - espanola_doble
+    - ue
+    - resto_europa
+    - africa
+    - america_latina
+    - asia
+    - otros
     fuente_principal: censo / padron_continuo
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: PNACIO
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        notas: la doble nacionalidad no se identifica
+      censo_anual_micro_completo:
+        variable_original: PNACIO
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+      ecp:
+        variable_original: Nacionalidad (española/extranjera, tabla 60129)
+        verificado_contra: INEbase, API Tempus
+        notas: solo española/extranjera
+      ecv:
+        variable_original: RB290
+        verificado_contra: disreg_ecv25 (INE)
+      epa:
+        variable_original: NAC1, EXREGNA1
+        verificado_contra: dr_EPA_2026.xlsx (INE)
+      tic_h:
+        variable_original: NACIONALIDAD
+        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
+      censo_anual_micro_demograficas:
+        variable_original: PNACIO
+        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
   pais_nacimiento_grupo:
     prioridad: P1
     nivel: persona
     tipo: categorica
     descripcion: Grupo de país de nacimiento
-    categorias: [espana, ue, resto_europa, africa, america_latina, asia, otros]
+    categorias:
+    - espana
+    - ue
+    - resto_europa
+    - africa
+    - america_latina
+    - asia
+    - otros
     fuente_principal: censo / padron_continuo
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: PNACIM
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: PNACIM
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+      censo_anual_micro_demograficas:
+        variable_original: PNACIM
+        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
   nacionalidad_top:
     prioridad: P1
     nivel: persona
     tipo: categorica
     descripcion: Principales nacionalidades individuales más «otras»
-    dominio_pendiente: "F1/F2: las 15 nacionalidades extranjeras más numerosas del Padrón vigente"
+    dominio_pendiente: 'F1/F2: las 15 nacionalidades extranjeras más numerosas del Padrón vigente'
     fuente_principal: padron_continuo
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: PNACIO
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: PNACIO
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+      censo_anual_micro_demograficas:
+        variable_original: PNACIO
+        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
   estado_civil:
-    {prioridad: P1, nivel: persona, tipo: categorica,
-     categorias: [soltero, casado, viudo, separado_divorciado],
-     descripcion: Estado civil legal, fuente_principal: censo_anual}
+    prioridad: P1
+    nivel: persona
+    tipo: categorica
+    categorias:
+    - soltero
+    - casado
+    - viudo
+    - separado_divorciado
+    descripcion: Estado civil legal
+    fuente_principal: censo_anual
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: ECIVIL
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: ECIVIL
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        notas: edición 2024; 0 = No consta
   nivel_estudios:
     prioridad: P0
     nivel: persona
     tipo: ordinal
     descripcion: Nivel de estudios terminados en detalle CNED-A/ISCED
-    dominio_pendiente: "F2: niveles CNED-A tal como los codifica el diseño de registro del Censo Anual"
+    dominio_pendiente: 'F2: niveles CNED-A tal como los codifica el diseño de registro del Censo Anual'
     fuente_principal: censo_anual
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: ESREAL_CNEDA
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: ESREAL
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        notas: edición 2024
+      ecv:
+        variable_original: PE041
+        verificado_contra: disreg_ecv25 (INE)
+      epa:
+        variable_original: NFORMA
+        verificado_contra: dr_EPA_2026.xlsx (INE)
+      tic_h:
+        variable_original: NIVELEST
+        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
+      encuesta_salud:
+        variable_original: NIVEST
+        verificado_contra: dr_ESdEadulto_2023.xlsx (INE)
   estudios_3:
     prioridad: P0
     nivel: persona
     tipo: ordinal
     descripcion: Agregado de estudios
-    categorias: [hasta_obligatoria, secundaria_2a_etapa, superior]
+    categorias:
+    - hasta_obligatoria
+    - secundaria_2a_etapa
+    - superior
     fuente_principal: censo_anual
     derivada_de: nivel_estudios
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: ESREAL_CNEDA
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: ESREAL
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        notas: edición 2024
   relacion_actividad:
     prioridad: P0
     nivel: persona
     tipo: categorica
     descripcion: Relación con la actividad económica
-    categorias: [ocupado, parado, jubilado_pensionista, estudiante, labores_hogar,
-                 incapacidad_permanente, otra_inactividad]
+    categorias:
+    - ocupado
+    - parado
+    - jubilado_pensionista
+    - estudiante
+    - labores_hogar
+    - incapacidad_permanente
+    - otra_inactividad
     fuente_principal: censo_anual / epa
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: RELA
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        notas: sin categoría propia de labores del hogar (incluida en otra inactividad)
+      censo_anual_micro_completo:
+        variable_original: RELA
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        notas: edición 2024
+      ecv:
+        variable_original: PL032
+        verificado_contra: disreg_ecv25 (INE)
+      epa:
+        variable_original: AOI
+        verificado_contra: dr_EPA_2026.xlsx (INE)
+      tic_h:
+        variable_original: SIT_LAB
+        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
   ocupacion:
     prioridad: P1
     nivel: persona
     tipo: categorica
     descripcion: Gran grupo CNO-11 (un dígito)
-    categorias: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    categorias:
+    - '0'
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    - '9'
     fuente_principal: censo_anual / epa
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: OCU63
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: CNO
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        notas: edición 2023
+      epa:
+        variable_original: OCUP1
+        verificado_contra: dr_EPA_2026.xlsx (INE)
   sector_actividad:
     prioridad: P2
     nivel: persona
     tipo: categorica
     descripcion: Sección CNAE-09
-    categorias: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U]
+    categorias:
+    - A
+    - B
+    - C
+    - D
+    - E
+    - F
+    - G
+    - H
+    - I
+    - J
+    - K
+    - L
+    - M
+    - N
+    - O
+    - P
+    - Q
+    - R
+    - S
+    - T
+    - U
     fuente_principal: epa / censo
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: ACT89
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: CNAE
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        notas: edición 2023
   situacion_profesional:
-    {prioridad: P1, nivel: persona, tipo: categorica,
-     categorias: [asalariado_publico, asalariado_privado, autonomo, empresario],
-     descripcion: Situación profesional, fuente_principal: epa / censo}
+    prioridad: P1
+    nivel: persona
+    tipo: categorica
+    categorias:
+    - asalariado_publico
+    - asalariado_privado
+    - autonomo
+    - empresario
+    descripcion: Situación profesional
+    fuente_principal: epa / censo
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: SITU
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        notas: no distingue sector público y privado; sí cuenta propia con/sin asalariados y ajena fija/temporal
+      censo_anual_micro_completo:
+        variable_original: SITU
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        notas: edición 2023
+      epa:
+        variable_original: SITU
+        verificado_contra: dr_EPA_2026.xlsx (INE)
   tipo_jornada:
-    {prioridad: P2, nivel: persona, tipo: categorica, categorias: [completa, parcial],
-     descripcion: Tipo de jornada, fuente_principal: epa}
+    prioridad: P2
+    nivel: persona
+    tipo: categorica
+    categorias:
+    - completa
+    - parcial
+    descripcion: Tipo de jornada
+    fuente_principal: epa
+    fuentes:
+      epa:
+        variable_original: PARCO1
+        verificado_contra: dr_EPA_2026.xlsx (INE)
   teletrabajo:
-    {prioridad: P2, nivel: persona, tipo: ordinal, categorias: [nunca, ocasional, habitual],
-     descripcion: Frecuencia de teletrabajo, fuente_principal: epa / tic_h}
+    prioridad: P2
+    nivel: persona
+    tipo: ordinal
+    categorias:
+    - nunca
+    - ocasional
+    - habitual
+    descripcion: Frecuencia de teletrabajo
+    fuente_principal: epa / tic_h
+    fuentes:
+      tic_h:
+        variable_original: TTRAB_ACTUAL, ULT_TTRAB
+        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
   anio_llegada_espana:
     prioridad: P2
     nivel: persona
     tipo: ordinal
     descripcion: Tramo del año de llegada a España
-    dominio_pendiente: "F2: tramos según el diseño de registro del Censo Anual"
+    dominio_pendiente: 'F2: tramos según el diseño de registro del Censo Anual'
     fuente_principal: censo_anual
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: VARANOE
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: VARANOE
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
   discapacidad_limitacion:
-    {prioridad: P1, nivel: persona, tipo: ordinal,
-     categorias: [sin_limitacion, limitacion_moderada, limitacion_grave],
-     descripcion: Indicador GALI, fuente_principal: ecv / encuesta_salud}
+    prioridad: P1
+    nivel: persona
+    tipo: ordinal
+    categorias:
+    - sin_limitacion
+    - limitacion_moderada
+    - limitacion_grave
+    descripcion: Indicador GALI
+    fuente_principal: ecv / encuesta_salud
+    fuentes:
+      ecv:
+        variable_original: PH030
+        verificado_contra: disreg_ecv25 (INE)
+      encuesta_salud:
+        variable_original: C3a
+        verificado_contra: dr_ESdEadulto_2023.xlsx (INE)
   salud_autopercibida:
-    {prioridad: P1, nivel: persona, tipo: ordinal,
-     categorias: [muy_buena, buena, regular, mala, muy_mala],
-     descripcion: Salud autopercibida, fuente_principal: ecv / encuesta_salud}
+    prioridad: P1
+    nivel: persona
+    tipo: ordinal
+    categorias:
+    - muy_buena
+    - buena
+    - regular
+    - mala
+    - muy_mala
+    descripcion: Salud autopercibida
+    fuente_principal: ecv / encuesta_salud
+    fuentes:
+      ecv:
+        variable_original: PH010
+        verificado_contra: disreg_ecv25 (INE)
+      encuesta_salud:
+        variable_original: C1
+        verificado_contra: dr_ESdEadulto_2023.xlsx (INE)
   uso_internet:
-    {prioridad: P1, nivel: persona, tipo: ordinal,
-     categorias: [diario, semanal, menos_frecuente, nunca],
-     descripcion: Frecuencia de uso de internet, fuente_principal: tic_h}
+    prioridad: P1
+    nivel: persona
+    tipo: ordinal
+    categorias:
+    - diario
+    - semanal
+    - menos_frecuente
+    - nunca
+    descripcion: Frecuencia de uso de internet
+    fuente_principal: tic_h
+    fuentes:
+      tic_h:
+        variable_original: ULT_INT, FREC_INT
+        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
   competencias_digitales:
-    {prioridad: P2, nivel: persona, tipo: ordinal,
-     categorias: [bajas, basicas, superiores_basicas],
-     descripcion: Competencias digitales, fuente_principal: tic_h}
+    prioridad: P2
+    nivel: persona
+    tipo: ordinal
+    categorias:
+    - bajas
+    - basicas
+    - superiores_basicas
+    descripcion: Competencias digitales
+    fuente_principal: tic_h
+    fuentes:
+      tic_h:
+        variable_original: 'pendiente: indicador derivado de los bloques de habilidades (F2)'
+        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
   compra_online:
-    {prioridad: P2, nivel: persona, tipo: booleana,
-     descripcion: Compra por internet en los últimos 3 meses, fuente_principal: tic_h}
-
-  # ================================================================ 3.2 Hogar
+    prioridad: P2
+    nivel: persona
+    tipo: booleana
+    descripcion: Compra por internet en los últimos 3 meses
+    fuente_principal: tic_h
+    fuentes:
+      tic_h:
+        variable_original: ULT_COM
+        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
   tipo_hogar:
     prioridad: P0
     nivel: hogar
     tipo: categorica
     descripcion: Tipo de hogar
-    categorias: [unipersonal, pareja_sin_hijos, pareja_con_hijos, monoparental,
-                 varias_familias_no_emparentadas, otros]
+    categorias:
+    - unipersonal
+    - pareja_sin_hijos
+    - pareja_con_hijos
+    - monoparental
+    - varias_familias_no_emparentadas
+    - otros
     fuente_principal: censo2021
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: TIPO_HOG + ESTRUC_HOG + TIPO_NUC
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
   tamano_hogar:
-    {prioridad: P0, nivel: hogar, tipo: ordinal, categorias: ["1", "2", "3", "4", "5+"],
-     descripcion: Número de personas del hogar, fuente_principal: censo2021}
+    prioridad: P0
+    nivel: hogar
+    tipo: ordinal
+    categorias:
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - 5+
+    descripcion: Número de personas del hogar
+    fuente_principal: censo2021
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: TAM_HOG
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        notas: 5 = «5 o más»
+      ecp:
+        variable_original: Tamaño del hogar (tabla 60133)
+        verificado_contra: INEbase, API Tempus
+        notas: 1, 2, 3, 4 o más
   relacion_persona_ref:
     prioridad: P0
     nivel: persona
     tipo: categorica
     descripcion: Relación con la persona de referencia del hogar
-    categorias: [persona_referencia, pareja, hijo, padre_madre, otro_familiar, no_familiar]
+    categorias:
+    - persona_referencia
+    - pareja
+    - hijo
+    - padre_madre
+    - otro_familiar
+    - no_familiar
     fuente_principal: censo2021
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: NORDEN_CON, NORDEN_PAD, NORDEN_MAD, NORDEN_OPA, FAMILIA, NUCLEO, TIPOPER
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        notas: 'el Censo 2021 no define persona de referencia: se deriva (D-017)'
   n_menores_hogar:
-    {prioridad: P1, nivel: hogar, tipo: ordinal, categorias: ["0", "1", "2", "3+"],
-     descripcion: Menores de 18 en el hogar, fuente_principal: censo2021}
+    prioridad: P1
+    nivel: hogar
+    tipo: ordinal
+    categorias:
+    - '0'
+    - '1'
+    - '2'
+    - 3+
+    descripcion: Menores de 18 en el hogar
+    fuente_principal: censo2021
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: VAREDAD (agregado por hogar)
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
   n_mayores_65_hogar:
-    {prioridad: P1, nivel: hogar, tipo: numerica, rango: [0, 20],
-     descripcion: Personas de 65+ en el hogar, fuente_principal: censo2021}
+    prioridad: P1
+    nivel: hogar
+    tipo: numerica
+    rango:
+    - 0
+    - 20
+    descripcion: Personas de 65+ en el hogar
+    fuente_principal: censo2021
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: VAREDAD (agregado por hogar)
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
   n_mayores_80_hogar:
-    {prioridad: P1, nivel: hogar, tipo: numerica, rango: [0, 20],
-     descripcion: Personas de 80+ en el hogar, fuente_principal: censo2021}
+    prioridad: P1
+    nivel: hogar
+    tipo: numerica
+    rango:
+    - 0
+    - 20
+    descripcion: Personas de 80+ en el hogar
+    fuente_principal: censo2021
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: VAREDAD (agregado por hogar)
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
   tenencia_vivienda:
     prioridad: P1
     nivel: hogar
     tipo: categorica
     descripcion: Régimen de tenencia de la vivienda
-    categorias: [propiedad_sin_hipoteca, propiedad_con_hipoteca, alquiler_mercado,
-                 alquiler_inferior_cesion]
+    categorias:
+    - propiedad_sin_hipoteca
+    - propiedad_con_hipoteca
+    - alquiler_mercado
+    - alquiler_inferior_cesion
     fuente_principal: censo2021 / ecv
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: TENEN_VIV
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        notas: 'solo propiedad / alquiler / otro: sin hipoteca ni tipo de alquiler'
+      ecv:
+        variable_original: HH021
+        verificado_contra: disreg_ecv25 (INE)
   renta_hogar_decil:
-    {prioridad: P1, nivel: hogar, tipo: ordinal,
-     categorias: [D01, D02, D03, D04, D05, D06, D07, D08, D09, D10],
-     descripcion: Decil nacional de renta equivalente, fuente_principal: ecv + atlas_renta}
+    prioridad: P1
+    nivel: hogar
+    tipo: ordinal
+    categorias:
+    - D01
+    - D02
+    - D03
+    - D04
+    - D05
+    - D06
+    - D07
+    - D08
+    - D09
+    - D10
+    descripcion: Decil nacional de renta equivalente
+    fuente_principal: ecv + atlas_renta
+    fuentes:
+      ecv:
+        variable_original: vhRentaa / HX240 (renta equivalente)
+        verificado_contra: disreg_ecv25 (INE)
   renta_hogar_decil_ccaa:
-    {prioridad: P1, nivel: hogar, tipo: ordinal,
-     categorias: [D01, D02, D03, D04, D05, D06, D07, D08, D09, D10],
-     descripcion: Decil regional de renta equivalente, fuente_principal: ecv + atlas_renta}
+    prioridad: P1
+    nivel: hogar
+    tipo: ordinal
+    categorias:
+    - D01
+    - D02
+    - D03
+    - D04
+    - D05
+    - D06
+    - D07
+    - D08
+    - D09
+    - D10
+    descripcion: Decil regional de renta equivalente
+    fuente_principal: ecv + atlas_renta
+    fuentes:
+      ecv:
+        variable_original: vhRentaa
+        verificado_contra: disreg_ecv25 (INE)
   privacion_material:
-    {prioridad: P1, nivel: hogar, tipo: booleana,
-     descripcion: Indicador oficial de privación material, fuente_principal: ecv}
+    prioridad: P1
+    nivel: hogar
+    tipo: booleana
+    descripcion: Indicador oficial de privación material
+    fuente_principal: ecv
+    fuentes:
+      ecv:
+        variable_original: vrMATSOCDEP / vhMATDEP
+        verificado_contra: disreg_ecv25 (INE)
   privacion_material_n:
-    {prioridad: P1, nivel: hogar, tipo: numerica, rango: [0, 13],
-     descripcion: Número de carencias (verificar el máximo con la ECV), fuente_principal: ecv}
+    prioridad: P1
+    nivel: hogar
+    tipo: numerica
+    rango:
+    - 0
+    - 13
+    descripcion: Número de carencias (verificar el máximo con la ECV)
+    fuente_principal: ecv
+    fuentes:
+      ecv:
+        variable_original: HD080, HS040–HS090, PD020–PD070…
+        verificado_contra: disreg_ecv25 (INE)
+        notas: se reconstruye en F2
   dificultad_fin_mes:
     prioridad: P2
     nivel: hogar
     tipo: ordinal
     descripcion: Escala de 6 puntos de la ECV
-    categorias: [mucha_dificultad, dificultad, cierta_dificultad, cierta_facilidad, facilidad,
-                 mucha_facilidad]
+    categorias:
+    - mucha_dificultad
+    - dificultad
+    - cierta_dificultad
+    - cierta_facilidad
+    - facilidad
+    - mucha_facilidad
     fuente_principal: ecv
+    fuentes:
+      ecv:
+        variable_original: HS120
+        verificado_contra: disreg_ecv25 (INE)
   vehiculo_hogar:
-    {prioridad: P2, nivel: hogar, tipo: booleana,
-     descripcion: Dispone de vehículo, fuente_principal: ecv / censo2021}
-
-  # ================================================================ 3.3 Territorio y entorno
+    prioridad: P2
+    nivel: hogar
+    tipo: booleana
+    descripcion: Dispone de vehículo
+    fuente_principal: ecv / censo2021
+    fuentes:
+      ecv:
+        variable_original: HS110
+        verificado_contra: disreg_ecv25 (INE)
   ccaa:
     prioridad: P0
     nivel: territorio
     tipo: categorica
     descripcion: Comunidad o ciudad autónoma (códigos INE, ver territories.yaml)
-    categorias: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13",
-                 "14", "15", "16", "17", "18", "19"]
+    categorias:
+    - '01'
+    - '02'
+    - '03'
+    - '04'
+    - '05'
+    - '06'
+    - '07'
+    - 08
+    - 09
+    - '10'
+    - '11'
+    - '12'
+    - '13'
+    - '14'
+    - '15'
+    - '16'
+    - '17'
+    - '18'
+    - '19'
     fuente_principal: censo
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: CPRO (derivada)
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: CPRO (derivada)
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+      ecp:
+        variable_original: Provincia (derivada)
+        verificado_contra: INEbase, API Tempus
+      ecv:
+        variable_original: DB040
+        verificado_contra: disreg_ecv25 (INE)
+      epa:
+        variable_original: CCAA
+        verificado_contra: dr_EPA_2026.xlsx (INE)
+      tic_h:
+        variable_original: CCAA
+        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
+      encuesta_salud:
+        variable_original: CCAA
+        verificado_contra: dr_ESdEadulto_2023.xlsx (INE)
+      censo_anual_micro_demograficas:
+        variable_original: CPRO (derivada)
+        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
   provincia:
     prioridad: P0
     nivel: territorio
     tipo: categorica
     descripcion: Provincia (códigos INE); P0 si está en los microdatos (verificar en F1)
-    categorias: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13",
-                 "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26",
-                 "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
-                 "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"]
+    categorias:
+    - '01'
+    - '02'
+    - '03'
+    - '04'
+    - '05'
+    - '06'
+    - '07'
+    - 08
+    - 09
+    - '10'
+    - '11'
+    - '12'
+    - '13'
+    - '14'
+    - '15'
+    - '16'
+    - '17'
+    - '18'
+    - '19'
+    - '20'
+    - '21'
+    - '22'
+    - '23'
+    - '24'
+    - '25'
+    - '26'
+    - '27'
+    - '28'
+    - '29'
+    - '30'
+    - '31'
+    - '32'
+    - '33'
+    - '34'
+    - '35'
+    - '36'
+    - '37'
+    - '38'
+    - '39'
+    - '40'
+    - '41'
+    - '42'
+    - '43'
+    - '44'
+    - '45'
+    - '46'
+    - '47'
+    - '48'
+    - '49'
+    - '50'
+    - '51'
+    - '52'
     fuente_principal: censo
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: CPRO
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: CPRO
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+      censo_anual_micro_demograficas:
+        variable_original: CPRO
+        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
+      ecp:
+        variable_original: Provincia
+        verificado_contra: INEbase, API Tempus
+      epa:
+        variable_original: PROV
+        verificado_contra: dr_EPA_2026.xlsx (INE)
   tamano_municipio:
     prioridad: P0
     nivel: territorio
     tipo: ordinal
     descripcion: Tamaño del municipio (alinear en F2 con la clasificación de los microdatos)
-    categorias: [hasta_2000, de_2001_a_10000, de_10001_a_50000, de_50001_a_100000,
-                 de_100001_a_500000, mas_de_500000]
+    categorias:
+    - hasta_2000
+    - de_2001_a_10000
+    - de_10001_a_50000
+    - de_50001_a_100000
+    - de_100001_a_500000
+    - mas_de_500000
     fuente_principal: censo / padron_continuo
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: CMUN
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        notas: códigos 991–993 para <10.000 hab.; para ≥10.000 se asigna con la población municipal
+      censo_anual_micro_completo:
+        variable_original: CMUN
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+      censo_anual_micro_demograficas:
+        variable_original: CMUN
+        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
+        notas: códigos de tamaño para <10.000 hab.
   grado_urbanizacion:
-    {prioridad: P0, nivel: territorio, tipo: ordinal, categorias: [ciudad, intermedio, rural],
-     descripcion: DEGURBA según los microdatos censales, fuente_principal: censo}
+    prioridad: P0
+    nivel: territorio
+    tipo: ordinal
+    categorias:
+    - ciudad
+    - intermedio
+    - rural
+    descripcion: DEGURBA según los microdatos censales
+    fuente_principal: censo
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: TIPO_MUN_DEGURBA
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+      censo_anual_micro_completo:
+        variable_original: DEGURBA
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+      censo_anual_micro_demograficas:
+        variable_original: DEGURBA
+        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
+      ecv:
+        variable_original: DB100
+        verificado_contra: disreg_ecv25 (INE)
   municipio:
-    {prioridad: P2, nivel: territorio, tipo: identificador,
-     descripcion: Código INE de municipio (solo territorios por lista de municipios),
-     fuente_principal: padron_continuo}
+    prioridad: P2
+    nivel: territorio
+    tipo: identificador
+    descripcion: Código INE de municipio (solo territorios por lista de municipios)
+    fuente_principal: padron_continuo
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: CMUN
+        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        notas: solo municipios ≥10.000 hab.
+      censo_anual_micro_completo:
+        variable_original: CMUN
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        notas: solo municipios ≥10.000 hab.
+      censo_anual_micro_demograficas:
+        variable_original: CMUN
+        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
+        notas: solo municipios ≥10.000 hab.
   ctx_renta_municipio:
-    {prioridad: P1, nivel: territorio, tipo: numerica, rango: [0, 1000000],
-     descripcion: Renta media por persona del municipio o sección, fuente_principal: atlas_renta}
+    prioridad: P1
+    nivel: territorio
+    tipo: numerica
+    rango:
+    - 0
+    - 1000000
+    descripcion: Renta media por persona del municipio o sección
+    fuente_principal: atlas_renta
   ctx_envejecimiento:
-    {prioridad: P1, nivel: territorio, tipo: numerica, rango: [0, 1],
-     descripcion: Proporción de 65+ en el municipio, fuente_principal: padron_continuo}
+    prioridad: P1
+    nivel: territorio
+    tipo: numerica
+    rango:
+    - 0
+    - 1
+    descripcion: Proporción de 65+ en el municipio
+    fuente_principal: padron_continuo
   ctx_precio_vivienda:
-    {prioridad: P2, nivel: territorio, tipo: numerica, rango: [0, 1000000],
-     descripcion: Índice de precio o alquiler (fuente oficial a verificar),
-     fuente_principal: pendiente}
-
-  # ================================================================ 3.4 Opinión y valores (F8A)
+    prioridad: P2
+    nivel: territorio
+    tipo: numerica
+    rango:
+    - 0
+    - 1000000
+    descripcion: Índice de precio o alquiler (fuente oficial a verificar)
+    fuente_principal: pendiente
   religiosidad:
     prioridad: P3
     nivel: opinion
     tipo: categorica
     descripcion: Religiosidad
-    categorias: [catolico_practicante, catolico_no_practicante, otra_religion, agnostico, ateo,
-                 indiferente]
+    categorias:
+    - catolico_practicante
+    - catolico_no_practicante
+    - otra_religion
+    - agnostico
+    - ateo
+    - indiferente
     fuente_principal: cis_barometros
   identidad_territorial:
     prioridad: P3
     nivel: opinion
     tipo: ordinal
     descripcion: Escala Linz-Moreno
-    dominio_pendiente: "F8A: categorías según el cuestionario del CIS"
+    dominio_pendiente: 'F8A: categorías según el cuestionario del CIS'
     fuente_principal: cis_barometros / centros_autonomicos
   lengua_habitual:
-    {prioridad: P3, nivel: opinion, tipo: categorica,
-     categorias: [castellano, catalan_valenciano, euskera, gallego, otras, bilingue],
-     descripcion: Lengua habitual, fuente_principal: cis_barometros / centros_autonomicos}
+    prioridad: P3
+    nivel: opinion
+    tipo: categorica
+    categorias:
+    - castellano
+    - catalan_valenciano
+    - euskera
+    - gallego
+    - otras
+    - bilingue
+    descripcion: Lengua habitual
+    fuente_principal: cis_barometros / centros_autonomicos
   clase_subjetiva:
-    {prioridad: P3, nivel: opinion, tipo: ordinal,
-     categorias: [alta, media_alta, media, media_baja, baja, obrera],
-     descripcion: Clase social subjetiva, fuente_principal: cis_barometros}
+    prioridad: P3
+    nivel: opinion
+    tipo: ordinal
+    categorias:
+    - alta
+    - media_alta
+    - media
+    - media_baja
+    - baja
+    - obrera
+    descripcion: Clase social subjetiva
+    fuente_principal: cis_barometros
   situacion_economica_personal:
     prioridad: P3
     nivel: opinion
     tipo: ordinal
     descripcion: Valoración de la situación económica personal
-    dominio_pendiente: "F8A: escala según el cuestionario del CIS"
+    dominio_pendiente: 'F8A: escala según el cuestionario del CIS'
     fuente_principal: cis_barometros
   medio_informacion_principal:
-    {prioridad: P3, nivel: opinion, tipo: categorica,
-     categorias: [television, prensa, radio, redes_sociales, otros_digitales],
-     descripcion: Medio principal de información, fuente_principal: cis_barometros}
+    prioridad: P3
+    nivel: opinion
+    tipo: categorica
+    categorias:
+    - television
+    - prensa
+    - radio
+    - redes_sociales
+    - otros_digitales
+    descripcion: Medio principal de información
+    fuente_principal: cis_barometros
   rasgo_sensibilidad_precio:
-    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
-     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+    prioridad: P3
+    nivel: opinion
+    tipo: numerica
+    rango:
+    - -10
+    - 10
+    descripcion: Rasgo latente
+    fuente_principal: cis_barometros / ess
   rasgo_confianza_tecnologia:
-    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
-     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+    prioridad: P3
+    nivel: opinion
+    tipo: numerica
+    rango:
+    - -10
+    - 10
+    descripcion: Rasgo latente
+    fuente_principal: cis_barometros / ess
   rasgo_preocupacion_ambiental:
-    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
-     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+    prioridad: P3
+    nivel: opinion
+    tipo: numerica
+    rango:
+    - -10
+    - 10
+    descripcion: Rasgo latente
+    fuente_principal: cis_barometros / ess
   rasgo_aislamiento_social:
-    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
-     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+    prioridad: P3
+    nivel: opinion
+    tipo: numerica
+    rango:
+    - -10
+    - 10
+    descripcion: Rasgo latente
+    fuente_principal: cis_barometros / ess
   rasgo_confianza_institucional:
-    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
-     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+    prioridad: P3
+    nivel: opinion
+    tipo: numerica
+    rango:
+    - -10
+    - 10
+    descripcion: Rasgo latente
+    fuente_principal: cis_barometros / ess
   rasgo_confianza_interpersonal:
-    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
-     descripcion: Rasgo latente, fuente_principal: ess}
+    prioridad: P3
+    nivel: opinion
+    tipo: numerica
+    rango:
+    - -10
+    - 10
+    descripcion: Rasgo latente
+    fuente_principal: ess
   rasgo_tradicion_apertura:
-    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
-     descripcion: Eje de Schwartz conservación-apertura, fuente_principal: ess}
+    prioridad: P3
+    nivel: opinion
+    tipo: numerica
+    rango:
+    - -10
+    - 10
+    descripcion: Eje de Schwartz conservación-apertura
+    fuente_principal: ess
   estilo_ns_nc:
-    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [0, 1],
-     descripcion: Propensión a NS/NC, fuente_principal: cis_barometros}
+    prioridad: P3
+    nivel: opinion
+    tipo: numerica
+    rango:
+    - 0
+    - 1
+    descripcion: Propensión a NS/NC
+    fuente_principal: cis_barometros
   estilo_aquiescencia:
-    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
-     descripcion: Tendencia a mostrarse de acuerdo, fuente_principal: cis_barometros}
-
-  # ================================================================ 3.5 Política (F8B)
+    prioridad: P3
+    nivel: opinion
+    tipo: numerica
+    rango:
+    - -10
+    - 10
+    descripcion: Tendencia a mostrarse de acuerdo
+    fuente_principal: cis_barometros
   derecho_voto_generales:
-    {prioridad: P3-POL, nivel: politica, tipo: booleana,
-     descripcion: Derecho a voto en generales y autonómicas, fuente_principal: derivada}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: booleana
+    descripcion: Derecho a voto en generales y autonómicas
+    fuente_principal: derivada
   derecho_voto_europeas:
-    {prioridad: P3-POL, nivel: politica, tipo: booleana,
-     descripcion: Derecho a voto en europeas, fuente_principal: derivada}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: booleana
+    descripcion: Derecho a voto en europeas
+    fuente_principal: derivada
   derecho_voto_municipales:
-    {prioridad: P3-POL, nivel: politica, tipo: booleana,
-     descripcion: Derecho a voto en municipales, fuente_principal: derivada}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: booleana
+    descripcion: Derecho a voto en municipales
+    fuente_principal: derivada
   recuerdo_voto_generales:
-    {prioridad: P3-POL, nivel: politica, tipo: categorica,
-     dominio_pendiente: "F2: candidaturas y familias de configs/partidos.yaml + blanco, nulo, abstencion, no_tenia_edad, sin_derecho, NS, NC",
-     descripcion: Recuerdo de voto en las generales de 2023, fuente_principal: cis_electorales}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: categorica
+    dominio_pendiente: 'F2: candidaturas y familias de configs/partidos.yaml + blanco, nulo, abstencion, no_tenia_edad,
+      sin_derecho, NS, NC'
+    descripcion: Recuerdo de voto en las generales de 2023
+    fuente_principal: cis_electorales
   recuerdo_voto_autonomicas:
-    {prioridad: P3-POL, nivel: politica, tipo: categorica,
-     dominio_pendiente: "F2: según partidos.yaml por comunidad",
-     descripcion: Recuerdo de voto en las últimas autonómicas, fuente_principal: cis_electorales}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: categorica
+    dominio_pendiente: 'F2: según partidos.yaml por comunidad'
+    descripcion: Recuerdo de voto en las últimas autonómicas
+    fuente_principal: cis_electorales
   recuerdo_voto_europeas:
-    {prioridad: P3-POL, nivel: politica, tipo: categorica,
-     dominio_pendiente: "F2: según partidos.yaml",
-     descripcion: Recuerdo de voto en las europeas de 2024, fuente_principal: cis_barometros}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: categorica
+    dominio_pendiente: 'F2: según partidos.yaml'
+    descripcion: Recuerdo de voto en las europeas de 2024
+    fuente_principal: cis_barometros
   ideologia_autoubicacion:
-    {prioridad: P3-POL, nivel: politica, tipo: ordinal,
-     categorias: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-     descripcion: "Escala 1 (izquierda) a 10 (derecha); NS y NC como categorías especiales",
-     fuente_principal: cis_barometros}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: ordinal
+    categorias:
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    - '9'
+    - '10'
+    descripcion: Escala 1 (izquierda) a 10 (derecha); NS y NC como categorías especiales
+    fuente_principal: cis_barometros
   ideologia_eje_territorial:
-    {prioridad: P3-POL, nivel: politica, tipo: ordinal,
-     dominio_pendiente: "F8B: escala según el cuestionario donde se pregunte",
-     descripcion: Escala de nacionalismo o centralismo, fuente_principal: cis_barometros}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: ordinal
+    dominio_pendiente: 'F8B: escala según el cuestionario donde se pregunte'
+    descripcion: Escala de nacionalismo o centralismo
+    fuente_principal: cis_barometros
   cercania_partido:
-    {prioridad: P3-POL, nivel: politica, tipo: categorica,
-     dominio_pendiente: "F2: según partidos.yaml + ninguno",
-     descripcion: Partido más cercano, fuente_principal: cis_barometros}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: categorica
+    dominio_pendiente: 'F2: según partidos.yaml + ninguno'
+    descripcion: Partido más cercano
+    fuente_principal: cis_barometros
   interes_politica:
-    {prioridad: P3-POL, nivel: politica, tipo: ordinal,
-     categorias: [mucho, bastante, poco, nada],
-     descripcion: Interés por la política, fuente_principal: cis_barometros / ess}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: ordinal
+    categorias:
+    - mucho
+    - bastante
+    - poco
+    - nada
+    descripcion: Interés por la política
+    fuente_principal: cis_barometros / ess
   participacion_no_electoral:
-    {prioridad: P3-POL, nivel: politica, tipo: categorica,
-     dominio_pendiente: "F8B: tipos de participación según la ESS",
-     descripcion: Participación política no electoral, fuente_principal: ess}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: categorica
+    dominio_pendiente: 'F8B: tipos de participación según la ESS'
+    descripcion: Participación política no electoral
+    fuente_principal: ess
   confianza_instituciones:
-    {prioridad: P3-POL, nivel: politica, tipo: numerica, rango: [0, 10],
-     descripcion: Confianza por institución (escala de la fuente), fuente_principal: ess / cis_barometros}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: numerica
+    rango:
+    - 0
+    - 10
+    descripcion: Confianza por institución (escala de la fuente)
+    fuente_principal: ess / cis_barometros
   satisfaccion_democracia:
-    {prioridad: P3-POL, nivel: politica, tipo: numerica, rango: [0, 10],
-     descripcion: Satisfacción con la democracia, fuente_principal: ess}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: numerica
+    rango:
+    - 0
+    - 10
+    descripcion: Satisfacción con la democracia
+    fuente_principal: ess
   rasgo_izquierda_derecha:
-    {prioridad: P3-POL, nivel: politica, tipo: numerica, rango: [-10, 10],
-     descripcion: Rasgo latente, fuente_principal: cis_barometros}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: numerica
+    rango:
+    - -10
+    - 10
+    descripcion: Rasgo latente
+    fuente_principal: cis_barometros
   rasgo_eje_territorial:
-    {prioridad: P3-POL, nivel: politica, tipo: numerica, rango: [-10, 10],
-     descripcion: Rasgo latente, fuente_principal: cis_barometros}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: numerica
+    rango:
+    - -10
+    - 10
+    descripcion: Rasgo latente
+    fuente_principal: cis_barometros
   rasgo_desafeccion:
-    {prioridad: P3-POL, nivel: politica, tipo: numerica, rango: [-10, 10],
-     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+    prioridad: P3-POL
+    nivel: politica
+    tipo: numerica
+    rango:
+    - -10
+    - 10
+    descripcion: Rasgo latente
+    fuente_principal: cis_barometros / ess
   rasgo_implicacion_politica:
-    {prioridad: P3-POL, nivel: politica, tipo: numerica, rango: [-10, 10],
-     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
-  # intencion_voto y valoracion_lideres NO son atributos de la persona (D-005):
-  # se predicen como preguntas y no figuran en este diccionario.
+    prioridad: P3-POL
+    nivel: politica
+    tipo: numerica
+    rango:
+    - -10
+    - 10
+    descripcion: Rasgo latente
+    fuente_principal: cis_barometros / ess

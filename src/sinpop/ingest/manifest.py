@@ -7,7 +7,9 @@ versionan en git; el manifiesto sí.
 
 from __future__ import annotations
 
+import contextlib
 import datetime as dt
+import fcntl
 from pathlib import Path
 from typing import Literal
 
@@ -59,7 +61,9 @@ def save_manifest(m: Manifest, path: Path = MANIFEST_PATH) -> None:
         "ficheros": [e.model_dump(mode="json") for e in sorted(m.ficheros, key=lambda e: e.fichero)]
     }
     header = "# Generado por `sinpop ingest`. No editar a mano los hashes.\n"
-    path.write_text(header + yaml.safe_dump(data, allow_unicode=True, sort_keys=False), "utf-8")
+    tmp = path.with_suffix(".yaml.tmp")
+    tmp.write_text(header + yaml.safe_dump(data, allow_unicode=True, sort_keys=False), "utf-8")
+    tmp.replace(path)
 
 
 def register_file(
@@ -82,23 +86,25 @@ def register_file(
     if not file.is_file():
         raise FileNotFoundError(file)
     mpath = manifest_path or raw_dir / "MANIFEST.yaml"
-    m = load_manifest(mpath)
-    rel = file.relative_to(raw_dir.resolve()).as_posix()
-    entry = Entry(
-        fuente=fuente,
-        fichero=rel,
-        tipo=tipo,
-        edicion=edicion,
-        url_oficial=url_oficial,
-        fecha_descarga=fecha or dt.date.today(),
-        sha256=sha256_file(file),
-        bytes=file.stat().st_size,
-        condiciones=condiciones,
-        via=via,
-    )
-    m.ficheros = [e for e in m.ficheros if e.fichero != rel] + [entry]
-    save_manifest(m, mpath)
-    return entry
+    sha = sha256_file(file)
+    with _lock(mpath):
+        m = load_manifest(mpath)
+        rel = file.relative_to(raw_dir.resolve()).as_posix()
+        entry = Entry(
+            fuente=fuente,
+            fichero=rel,
+            tipo=tipo,
+            edicion=edicion,
+            url_oficial=url_oficial,
+            fecha_descarga=fecha or dt.date.today(),
+            sha256=sha,
+            bytes=file.stat().st_size,
+            condiciones=condiciones,
+            via=via,
+        )
+        m.ficheros = [e for e in m.ficheros if e.fichero != rel] + [entry]
+        save_manifest(m, mpath)
+        return entry
 
 
 def verify(raw_dir: Path = RAW_DIR, manifest_path: Path | None = None) -> dict[str, str]:
@@ -120,9 +126,24 @@ def unregistered_files(raw_dir: Path = RAW_DIR, manifest_path: Path | None = Non
     """Ficheros presentes en data/raw que no figuran en el manifiesto."""
     m = load_manifest(manifest_path or raw_dir / "MANIFEST.yaml")
     known = {e.fichero for e in m.ficheros}
-    ignorar = {"MANIFEST.yaml", "MANUAL_DOWNLOADS.md", ".gitkeep"}
+    ignorar = {"MANIFEST.yaml", "MANIFEST.lock", "MANUAL_DOWNLOADS.md", ".gitkeep"}
     return sorted(
         p.relative_to(raw_dir).as_posix()
         for p in raw_dir.rglob("*")
-        if p.is_file() and p.name not in ignorar and p.relative_to(raw_dir).as_posix() not in known
+        if p.is_file()
+        and p.name not in ignorar
+        and p.suffix != ".part"
+        and p.relative_to(raw_dir).as_posix() not in known
     )
+
+
+@contextlib.contextmanager
+def _lock(mpath: Path):
+    """Bloqueo exclusivo del manifiesto: varias ingestas pueden correr en paralelo."""
+    mpath.parent.mkdir(parents=True, exist_ok=True)
+    with open(mpath.with_suffix(".lock"), "w") as fh:
+        fcntl.flock(fh, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)

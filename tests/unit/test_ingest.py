@@ -75,3 +75,27 @@ def test_unregistered_files(tmp_path) -> None:
 )
 def test_only_official_domains(url: str, ok: bool) -> None:
     assert is_official(url) is ok
+
+
+def test_extract_registers_members(tmp_path) -> None:
+    import zipfile
+
+    from sinpop.ingest.extract import extract
+
+    raw = tmp_path / "raw"
+    d = raw / "censo" / "2021"
+    d.mkdir(parents=True)
+    z = d / "datos.zip"
+    with zipfile.ZipFile(z, "w") as zf:
+        zf.writestr("md_x.parquet", b"PAR1")
+        zf.writestr("dr_x.xlsx", b"x")
+        zf.writestr("SPSS/x.sav", b"y")
+    register_file(z, "censo", "2021", "https://www.ine.es/d.zip", "c", raw_dir=raw)
+    out = extract("censo", "2021", ["md_*", "dr_*"], raw_dir=raw)
+    assert sorted(e.fichero for e in out) == [
+        "censo/2021/extraido/dr_x.xlsx",
+        "censo/2021/extraido/md_x.parquet",
+    ]
+    assert {e.tipo for e in out} == {"datos", "diseno_registro"}
+    assert all(e.url_oficial.startswith("https://www.ine.es/d.zip#") for e in out)
+    assert verify(raw)["censo/2021/extraido/md_x.parquet"] == "ok"

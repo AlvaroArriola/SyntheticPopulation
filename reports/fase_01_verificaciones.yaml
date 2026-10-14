@@ -1,0 +1,59 @@
+# Verificaciones críticas de F1 (docs/04_fases.md, F1 tarea 5). Leído por la puerta G1.5.
+# estado: resuelta | pendiente
+verificaciones:
+  - id: 1
+    tema: Nivel geográfico de los microdatos del Censo 2021 y del Censo Anual
+    estado: resuelta
+    resultado: >-
+      Ambos traen provincia (CPRO, 52 valores), municipio identificado solo si tiene 10.000
+      habitantes o más (si no, tamaño: 991 ≤2.000; 992 2.001–5.000; 993 5.001–10.000) y grado
+      de urbanización (TIPO_MUN_DEGURBA en el Censo 2021; DEGURBA en el Censo Anual). La
+      provincia es P0 disponible; no hace falta el plan alternativo.
+    evidencia: [dr_CensoPersonas_2021.xlsx, dr_CensoAnual_muestra_2022.xlsx, reports/fase_01_inventario.md]
+    decision: D-015
+  - id: 2
+    tema: Cobertura de establecimientos colectivos en la muestra de hogares del Censo 2021
+    estado: resuelta
+    resultado: >-
+      No los cubre: el fichero es una muestra del 10 % de los hogares (viviendas familiares).
+      La ECP a 01/01/2026 da 49.596.376 residentes, de los que 49.210.373 viven en viviendas
+      familiares: 386.003 personas (0,78 %) en establecimientos colectivos, sobre todo en edades
+      altas. Propuesta: la población base es la residente en viviendas familiares, calibrada a la
+      ECP de viviendas familiares; los colectivos se declaran como limitación cuantificada.
+    evidencia: [ecp tablas 59589 y 60124 a 01/01/2026, Leeme del Censo 2021]
+    decision: D-017
+  - id: 3
+    tema: Universo de edad de la TIC-H en la última edición
+    estado: resuelta
+    resultado: >-
+      TIC-H 2025: personas de 16 años o más sin límite superior (edades observadas 16–104,
+      total ponderado con FACTOR_P 42.057.112). Los mayores de 74 están cubiertos.
+    evidencia: [reports/fase_01_inventario.md, dr_TICHcuestionario_2025.xlsx]
+  - id: 4
+    tema: Publicación de la ronda 12 de la ESS
+    estado: resuelta
+    resultado: >-
+      No publicada. La ESS anuncia la primera publicación de la ronda 12 para enero de 2027.
+      Se usa la ronda 11 (descarga con registro, en MANUAL_DOWNLOADS.md).
+    evidencia: ["https://www.europeansocialsurvey.org/news/article/initial-round-12-data-release-scheduled-early-2027"]
+  - id: 5
+    tema: Edición más reciente con microdatos de la encuesta de salud
+    estado: resuelta
+    resultado: >-
+      Encuesta de Salud de España (ESdE) 2023 del INE: adultos de 15 años o más (21.032
+      registros, peso FACTORADULTO), con estado de salud (C1) y limitación GALI (C3a).
+    evidencia: [dr_ESdEadulto_2023.xlsx, reports/fase_01_inventario.md]
+  - id: 6
+    tema: Fuentes electorales (resultados oficiales, censo electoral, estudios pre/postelectorales del CIS)
+    estado: pendiente
+    resultado: >-
+      infoelectoral.interior.gob.es corta la conexión desde el entorno (no es denegación de la
+      política de red) y el catálogo del CIS limita las peticiones automáticas (HTTP 429) y sirve
+      los microdatos bajo petición. Registradas en MANUAL_DOWNLOADS.md. Solo afectan a F8B.
+    decision: D-019
+  - id: 7
+    tema: Variables políticas y de valores en cada barómetro del CIS y su codificación
+    estado: pendiente
+    resultado: >-
+      Requiere los cuestionarios y microdatos del CIS (descarga manual). Solo afecta a F8A y F8B.
+    decision: D-019

@@ -13,6 +13,7 @@ import subprocess
 import sys
 from collections.abc import Callable
 from dataclasses import dataclass
+from pathlib import Path
 
 from sinpop import REPO_ROOT, REPORTS_DIR
 
@@ -176,21 +177,52 @@ def _g1_3_coverage() -> Check:
 
 
 def _g1_4_records() -> Check:
+    import json
+
+    path = REPORTS_DIR / "fase_01_inventario.json"
+    if not path.exists():
+        return Check(
+            "G1.4",
+            "Registros leídos = registros declarados por la documentación",
+            False,
+            "falta el inventario (sinpop ingest --inventory)",
+            "igualdad exacta",
+        )
+    rec = json.loads(path.read_text(encoding="utf-8"))["recuentos"]
+    decl = [r for r in rec if r["declarado"]]
+    malos = [Path(r["fichero"]).name for r in decl if not r["ok"]]
+    nodecl = [Path(r["fichero"]).name for r in rec if not r["declarado"]]
+    valor = f"{len(decl) - len(malos)}/{len(decl)} con cifra declarada coinciden"
+    if malos:
+        valor += f"; no coinciden: {', '.join(malos)}"
+    if nodecl:
+        valor += f"; sin cifra exacta declarada: {', '.join(nodecl)}"
     return Check(
         "G1.4",
         "Registros leídos = registros declarados por la documentación",
-        False,
-        "sin ficheros que leer",
+        bool(decl) and not malos,
+        valor,
         "igualdad exacta",
     )
 
 
 def _g1_5_critical() -> Check:
+    import yaml
+
+    path = REPORTS_DIR / "fase_01_verificaciones.yaml"
+    if not path.exists():
+        return Check(
+            "G1.5", "Las 7 verificaciones críticas resueltas y registradas", False, "0/7", "7/7"
+        )
+    v = yaml.safe_load(path.read_text(encoding="utf-8"))["verificaciones"]
+    ok = [x for x in v if x["estado"] == "resuelta"]
+    pend = [str(x["id"]) for x in v if x["estado"] != "resuelta"]
+    valor = f"{len(ok)}/7" + (f"; pendientes: {', '.join(pend)}" if pend else "")
     return Check(
         "G1.5",
         "Las 7 verificaciones críticas resueltas y registradas",
-        False,
-        "0/7 (requieren los ficheros y su documentación)",
+        len(ok) == 7 and len(v) == 7,
+        valor,
         "7/7",
     )
 

@@ -1,0 +1,260 @@
+{
+  "perfiles": [
+    {
+      "fuente": "censo2021_micro_hogares",
+      "edicion": "2021",
+      "fichero": "censo2021_micro_hogares/2021/extraido/md_CensoPersonas_2021.parquet",
+      "unidad": "persona",
+      "registros": 4707186,
+      "columnas": 130,
+      "peso": null,
+      "total_ponderado": null,
+      "edad_min": 0.0,
+      "edad_max": 100.0,
+      "geo": "CPRO",
+      "geo_valores": 52,
+      "notas": [
+        "sin variable de peso: estadísticas sin ponderar"
+      ]
+    },
+    {
+      "fuente": "censo_anual_micro_completo",
+      "edicion": "2023",
+      "fichero": "censo_anual_micro_completo/2023/extraido/md_Censo_muestra_2023.txt",
+      "unidad": "persona",
+      "registros": 4807670,
+      "columnas": 35,
+      "peso": null,
+      "total_ponderado": null,
+      "edad_min": 0.0,
+      "edad_max": 100.0,
+      "geo": "CPRO",
+      "geo_valores": 52,
+      "notas": [
+        "sin variable de peso: estadísticas sin ponderar"
+      ]
+    },
+    {
+      "fuente": "censo_anual_micro_completo",
+      "edicion": "2024",
+      "fichero": "censo_anual_micro_completo/2024/extraido/md_Censo_muestra_2024.txt",
+      "unidad": "persona",
+      "registros": 4861970,
+      "columnas": 35,
+      "peso": null,
+      "total_ponderado": null,
+      "edad_min": 0.0,
+      "edad_max": 100.0,
+      "geo": "CPRO",
+      "geo_valores": 52,
+      "notas": [
+        "sin variable de peso: estadísticas sin ponderar"
+      ]
+    },
+    {
+      "fuente": "censo_anual_micro_completo",
+      "edicion": "2025",
+      "fichero": "censo_anual_micro_completo/2025/extraido/md_Censo_muestra_2025.txt",
+      "unidad": "persona",
+      "registros": 4912830,
+      "columnas": 35,
+      "peso": null,
+      "total_ponderado": null,
+      "edad_min": 0.0,
+      "edad_max": 100.0,
+      "geo": "CPRO",
+      "geo_valores": 52,
+      "notas": [
+        "sin variable de peso: estadísticas sin ponderar"
+      ]
+    },
+    {
+      "fuente": "censo_anual_micro_demograficas",
+      "edicion": "2025",
+      "fichero": "censo_anual_micro_demograficas/2025/extraido/md_CensoAnual_2025.parquet",
+      "unidad": "persona",
+      "registros": 49128297,
+      "columnas": 11,
+      "peso": null,
+      "total_ponderado": null,
+      "edad_min": 0.0,
+      "edad_max": 100.0,
+      "geo": "CPRO",
+      "geo_valores": 52,
+      "notas": [
+        "sin variable de peso: estadísticas sin ponderar"
+      ]
+    },
+    {
+      "fuente": "ecv",
+      "edicion": "2025",
+      "fichero": "ecv/2025/extraido/ECV_Tr_2025/md_ECV_Tr_2025.parquet",
+      "unidad": "persona",
+      "registros": 71398,
+      "columnas": 46,
+      "peso": "RB050",
+      "total_ponderado": 48702183.99967,
+      "edad_min": -1.0,
+      "edad_max": 86.0,
+      "geo": null,
+      "geo_valores": null,
+      "notas": []
+    },
+    {
+      "fuente": "ecv",
+      "edicion": "2025",
+      "fichero": "ecv/2025/extraido/ECV_Tp_2025/md_ECV_Tp_2025.parquet",
+      "unidad": "persona 16+",
+      "registros": 60825,
+      "columnas": 191,
+      "peso": "PB040",
+      "total_ponderado": 41873121.99931,
+      "edad_min": null,
+      "edad_max": null,
+      "geo": null,
+      "geo_valores": null,
+      "notas": []
+    },
+    {
+      "fuente": "ecv",
+      "edicion": "2025",
+      "fichero": "ecv/2025/extraido/ECV_Td_2025/md_ECV_Td_2025.parquet",
+      "unidad": "hogar",
+      "registros": 29369,
+      "columnas": 9,
+      "peso": "DB090",
+      "total_ponderado": 19508512.99939,
+      "edad_min": null,
+      "edad_max": null,
+      "geo": "DB040",
+      "geo_valores": 19,
+      "notas": []
+    },
+    {
+      "fuente": "ecv",
+      "edicion": "2025",
+      "fichero": "ecv/2025/extraido/ECV_Th_2025/md_ECV_Th_2025.parquet",
+      "unidad": "hogar",
+      "registros": 29369,
+      "columnas": 132,
+      "peso": null,
+      "total_ponderado": null,
+      "edad_min": null,
+      "edad_max": null,
+      "geo": null,
+      "geo_valores": null,
+      "notas": [
+        "sin variable de peso: estadísticas sin ponderar"
+      ]
+    },
+    {
+      "fuente": "epa",
+      "edicion": "2T2026",
+      "fichero": "epa/2T2026/extraido/md_EPA_2026T2.parquet",
+      "unidad": "persona",
+      "registros": 114021,
+      "columnas": 94,
+      "peso": "FACTOREL",
+      "total_ponderado": 49345142.91,
+      "edad_min": null,
+      "edad_max": null,
+      "geo": "PROV",
+      "geo_valores": 52,
+      "notas": []
+    },
+    {
+      "fuente": "tic_h",
+      "edicion": "2025",
+      "fichero": "tic_h/2025/extraido/FicheroCuestionario/md_TICHcuestionario_2025.parquet",
+      "unidad": "persona 16+",
+      "registros": 16938,
+      "columnas": 218,
+      "peso": "FACTOR_P",
+      "total_ponderado": 42057112.000007,
+      "edad_min": 16.0,
+      "edad_max": 104.0,
+      "geo": "CCAA",
+      "geo_valores": 19,
+      "notas": []
+    },
+    {
+      "fuente": "tic_h",
+      "edicion": "2025",
+      "fichero": "tic_h/2025/extraido/FicheroMiembros/md_TICHmiembros_2025.parquet",
+      "unidad": "miembro del hogar",
+      "registros": 40662,
+      "columnas": 12,
+      "peso": null,
+      "total_ponderado": null,
+      "edad_min": 0.0,
+      "edad_max": 106.0,
+      "geo": "CCAA",
+      "geo_valores": 19,
+      "notas": [
+        "sin variable de peso: estadísticas sin ponderar"
+      ]
+    },
+    {
+      "fuente": "encuesta_salud",
+      "edicion": "2023",
+      "fichero": "encuesta_salud/2023/extraido/ESdEadulto_2023/md_ESdEadulto_2023.parquet",
+      "unidad": "persona 15+",
+      "registros": 21032,
+      "columnas": 432,
+      "peso": "FACTORADULTO",
+      "total_ponderado": 41929275.975,
+      "edad_min": 15.0,
+      "edad_max": 103.0,
+      "geo": "CCAA",
+      "geo_valores": 19,
+      "notas": []
+    }
+  ],
+  "recuentos": [
+    {
+      "fichero": "censo2021_micro_hogares/2021/extraido/md_CensoPersonas_2021.parquet",
+      "registros": 4707186,
+      "referencia": "Censo 2021, tabla 67988 a 01/01/2021 (población total, incluye establecimientos colectivos)",
+      "valor_referencia": 47400798.0,
+      "regla": "10 % de los hogares: sin cifra exacta declarada; se informa el cociente",
+      "ok": true,
+      "declarado": false
+    },
+    {
+      "fichero": "censo_anual_micro_completo/2023/extraido/md_Censo_muestra_2023.txt",
+      "registros": 4807670,
+      "referencia": "Censo Anual 2023, tabla 67988 (población total)",
+      "valor_referencia": 48085361.0,
+      "regla": "registros = población / 10 (±1 por redondeo)",
+      "ok": false,
+      "declarado": true
+    },
+    {
+      "fichero": "censo_anual_micro_completo/2024/extraido/md_Censo_muestra_2024.txt",
+      "registros": 4861970,
+      "referencia": "Censo Anual 2024, tabla 67988 (población total)",
+      "valor_referencia": 48619695.0,
+      "regla": "registros = población / 10 (±1 por redondeo)",
+      "ok": true,
+      "declarado": true
+    },
+    {
+      "fichero": "censo_anual_micro_completo/2025/extraido/md_Censo_muestra_2025.txt",
+      "registros": 4912830,
+      "referencia": "Censo Anual 2025, tabla 67988 (población total)",
+      "valor_referencia": 49128297.0,
+      "regla": "registros = población / 10 (±1 por redondeo)",
+      "ok": true,
+      "declarado": true
+    },
+    {
+      "fichero": "censo_anual_micro_demograficas/2025/extraido/md_CensoAnual_2025.parquet",
+      "registros": 49128297,
+      "referencia": "Censo Anual 2025, tabla 67988 (población total)",
+      "valor_referencia": 49128297.0,
+      "regla": "fichero exhaustivo: registros = población oficial",
+      "ok": true,
+      "declarado": true
+    }
+  ]
+}

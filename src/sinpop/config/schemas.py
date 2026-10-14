@@ -71,6 +71,7 @@ class FuenteVariable(Strict):
     universo: str | None = None
     recodificacion: dict[str, str] = Field(default_factory=dict)
     verificado_contra: str | None = None  # diseño de registro / cuestionario usado
+    notas: str | None = None  # limitaciones de cobertura detectadas en el inventario (F1)
 
 
 class Variable(Strict):

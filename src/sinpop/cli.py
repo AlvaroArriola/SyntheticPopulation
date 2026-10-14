@@ -53,11 +53,25 @@ def ingest(
         str, typer.Option(help="datos | diseno_registro | metodologia | cuestionario | otro")
     ] = "datos",
     verify: Annotated[bool, typer.Option(help="Verifica los hashes del manifiesto")] = False,
+    ine_table: Annotated[
+        int | None, typer.Option(help="Id de tabla de INEbase (API Tempus) a descargar en JSON")
+    ] = None,
+    date: Annotated[str | None, typer.Option(help="Periodo AAAAMMDD de la tabla INE")] = None,
+    inventory: Annotated[bool, typer.Option(help="Genera el inventario de F1")] = False,
+    extract: Annotated[
+        list[str] | None, typer.Option(help="Patrón de ficheros a extraer del ZIP registrado")
+    ] = None,
 ) -> None:
     """Descarga o registra fuentes oficiales en data/raw/MANIFEST.yaml (F1)."""
     from sinpop.config import load_config
     from sinpop.ingest import manifest
 
+    if inventory:
+        from sinpop.ingest.inventory import run as _inventory
+
+        data = _inventory()
+        typer.echo(f"{len(data['perfiles'])} ficheros perfilados · reports/fase_01_inventario.md")
+        return
     if verify:
         res = manifest.verify()
         for f, estado in res.items():
@@ -76,7 +90,20 @@ def ingest(
     if edition is None:
         typer.echo("Indica --edition.", err=True)
         raise typer.Exit(code=2)
-    if register is not None:
+    if extract:
+        from sinpop.ingest.extract import extract as _extract
+
+        for e in _extract(source, edition, extract):
+            typer.echo(f"Extraído {e.fichero} · sha256 {e.sha256[:12]} · {e.bytes} bytes")
+        return
+    if ine_table is not None:
+        from sinpop.ingest.download import download_ine_table
+
+        e = download_ine_table(ine_table, source, edition, f.condiciones, fecha=date)
+        from sinpop.ingest.download import download_ine_table_meta
+
+        download_ine_table_meta(ine_table, source, edition, f.condiciones)
+    elif register is not None:
         e = manifest.register_file(
             register,
             source,
