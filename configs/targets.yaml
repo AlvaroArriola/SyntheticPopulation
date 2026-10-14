@@ -1,0 +1,22 @@
+# Objetivos de calibración y objetivos reservados para validar (docs/04_fases.md, F3).
+# Estado F0: propuesta inicial de la documentación. Fuente, edición y fecha de cada
+# objetivo se rellenan en F3. Ningún objetivo reservado puede aparecer en `calibrar`
+# (lo comprueba el esquema y el test G3.4).
+fecha_referencia: 2026-01-01
+
+calibrar:
+  - {id: edad5_sexo, variables: [edad_5, sexo]}
+  - {id: nacionalidad, variables: [nacionalidad_grupo]}
+  - {id: estudios_edad4, variables: [estudios_3, edad_4]}
+  - {id: actividad_sexo, variables: [relacion_actividad, sexo]}
+  - {id: urbanizacion, variables: [grado_urbanizacion]}
+  - {id: tipo_hogar, variables: [tipo_hogar], unidad: hogar}
+  - {id: tamano_hogar, variables: [tamano_hogar], unidad: hogar}
+
+reservar:
+  - {id: estudios_sexo_edad4, variables: [estudios_3, sexo, edad_4]}
+  - {id: actividad_edad4, variables: [relacion_actividad, edad_4]}
+  - {id: tipo_hogar_edad4_ref, variables: [tipo_hogar, edad_4], unidad: hogar}
+  - {id: nacionalidad_top, variables: [nacionalidad_top]}
+  - {id: estado_civil_edad4, variables: [estado_civil, edad_4]}
+  - {id: provincia_si_calibra_ccaa, variables: [provincia]}

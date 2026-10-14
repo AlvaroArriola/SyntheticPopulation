@@ -1,0 +1,1 @@
+"""Etapa predict (ver docs/03_arquitectura.md)."""

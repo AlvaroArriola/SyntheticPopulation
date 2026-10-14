@@ -1,0 +1,19 @@
+# Datos: no se versionan salvo los manifiestos (docs/02, sección 6)
+data/**
+!data/**/
+!data/raw/MANIFEST.yaml
+!data/raw/MANUAL_DOWNLOADS.md
+!data/**/.gitkeep
+# Caché y registros de LLM
+logs/llm/**
+!logs/llm/.gitkeep
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+.venv/
+build/
+dist/

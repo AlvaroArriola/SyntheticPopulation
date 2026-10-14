@@ -1,0 +1,363 @@
+# Diccionario armonizado (docs/02_datos_y_variables.md, sección 3).
+# Estado F0: nombres, prioridades y categorías propuestas por la documentación.
+# Las correspondencias por fuente (`fuentes:` con variable original y recodificación)
+# se añaden en F2, verificadas contra el diseño de registro o el cuestionario oficial.
+# Valores especiales: NS, NC y NP son categorías explícitas, nunca valores de escala.
+
+variables:
+  # ================================================================ 3.1 Persona
+  edad:
+    {prioridad: P0, nivel: persona, tipo: numerica, rango: [0, 120],
+     descripcion: Años cumplidos, fuente_principal: censo / padron_continuo}
+  edad_5:
+    prioridad: P0
+    nivel: persona
+    tipo: ordinal
+    descripcion: Tramos quinquenales de edad (el tramo abierto superior se verifica en F3 con el Padrón)
+    categorias: ["00-04", "05-09", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44",
+                 "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85+"]
+    fuente_principal: censo / padron_continuo
+    derivada_de: edad
+  edad_4:
+    prioridad: P0
+    nivel: persona
+    tipo: ordinal
+    descripcion: Tramos amplios de edad para adultos (NP para menores de 18)
+    categorias: ["18-34", "35-49", "50-64", "65+"]
+    fuente_principal: censo / padron_continuo
+    derivada_de: edad
+  sexo:
+    {prioridad: P0, nivel: persona, tipo: categorica, categorias: [hombre, mujer],
+     descripcion: Sexo según registro, fuente_principal: censo / padron_continuo}
+  nacionalidad_grupo:
+    prioridad: P0
+    nivel: persona
+    tipo: categorica
+    descripcion: Grupo de nacionalidad (la doble nacionalidad solo si la fuente la identifica)
+    categorias: [espanola, espanola_doble, ue, resto_europa, africa, america_latina, asia, otros]
+    fuente_principal: censo / padron_continuo
+  pais_nacimiento_grupo:
+    prioridad: P1
+    nivel: persona
+    tipo: categorica
+    descripcion: Grupo de país de nacimiento
+    categorias: [espana, ue, resto_europa, africa, america_latina, asia, otros]
+    fuente_principal: censo / padron_continuo
+  nacionalidad_top:
+    prioridad: P1
+    nivel: persona
+    tipo: categorica
+    descripcion: Principales nacionalidades individuales más «otras»
+    dominio_pendiente: "F1/F2: las 15 nacionalidades extranjeras más numerosas del Padrón vigente"
+    fuente_principal: padron_continuo
+  estado_civil:
+    {prioridad: P1, nivel: persona, tipo: categorica,
+     categorias: [soltero, casado, viudo, separado_divorciado],
+     descripcion: Estado civil legal, fuente_principal: censo_anual}
+  nivel_estudios:
+    prioridad: P0
+    nivel: persona
+    tipo: ordinal
+    descripcion: Nivel de estudios terminados en detalle CNED-A/ISCED
+    dominio_pendiente: "F2: niveles CNED-A tal como los codifica el diseño de registro del Censo Anual"
+    fuente_principal: censo_anual
+  estudios_3:
+    prioridad: P0
+    nivel: persona
+    tipo: ordinal
+    descripcion: Agregado de estudios
+    categorias: [hasta_obligatoria, secundaria_2a_etapa, superior]
+    fuente_principal: censo_anual
+    derivada_de: nivel_estudios
+  relacion_actividad:
+    prioridad: P0
+    nivel: persona
+    tipo: categorica
+    descripcion: Relación con la actividad económica
+    categorias: [ocupado, parado, jubilado_pensionista, estudiante, labores_hogar,
+                 incapacidad_permanente, otra_inactividad]
+    fuente_principal: censo_anual / epa
+  ocupacion:
+    prioridad: P1
+    nivel: persona
+    tipo: categorica
+    descripcion: Gran grupo CNO-11 (un dígito)
+    categorias: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    fuente_principal: censo_anual / epa
+  sector_actividad:
+    prioridad: P2
+    nivel: persona
+    tipo: categorica
+    descripcion: Sección CNAE-09
+    categorias: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U]
+    fuente_principal: epa / censo
+  situacion_profesional:
+    {prioridad: P1, nivel: persona, tipo: categorica,
+     categorias: [asalariado_publico, asalariado_privado, autonomo, empresario],
+     descripcion: Situación profesional, fuente_principal: epa / censo}
+  tipo_jornada:
+    {prioridad: P2, nivel: persona, tipo: categorica, categorias: [completa, parcial],
+     descripcion: Tipo de jornada, fuente_principal: epa}
+  teletrabajo:
+    {prioridad: P2, nivel: persona, tipo: ordinal, categorias: [nunca, ocasional, habitual],
+     descripcion: Frecuencia de teletrabajo, fuente_principal: epa / tic_h}
+  anio_llegada_espana:
+    prioridad: P2
+    nivel: persona
+    tipo: ordinal
+    descripcion: Tramo del año de llegada a España
+    dominio_pendiente: "F2: tramos según el diseño de registro del Censo Anual"
+    fuente_principal: censo_anual
+  discapacidad_limitacion:
+    {prioridad: P1, nivel: persona, tipo: ordinal,
+     categorias: [sin_limitacion, limitacion_moderada, limitacion_grave],
+     descripcion: Indicador GALI, fuente_principal: ecv / encuesta_salud}
+  salud_autopercibida:
+    {prioridad: P1, nivel: persona, tipo: ordinal,
+     categorias: [muy_buena, buena, regular, mala, muy_mala],
+     descripcion: Salud autopercibida, fuente_principal: ecv / encuesta_salud}
+  uso_internet:
+    {prioridad: P1, nivel: persona, tipo: ordinal,
+     categorias: [diario, semanal, menos_frecuente, nunca],
+     descripcion: Frecuencia de uso de internet, fuente_principal: tic_h}
+  competencias_digitales:
+    {prioridad: P2, nivel: persona, tipo: ordinal,
+     categorias: [bajas, basicas, superiores_basicas],
+     descripcion: Competencias digitales, fuente_principal: tic_h}
+  compra_online:
+    {prioridad: P2, nivel: persona, tipo: booleana,
+     descripcion: Compra por internet en los últimos 3 meses, fuente_principal: tic_h}
+
+  # ================================================================ 3.2 Hogar
+  tipo_hogar:
+    prioridad: P0
+    nivel: hogar
+    tipo: categorica
+    descripcion: Tipo de hogar
+    categorias: [unipersonal, pareja_sin_hijos, pareja_con_hijos, monoparental,
+                 varias_familias_no_emparentadas, otros]
+    fuente_principal: censo2021
+  tamano_hogar:
+    {prioridad: P0, nivel: hogar, tipo: ordinal, categorias: ["1", "2", "3", "4", "5+"],
+     descripcion: Número de personas del hogar, fuente_principal: censo2021}
+  relacion_persona_ref:
+    prioridad: P0
+    nivel: persona
+    tipo: categorica
+    descripcion: Relación con la persona de referencia del hogar
+    categorias: [persona_referencia, pareja, hijo, padre_madre, otro_familiar, no_familiar]
+    fuente_principal: censo2021
+  n_menores_hogar:
+    {prioridad: P1, nivel: hogar, tipo: ordinal, categorias: ["0", "1", "2", "3+"],
+     descripcion: Menores de 18 en el hogar, fuente_principal: censo2021}
+  n_mayores_65_hogar:
+    {prioridad: P1, nivel: hogar, tipo: numerica, rango: [0, 20],
+     descripcion: Personas de 65+ en el hogar, fuente_principal: censo2021}
+  n_mayores_80_hogar:
+    {prioridad: P1, nivel: hogar, tipo: numerica, rango: [0, 20],
+     descripcion: Personas de 80+ en el hogar, fuente_principal: censo2021}
+  tenencia_vivienda:
+    prioridad: P1
+    nivel: hogar
+    tipo: categorica
+    descripcion: Régimen de tenencia de la vivienda
+    categorias: [propiedad_sin_hipoteca, propiedad_con_hipoteca, alquiler_mercado,
+                 alquiler_inferior_cesion]
+    fuente_principal: censo2021 / ecv
+  renta_hogar_decil:
+    {prioridad: P1, nivel: hogar, tipo: ordinal,
+     categorias: [D01, D02, D03, D04, D05, D06, D07, D08, D09, D10],
+     descripcion: Decil nacional de renta equivalente, fuente_principal: ecv + atlas_renta}
+  renta_hogar_decil_ccaa:
+    {prioridad: P1, nivel: hogar, tipo: ordinal,
+     categorias: [D01, D02, D03, D04, D05, D06, D07, D08, D09, D10],
+     descripcion: Decil regional de renta equivalente, fuente_principal: ecv + atlas_renta}
+  privacion_material:
+    {prioridad: P1, nivel: hogar, tipo: booleana,
+     descripcion: Indicador oficial de privación material, fuente_principal: ecv}
+  privacion_material_n:
+    {prioridad: P1, nivel: hogar, tipo: numerica, rango: [0, 13],
+     descripcion: Número de carencias (verificar el máximo con la ECV), fuente_principal: ecv}
+  dificultad_fin_mes:
+    prioridad: P2
+    nivel: hogar
+    tipo: ordinal
+    descripcion: Escala de 6 puntos de la ECV
+    categorias: [mucha_dificultad, dificultad, cierta_dificultad, cierta_facilidad, facilidad,
+                 mucha_facilidad]
+    fuente_principal: ecv
+  vehiculo_hogar:
+    {prioridad: P2, nivel: hogar, tipo: booleana,
+     descripcion: Dispone de vehículo, fuente_principal: ecv / censo2021}
+
+  # ================================================================ 3.3 Territorio y entorno
+  ccaa:
+    prioridad: P0
+    nivel: territorio
+    tipo: categorica
+    descripcion: Comunidad o ciudad autónoma (códigos INE, ver territories.yaml)
+    categorias: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13",
+                 "14", "15", "16", "17", "18", "19"]
+    fuente_principal: censo
+  provincia:
+    prioridad: P0
+    nivel: territorio
+    tipo: categorica
+    descripcion: Provincia (códigos INE); P0 si está en los microdatos (verificar en F1)
+    categorias: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13",
+                 "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26",
+                 "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
+                 "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"]
+    fuente_principal: censo
+  tamano_municipio:
+    prioridad: P0
+    nivel: territorio
+    tipo: ordinal
+    descripcion: Tamaño del municipio (alinear en F2 con la clasificación de los microdatos)
+    categorias: [hasta_2000, de_2001_a_10000, de_10001_a_50000, de_50001_a_100000,
+                 de_100001_a_500000, mas_de_500000]
+    fuente_principal: censo / padron_continuo
+  grado_urbanizacion:
+    {prioridad: P0, nivel: territorio, tipo: ordinal, categorias: [ciudad, intermedio, rural],
+     descripcion: DEGURBA según los microdatos censales, fuente_principal: censo}
+  municipio:
+    {prioridad: P2, nivel: territorio, tipo: identificador,
+     descripcion: Código INE de municipio (solo territorios por lista de municipios),
+     fuente_principal: padron_continuo}
+  ctx_renta_municipio:
+    {prioridad: P1, nivel: territorio, tipo: numerica, rango: [0, 1000000],
+     descripcion: Renta media por persona del municipio o sección, fuente_principal: atlas_renta}
+  ctx_envejecimiento:
+    {prioridad: P1, nivel: territorio, tipo: numerica, rango: [0, 1],
+     descripcion: Proporción de 65+ en el municipio, fuente_principal: padron_continuo}
+  ctx_precio_vivienda:
+    {prioridad: P2, nivel: territorio, tipo: numerica, rango: [0, 1000000],
+     descripcion: Índice de precio o alquiler (fuente oficial a verificar),
+     fuente_principal: pendiente}
+
+  # ================================================================ 3.4 Opinión y valores (F8A)
+  religiosidad:
+    prioridad: P3
+    nivel: opinion
+    tipo: categorica
+    descripcion: Religiosidad
+    categorias: [catolico_practicante, catolico_no_practicante, otra_religion, agnostico, ateo,
+                 indiferente]
+    fuente_principal: cis_barometros
+  identidad_territorial:
+    prioridad: P3
+    nivel: opinion
+    tipo: ordinal
+    descripcion: Escala Linz-Moreno
+    dominio_pendiente: "F8A: categorías según el cuestionario del CIS"
+    fuente_principal: cis_barometros / centros_autonomicos
+  lengua_habitual:
+    {prioridad: P3, nivel: opinion, tipo: categorica,
+     categorias: [castellano, catalan_valenciano, euskera, gallego, otras, bilingue],
+     descripcion: Lengua habitual, fuente_principal: cis_barometros / centros_autonomicos}
+  clase_subjetiva:
+    {prioridad: P3, nivel: opinion, tipo: ordinal,
+     categorias: [alta, media_alta, media, media_baja, baja, obrera],
+     descripcion: Clase social subjetiva, fuente_principal: cis_barometros}
+  situacion_economica_personal:
+    prioridad: P3
+    nivel: opinion
+    tipo: ordinal
+    descripcion: Valoración de la situación económica personal
+    dominio_pendiente: "F8A: escala según el cuestionario del CIS"
+    fuente_principal: cis_barometros
+  medio_informacion_principal:
+    {prioridad: P3, nivel: opinion, tipo: categorica,
+     categorias: [television, prensa, radio, redes_sociales, otros_digitales],
+     descripcion: Medio principal de información, fuente_principal: cis_barometros}
+  rasgo_sensibilidad_precio:
+    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
+     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+  rasgo_confianza_tecnologia:
+    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
+     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+  rasgo_preocupacion_ambiental:
+    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
+     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+  rasgo_aislamiento_social:
+    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
+     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+  rasgo_confianza_institucional:
+    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
+     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+  rasgo_confianza_interpersonal:
+    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
+     descripcion: Rasgo latente, fuente_principal: ess}
+  rasgo_tradicion_apertura:
+    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
+     descripcion: Eje de Schwartz conservación-apertura, fuente_principal: ess}
+  estilo_ns_nc:
+    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [0, 1],
+     descripcion: Propensión a NS/NC, fuente_principal: cis_barometros}
+  estilo_aquiescencia:
+    {prioridad: P3, nivel: opinion, tipo: numerica, rango: [-10, 10],
+     descripcion: Tendencia a mostrarse de acuerdo, fuente_principal: cis_barometros}
+
+  # ================================================================ 3.5 Política (F8B)
+  derecho_voto_generales:
+    {prioridad: P3-POL, nivel: politica, tipo: booleana,
+     descripcion: Derecho a voto en generales y autonómicas, fuente_principal: derivada}
+  derecho_voto_europeas:
+    {prioridad: P3-POL, nivel: politica, tipo: booleana,
+     descripcion: Derecho a voto en europeas, fuente_principal: derivada}
+  derecho_voto_municipales:
+    {prioridad: P3-POL, nivel: politica, tipo: booleana,
+     descripcion: Derecho a voto en municipales, fuente_principal: derivada}
+  recuerdo_voto_generales:
+    {prioridad: P3-POL, nivel: politica, tipo: categorica,
+     dominio_pendiente: "F2: candidaturas y familias de configs/partidos.yaml + blanco, nulo, abstencion, no_tenia_edad, sin_derecho, NS, NC",
+     descripcion: Recuerdo de voto en las generales de 2023, fuente_principal: cis_electorales}
+  recuerdo_voto_autonomicas:
+    {prioridad: P3-POL, nivel: politica, tipo: categorica,
+     dominio_pendiente: "F2: según partidos.yaml por comunidad",
+     descripcion: Recuerdo de voto en las últimas autonómicas, fuente_principal: cis_electorales}
+  recuerdo_voto_europeas:
+    {prioridad: P3-POL, nivel: politica, tipo: categorica,
+     dominio_pendiente: "F2: según partidos.yaml",
+     descripcion: Recuerdo de voto en las europeas de 2024, fuente_principal: cis_barometros}
+  ideologia_autoubicacion:
+    {prioridad: P3-POL, nivel: politica, tipo: ordinal,
+     categorias: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+     descripcion: "Escala 1 (izquierda) a 10 (derecha); NS y NC como categorías especiales",
+     fuente_principal: cis_barometros}
+  ideologia_eje_territorial:
+    {prioridad: P3-POL, nivel: politica, tipo: ordinal,
+     dominio_pendiente: "F8B: escala según el cuestionario donde se pregunte",
+     descripcion: Escala de nacionalismo o centralismo, fuente_principal: cis_barometros}
+  cercania_partido:
+    {prioridad: P3-POL, nivel: politica, tipo: categorica,
+     dominio_pendiente: "F2: según partidos.yaml + ninguno",
+     descripcion: Partido más cercano, fuente_principal: cis_barometros}
+  interes_politica:
+    {prioridad: P3-POL, nivel: politica, tipo: ordinal,
+     categorias: [mucho, bastante, poco, nada],
+     descripcion: Interés por la política, fuente_principal: cis_barometros / ess}
+  participacion_no_electoral:
+    {prioridad: P3-POL, nivel: politica, tipo: categorica,
+     dominio_pendiente: "F8B: tipos de participación según la ESS",
+     descripcion: Participación política no electoral, fuente_principal: ess}
+  confianza_instituciones:
+    {prioridad: P3-POL, nivel: politica, tipo: numerica, rango: [0, 10],
+     descripcion: Confianza por institución (escala de la fuente), fuente_principal: ess / cis_barometros}
+  satisfaccion_democracia:
+    {prioridad: P3-POL, nivel: politica, tipo: numerica, rango: [0, 10],
+     descripcion: Satisfacción con la democracia, fuente_principal: ess}
+  rasgo_izquierda_derecha:
+    {prioridad: P3-POL, nivel: politica, tipo: numerica, rango: [-10, 10],
+     descripcion: Rasgo latente, fuente_principal: cis_barometros}
+  rasgo_eje_territorial:
+    {prioridad: P3-POL, nivel: politica, tipo: numerica, rango: [-10, 10],
+     descripcion: Rasgo latente, fuente_principal: cis_barometros}
+  rasgo_desafeccion:
+    {prioridad: P3-POL, nivel: politica, tipo: numerica, rango: [-10, 10],
+     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+  rasgo_implicacion_politica:
+    {prioridad: P3-POL, nivel: politica, tipo: numerica, rango: [-10, 10],
+     descripcion: Rasgo latente, fuente_principal: cis_barometros / ess}
+  # intencion_voto y valoracion_lideres NO son atributos de la persona (D-005):
+  # se predicen como preguntas y no figuran en este diccionario.

@@ -1,0 +1,15 @@
+# Partidos por elección y familias estables (docs/02, sección 3.5, regla 1).
+# Estado F0: solo las familias propuestas. Las candidaturas, sus códigos oficiales y sus
+# códigos en cada estudio del CIS se completan en F2 desde los resultados oficiales y los
+# diseños de registro. Cada correspondencia entre elecciones se documenta en DECISIONS.md.
+familias:
+  - {id: izquierda_estatal, nombre: Izquierda de ámbito estatal}
+  - {id: socialdemocrata, nombre: Socialdemócrata}
+  - {id: centro_derecha_estatal, nombre: Centro-derecha de ámbito estatal}
+  - {id: derecha_radical, nombre: Derecha radical}
+  - {id: nacionalista_regionalista, nombre: Nacionalistas y regionalistas, desglose_por_territorio: true}
+  - {id: otros, nombre: Otras candidaturas}
+
+elecciones:
+  generales-2023: {fecha: 2023-07-23, fuente: infoelectoral_resultados, candidaturas: []}
+  europeas-2024: {fecha: 2024-06-09, fuente: infoelectoral_resultados, candidaturas: []}

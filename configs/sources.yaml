@@ -1,0 +1,360 @@
+# Catálogo de fuentes (docs/02_datos_y_variables.md, sección 2).
+# Estado F0: plan de partida. Las ediciones, universos, pesos y niveles geográficos
+# marcados con null o en "verificar" se comprueban en F1 contra la documentación oficial.
+# Las URL apuntan a la página oficial del organismo; la URL exacta del fichero se fija en
+# F1 y se registra en data/raw/MANIFEST.yaml.
+
+fuentes:
+  # ------------------------------------------------------------------ Capa A · verdad de referencia
+  - id: padron_continuo
+    nombre: Estadística del Padrón Continuo
+    organismo: INE
+    capa: A
+    tipo: tablas
+    url_oficial: https://www.ine.es/dyngs/INEbase/listaoperaciones.htm
+    edicion: null
+    universo: población residente empadronada
+    unidad: territorio
+    nivel_geografico: municipio
+    prioridad: P0
+    condiciones: "INE: citar al INE como fuente del dato primario"
+    verificar:
+      - edición más reciente publicada (1 de enero)
+      - tablas por edad, sexo, nacionalidad y país de nacimiento a nivel municipal
+
+  - id: censo_anual_tablas
+    nombre: Censo Anual de Población (tablas)
+    organismo: INE
+    capa: A
+    tipo: tablas
+    url_oficial: https://www.ine.es/dyngs/INEbase/listaoperaciones.htm
+    edicion: null
+    universo: población residente
+    unidad: territorio
+    nivel_geografico: null
+    prioridad: P0
+    condiciones: "INE: citar al INE como fuente del dato primario"
+    verificar:
+      - ediciones vigentes por bloque (estudios y actividad, ocupación, llegada, estado civil)
+      - nivel geográfico por variable
+
+  - id: censo_anual_micro_demograficas
+    nombre: Censo Anual de Población, microdatos de variables demográficas (exhaustivo)
+    organismo: INE
+    capa: A
+    tipo: microdatos
+    url_oficial: https://www.ine.es/prodyser/microdatos.htm
+    edicion: null
+    universo: toda la población residente
+    unidad: persona
+    nivel_geografico: null
+    prioridad: P0
+    condiciones: "INE: citar al INE como fuente del dato primario"
+    verificar:
+      - exhaustividad declarada por el INE
+      - grado de urbanización añadido el 29/04/2026
+      - nivel geográfico del fichero
+
+  - id: censo2021_tablas
+    nombre: Censo de Población y Viviendas 2021 (tablas)
+    organismo: INE
+    capa: A
+    tipo: tablas
+    url_oficial: https://www.ine.es/dyngs/INEbase/listaoperaciones.htm
+    edicion: "2021"
+    universo: población residente y hogares
+    unidad: territorio
+    nivel_geografico: municipio y sección censal
+    prioridad: P0
+    condiciones: "INE: citar al INE como fuente del dato primario"
+    verificar:
+      - tablas de hogares por tipo y tamaño, tenencia, establecimientos colectivos
+
+  - id: atlas_renta
+    nombre: Atlas de Distribución de Renta de los Hogares
+    organismo: INE (estadística experimental)
+    capa: A
+    tipo: tablas
+    url_oficial: https://www.ine.es/dyngs/INEbase/listaoperaciones.htm
+    edicion: null
+    universo: hogares
+    unidad: territorio
+    nivel_geografico: municipio, distrito y sección censal
+    prioridad: P1
+    condiciones: "INE: citar al INE como fuente del dato primario"
+    verificar:
+      - último año de renta disponible
+
+  - id: degurba
+    nombre: Grado de urbanización (DEGURBA)
+    organismo: INE y Eurostat
+    capa: A
+    tipo: tablas
+    url_oficial: https://www.ine.es/dyngs/INEbase/listaoperaciones.htm
+    edicion: null
+    universo: municipios
+    unidad: territorio
+    nivel_geografico: municipio
+    prioridad: P0
+    condiciones: "INE/Eurostat: citar la fuente"
+    verificar:
+      - usar la clasificación que traen los microdatos censales
+
+  # ------------------------------------------------------------------ Capa B · donantes
+  - id: censo2021_micro_hogares
+    nombre: Censo 2021, microdatos de personas y hogares (muestra del 10 % de hogares)
+    organismo: INE
+    capa: B
+    tipo: microdatos
+    url_oficial: https://www.ine.es/prodyser/microdatos.htm
+    edicion: "2021"
+    universo: personas en hogares (verificar establecimientos colectivos)
+    unidad: persona_y_hogar
+    variable_peso: null
+    nivel_geografico: null
+    prioridad: P0
+    condiciones: "INE: citar al INE como fuente del dato primario"
+    verificar:
+      - nivel geográfico del fichero nacional (CCAA, provincia, tamaño de municipio)
+      - cobertura de la población en establecimientos colectivos
+      - grado de urbanización añadido el 17/06/2026
+      - variable de peso y número de registros
+
+  - id: censo_anual_micro_completo
+    nombre: Censo Anual de Población, microdatos de todas las variables (muestra del 10 %)
+    organismo: INE
+    capa: B
+    tipo: microdatos
+    url_oficial: https://www.ine.es/prodyser/microdatos.htm
+    edicion: null
+    universo: población residente
+    unidad: persona
+    variable_peso: null
+    nivel_geografico: null
+    prioridad: P0
+    condiciones: "INE: citar al INE como fuente del dato primario"
+    verificar:
+      - si permite reconstruir hogares o solo personas
+      - edición vigente de cada bloque de variables
+
+  - id: censo2021_micro_viviendas
+    nombre: Censo 2021, microdatos de viviendas (muestra del 10 %)
+    organismo: INE
+    capa: B
+    tipo: microdatos
+    url_oficial: https://www.ine.es/prodyser/microdatos.htm
+    edicion: "2021"
+    universo: viviendas
+    unidad: vivienda
+    nivel_geografico: null
+    prioridad: P1
+    condiciones: "INE: citar al INE como fuente del dato primario"
+    verificar:
+      - muestra independiente de la de hogares; variables de enlace
+
+  # ------------------------------------------------------------------ Capa C · enriquecimiento
+  - id: ecv
+    nombre: Encuesta de Condiciones de Vida
+    organismo: INE
+    capa: C
+    tipo: microdatos
+    url_oficial: https://www.ine.es/prodyser/microdatos.htm
+    edicion: null
+    universo: hogares privados y sus miembros (16+ para el cuestionario individual)
+    unidad: persona_y_hogar
+    nivel_geografico: CCAA
+    prioridad: P1
+    condiciones: "INE: citar al INE como fuente del dato primario"
+    verificar: [edición más reciente, tamaño de muestra, variables de peso]
+
+  - id: epa
+    nombre: Encuesta de Población Activa
+    organismo: INE
+    capa: C
+    tipo: microdatos
+    url_oficial: https://www.ine.es/prodyser/microdatos.htm
+    edicion: null
+    universo: población en viviendas familiares (16+ para actividad)
+    unidad: persona
+    nivel_geografico: provincia (verificar)
+    prioridad: P1
+    condiciones: "INE: citar al INE como fuente del dato primario"
+    verificar: [trimestre de referencia, factor de elevación]
+
+  - id: tic_h
+    nombre: Encuesta sobre Equipamiento y Uso de TIC en los Hogares
+    organismo: INE
+    capa: C
+    tipo: microdatos
+    url_oficial: https://www.ine.es/prodyser/microdatos.htm
+    edicion: null
+    universo: "16-74 (verificar ampliación a 75+)"
+    unidad: persona_y_hogar
+    nivel_geografico: CCAA
+    prioridad: P1
+    condiciones: "INE: citar al INE como fuente del dato primario"
+    verificar: [universo de edad de la última edición]
+
+  - id: epf
+    nombre: Encuesta de Presupuestos Familiares
+    organismo: INE
+    capa: C
+    tipo: microdatos
+    url_oficial: https://www.ine.es/prodyser/microdatos.htm
+    edicion: null
+    universo: hogares privados
+    unidad: hogar
+    nivel_geografico: CCAA
+    prioridad: P2
+    condiciones: "INE: citar al INE como fuente del dato primario"
+
+  - id: encuesta_salud
+    nombre: Encuesta Europea de Salud en España / Encuesta Nacional de Salud
+    organismo: INE y Ministerio de Sanidad
+    capa: C
+    tipo: microdatos
+    url_oficial: https://www.ine.es/prodyser/microdatos.htm
+    edicion: null
+    universo: población en viviendas familiares (15+ verificar)
+    unidad: persona
+    nivel_geografico: CCAA
+    prioridad: P1
+    condiciones: "INE / Ministerio de Sanidad: citar la fuente"
+    verificar: [edición más reciente con microdatos]
+
+  - id: encuesta_sin_hogar
+    nombre: Encuesta a las personas sin hogar
+    organismo: INE
+    capa: C
+    tipo: microdatos
+    url_oficial: https://www.ine.es/prodyser/microdatos.htm
+    edicion: null
+    universo: personas sin hogar usuarias de centros
+    unidad: persona
+    prioridad: P2
+    condiciones: "INE: citar al INE como fuente del dato primario"
+    verificar: [solo para documentar el hueco]
+
+  - id: cis_barometros
+    nombre: Barómetros y estudios del CIS
+    organismo: CIS
+    capa: C
+    tipo: microdatos
+    url_oficial: https://www.cis.es/
+    edicion: null
+    universo: población residente de 18 años o más
+    unidad: persona
+    variable_peso: null
+    nivel_geografico: CCAA y tamaño de municipio
+    prioridad: P3
+    condiciones: "CIS: citar el número de estudio y al CIS como fuente; puede requerir registro"
+    verificar: [variables políticas y de valores presentes por estudio y su codificación]
+
+  - id: cis_barometro_sanitario_2026
+    nombre: Barómetro Sanitario 2026
+    organismo: CIS y Ministerio de Sanidad
+    capa: C
+    tipo: microdatos
+    url_oficial: https://www.cis.es/
+    edicion: "2026"
+    universo: población residente de 18 años o más
+    unidad: persona
+    nivel_geografico: CCAA
+    prioridad: P3
+    condiciones: "CIS: citar el número de estudio y al CIS como fuente"
+
+  - id: ess
+    nombre: European Social Survey, ronda 11 (y 12 si está publicada)
+    organismo: ESS ERIC
+    capa: C
+    tipo: microdatos
+    url_oficial: https://ess.sikt.no/
+    edicion: "R11"
+    universo: población residente de 15 años o más
+    unidad: persona
+    nivel_geografico: NUTS2
+    prioridad: P3
+    descarga: manual
+    condiciones: "ESS: uso gratuito no comercial previo registro; citar ronda y edición"
+    verificar: [si la ronda 12 está publicada]
+
+  # ------------------------------------------------------------------ A-POL · verdad electoral
+  - id: infoelectoral_resultados
+    nombre: Resultados electorales oficiales (generales, europeas, municipales)
+    organismo: Ministerio del Interior (Infoelectoral)
+    capa: A-POL
+    tipo: resultados
+    url_oficial: https://infoelectoral.interior.gob.es/
+    edicion: null
+    universo: censo electoral (CER y CERA)
+    unidad: mesa
+    nivel_geografico: mesa, municipio, provincia
+    prioridad: P3-POL
+    condiciones: "Datos públicos; citar la elección y la fuente"
+    verificar: [generales 2023-07-23, europeas 2024-06-09, nivel más fino disponible]
+
+  - id: resultados_autonomicas
+    nombre: Resultados de las últimas elecciones autonómicas de cada comunidad
+    organismo: Juntas electorales y gobiernos autonómicos
+    capa: A-POL
+    tipo: resultados
+    url_oficial: https://infoelectoral.interior.gob.es/
+    edicion: null
+    universo: censo electoral autonómico
+    unidad: mesa
+    prioridad: P3-POL
+    condiciones: "Varían por comunidad; revisar en F1"
+    verificar: [última elección de cada comunidad y su fuente oficial]
+
+  - id: censo_electoral
+    nombre: Censo electoral
+    organismo: INE (Oficina del Censo Electoral)
+    capa: A-POL
+    tipo: tablas
+    url_oficial: https://www.ine.es/dyngs/INEbase/listaoperaciones.htm
+    edicion: null
+    universo: electores (incluidos extranjeros con derecho en municipales y europeas)
+    unidad: territorio
+    nivel_geografico: municipio y sección
+    prioridad: P3-POL
+    condiciones: "INE: citar al INE como fuente del dato primario"
+
+  - id: cis_electorales
+    nombre: Estudios preelectorales y postelectorales del CIS
+    organismo: CIS
+    capa: A-POL
+    tipo: microdatos
+    url_oficial: https://www.cis.es/
+    edicion: null
+    universo: población con derecho a voto
+    unidad: persona
+    nivel_geografico: provincia (preelectorales de generales)
+    prioridad: P3-POL
+    condiciones: "CIS: citar el número de estudio y al CIS como fuente"
+    verificar: [estudios disponibles para 23J 2023 y posteriores, representatividad territorial]
+
+  - id: centros_autonomicos
+    nombre: Estudios de centros autonómicos (CEO, Euskobarómetro, Sociómetro y otros)
+    organismo: Centros autonómicos de opinión
+    capa: A-POL
+    tipo: microdatos
+    url_oficial: https://ceo.gencat.cat/
+    edicion: null
+    universo: población residente de cada comunidad
+    unidad: persona
+    nivel_geografico: CCAA y provincia
+    prioridad: P3-POL
+    condiciones: "Varían según el centro; revisar en F1"
+
+  - id: cis_series
+    nombre: Series temporales del CIS
+    organismo: CIS
+    capa: A-POL
+    tipo: tablas
+    url_oficial: https://www.cis.es/
+    edicion: null
+    universo: población residente de 18 años o más
+    unidad: territorio
+    nivel_geografico: nacional
+    prioridad: P3-POL
+    condiciones: "CIS: citar al CIS como fuente"

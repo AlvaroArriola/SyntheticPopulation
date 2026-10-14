@@ -1,0 +1,88 @@
+# Territorios (códigos INE de comunidades y ciudades autónomas y de provincias).
+# Verificar en F1 contra la relación oficial de códigos del INE vigente en la fecha de
+# referencia (regla 2 de CLAUDE.md).
+fuente_codigos: "INE, relación de comunidades y ciudades autónomas y de provincias (verificar en F1)"
+
+ccaa:
+  - {codigo: "01", nombre: Andalucía}
+  - {codigo: "02", nombre: Aragón}
+  - {codigo: "03", nombre: "Asturias, Principado de"}
+  - {codigo: "04", nombre: "Balears, Illes"}
+  - {codigo: "05", nombre: Canarias}
+  - {codigo: "06", nombre: Cantabria}
+  - {codigo: "07", nombre: Castilla y León}
+  - {codigo: "08", nombre: Castilla-La Mancha}
+  - {codigo: "09", nombre: Cataluña}
+  - {codigo: "10", nombre: Comunitat Valenciana}
+  - {codigo: "11", nombre: Extremadura}
+  - {codigo: "12", nombre: Galicia}
+  - {codigo: "13", nombre: "Madrid, Comunidad de"}
+  - {codigo: "14", nombre: "Murcia, Región de"}
+  - {codigo: "15", nombre: "Navarra, Comunidad Foral de"}
+  - {codigo: "16", nombre: País Vasco}
+  - {codigo: "17", nombre: "Rioja, La"}
+  - {codigo: "18", nombre: Ceuta}
+  - {codigo: "19", nombre: Melilla}
+
+provincias:
+  - {codigo: "01", nombre: Araba/Álava, ccaa: "16"}
+  - {codigo: "02", nombre: Albacete, ccaa: "08"}
+  - {codigo: "03", nombre: Alicante/Alacant, ccaa: "10"}
+  - {codigo: "04", nombre: Almería, ccaa: "01"}
+  - {codigo: "05", nombre: Ávila, ccaa: "07"}
+  - {codigo: "06", nombre: Badajoz, ccaa: "11"}
+  - {codigo: "07", nombre: "Balears, Illes", ccaa: "04"}
+  - {codigo: "08", nombre: Barcelona, ccaa: "09"}
+  - {codigo: "09", nombre: Burgos, ccaa: "07"}
+  - {codigo: "10", nombre: Cáceres, ccaa: "11"}
+  - {codigo: "11", nombre: Cádiz, ccaa: "01"}
+  - {codigo: "12", nombre: Castellón/Castelló, ccaa: "10"}
+  - {codigo: "13", nombre: Ciudad Real, ccaa: "08"}
+  - {codigo: "14", nombre: Córdoba, ccaa: "01"}
+  - {codigo: "15", nombre: "Coruña, A", ccaa: "12"}
+  - {codigo: "16", nombre: Cuenca, ccaa: "08"}
+  - {codigo: "17", nombre: Girona, ccaa: "09"}
+  - {codigo: "18", nombre: Granada, ccaa: "01"}
+  - {codigo: "19", nombre: Guadalajara, ccaa: "08"}
+  - {codigo: "20", nombre: Gipuzkoa, ccaa: "16"}
+  - {codigo: "21", nombre: Huelva, ccaa: "01"}
+  - {codigo: "22", nombre: Huesca, ccaa: "02"}
+  - {codigo: "23", nombre: Jaén, ccaa: "01"}
+  - {codigo: "24", nombre: León, ccaa: "07"}
+  - {codigo: "25", nombre: Lleida, ccaa: "09"}
+  - {codigo: "26", nombre: "Rioja, La", ccaa: "17"}
+  - {codigo: "27", nombre: Lugo, ccaa: "12"}
+  - {codigo: "28", nombre: Madrid, ccaa: "13"}
+  - {codigo: "29", nombre: Málaga, ccaa: "01"}
+  - {codigo: "30", nombre: Murcia, ccaa: "14"}
+  - {codigo: "31", nombre: Navarra, ccaa: "15"}
+  - {codigo: "32", nombre: Ourense, ccaa: "12"}
+  - {codigo: "33", nombre: Asturias, ccaa: "03"}
+  - {codigo: "34", nombre: Palencia, ccaa: "07"}
+  - {codigo: "35", nombre: "Palmas, Las", ccaa: "05"}
+  - {codigo: "36", nombre: Pontevedra, ccaa: "12"}
+  - {codigo: "37", nombre: Salamanca, ccaa: "07"}
+  - {codigo: "38", nombre: Santa Cruz de Tenerife, ccaa: "05"}
+  - {codigo: "39", nombre: Cantabria, ccaa: "06"}
+  - {codigo: "40", nombre: Segovia, ccaa: "07"}
+  - {codigo: "41", nombre: Sevilla, ccaa: "01"}
+  - {codigo: "42", nombre: Soria, ccaa: "07"}
+  - {codigo: "43", nombre: Tarragona, ccaa: "09"}
+  - {codigo: "44", nombre: Teruel, ccaa: "02"}
+  - {codigo: "45", nombre: Toledo, ccaa: "08"}
+  - {codigo: "46", nombre: Valencia/València, ccaa: "10"}
+  - {codigo: "47", nombre: Valladolid, ccaa: "07"}
+  - {codigo: "48", nombre: Bizkaia, ccaa: "16"}
+  - {codigo: "49", nombre: Zamora, ccaa: "07"}
+  - {codigo: "50", nombre: Zaragoza, ccaa: "02"}
+  - {codigo: "51", nombre: Ceuta, ccaa: "18"}
+  - {codigo: "52", nombre: Melilla, ccaa: "19"}
+
+# Ampliación jerárquica de donantes cuando el territorio no tiene suficientes
+# (docs/02, sección 5).
+jerarquia_donantes:
+  - mismo_territorio
+  - misma_provincia
+  - misma_ccaa_mismo_grado_urbanizacion
+  - ccaa_parecidas
+donantes_min_kish: 200

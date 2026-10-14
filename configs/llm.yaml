@@ -1,0 +1,12 @@
+# Modelos de lenguaje (F9). Ningún modelo se declara hasta F8A/F9: la fecha de corte de
+# construcción (D-003, propuesta) se ajusta entonces a la fecha de corte de los modelos.
+fecha_corte_construccion: 2026-06-30
+modelos: []
+presupuesto:
+  eur_max_por_prediccion: 1.0
+  eur_max_por_ejecucion: 50.0
+  llamadas_max_por_prediccion: 100
+reintentos_salida_invalida: 2
+temperatura: 0.0
+cache_dir: logs/llm/cache
+logs_dir: logs/llm

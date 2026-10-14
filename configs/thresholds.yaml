@@ -1,0 +1,97 @@
+# Umbrales de validación (docs/05_validacion.md). Valores iniciales de la documentación.
+# Cualquier cambio exige una entrada en DECISIONS.md y aprobación humana.
+V-DATOS:
+  totales_dif_relativa_max: 0.0001      # V-TOTALES: < 0,01 %
+  oficiales_min_por_fuente: 3           # V-OFICIALES
+V-MARG:
+  factor_tvd_ref: 1.2
+  tolerancia: 0.002
+  muestras_ref: 200
+  percentil_ref: 95
+V-CRUCE:
+  espana: 0.03
+  ccaa: 0.05
+  provincia: 0.08
+  cramer_v_max_dif: 0.03
+V-REGLAS-BLANDAS:
+  exceso_relativo_max: 0.10
+V-PESOS:
+  convergencia_max: 0.001
+  rango_factor: [0.2, 5.0]
+  proporcion_en_rango: 0.99
+  kish_min_ratio: 0.30
+V-SEMILLAS:
+  n_semillas: 5
+  factor_sd: 1.5
+V-COHERENCIA:
+  tvd_marginales: 0.01
+  tvd_cruces: 0.02
+V-DONANTES:
+  kish_min: 200
+  locales_alerta: 0.50
+V-ENRIQ-MARG:
+  proporcion_celdas_ic95: 0.90
+  tvd_nacional: 0.02
+V-ENRIQ-ASOC:
+  max_abs_dif: 0.05
+V-ENRIQ-BLOQUE:
+  max_abs_dif: 0.05
+  media_abs_dif: 0.02
+V-ENRIQ-HOLDOUT:
+  max_abs_dif: 0.05
+V-MINORIAS:
+  ratio: [0.9, 1.1]
+  recuento_esperado_min: 200
+V-MINORIAS-PERFIL:
+  tvd_max: 0.08
+V-DIVERSIDAD:
+  ratio_entropia_min: 0.9
+  proporcion_grupos: 0.95
+  tamano_grupo_min: 100
+V-CONCENTRACION:
+  top5_max: 0.20
+  donantes_distintos_min: 50
+  divisor_tamano_grupo: 3
+V-RAREZA:
+  metodo_base_max: 0.0
+  metodo_generativo_max: 0.001
+V-LATENTE:
+  cfi_min: 0.90
+  rmsea_max: 0.08
+  omega_min: 0.70
+V-DIVERSIDAD-RASGOS:
+  ratio_varianza: [0.8, 1.2]
+V-POL-RECUERDO:
+  factor_tvd_ref: 1.2
+  tolerancia: 0.005
+V-POL-RESERVADA:
+  tvd_espana: 0.04
+  tvd_ccaa: 0.06
+  error_participacion_max: 0.03
+V-POL-PERFIL:
+  tvd_max: 0.08
+  casos_cis_min: 300
+V-POL-COHERENCIA:
+  error_media_max: 0.3
+  ratio_sd: [0.8, 1.2]
+V-POL-TRANSFERENCIA:
+  tvd_fila_max: 0.10
+  casos_fila_min: 200
+V-POL-SESGO:
+  ratio_entropia_min: 0.9
+V-TEMPORAL-SERIES:
+  error_medio_max_pp: 2.0
+V-REFORMULACION:
+  tvd_max: 0.03
+V-COBERTURA:
+  ic80: [0.70, 0.90]
+  ic95: [0.88, 0.99]
+V-EVENTO:
+  proporcion_direccion_correcta: 0.6667
+V-CONF-CORR:
+  spearman_min: 0.40
+V-CONF-ECE:
+  ece_max: 0.05
+  tvd_acierto: 0.10
+V-REGRESION:
+  empeoramiento_relativo_max: 0.10

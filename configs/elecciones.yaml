@@ -1,0 +1,19 @@
+# Elecciones de referencia (docs/02, sección 2.4). Las autonómicas de cada comunidad se
+# añaden en F1 tras verificar cuál es la última y su fuente oficial.
+elecciones:
+  - id: generales-2023
+    tipo: generales
+    fecha: 2023-07-23
+    ambito: ES
+    fuente: infoelectoral_resultados
+    uso: calibrar
+    url_oficial: https://infoelectoral.interior.gob.es/
+    verificar: [nivel más fino disponible, CERA por provincia]
+  - id: europeas-2024
+    tipo: europeas
+    fecha: 2024-06-09
+    ambito: ES
+    fuente: infoelectoral_resultados
+    uso: reservar
+    url_oficial: https://infoelectoral.interior.gob.es/
+    verificar: [nivel más fino disponible, CERA]
