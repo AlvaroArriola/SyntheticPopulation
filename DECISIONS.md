@@ -210,3 +210,14 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Contexto:** Infoelectoral corta la conexión desde el entorno; el CIS sirve sus microdatos bajo petición y limita las peticiones automáticas; la ESS exige registro. Ninguna de estas fuentes interviene en el núcleo (F2–F7).
 - **Decisión (propuesta):** registrar estas fuentes en `MANUAL_DOWNLOADS.md` y aplazar las verificaciones críticas 6 y 7 al inicio de F8A/F8B, donde se reabre la parte correspondiente de F1. La puerta G1.5 queda con 5/7 hasta entonces.
 - **Aprobada por:** pendiente de humano (revisión G1.6)
+
+## D-020 · Revisión humana parcial de F1 (2026-10-14)
+
+- **Fecha:** 2026-10-14
+- **Fase:** F1
+- **Estado:** aprobada
+- **Decisión del responsable:**
+  1. **G1.4 aceptada:** se acepta la muestra 2023 del Censo Anual con su diferencia de −866 registros (−0,018 %) y el contraste por cociente del Censo 2021, cuya documentación no declara una cifra exacta (D-016, puntos 1 y 3).
+  2. Se siguen las revisiones humanas tal y como las fija la documentación (no se agrupan).
+  3. D-017 (universo) y D-018.4 (persona de referencia) quedan pendientes de aclaración; D-019 (aplazar G1.5 a F8) no se aprueba por ahora.
+- **Aprobada por:** humano
