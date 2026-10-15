@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
 
 import polars as pl
 
@@ -34,6 +35,66 @@ def g21_dominios() -> dict[str, dict[str, list[str]]]:
         malos = comprobar_dominio(df, df.columns)
         if malos:
             out[nombre] = malos
+    return out
+
+
+# Celdas vacías permitidas en los ficheros armonizados (D-033). Cada entrada dice en qué filas
+# puede haber vacíos y por qué; un vacío fuera de esa condición, o en una columna que no está
+# aquí, es un error de la armonización.
+_PEQUENO = ["hasta_2000", "de_2001_a_10000"]
+NULOS_DOCUMENTADOS: dict[tuple[str, str], tuple[pl.Expr, str]] = {
+    ("censo2021_personas", "municipio"): (
+        pl.col("tamano_municipio").is_in(_PEQUENO),
+        "el INE no identifica los municipios de menos de 10.000 habitantes (CMUN 991–993)",
+    ),
+    ("censo_anual_exhaustivo_2025", "municipio"): (
+        pl.col("tamano_municipio").is_in(_PEQUENO),
+        "el INE no identifica los municipios de menos de 10.000 habitantes (CMUN 991–993)",
+    ),
+    ("ecv", "peso_16"): (
+        pl.col("edad_31dic") < 16,
+        "PB040 solo existe para quien tenía 16 años o más a 31/12 del año anterior (RB081): "
+        "fichero de adultos",
+    ),
+    ("epa", "edad_4"): (
+        pl.col("edad_grupo_epa") == "16",
+        "la EPA agrupa 16–19 años y no permite separar a los de 18 y 19",
+    ),
+    ("elecciones_autonomicas_circunscripciones", "electores"): (
+        pl.col("ccaa") == "02",
+        "el informe de Aragón no publica electores",
+    ),
+    ("elecciones_autonomicas_circunscripciones", "votantes"): (
+        pl.col("ccaa") == "07",
+        "el BOCyL no publica votantes",
+    ),
+    ("elecciones_autonomicas_votos", "escanos"): (
+        pl.lit(True),
+        "la publicación no imprime escaños para esa candidatura (no se deducen; los escaños "
+        "no se usan para construir la población)",
+    ),
+    ("elecciones_generales_2023_provincias_votos", "escanos"): (
+        pl.col("escanos").is_null().all().over("siglas"),
+        "candidaturas del cuadro III del BOE (sin escaño en ninguna provincia)",
+    ),
+}
+
+
+def g21_nulos() -> dict[str, str]:
+    """{fichero.columna: problema} para los vacíos no documentados (vacío si todo está bien)."""
+    out = {}
+    for nombre in salidas():
+        df = pl.read_parquet(INTERIM_DIR / f"{nombre}.parquet")
+        for c, n in df.null_count().row(0, named=True).items():
+            if not n:
+                continue
+            regla = NULOS_DOCUMENTADOS.get((nombre, c))
+            if regla is None:
+                out[f"{nombre}.{c}"] = f"{n} vacíos sin documentar"
+                continue
+            fuera = df.filter(pl.col(c).is_null() & ~regla[0]).height
+            if fuera:
+                out[f"{nombre}.{c}"] = f"{fuera} vacíos fuera de la condición documentada"
     return out
 
 
@@ -192,3 +253,76 @@ def g23_totales() -> list[Total]:
         Total("ecp_hogares", "hogares", hog, suma("ecp_hogares", "hogares")),
     ]
     return out
+
+
+# --------------------------------------------------------------------------- calidad
+
+UMBRAL_NC = 0.05  # «no consta» por encima del 5 % del universo: se señala para revisión
+
+
+def calidad() -> pl.DataFrame:
+    """Por fichero y variable categórica: peso total y % ponderado de NP, NC y NS.
+
+    El % de NC y NS se da también sobre el universo de la variable (total − NP), que es el que
+    importa para la calidad: una variable con mucho NP no es mala si su universo es pequeño.
+    Ponderación: `peso` si existe, `personas` en las tablas de recuentos; si no, cada fila
+    cuenta 1 (se indica en la columna `ponderacion`).
+    """
+    v = variables().variables
+    filas = []
+    for nombre in salidas():
+        cols = pl.read_parquet_schema(INTERIM_DIR / f"{nombre}.parquet")
+        cats = [c for c in cols if c in v and v[c].categorias]
+        if not cats:
+            continue
+        w = next((c for c in ("peso", "personas", "hogares") if c in cols), None)
+        df = pl.read_parquet(
+            INTERIM_DIR / f"{nombre}.parquet", columns=[*cats, *([w] if w else [])]
+        )
+        peso = pl.col(w).cast(pl.Float64) if w else pl.lit(1.0)
+        tot = df.select(peso.sum()).item()
+        for c in cats:
+            r = df.select(
+                *[peso.filter(pl.col(c) == e).sum().alias(e) for e in ("NP", "NC", "NS")],
+                peso.filter(pl.col(c).is_null()).sum().alias("vacio"),
+            ).row(0, named=True)
+            universo = tot - r["NP"] - r["vacio"]
+            filas.append(
+                {
+                    "fichero": nombre,
+                    "variable": c,
+                    "ponderacion": w or "sin peso",
+                    "pct_NP": 100 * r["NP"] / tot,
+                    "pct_vacio": 100 * r["vacio"] / tot,
+                    "pct_NC_universo": 100 * r["NC"] / universo if universo else 0.0,
+                    "pct_NS_universo": 100 * r["NS"] / universo if universo else 0.0,
+                }
+            )
+    out = pl.DataFrame(filas)
+    return out.with_columns(
+        (pl.col("pct_NC_universo") + pl.col("pct_NS_universo") > 100 * UMBRAL_NC).alias("revisar")
+    )
+
+
+def informe_calidad(destino: Path) -> pl.DataFrame:
+    t = calidad()
+    lineas = [
+        "# F2 · Calidad de las variables armonizadas",
+        "",
+        "Generado por `sinpop harmonize --check` (D-033). Porcentajes ponderados. NP = no procede "
+        "(fuera del universo de la pregunta), NC = no consta, NS = no sabe. «Universo» = total "
+        "menos NP y vacíos documentados. Se marcan para revisar las variables con más de un "
+        f"{100 * UMBRAL_NC:.0f} % de NC + NS en su universo.",
+        "",
+        "| Fichero | Variable | Ponderación | % NP | % vacío | % NC (universo) "
+        "| % NS (universo) | Revisar |",
+        "| --- | --- | --- | ---: | ---: | ---: | ---: | --- |",
+    ]
+    for r in t.iter_rows(named=True):
+        lineas.append(
+            f"| `{r['fichero']}` | `{r['variable']}` | {r['ponderacion']} | {r['pct_NP']:.2f} | "
+            f"{r['pct_vacio']:.2f} | {r['pct_NC_universo']:.2f} | {r['pct_NS_universo']:.2f} | "
+            f"{'**sí**' if r['revisar'] else ''} |"
+        )
+    destino.write_text("\n".join(lineas) + "\n", encoding="utf-8")
+    return t

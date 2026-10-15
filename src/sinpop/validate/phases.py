@@ -264,10 +264,19 @@ def _g2_1_dominios() -> Check:
     from sinpop.harmonize import checks
 
     malos = checks.g21_dominios()
+    nulos = checks.g21_nulos()
     n = sum(len(v) for v in checks.columnas_categoricas_comprobadas().values())
     valor = f"{n} columnas categóricas en {len(checks.salidas())} ficheros; fuera de dominio: "
     valor += "0" if not malos else "; ".join(f"{k}: {v}" for k, v in malos.items())
-    return Check("G2.1", "Valores dentro del dominio declarado", not malos, valor, "0")
+    valor += "; vacíos sin documentar: "
+    valor += "0" if not nulos else "; ".join(f"{k}: {v}" for k, v in nulos.items())
+    return Check(
+        "G2.1",
+        "Valores dentro del dominio declarado y vacíos documentados",
+        not malos and not nulos,
+        valor,
+        "0 y 0",
+    )
 
 
 def _g2_2_especiales() -> Check:

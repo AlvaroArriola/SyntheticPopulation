@@ -22,5 +22,7 @@ def leer(path: Path) -> pl.DataFrame:
         for d in s["Data"]:
             if d.get("Valor") is None:
                 continue
-            filas.append({**dims, "fecha": d["Fecha"][:10], "valor": float(d["Valor"])})
+            # Las tablas de operaciones no periódicas (p. ej. la ESdE) no traen «Fecha»
+            fecha = d["Fecha"][:10] if d.get("Fecha") else None
+            filas.append({**dims, "fecha": fecha, "valor": float(d["Valor"])})
     return pl.DataFrame(filas, infer_schema_length=None)

@@ -24,6 +24,64 @@ N = 20
 DESTINO = INTERIM_DIR / "muestras_g28"
 
 
+# Campos originales que lee cada armonizador: las muestras solo enseñan estos (más los
+# armonizados), para que la revisión no se pierda entre preguntas que no se usan.
+_CENSO_ANUAL = [
+    "CPRO",
+    "CMUN",
+    "VAREDAD",
+    "SEXO",
+    "PNACIO",
+    "PNACIM",
+    "DEGURBA",
+    "VARANOE",
+    "ECIVIL",
+    "RELA",
+    "ESREAL",
+    "CNO",
+    "CNAE",
+    "SITU",
+]
+_ECV = [
+    "RB030",
+    "RB050",
+    "RB080",
+    "RB081",
+    "RB082",
+    "RB090",
+    "RB290",
+    "vrMATSOCDEP",
+    "PB040",
+    "PE041",
+    "PL032",
+    "PH010",
+    "PH030",
+    "PE041_F",
+    "PL032_F",
+    "PH010_F",
+    "PH030_F",
+]
+
+
+def _usadas() -> dict[str, list[str]]:
+    from sinpop.harmonize import encuestas
+
+    return {
+        "censo_anual_micro_completo_2023": _CENSO_ANUAL,
+        "censo_anual_micro_completo_2024": _CENSO_ANUAL,
+        "censo_anual_micro_completo_2025": _CENSO_ANUAL,
+        "ecv": _ECV,
+        "epa": encuestas.COLS_EPA,
+        "tic_h": encuestas.COLS_TIC,
+        "encuesta_salud": encuestas.COLS_SAL,
+    }
+
+
+def _filtrar(df: pl.DataFrame, usadas: list[str]) -> pl.DataFrame:
+    keep = {f"orig__{c}" for c in usadas}
+    return df.select([c for c in df.columns if not c.startswith("orig__") or c in keep])
+
+
 def _indices(n_total: int, rng) -> list[int]:
     return sorted(int(i) for i in rng.choice(n_total, size=N, replace=False))
 
@@ -127,6 +185,8 @@ def muestras() -> dict[str, tuple[int, str]]:
         out[nombre] = arm[_indices(arm.height, rng)]
         ref[nombre] = doc
 
+    for k, cols in _usadas().items():
+        out[k] = _filtrar(out[k], cols)
     resumen = {}
     for k, df in out.items():
         df.write_csv(DESTINO / f"{k}.csv")
@@ -147,6 +207,15 @@ def informe(resumen: dict[str, tuple[int, str]]) -> Path:
         "(`arm__…`). Para revisar: abrir el CSV, buscar cada código original en el diseño de "
         "registro indicado y comprobar que la categoría armonizada es la que fija "
         "`configs/variables.yaml` (o la regla de universo de D-025 a D-028).",
+        "",
+        "Solo se muestran los campos originales que lee la armonización. **Celdas vacías:** en "
+        "los campos originales, un vacío es una pregunta que no se hizo a esa persona (fuera "
+        "de su universo: p. ej., la ocupación de quien no trabaja) o una variable que esa "
+        "edición no publica (las muestras del Censo Anual de 2024 y 2025 no traen ocupación; "
+        "la de 2025 tampoco actividad, estudios ni estado civil). En lo armonizado ese vacío "
+        "se convierte en `NP` (no procede). Los únicos vacíos permitidos en los ficheros "
+        "armonizados están en `checks.NULOS_DOCUMENTADOS`, con su motivo, y la puerta G2.1 "
+        "falla ante cualquier otro (D-033).",
         "",
         "| Fichero | Registros | Diseño de registro o documento de referencia |",
         "| --- | ---: | --- |",

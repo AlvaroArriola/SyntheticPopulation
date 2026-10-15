@@ -349,6 +349,10 @@ def catalogo(estudio: str) -> dict:
     return out
 
 
+# Listas de una sola provincia cuyo nombre oficial no indica un partido regional: «otros»
+# (decisión del responsable, D-032)
+A_OTROS = {"PUEDE", "+RDS+", "UNIDOS SI", "FUERZA CÍVICA", "CCD", "PARTIDO AUTÓNOMOS"}
+
 # Siglas de las hojas de Interior → siglas del BOE cuando no coinciden al normalizar
 # (federaciones, marcas territoriales, coaliciones y grafías distintas). D-030 y D-032.
 INTERIOR_A_BOE = {
@@ -404,6 +408,8 @@ def candidaturas_2023() -> list[dict]:
             nombre, fam, cis, nota = CANDIDATURAS_2023[sig]
             if sig not in INTERIOR_A_BOE:
                 nombre = nombre_boe
+        elif sig in A_OTROS:
+            nombre, fam, cis, nota = nombre_boe, OTR, [8995], "nombre no regional (D-032)"
         elif len(comunidades) == 1:
             nombre, fam, cis, nota = nombre_boe, NAC, [8995], None
         else:

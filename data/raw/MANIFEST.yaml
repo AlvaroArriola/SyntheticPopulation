@@ -2336,6 +2336,16 @@ ficheros:
   condiciones: 'INE / Ministerio de Sanidad: citar la fuente'
   via: automatica
 - fuente: encuesta_salud
+  fichero: encuesta_salud/2023/esde23_meto.pdf
+  tipo: metodologia
+  edicion: '2023'
+  url_oficial: https://www.ine.es/metodologia/t15/esde23_meto.pdf
+  fecha_descarga: '2026-10-15'
+  sha256: 0845e9fa7a21d923b5c954d5c51611c01b974999627fbe6f35afe1c92da15402
+  bytes: 709014
+  condiciones: 'INE / Ministerio de Sanidad: citar la fuente'
+  via: automatica
+- fuente: encuesta_salud
   fichero: encuesta_salud/2023/extraido/ESdEadulto_2023/CSV/ESdEadulto_2023.tab
   tipo: datos
   edicion: '2023'
@@ -2513,6 +2523,16 @@ ficheros:
   fecha_descarga: '2026-10-14'
   sha256: 23e73952c399b43bbe1310c4e8426be026a6495ffe8a89d925317f8775171ce6
   bytes: 1110505
+  condiciones: 'INE / Ministerio de Sanidad: citar la fuente'
+  via: automatica
+- fuente: encuesta_salud
+  fichero: encuesta_salud/2023/tabla_71335_ultimo.json
+  tipo: datos
+  edicion: '2023'
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/71335?tip=AM&nult=1
+  fecha_descarga: '2026-10-15'
+  sha256: 9355601c20e7535f3619c87c1fc8930fc5584d926d1cab5977279638da95e0c5
+  bytes: 114869
   condiciones: 'INE / Ministerio de Sanidad: citar la fuente'
   via: automatica
 - fuente: encuesta_sin_hogar

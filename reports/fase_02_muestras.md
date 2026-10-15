@@ -4,6 +4,8 @@ Generadas el 2026-10-15 con `sinpop harmonize --samples` (semilla 2026). Los fic
 
 Cada fichero pone lado a lado los campos originales (`orig__…`) y los armonizados (`arm__…`). Para revisar: abrir el CSV, buscar cada código original en el diseño de registro indicado y comprobar que la categoría armonizada es la que fija `configs/variables.yaml` (o la regla de universo de D-025 a D-028).
 
+Solo se muestran los campos originales que lee la armonización. **Celdas vacías:** en los campos originales, un vacío es una pregunta que no se hizo a esa persona (fuera de su universo: p. ej., la ocupación de quien no trabaja) o una variable que esa edición no publica (las muestras del Censo Anual de 2024 y 2025 no traen ocupación; la de 2025 tampoco actividad, estudios ni estado civil). En lo armonizado ese vacío se convierte en `NP` (no procede). Los únicos vacíos permitidos en los ficheros armonizados están en `checks.NULOS_DOCUMENTADOS`, con su motivo, y la puerta G2.1 falla ante cualquier otro (D-033).
+
 | Fichero | Registros | Diseño de registro o documento de referencia |
 | --- | ---: | --- |
 | `censo2021_micro_hogares.csv` | 20 | dr_CensoPersonas_2021.xlsx |

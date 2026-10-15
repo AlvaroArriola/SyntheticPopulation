@@ -151,11 +151,13 @@ def harmonize(
         typer.echo(f"{len(res)} muestras en data/interim/muestras_g28/ · {muestras.informe(res)}")
         return
     if check:
-        from sinpop.harmonize import oficiales
+        from sinpop.harmonize import checks, oficiales
 
         res = oficiales.informe(oficiales.todas(), REPORTS_DIR / "fase_02_cifras_oficiales")
         for f, n, k in res.iter_rows():
             typer.echo(f"{f}: {k}/{n} cifras dentro de tolerancia")
+        cal = checks.informe_calidad(REPORTS_DIR / "fase_02_calidad.md")
+        typer.echo(f"calidad: {cal.height} variables; {int(cal['revisar'].sum())} para revisar")
         return
     from sinpop.harmonize.run import ejecutar
 

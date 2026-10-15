@@ -23,3 +23,16 @@ def test_dimension_that_appears_late_is_kept(tmp_path) -> None:
     df = leer(p)
     assert df.height == 151
     assert df.filter(df["Provincias"] == "Albacete")["Provincias__cod"].to_list() == ["02"]
+
+
+def test_tabla_sin_fecha(tmp_path) -> None:
+    import json
+
+    serie = {
+        "MetaData": [{"T3_Variable": "SEXO", "Nombre": "Hombres", "Codigo": "1"}],
+        "Data": [{"Valor": 12.5}],
+    }
+    f = tmp_path / "t.json"
+    f.write_text(json.dumps([serie]), encoding="utf-8")
+    df = leer(f)
+    assert df.height == 1 and df["fecha"][0] is None and df["valor"][0] == 12.5

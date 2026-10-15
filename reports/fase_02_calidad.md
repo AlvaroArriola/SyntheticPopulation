@@ -1,0 +1,145 @@
+# F2 · Calidad de las variables armonizadas
+
+Generado por `sinpop harmonize --check` (D-033). Porcentajes ponderados. NP = no procede (fuera del universo de la pregunta), NC = no consta, NS = no sabe. «Universo» = total menos NP y vacíos documentados. Se marcan para revisar las variables con más de un 5 % de NC + NS en su universo.
+
+| Fichero | Variable | Ponderación | % NP | % vacío | % NC (universo) | % NS (universo) | Revisar |
+| --- | --- | --- | ---: | ---: | ---: | ---: | --- |
+| `censo2021_personas` | `edad_5` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `edad_4` | peso | 17.35 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `provincia` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `ccaa` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `sexo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `nacionalidad_grupo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `pais_nacimiento_grupo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `nacionalidad_top` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `grado_urbanizacion` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `anio_llegada_espana` | peso | 83.85 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `relacion_actividad` | peso | 14.24 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `nivel_estudios` | peso | 14.24 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `estudios_3` | peso | 14.24 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `estado_civil` | peso | 15.29 | 0.00 | 4.99 | 0.00 |  |
+| `censo2021_personas` | `ocupacion` | peso | 60.42 | 0.00 | 3.33 | 0.00 |  |
+| `censo2021_personas` | `sector_actividad` | peso | 60.42 | 0.00 | 0.06 | 0.00 |  |
+| `censo2021_personas` | `situacion_profesional` | peso | 60.42 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `relacion_persona_ref` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `tamano_municipio` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `tenencia_censo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `tamano_hogar` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `tipo_hogar` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo2021_personas` | `n_menores_hogar` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_exhaustivo_2025` | `edad_5` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_exhaustivo_2025` | `edad_4` | personas | 16.20 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_exhaustivo_2025` | `provincia` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_exhaustivo_2025` | `ccaa` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_exhaustivo_2025` | `sexo` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_exhaustivo_2025` | `nacionalidad_grupo` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_exhaustivo_2025` | `pais_nacimiento_grupo` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_exhaustivo_2025` | `nacionalidad_top` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_exhaustivo_2025` | `grado_urbanizacion` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_exhaustivo_2025` | `tamano_municipio` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `edad_5` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `edad_4` | peso | 16.80 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `provincia` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `ccaa` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `sexo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `nacionalidad_grupo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `pais_nacimiento_grupo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `nacionalidad_top` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `grado_urbanizacion` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `anio_llegada_espana` | peso | 81.82 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `relacion_actividad` | peso | 13.61 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `nivel_estudios` | peso | 13.61 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `estudios_3` | peso | 13.61 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `estado_civil` | peso | 14.68 | 0.00 | 3.89 | 0.00 |  |
+| `censo_anual_muestra_2023` | `ocupacion` | peso | 58.59 | 0.00 | 4.63 | 0.00 |  |
+| `censo_anual_muestra_2023` | `sector_actividad` | peso | 58.59 | 0.00 | 0.03 | 0.00 |  |
+| `censo_anual_muestra_2023` | `situacion_profesional` | peso | 58.59 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2023` | `tamano_municipio` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `edad_5` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `edad_4` | peso | 16.53 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `provincia` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `ccaa` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `sexo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `nacionalidad_grupo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `pais_nacimiento_grupo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `nacionalidad_top` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `grado_urbanizacion` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `anio_llegada_espana` | peso | 80.53 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `relacion_actividad` | peso | 13.26 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `nivel_estudios` | peso | 13.26 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `estudios_3` | peso | 13.26 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2024` | `estado_civil` | peso | 14.37 | 0.00 | 4.61 | 0.00 |  |
+| `censo_anual_muestra_2024` | `tamano_municipio` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2025` | `edad_5` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2025` | `edad_4` | peso | 16.23 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2025` | `provincia` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2025` | `ccaa` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2025` | `sexo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2025` | `nacionalidad_grupo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2025` | `pais_nacimiento_grupo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2025` | `nacionalidad_top` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2025` | `grado_urbanizacion` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2025` | `anio_llegada_espana` | peso | 79.37 | 0.00 | 0.00 | 0.00 |  |
+| `censo_anual_muestra_2025` | `tamano_municipio` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecp_colectivos` | `provincia` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecp_colectivos` | `sexo` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecp_colectivos` | `edad_5` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecp_hogares` | `provincia` | hogares | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecp_total` | `provincia` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecp_total` | `sexo` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecp_viviendas_familiares` | `provincia` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecp_viviendas_familiares` | `sexo` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecp_viviendas_familiares` | `edad_5` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecp_viviendas_familiares` | `nacionalidad_esp_ext` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecv` | `edad_4` | peso | 15.74 | 0.00 | 0.00 | 0.00 |  |
+| `ecv` | `sexo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecv` | `ccaa` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecv` | `nacionalidad_esp_ext` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecv` | `estudios_3` | peso | 14.02 | 0.00 | 1.41 | 0.00 |  |
+| `ecv` | `relacion_actividad` | peso | 14.02 | 0.00 | 0.40 | 0.00 |  |
+| `ecv` | `salud_autopercibida` | peso | 14.02 | 0.00 | 1.52 | 0.00 |  |
+| `ecv` | `discapacidad_limitacion` | peso | 14.02 | 0.00 | 3.28 | 0.00 |  |
+| `ecv` | `tenencia_vivienda` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecv` | `dificultad_fin_mes` | peso | 0.00 | 0.00 | 0.15 | 0.00 |  |
+| `ecv` | `vehiculo_hogar` | peso | 0.00 | 0.00 | 0.04 | 0.00 |  |
+| `ecv` | `privacion_material` | peso | 0.00 | 0.00 | 1.55 | 0.00 |  |
+| `ecv` | `grado_urbanizacion` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecv` | `relacion_actividad_3` | peso | 14.02 | 0.00 | 0.40 | 0.00 |  |
+| `ecv` | `renta_hogar_decil` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecv` | `renta_hogar_decil_ccaa` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `elecciones_autonomicas_circunscripciones` | `ccaa` | sin peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `elecciones_autonomicas_votos` | `ccaa` | sin peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `elecciones_generales_2023_municipios` | `provincia` | sin peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `elecciones_generales_2023_provincias` | `provincia` | sin peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `elecciones_generales_2023_provincias_votos` | `provincia` | sin peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `elecciones_generales_2023_votos` | `provincia` | sin peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `encuesta_salud` | `edad_4` | peso | 3.26 | 0.00 | 0.00 | 0.00 |  |
+| `encuesta_salud` | `edad_5` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `encuesta_salud` | `sexo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `encuesta_salud` | `ccaa` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `encuesta_salud` | `nacionalidad_esp_ext` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `encuesta_salud` | `estudios_3` | peso | 0.00 | 0.00 | 5.56 | 0.00 | **sí** |
+| `encuesta_salud` | `salud_autopercibida` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `encuesta_salud` | `discapacidad_limitacion` | peso | 0.00 | 0.00 | 0.84 | 0.00 |  |
+| `epa` | `edad_4` | peso | 13.62 | 4.40 | 0.00 | 0.00 |  |
+| `epa` | `provincia` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `epa` | `sexo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `epa` | `ccaa` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `epa` | `nacionalidad_esp_ext` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `epa` | `estudios_3` | peso | 13.62 | 0.00 | 0.00 | 0.00 |  |
+| `epa` | `relacion_actividad_3` | peso | 13.62 | 0.00 | 0.00 | 0.00 |  |
+| `epa` | `situacion_profesional` | peso | 53.84 | 0.00 | 0.00 | 0.00 |  |
+| `epa` | `sector_publico` | peso | 53.84 | 0.00 | 0.00 | 0.00 |  |
+| `epa` | `tipo_jornada` | peso | 53.84 | 0.00 | 0.00 | 0.00 |  |
+| `epa` | `ocupacion` | peso | 53.84 | 0.00 | 0.00 | 0.00 |  |
+| `tic_h` | `edad_4` | peso | 2.62 | 0.00 | 0.00 | 0.00 |  |
+| `tic_h` | `edad_5` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `tic_h` | `sexo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `tic_h` | `ccaa` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `tic_h` | `nacionalidad_esp_ext` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `tic_h` | `estudios_3` | peso | 0.00 | 0.00 | 0.76 | 0.00 |  |
+| `tic_h` | `relacion_actividad` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `tic_h` | `uso_internet` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `tic_h` | `compra_online` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `tic_h` | `teletrabajo` | peso | 49.20 | 0.00 | 0.00 | 0.00 |  |
+| `tic_h` | `relacion_actividad_3` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |

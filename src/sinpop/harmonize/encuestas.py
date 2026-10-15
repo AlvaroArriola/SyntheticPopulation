@@ -58,7 +58,7 @@ def con_deciles(df: pl.DataFrame, valor: str, nombre: str, por: str | None = Non
 def ecv() -> pl.DataFrame:
     tr = pl.read_parquet(
         ECV / "ECV_Tr_2025/md_ECV_Tr_2025.parquet",
-        columns=["RB030", "RB050", "RB080", "RB082", "RB090", "RB290", "vrMATSOCDEP"],
+        columns=["RB030", "RB050", "RB080", "RB081", "RB082", "RB090", "RB290", "vrMATSOCDEP"],
     )
     tp = pl.read_parquet(
         ECV / "ECV_Tp_2025/md_ECV_Tp_2025.parquet",
@@ -115,6 +115,8 @@ def ecv() -> pl.DataFrame:
         pl.col("RB050").alias("peso"),
         pl.col("PB040").alias("peso_16"),
         "edad",
+        # Edad a 31/12 del año anterior: define el universo del fichero de adultos (16+)
+        pl.col("RB081").cast(pl.Int32).alias("edad_31dic"),
         edad_4(pl.col("edad")),
         pl.col("HX040").alias("n_personas_hogar"),
         (pl.col("vhRentaa") / pl.col("HX240")).alias("renta_equivalente"),
@@ -161,21 +163,24 @@ def ecv() -> pl.DataFrame:
 # --------------------------------------------------------------------------- EPA
 
 
+COLS_EPA = [
+    "CCAA",
+    "PROV",
+    "EDAD1",
+    "SEXO1",
+    "NAC1",
+    "NFORMA",
+    "AOI",
+    "SITU",
+    "PARCO1",
+    "OCUP1",
+    "DUCON1",
+    "FACTOREL",
+]
+
+
 def epa() -> pl.DataFrame:
-    cols = [
-        "CCAA",
-        "PROV",
-        "EDAD1",
-        "SEXO1",
-        "NAC1",
-        "NFORMA",
-        "AOI",
-        "SITU",
-        "PARCO1",
-        "OCUP1",
-        "DUCON1",
-        "FACTOREL",
-    ]
+    cols = COLS_EPA
     df = pl.read_parquet(EPA, columns=cols).with_columns(
         pl.col(c).cast(pl.Utf8).fill_null("") for c in cols if c != "FACTOREL"
     )
@@ -183,8 +188,10 @@ def epa() -> pl.DataFrame:
     menor16 = pl.col("EDAD1").is_in(["00", "05", "10"])
     no_ocup = ~pl.col("AOI").is_in(["03", "04"])
     edad4 = (
-        pl.when(menor16 | (pl.col("EDAD1") == "16"))
-        .then(pl.lit(None))  # 16–19 no se puede partir en 18
+        pl.when(menor16)
+        .then(pl.lit("NP"))
+        .when(pl.col("EDAD1") == "16")
+        .then(pl.lit(None))  # 16–19: la EPA no permite separar a los de 18 y 19 (D-033)
         .when(pl.col("EDAD1").is_in(["20", "25", "30"]))
         .then(pl.lit("18-34"))
         .when(pl.col("EDAD1").is_in(["35", "40", "45"]))
@@ -215,22 +222,25 @@ def epa() -> pl.DataFrame:
 # --------------------------------------------------------------------------- TIC-H
 
 
+COLS_TIC = [
+    "CCAA",
+    "SEXO",
+    "EDAD",
+    "NACIONALIDAD",
+    "NIVELEST",
+    "SIT_LAB",
+    "ULT_INT",
+    "FREC_INT",
+    "ULT_COM",
+    "TELETRAB",
+    "ULT_TTRAB",
+    "TTRAB_ACTUAL",
+    "FACTOR_P",
+]
+
+
 def tic_h() -> pl.DataFrame:
-    cols = [
-        "CCAA",
-        "SEXO",
-        "EDAD",
-        "NACIONALIDAD",
-        "NIVELEST",
-        "SIT_LAB",
-        "ULT_INT",
-        "FREC_INT",
-        "ULT_COM",
-        "TELETRAB",
-        "ULT_TTRAB",
-        "TTRAB_ACTUAL",
-        "FACTOR_P",
-    ]
+    cols = COLS_TIC
     df = pl.read_parquet(TIC, columns=cols).with_columns(
         pl.col(c).cast(pl.Utf8).fill_null("").str.strip_chars() for c in cols if c != "FACTOR_P"
     )
@@ -285,8 +295,11 @@ def tic_h() -> pl.DataFrame:
 # --------------------------------------------------------------------------- ESdE
 
 
+COLS_SAL = ["CCAA", "SEXOa", "EDADa", "A2a_1", "NIVEST", "C1", "C3a", "FACTORADULTO"]
+
+
 def encuesta_salud() -> pl.DataFrame:
-    cols = ["CCAA", "SEXOa", "EDADa", "A2a_1", "NIVEST", "C1", "C3a", "FACTORADULTO"]
+    cols = COLS_SAL
     df = pl.read_parquet(SAL, columns=cols).with_columns(
         pl.col(c).cast(pl.Utf8).fill_null("").str.strip_chars() for c in cols if c != "FACTORADULTO"
     )

@@ -1339,6 +1339,45 @@
   "ok": true
  },
  {
+  "fuente": "encuesta_salud",
+  "edicion": "2023",
+  "cifra": "Nivel de estudios (15+), % sobre el total",
+  "categoria": "hasta_obligatoria",
+  "oficial": 44.593,
+  "reproducida": 38.137,
+  "tolerancia": 1.078,
+  "tipo": "muestral+redondeo",
+  "referencia": "INE, ESdE 2023, tabla 71335 (población de 15 y más años por nivel de estudios)",
+  "diferencia": -6.456000000000003,
+  "ok": false
+ },
+ {
+  "fuente": "encuesta_salud",
+  "edicion": "2023",
+  "cifra": "Nivel de estudios (15+), % sobre el total",
+  "categoria": "secundaria_2a_etapa",
+  "oficial": 23.075,
+  "reproducida": 23.845,
+  "tolerancia": 0.922,
+  "tipo": "muestral+redondeo",
+  "referencia": "INE, ESdE 2023, tabla 71335 (población de 15 y más años por nivel de estudios)",
+  "diferencia": 0.7699999999999996,
+  "ok": true
+ },
+ {
+  "fuente": "encuesta_salud",
+  "edicion": "2023",
+  "cifra": "Nivel de estudios (15+), % sobre el total",
+  "categoria": "superior",
+  "oficial": 32.333,
+  "reproducida": 32.463,
+  "tolerancia": 1.018,
+  "tipo": "muestral+redondeo",
+  "referencia": "INE, ESdE 2023, tabla 71335 (población de 15 y más años por nivel de estudios)",
+  "diferencia": 0.13000000000000256,
+  "ok": true
+ },
+ {
   "fuente": "ecp",
   "edicion": "2026-01-01",
   "cifra": "Población en viviendas familiares (suma de 52 provincias × sexo × edad × nacionalidad)",

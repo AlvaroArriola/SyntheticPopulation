@@ -403,7 +403,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-15
 - **Fase:** F2
-- **Estado:** propuesta (revisión humana en G2.8)
+- **Estado:** aprobada
 - **Contexto:** el responsable da acceso a `www.boe.es`, aporta el BOIB nº 78/2023 (Baleares) y la página de resultados definitivos del Gobierno de Navarra, y pide revisar Alicante y Galicia.
 - **Decisiones y hallazgos:**
   1. **Generales 2023, resultado oficial:** se cargan los cuadros I, II y III del Congreso del BOE-A-2023-18907 (Junta Electoral Central, escrutinio general, con voto CERA): 52 provincias, 59 candidaturas, 350 escaños. Todas las comprobaciones cuadran: votantes = válidos + nulos, válidos = candidaturas + blancos, suma de partidos = votos a candidaturas, escaños, y cada columna y cada partido reproducen el «Total estatal» publicado (37.469.458 electores; 24.952.447 votantes). Única errata: el total de Geroa Bai se imprime «9.938.» con un punto final. La corrección BOE-A-2023-19537 solo afecta al Senado. Salidas: `elecciones_generales_2023_provincias` y `_provincias_votos`.
@@ -415,4 +415,46 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   7. **Galicia:** en el resumen de la comunidad del DOG, los «votos a candidaturas» se imprimen como 1.488.805, cuando la suma de las cuatro provincias es 1.488.705 (608.185 + 186.070 + 176.022 + 518.428) y la de los votos de cada partido también. Es una errata de un dígito (centenas 7 → 8). Los «votos válidos» del total (1.501.857) se calcularon a partir de esa cifra errónea (1.488.805 + 13.052 blancos); con la cifra correcta son 1.501.757, y entonces votantes = válidos + nulos (1.501.757 + 14.187 = 1.515.944) cuadra. Electores, votantes, blancos, nulos y los votos de cada partido no tienen errores.
   8. **Descuadres aceptados (D-031):** se registran con su texto exacto en `autonomicas.ACEPTADOS`; G2.6 no los cuenta como fallo, pero cualquier otro descuadre sí.
 - **Para revisar:** seis listas de una sola provincia tienen nombres que no indican un partido regional (PUEDE «Partido Unionista Estado de España», +RDS+ «Referéndum Sistema Dinero», UNIDOS SI, Fuerza Cívica, CCD «Coalición de Centro Democrático», Partido Autónomos; 2.401 votos en total). Por el criterio 3 de D-030 (ámbito) quedan en «nacionalistas y regionalistas»; se pueden pasar a «otros» si el responsable lo prefiere.
+- **Decisión del responsable sobre las seis listas:** pasan a «otros» (`A_OTROS` en `tools/generar_partidos.py`). Resultado: 38 nacionalistas y regionalistas, 21 otros.
+- **Aprobada por:** humano (2026-10-15)
+
+## D-033 · Celdas vacías y calidad de las variables armonizadas (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F2
+- **Estado:** propuesta (revisión humana en G2.8)
+- **Contexto:** en la revisión G2.8 el responsable pregunta por las celdas vacías de las muestras y pide que el tratamiento de datos sea impecable.
+- **Diagnóstico** (recuentos agregados, sin abrir registros):
+  - Las celdas vacías de las muestras están casi todas en los **campos originales** (12–60 % en las encuestas): preguntas que no se hacen a esa persona (fuera de universo) o variables que esa edición no publica. En lo armonizado pasan a NP. Es correcto.
+  - En los **ficheros armonizados** había vacíos en 8 columnas. Siete tienen un motivo legítimo; uno era un **error**: en la EPA, los menores de 16 años tenían `edad_4` vacía en vez de NP. Corregido.
+  - Al exigir una condición exacta para cada vacío apareció otra imprecisión: el universo del fichero de adultos de la ECV no es «16 años en la entrevista» (RB082), sino «16 años a 31 de diciembre del año anterior» (RB081, diseño de registro). Se añade `edad_31dic` al fichero armonizado y la condición pasa a ser exacta (10.573 de 10.573).
+- **Decisiones:**
+  1. **Vacíos documentados** (`checks.NULOS_DOCUMENTADOS`): cada vacío permitido tiene su condición y su motivo:
+     - `municipio`: municipios de menos de 10.000 habitantes no identificados por el INE;
+     - `peso_16` de la ECV: menores de 16 a 31/12 del año anterior;
+     - `edad_4` de la EPA: grupo de 16 a 19 años;
+     - electores de Aragón y votantes de Castilla y León: no publicados;
+     - escaños: no impresos en la publicación, o candidaturas sin escaño en el BOE.
+
+     G2.1 falla ante cualquier vacío fuera de esa lista o de su condición.
+  2. **Informe de calidad** (`reports/fase_02_calidad.md`, con `sinpop harmonize --check`): para cada variable de cada fichero, % ponderado de NP, de vacíos y de NC y NS **sobre su universo**; se señalan las que superan el 5 % de NC + NS.
+  3. **Muestras G2.8:** solo muestran los campos originales que lee la armonización, y la guía explica el significado de los vacíos.
+  4. **Escaños autonómicos:** se dejan vacíos cuando la publicación no los imprime; no se deducen ceros (no se usan para construir la población).
+- **Resultado:** 0 vacíos sin documentar; una sola variable señalada en el informe de calidad (ver D-034).
+- **Aprobada por:** pendiente
+
+## D-034 · Encuesta de Salud: el código 99 de NIVEST no es «no contesta» (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F2
+- **Estado:** propuesta — **necesita decisión humana** (regla 2: la evidencia contradice el diseño de registro)
+- **Contexto:** el informe de calidad señala `estudios_3` de la ESdE 2023, con un 5,6 % ponderado de «no consta» (código 99, «No contesta» según el diseño de registro). Además, el código 03 («Educación primaria incompleta») no aparece en el fichero ni una vez.
+- **Evidencia** (todo con agregados ponderados):
+  1. El peso del código 99 sube con la edad como el de la primaria incompleta: 0,7 % en la veintena, 15,5 % a los 70, 30,1 % a los 80 y 38,3 % a los 90. Sumando 02 y 99, el perfil por edad sigue al de «analfabetos + primaria incompleta» del Censo Anual 2024, que no tiene ningún «no consta».
+  2. La tabla oficial del INE 71335 (ESdE 2023, estado de salud por nivel de estudios, en miles) **no tiene categoría «no consta»**: sus tres niveles suman toda la población de 15 años y más. Los totales por estado de salud se reproducen exactamente con el fichero.
+  3. La distribución de salud del nivel «Básico e inferior» solo se reproduce si el 99 está dentro: oficial 16,6 / 46,0 / 27,3 / 8,1 / 2,0 %; con el 99 dentro, 16,6 / 45,8 / 27,4 / 8,2 / 2,0; con el 99 como «no contesta», 18,2 / 47,2 / 26,0 / 6,8 / 1,8.
+  4. Nueva cifra de G2.4 (reparto por nivel frente a la tabla 71335): con el 99 como NC el nivel básico queda en 38,1 % frente al 44,6 % oficial (−6,5 puntos: fuera de tolerancia); con el 99 en el básico, 43,7 % (−0,9 puntos, dentro de la tolerancia de 1,08). Queda una diferencia de unas 380.000 personas entre el básico y el intermedio que el fichero público no permite reproducir: el INE clasifica con un detalle de estudios más fino (CNED-14 a dos dígitos, según la metodología) que no se publica.
+- **Propuesta:** recodificar NIVEST 99 → `hasta_obligatoria` en `variables.yaml` (fuente `encuesta_salud`), anotando que contradice la etiqueta del diseño y por qué. No afecta a ninguna otra fuente: el informe de calidad no señala ninguna otra variable.
+- **Alternativas:** (a) mantener NC, lo que deja fuera del nivel básico a un 30–40 % de los mayores de 80 y sesga cualquier relación entre salud y estudios; (b) no usar los estudios de la ESdE.
+- **Mientras no se decida:** G2.4 falla en esa cifra y la puerta F2 no se supera.
 - **Aprobada por:** pendiente

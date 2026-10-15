@@ -20,6 +20,10 @@ def test_g21_sin_valores_fuera_de_dominio() -> None:
     assert checks.g21_dominios() == {}
 
 
+def test_g21_vacios_documentados() -> None:
+    assert checks.g21_nulos() == {}
+
+
 def test_g22_sin_codigos_especiales_numericos() -> None:
     assert checks.g22_especiales() == {}
 

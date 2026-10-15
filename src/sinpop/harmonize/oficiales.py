@@ -529,6 +529,39 @@ def encuestas() -> list[Cifra]:
             ref,
         ),
     ]
+    # Nivel de estudios (tabla 71335, miles de personas, sin categoría «no consta»): el total
+    # de cada nivel se toma de la fila «Total» del estado de salud (D-034)
+    t = leer(RAW_DIR / "encuesta_salud/2023/tabla_71335_ultimo.json").filter(
+        (pl.col("SEXO") == "AMBOS SEXOS")
+        & (pl.col("EDAD") == "TOTAL")
+        & (pl.col("ESTADO DE SALUD") == "Total")
+    )
+    niveles = {
+        "Básico e inferior": "hasta_obligatoria",
+        "Intermedio": "secundaria_2a_etapa",
+        "Superior": "superior",
+    }
+    of = dict(t.select("NIVEL DE ESTUDIOS", "valor").iter_rows())
+    arm = pl.read_parquet(INTERIM_DIR / "encuesta_salud.parquet", columns=["estudios_3", "peso"])
+    n, tot_w = arm.height, arm["peso"].sum()
+    tot_of = sum(of[k] for k in niveles)
+    ref71 = "INE, ESdE 2023, tabla 71335 (población de 15 y más años por nivel de estudios)"
+    for nom, cat in niveles.items():
+        p_of = of[nom] / tot_of
+        p_ar = _w(arm, pl.col("estudios_3") == cat) / tot_w
+        out.append(
+            Cifra(
+                "encuesta_salud",
+                "2023",
+                "Nivel de estudios (15+), % sobre el total",
+                cat,
+                round(100 * p_of, 3),
+                round(100 * p_ar, 3),
+                round(0.05 + 100 * 3 * _ee(p_of, n, 0.0), 3),
+                "muestral+redondeo",
+                ref71,
+            )
+        )
     return out
 
 

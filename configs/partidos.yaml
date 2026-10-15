@@ -24,11 +24,12 @@ elecciones:
     - codigo_oficial: +RDS+
       codigo_boe: +RDS+
       nombre: Referéndum Sistema Dinero
-      familia: nacionalista_regionalista
+      familia: otros
       ambito: PROV:30
       codigos_cis:
         '3567':
         - '8995'
+      notas: nombre no regional (D-032)
     - codigo_oficial: 3e
       codigo_boe: 3e
       nombre: Tercera Edad en Acción
@@ -89,11 +90,12 @@ elecciones:
     - codigo_oficial: CCD
       codigo_boe: CCD
       nombre: Coalición de Centro Democrático
-      familia: nacionalista_regionalista
+      familia: otros
       ambito: PROV:32
       codigos_cis:
         '3567':
         - '8995'
+      notas: nombre no regional (D-032)
     - codigo_oficial: CCa
       codigo_boe: CCa
       nombre: Coalición Canaria
@@ -236,11 +238,12 @@ elecciones:
     - codigo_oficial: FUERZA CÍVICA
       codigo_boe: FUERZA CÍVICA
       nombre: Fuerza Cívica
-      familia: nacionalista_regionalista
+      familia: otros
       ambito: PROV:47
       codigos_cis:
         '3567':
         - '8995'
+      notas: nombre no regional (D-032)
     - codigo_oficial: GBAI
       codigo_boe: GBAI
       nombre: Geroa Bai
@@ -326,11 +329,12 @@ elecciones:
     - codigo_oficial: PARTIDO AUTÓNOMOS
       codigo_boe: PARTIDO AUTÓNOMOS
       nombre: Partido Autónomos
-      familia: nacionalista_regionalista
+      familia: otros
       ambito: PROV:03
       codigos_cis:
         '3567':
         - '8995'
+      notas: nombre no regional (D-032)
     - codigo_oficial: PCTC
       codigo_boe: PCTE
       nombre: Partit Comunista dels Treballadors de Catalunya
@@ -465,11 +469,12 @@ elecciones:
     - codigo_oficial: PUEDE
       codigo_boe: PUEDE
       nombre: Partido Unionista Estado de España
-      familia: nacionalista_regionalista
+      familia: otros
       ambito: PROV:33
       codigos_cis:
         '3567':
         - '8995'
+      notas: nombre no regional (D-032)
     - codigo_oficial: PUM+J
       codigo_boe: PUM+J
       nombre: Por un Mundo más Justo
@@ -559,11 +564,12 @@ elecciones:
     - codigo_oficial: UNIDOS SI
       codigo_boe: UNIDOS SI
       nombre: Unidos por la Solidaridad Internacional
-      familia: nacionalista_regionalista
+      familia: otros
       ambito: PROV:43
       codigos_cis:
         '3567':
         - '8995'
+      notas: nombre no regional (D-032)
     - codigo_oficial: Ud.Ca
       codigo_boe: Ud.Ca
       nombre: Unidad Castellana
