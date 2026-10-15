@@ -1,6 +1,6 @@
 # Fase 01 · Inventario y adquisición de datos
 
-**Estado:** pendiente de revisión humana (G1.1–G1.5 superadas)
+**Estado:** superada (aprobada por el responsable el 2026-10-15, D-024)
 **Última actualización:** 2026-10-15
 **Fecha:** 2026-10-14 · **Versión del código:** ver `fase_01_puerta.md`
 **Comando para reproducir:** `sinpop ingest --verify && sinpop ingest --inventory && sinpop validate --phase 1` (las descargas se repiten con los comandos `sinpop ingest --source … --url …` / `--ine-table …` registrados en `data/raw/MANIFEST.yaml`, que guarda la URL y el SHA-256 de cada fichero).

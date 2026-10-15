@@ -64,7 +64,8 @@ variables:
     - 70-74
     - 75-79
     - 80-84
-    - 85+
+    - 85-89
+    - 90+
     fuente_principal: censo / padron_continuo
     derivada_de: edad
     fuentes:
@@ -111,28 +112,45 @@ variables:
     fuentes:
       censo2021_micro_hogares:
         variable_original: SEXO
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        recodificacion: &id001
+          '1': hombre
+          '6': mujer
       censo_anual_micro_completo:
         variable_original: SEXO
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        recodificacion: *id001
       censo_anual_micro_demograficas:
         variable_original: SEXO
-        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
+        verificado_contra: dr_CensoAnual_2026.json (INE)
+        recodificacion: *id001
       ecp:
         variable_original: Sexo
         verificado_contra: INEbase, API Tempus
       ecv:
         variable_original: RB090
-        verificado_contra: disreg_ecv25 (INE)
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_T*_2025.json (INE)
+        recodificacion:
+          '1': hombre
+          '2': mujer
       epa:
         variable_original: SEXO1
-        verificado_contra: dr_EPA_2026.xlsx (INE)
+        verificado_contra: dr_EPA_2026.json (INE)
+        recodificacion:
+          '1': hombre
+          '6': mujer
       tic_h:
         variable_original: SEXO
-        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
+        verificado_contra: dr_TICHcuestionario_2025.json (INE)
+        recodificacion:
+          '1': hombre
+          '6': mujer
       encuesta_salud:
         variable_original: SEXOa
-        verificado_contra: dr_ESdEadulto_2023.xlsx (INE)
+        verificado_contra: dr_ESdEadulto_2023.json (INE)
+        recodificacion:
+          '1': hombre
+          '2': mujer
   nacionalidad_grupo:
     prioridad: P0
     nivel: persona
@@ -140,7 +158,6 @@ variables:
     descripcion: Grupo de nacionalidad (la doble nacionalidad solo si la fuente la identifica)
     categorias:
     - espanola
-    - espanola_doble
     - ue
     - resto_europa
     - africa
@@ -151,11 +168,319 @@ variables:
     fuentes:
       censo2021_micro_hogares:
         variable_original: PNACIO
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
         notas: la doble nacionalidad no se identifica
+        recodificacion:
+          '102': ue
+          '103': ue
+          '104': ue
+          '106': ue
+          '107': ue
+          '108': espanola
+          '109': ue
+          '110': ue
+          '111': ue
+          '112': ue
+          '113': ue
+          '115': ue
+          '117': ue
+          '118': ue
+          '121': ue
+          '122': ue
+          '123': ue
+          '125': resto_europa
+          '126': ue
+          '128': ue
+          '131': ue
+          '136': ue
+          '141': ue
+          '142': ue
+          '143': ue
+          '144': ue
+          '146': ue
+          '147': ue
+          '101': resto_europa
+          '114': resto_europa
+          '116': resto_europa
+          '119': resto_europa
+          '120': resto_europa
+          '124': resto_europa
+          '129': resto_europa
+          '130': resto_europa
+          '132': resto_europa
+          '135': resto_europa
+          '137': resto_europa
+          '138': resto_europa
+          '139': resto_europa
+          '145': resto_europa
+          '148': resto_europa
+          '154': resto_europa
+          '156': resto_europa
+          '157': resto_europa
+          '158': resto_europa
+          '199': resto_europa
+          '201': africa
+          '202': africa
+          '203': africa
+          '204': africa
+          '205': africa
+          '206': africa
+          '207': africa
+          '208': africa
+          '209': africa
+          '210': africa
+          '211': africa
+          '212': africa
+          '213': africa
+          '214': africa
+          '215': africa
+          '216': africa
+          '217': africa
+          '218': africa
+          '219': africa
+          '220': africa
+          '221': africa
+          '222': africa
+          '223': africa
+          '224': africa
+          '225': africa
+          '226': africa
+          '227': africa
+          '228': africa
+          '229': africa
+          '230': africa
+          '231': africa
+          '232': africa
+          '233': africa
+          '234': africa
+          '235': africa
+          '236': africa
+          '237': africa
+          '238': africa
+          '239': africa
+          '240': africa
+          '241': africa
+          '242': africa
+          '243': africa
+          '244': africa
+          '245': africa
+          '246': africa
+          '247': africa
+          '248': africa
+          '249': africa
+          '250': africa
+          '251': africa
+          '252': africa
+          '253': africa
+          '254': africa
+          '299': africa
+          '301': otros
+          '302': otros
+          '303': america_latina
+          '310': america_latina
+          '311': america_latina
+          '312': america_latina
+          '313': america_latina
+          '314': america_latina
+          '315': america_latina
+          '316': america_latina
+          '317': america_latina
+          '318': america_latina
+          '319': america_latina
+          '320': america_latina
+          '321': america_latina
+          '322': america_latina
+          '323': america_latina
+          '324': america_latina
+          '325': america_latina
+          '326': america_latina
+          '327': america_latina
+          '328': america_latina
+          '329': america_latina
+          '340': america_latina
+          '341': america_latina
+          '342': america_latina
+          '343': america_latina
+          '344': america_latina
+          '345': america_latina
+          '346': america_latina
+          '347': america_latina
+          '348': america_latina
+          '349': america_latina
+          '350': america_latina
+          '351': america_latina
+          '399': america_latina
+          '401': asia
+          '402': asia
+          '403': asia
+          '404': asia
+          '405': asia
+          '407': asia
+          '408': asia
+          '409': asia
+          '410': asia
+          '411': asia
+          '412': asia
+          '413': asia
+          '414': asia
+          '415': asia
+          '416': asia
+          '417': asia
+          '418': asia
+          '419': asia
+          '420': asia
+          '421': asia
+          '422': asia
+          '423': asia
+          '424': asia
+          '425': asia
+          '426': asia
+          '427': asia
+          '430': asia
+          '431': asia
+          '432': asia
+          '433': asia
+          '434': asia
+          '435': asia
+          '436': asia
+          '437': asia
+          '439': asia
+          '440': asia
+          '441': asia
+          '442': asia
+          '443': asia
+          '444': asia
+          '445': asia
+          '446': asia
+          '447': asia
+          '448': asia
+          '449': asia
+          '499': asia
+          '501': otros
+          '502': otros
+          '504': otros
+          '505': otros
+          '506': otros
+          '507': otros
+          '508': otros
+          '509': otros
+          '511': otros
+          '512': otros
+          '513': otros
+          '514': otros
+          '515': otros
+          '516': otros
+          '517': otros
+          '599': otros
+          '555': otros
+          '966': otros
       censo_anual_micro_completo:
         variable_original: PNACIO
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        recodificacion:
+          '101': resto_europa
+          '102': ue
+          '103': ue
+          '104': ue
+          '107': ue
+          '108': espanola
+          '109': ue
+          '110': ue
+          '111': ue
+          '112': ue
+          '113': ue
+          '115': ue
+          '120': resto_europa
+          '121': ue
+          '122': ue
+          '123': ue
+          '124': resto_europa
+          '125': resto_europa
+          '126': ue
+          '128': ue
+          '131': ue
+          '132': resto_europa
+          '135': resto_europa
+          '136': ue
+          '137': resto_europa
+          '138': resto_europa
+          '139': resto_europa
+          '141': ue
+          '142': ue
+          '143': ue
+          '144': ue
+          '146': ue
+          '148': resto_europa
+          '154': resto_europa
+          '157': resto_europa
+          '198': ue
+          '199': resto_europa
+          '202': africa
+          '203': africa
+          '207': africa
+          '208': africa
+          '211': africa
+          '213': africa
+          '214': africa
+          '216': africa
+          '217': africa
+          '218': africa
+          '219': africa
+          '220': africa
+          '227': africa
+          '228': africa
+          '230': africa
+          '234': africa
+          '236': africa
+          '239': africa
+          '248': africa
+          '299': africa
+          '301': otros
+          '302': otros
+          '303': america_latina
+          '314': america_latina
+          '315': america_latina
+          '317': america_latina
+          '319': america_latina
+          '321': america_latina
+          '323': america_latina
+          '324': america_latina
+          '326': america_latina
+          '340': america_latina
+          '341': america_latina
+          '342': america_latina
+          '343': america_latina
+          '344': america_latina
+          '345': america_latina
+          '347': america_latina
+          '348': america_latina
+          '350': america_latina
+          '351': america_latina
+          '398': america_latina
+          '399': america_latina
+          '404': asia
+          '407': asia
+          '409': asia
+          '410': asia
+          '411': asia
+          '412': asia
+          '413': asia
+          '414': asia
+          '415': asia
+          '416': asia
+          '420': asia
+          '424': asia
+          '426': asia
+          '430': asia
+          '433': asia
+          '435': asia
+          '436': asia
+          '437': asia
+          '443': asia
+          '499': asia
+          '501': otros
+          '599': otros
+          '555': otros
       ecp:
         variable_original: Nacionalidad (española/extranjera, tabla 60129)
         verificado_contra: INEbase, API Tempus
@@ -171,7 +496,111 @@ variables:
         verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
       censo_anual_micro_demograficas:
         variable_original: PNACIO
-        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
+        verificado_contra: dr_CensoAnual_2026.json (INE)
+        recodificacion:
+          '101': resto_europa
+          '102': ue
+          '103': ue
+          '104': ue
+          '107': ue
+          '108': espanola
+          '109': ue
+          '110': ue
+          '111': ue
+          '112': ue
+          '113': ue
+          '115': ue
+          '120': resto_europa
+          '121': ue
+          '122': ue
+          '123': ue
+          '124': resto_europa
+          '125': resto_europa
+          '126': ue
+          '128': ue
+          '131': ue
+          '132': resto_europa
+          '135': resto_europa
+          '136': ue
+          '137': resto_europa
+          '138': resto_europa
+          '139': resto_europa
+          '141': ue
+          '142': ue
+          '143': ue
+          '144': ue
+          '146': ue
+          '148': resto_europa
+          '154': resto_europa
+          '157': resto_europa
+          '198': ue
+          '199': resto_europa
+          '202': africa
+          '203': africa
+          '207': africa
+          '208': africa
+          '211': africa
+          '213': africa
+          '214': africa
+          '216': africa
+          '217': africa
+          '218': africa
+          '219': africa
+          '220': africa
+          '227': africa
+          '228': africa
+          '230': africa
+          '234': africa
+          '236': africa
+          '239': africa
+          '248': africa
+          '299': africa
+          '301': otros
+          '302': otros
+          '303': america_latina
+          '314': america_latina
+          '315': america_latina
+          '317': america_latina
+          '319': america_latina
+          '321': america_latina
+          '323': america_latina
+          '324': america_latina
+          '326': america_latina
+          '340': america_latina
+          '341': america_latina
+          '342': america_latina
+          '343': america_latina
+          '344': america_latina
+          '345': america_latina
+          '347': america_latina
+          '348': america_latina
+          '350': america_latina
+          '351': america_latina
+          '398': america_latina
+          '399': america_latina
+          '404': asia
+          '407': asia
+          '409': asia
+          '410': asia
+          '411': asia
+          '412': asia
+          '413': asia
+          '414': asia
+          '415': asia
+          '416': asia
+          '420': asia
+          '424': asia
+          '426': asia
+          '430': asia
+          '433': asia
+          '435': asia
+          '436': asia
+          '437': asia
+          '443': asia
+          '499': asia
+          '501': otros
+          '599': otros
+          '555': otros
   pais_nacimiento_grupo:
     prioridad: P1
     nivel: persona
@@ -189,30 +618,871 @@ variables:
     fuentes:
       censo2021_micro_hogares:
         variable_original: PNACIM
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        recodificacion:
+          '102': ue
+          '103': ue
+          '104': ue
+          '106': ue
+          '107': ue
+          '108': espana
+          '109': ue
+          '110': ue
+          '111': ue
+          '112': ue
+          '113': ue
+          '115': ue
+          '117': ue
+          '118': ue
+          '121': ue
+          '122': ue
+          '123': ue
+          '125': resto_europa
+          '126': ue
+          '128': ue
+          '131': ue
+          '136': ue
+          '141': ue
+          '142': ue
+          '143': ue
+          '144': ue
+          '146': ue
+          '147': ue
+          '101': resto_europa
+          '114': resto_europa
+          '116': resto_europa
+          '119': resto_europa
+          '120': resto_europa
+          '124': resto_europa
+          '129': resto_europa
+          '130': resto_europa
+          '132': resto_europa
+          '135': resto_europa
+          '137': resto_europa
+          '138': resto_europa
+          '139': resto_europa
+          '145': resto_europa
+          '148': resto_europa
+          '154': resto_europa
+          '156': resto_europa
+          '157': resto_europa
+          '158': resto_europa
+          '199': resto_europa
+          '201': africa
+          '202': africa
+          '203': africa
+          '204': africa
+          '205': africa
+          '206': africa
+          '207': africa
+          '208': africa
+          '209': africa
+          '210': africa
+          '211': africa
+          '212': africa
+          '213': africa
+          '214': africa
+          '215': africa
+          '216': africa
+          '217': africa
+          '218': africa
+          '219': africa
+          '220': africa
+          '221': africa
+          '222': africa
+          '223': africa
+          '224': africa
+          '225': africa
+          '226': africa
+          '227': africa
+          '228': africa
+          '229': africa
+          '230': africa
+          '231': africa
+          '232': africa
+          '233': africa
+          '234': africa
+          '235': africa
+          '236': africa
+          '237': africa
+          '238': africa
+          '239': africa
+          '240': africa
+          '241': africa
+          '242': africa
+          '243': africa
+          '244': africa
+          '245': africa
+          '246': africa
+          '247': africa
+          '248': africa
+          '249': africa
+          '250': africa
+          '251': africa
+          '252': africa
+          '253': africa
+          '254': africa
+          '299': africa
+          '301': otros
+          '302': otros
+          '303': america_latina
+          '310': america_latina
+          '311': america_latina
+          '312': america_latina
+          '313': america_latina
+          '314': america_latina
+          '315': america_latina
+          '316': america_latina
+          '317': america_latina
+          '318': america_latina
+          '319': america_latina
+          '320': america_latina
+          '321': america_latina
+          '322': america_latina
+          '323': america_latina
+          '324': america_latina
+          '325': america_latina
+          '326': america_latina
+          '327': america_latina
+          '328': america_latina
+          '329': america_latina
+          '340': america_latina
+          '341': america_latina
+          '342': america_latina
+          '343': america_latina
+          '344': america_latina
+          '345': america_latina
+          '346': america_latina
+          '347': america_latina
+          '348': america_latina
+          '349': america_latina
+          '350': america_latina
+          '351': america_latina
+          '399': america_latina
+          '401': asia
+          '402': asia
+          '403': asia
+          '404': asia
+          '405': asia
+          '407': asia
+          '408': asia
+          '409': asia
+          '410': asia
+          '411': asia
+          '412': asia
+          '413': asia
+          '414': asia
+          '415': asia
+          '416': asia
+          '417': asia
+          '418': asia
+          '419': asia
+          '420': asia
+          '421': asia
+          '422': asia
+          '423': asia
+          '424': asia
+          '425': asia
+          '426': asia
+          '427': asia
+          '430': asia
+          '431': asia
+          '432': asia
+          '433': asia
+          '434': asia
+          '435': asia
+          '436': asia
+          '437': asia
+          '439': asia
+          '440': asia
+          '441': asia
+          '442': asia
+          '443': asia
+          '444': asia
+          '445': asia
+          '446': asia
+          '447': asia
+          '448': asia
+          '449': asia
+          '499': asia
+          '501': otros
+          '502': otros
+          '504': otros
+          '505': otros
+          '506': otros
+          '507': otros
+          '508': otros
+          '509': otros
+          '511': otros
+          '512': otros
+          '513': otros
+          '514': otros
+          '515': otros
+          '516': otros
+          '517': otros
+          '599': otros
+          '555': otros
+          '966': otros
       censo_anual_micro_completo:
         variable_original: PNACIM
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        recodificacion:
+          '101': resto_europa
+          '102': ue
+          '103': ue
+          '104': ue
+          '107': ue
+          '108': espana
+          '109': ue
+          '110': ue
+          '111': ue
+          '112': ue
+          '113': ue
+          '115': ue
+          '120': resto_europa
+          '121': ue
+          '122': ue
+          '123': ue
+          '124': resto_europa
+          '125': resto_europa
+          '126': ue
+          '128': ue
+          '131': ue
+          '132': resto_europa
+          '135': resto_europa
+          '136': ue
+          '137': resto_europa
+          '138': resto_europa
+          '139': resto_europa
+          '141': ue
+          '142': ue
+          '143': ue
+          '144': ue
+          '146': ue
+          '148': resto_europa
+          '154': resto_europa
+          '157': resto_europa
+          '198': ue
+          '199': resto_europa
+          '202': africa
+          '203': africa
+          '207': africa
+          '208': africa
+          '211': africa
+          '213': africa
+          '214': africa
+          '216': africa
+          '217': africa
+          '218': africa
+          '219': africa
+          '220': africa
+          '227': africa
+          '228': africa
+          '230': africa
+          '234': africa
+          '236': africa
+          '239': africa
+          '248': africa
+          '299': africa
+          '301': otros
+          '302': otros
+          '303': america_latina
+          '314': america_latina
+          '315': america_latina
+          '317': america_latina
+          '319': america_latina
+          '321': america_latina
+          '323': america_latina
+          '324': america_latina
+          '326': america_latina
+          '340': america_latina
+          '341': america_latina
+          '342': america_latina
+          '343': america_latina
+          '344': america_latina
+          '345': america_latina
+          '347': america_latina
+          '348': america_latina
+          '350': america_latina
+          '351': america_latina
+          '398': america_latina
+          '399': america_latina
+          '404': asia
+          '407': asia
+          '409': asia
+          '410': asia
+          '411': asia
+          '412': asia
+          '413': asia
+          '414': asia
+          '415': asia
+          '416': asia
+          '420': asia
+          '424': asia
+          '426': asia
+          '430': asia
+          '433': asia
+          '435': asia
+          '436': asia
+          '437': asia
+          '443': asia
+          '499': asia
+          '501': otros
+          '599': otros
+          '555': otros
       censo_anual_micro_demograficas:
         variable_original: PNACIM
-        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
+        verificado_contra: dr_CensoAnual_2026.json (INE)
+        recodificacion:
+          '101': resto_europa
+          '102': ue
+          '103': ue
+          '104': ue
+          '107': ue
+          '108': espana
+          '109': ue
+          '110': ue
+          '111': ue
+          '112': ue
+          '113': ue
+          '115': ue
+          '120': resto_europa
+          '121': ue
+          '122': ue
+          '123': ue
+          '124': resto_europa
+          '125': resto_europa
+          '126': ue
+          '128': ue
+          '131': ue
+          '132': resto_europa
+          '135': resto_europa
+          '136': ue
+          '137': resto_europa
+          '138': resto_europa
+          '139': resto_europa
+          '141': ue
+          '142': ue
+          '143': ue
+          '144': ue
+          '146': ue
+          '148': resto_europa
+          '154': resto_europa
+          '157': resto_europa
+          '198': ue
+          '199': resto_europa
+          '202': africa
+          '203': africa
+          '207': africa
+          '208': africa
+          '211': africa
+          '213': africa
+          '214': africa
+          '216': africa
+          '217': africa
+          '218': africa
+          '219': africa
+          '220': africa
+          '227': africa
+          '228': africa
+          '230': africa
+          '234': africa
+          '236': africa
+          '239': africa
+          '248': africa
+          '299': africa
+          '301': otros
+          '302': otros
+          '303': america_latina
+          '314': america_latina
+          '315': america_latina
+          '317': america_latina
+          '319': america_latina
+          '321': america_latina
+          '323': america_latina
+          '324': america_latina
+          '326': america_latina
+          '340': america_latina
+          '341': america_latina
+          '342': america_latina
+          '343': america_latina
+          '344': america_latina
+          '345': america_latina
+          '347': america_latina
+          '348': america_latina
+          '350': america_latina
+          '351': america_latina
+          '398': america_latina
+          '399': america_latina
+          '404': asia
+          '407': asia
+          '409': asia
+          '410': asia
+          '411': asia
+          '412': asia
+          '413': asia
+          '414': asia
+          '415': asia
+          '416': asia
+          '420': asia
+          '424': asia
+          '426': asia
+          '430': asia
+          '433': asia
+          '435': asia
+          '436': asia
+          '437': asia
+          '443': asia
+          '499': asia
+          '501': otros
+          '599': otros
+          '555': otros
   nacionalidad_top:
     prioridad: P1
     nivel: persona
     tipo: categorica
     descripcion: Principales nacionalidades individuales más «otras»
-    dominio_pendiente: 'F1/F2: las 15 nacionalidades extranjeras más numerosas del Padrón vigente'
     fuente_principal: padron_continuo
     fuentes:
       censo2021_micro_hogares:
         variable_original: PNACIO
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        recodificacion:
+          '102': otras_extranjeras
+          '103': otras_extranjeras
+          '104': otras_extranjeras
+          '106': otras_extranjeras
+          '107': otras_extranjeras
+          '108': espanola
+          '109': otras_extranjeras
+          '110': francia
+          '111': otras_extranjeras
+          '112': otras_extranjeras
+          '113': otras_extranjeras
+          '115': italia
+          '117': otras_extranjeras
+          '118': otras_extranjeras
+          '121': otras_extranjeras
+          '122': otras_extranjeras
+          '123': otras_extranjeras
+          '125': reino_unido
+          '126': alemania
+          '128': rumania
+          '131': otras_extranjeras
+          '136': otras_extranjeras
+          '141': otras_extranjeras
+          '142': otras_extranjeras
+          '143': otras_extranjeras
+          '144': otras_extranjeras
+          '146': otras_extranjeras
+          '147': otras_extranjeras
+          '101': otras_extranjeras
+          '114': otras_extranjeras
+          '116': otras_extranjeras
+          '119': otras_extranjeras
+          '120': otras_extranjeras
+          '124': otras_extranjeras
+          '129': otras_extranjeras
+          '130': otras_extranjeras
+          '132': otras_extranjeras
+          '135': ucrania
+          '137': otras_extranjeras
+          '138': otras_extranjeras
+          '139': otras_extranjeras
+          '145': otras_extranjeras
+          '148': otras_extranjeras
+          '154': otras_extranjeras
+          '156': otras_extranjeras
+          '157': otras_extranjeras
+          '158': otras_extranjeras
+          '199': otras_extranjeras
+          '201': otras_extranjeras
+          '202': otras_extranjeras
+          '203': otras_extranjeras
+          '204': otras_extranjeras
+          '205': otras_extranjeras
+          '206': otras_extranjeras
+          '207': otras_extranjeras
+          '208': otras_extranjeras
+          '209': otras_extranjeras
+          '210': otras_extranjeras
+          '211': otras_extranjeras
+          '212': otras_extranjeras
+          '213': otras_extranjeras
+          '214': otras_extranjeras
+          '215': otras_extranjeras
+          '216': otras_extranjeras
+          '217': otras_extranjeras
+          '218': otras_extranjeras
+          '219': otras_extranjeras
+          '220': otras_extranjeras
+          '221': otras_extranjeras
+          '222': otras_extranjeras
+          '223': otras_extranjeras
+          '224': otras_extranjeras
+          '225': otras_extranjeras
+          '226': otras_extranjeras
+          '227': otras_extranjeras
+          '228': marruecos
+          '229': otras_extranjeras
+          '230': otras_extranjeras
+          '231': otras_extranjeras
+          '232': otras_extranjeras
+          '233': otras_extranjeras
+          '234': otras_extranjeras
+          '235': otras_extranjeras
+          '236': otras_extranjeras
+          '237': otras_extranjeras
+          '238': otras_extranjeras
+          '239': otras_extranjeras
+          '240': otras_extranjeras
+          '241': otras_extranjeras
+          '242': otras_extranjeras
+          '243': otras_extranjeras
+          '244': otras_extranjeras
+          '245': otras_extranjeras
+          '246': otras_extranjeras
+          '247': otras_extranjeras
+          '248': otras_extranjeras
+          '249': otras_extranjeras
+          '250': otras_extranjeras
+          '251': otras_extranjeras
+          '252': otras_extranjeras
+          '253': otras_extranjeras
+          '254': otras_extranjeras
+          '299': otras_extranjeras
+          '301': otras_extranjeras
+          '302': otras_extranjeras
+          '303': otras_extranjeras
+          '310': otras_extranjeras
+          '311': otras_extranjeras
+          '312': otras_extranjeras
+          '313': otras_extranjeras
+          '314': otras_extranjeras
+          '315': otras_extranjeras
+          '316': otras_extranjeras
+          '317': otras_extranjeras
+          '318': otras_extranjeras
+          '319': otras_extranjeras
+          '320': otras_extranjeras
+          '321': honduras
+          '322': otras_extranjeras
+          '323': otras_extranjeras
+          '324': otras_extranjeras
+          '325': otras_extranjeras
+          '326': otras_extranjeras
+          '327': otras_extranjeras
+          '328': otras_extranjeras
+          '329': otras_extranjeras
+          '340': argentina
+          '341': otras_extranjeras
+          '342': otras_extranjeras
+          '343': colombia
+          '344': otras_extranjeras
+          '345': ecuador
+          '346': otras_extranjeras
+          '347': paraguay
+          '348': peru
+          '349': otras_extranjeras
+          '350': otras_extranjeras
+          '351': venezuela
+          '399': otras_extranjeras
+          '401': otras_extranjeras
+          '402': otras_extranjeras
+          '403': otras_extranjeras
+          '404': otras_extranjeras
+          '405': otras_extranjeras
+          '407': china
+          '408': otras_extranjeras
+          '409': otras_extranjeras
+          '410': otras_extranjeras
+          '411': otras_extranjeras
+          '412': otras_extranjeras
+          '413': otras_extranjeras
+          '414': otras_extranjeras
+          '415': otras_extranjeras
+          '416': otras_extranjeras
+          '417': otras_extranjeras
+          '418': otras_extranjeras
+          '419': otras_extranjeras
+          '420': otras_extranjeras
+          '421': otras_extranjeras
+          '422': otras_extranjeras
+          '423': otras_extranjeras
+          '424': otras_extranjeras
+          '425': otras_extranjeras
+          '426': otras_extranjeras
+          '427': otras_extranjeras
+          '430': otras_extranjeras
+          '431': otras_extranjeras
+          '432': otras_extranjeras
+          '433': otras_extranjeras
+          '434': otras_extranjeras
+          '435': otras_extranjeras
+          '436': otras_extranjeras
+          '437': otras_extranjeras
+          '439': otras_extranjeras
+          '440': otras_extranjeras
+          '441': otras_extranjeras
+          '442': otras_extranjeras
+          '443': otras_extranjeras
+          '444': otras_extranjeras
+          '445': otras_extranjeras
+          '446': otras_extranjeras
+          '447': otras_extranjeras
+          '448': otras_extranjeras
+          '449': otras_extranjeras
+          '499': otras_extranjeras
+          '501': otras_extranjeras
+          '502': otras_extranjeras
+          '504': otras_extranjeras
+          '505': otras_extranjeras
+          '506': otras_extranjeras
+          '507': otras_extranjeras
+          '508': otras_extranjeras
+          '509': otras_extranjeras
+          '511': otras_extranjeras
+          '512': otras_extranjeras
+          '513': otras_extranjeras
+          '514': otras_extranjeras
+          '515': otras_extranjeras
+          '516': otras_extranjeras
+          '517': otras_extranjeras
+          '599': otras_extranjeras
+          '555': otras_extranjeras
+          '966': otras_extranjeras
       censo_anual_micro_completo:
         variable_original: PNACIO
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        recodificacion:
+          '101': otras_extranjeras
+          '102': otras_extranjeras
+          '103': otras_extranjeras
+          '104': otras_extranjeras
+          '107': otras_extranjeras
+          '108': espanola
+          '109': otras_extranjeras
+          '110': francia
+          '111': otras_extranjeras
+          '112': otras_extranjeras
+          '113': otras_extranjeras
+          '115': italia
+          '120': otras_extranjeras
+          '121': otras_extranjeras
+          '122': otras_extranjeras
+          '123': otras_extranjeras
+          '124': otras_extranjeras
+          '125': reino_unido
+          '126': alemania
+          '128': rumania
+          '131': otras_extranjeras
+          '132': otras_extranjeras
+          '135': ucrania
+          '136': otras_extranjeras
+          '137': otras_extranjeras
+          '138': otras_extranjeras
+          '139': otras_extranjeras
+          '141': otras_extranjeras
+          '142': otras_extranjeras
+          '143': otras_extranjeras
+          '144': otras_extranjeras
+          '146': otras_extranjeras
+          '148': otras_extranjeras
+          '154': otras_extranjeras
+          '157': otras_extranjeras
+          '198': otras_extranjeras
+          '199': otras_extranjeras
+          '202': otras_extranjeras
+          '203': otras_extranjeras
+          '207': otras_extranjeras
+          '208': otras_extranjeras
+          '211': otras_extranjeras
+          '213': otras_extranjeras
+          '214': otras_extranjeras
+          '216': otras_extranjeras
+          '217': otras_extranjeras
+          '218': otras_extranjeras
+          '219': otras_extranjeras
+          '220': otras_extranjeras
+          '227': otras_extranjeras
+          '228': marruecos
+          '230': otras_extranjeras
+          '234': otras_extranjeras
+          '236': otras_extranjeras
+          '239': otras_extranjeras
+          '248': otras_extranjeras
+          '299': otras_extranjeras
+          '301': otras_extranjeras
+          '302': otras_extranjeras
+          '303': otras_extranjeras
+          '314': otras_extranjeras
+          '315': otras_extranjeras
+          '317': otras_extranjeras
+          '319': otras_extranjeras
+          '321': honduras
+          '323': otras_extranjeras
+          '324': otras_extranjeras
+          '326': otras_extranjeras
+          '340': argentina
+          '341': otras_extranjeras
+          '342': otras_extranjeras
+          '343': colombia
+          '344': otras_extranjeras
+          '345': ecuador
+          '347': paraguay
+          '348': peru
+          '350': otras_extranjeras
+          '351': venezuela
+          '398': otras_extranjeras
+          '399': otras_extranjeras
+          '404': otras_extranjeras
+          '407': china
+          '409': otras_extranjeras
+          '410': otras_extranjeras
+          '411': otras_extranjeras
+          '412': otras_extranjeras
+          '413': otras_extranjeras
+          '414': otras_extranjeras
+          '415': otras_extranjeras
+          '416': otras_extranjeras
+          '420': otras_extranjeras
+          '424': otras_extranjeras
+          '426': otras_extranjeras
+          '430': otras_extranjeras
+          '433': otras_extranjeras
+          '435': otras_extranjeras
+          '436': otras_extranjeras
+          '437': otras_extranjeras
+          '443': otras_extranjeras
+          '499': otras_extranjeras
+          '501': otras_extranjeras
+          '599': otras_extranjeras
+          '555': otras_extranjeras
       censo_anual_micro_demograficas:
         variable_original: PNACIO
-        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
+        verificado_contra: dr_CensoAnual_2026.json (INE)
+        recodificacion:
+          '101': otras_extranjeras
+          '102': otras_extranjeras
+          '103': otras_extranjeras
+          '104': otras_extranjeras
+          '107': otras_extranjeras
+          '108': espanola
+          '109': otras_extranjeras
+          '110': francia
+          '111': otras_extranjeras
+          '112': otras_extranjeras
+          '113': otras_extranjeras
+          '115': italia
+          '120': otras_extranjeras
+          '121': otras_extranjeras
+          '122': otras_extranjeras
+          '123': otras_extranjeras
+          '124': otras_extranjeras
+          '125': reino_unido
+          '126': alemania
+          '128': rumania
+          '131': otras_extranjeras
+          '132': otras_extranjeras
+          '135': ucrania
+          '136': otras_extranjeras
+          '137': otras_extranjeras
+          '138': otras_extranjeras
+          '139': otras_extranjeras
+          '141': otras_extranjeras
+          '142': otras_extranjeras
+          '143': otras_extranjeras
+          '144': otras_extranjeras
+          '146': otras_extranjeras
+          '148': otras_extranjeras
+          '154': otras_extranjeras
+          '157': otras_extranjeras
+          '198': otras_extranjeras
+          '199': otras_extranjeras
+          '202': otras_extranjeras
+          '203': otras_extranjeras
+          '207': otras_extranjeras
+          '208': otras_extranjeras
+          '211': otras_extranjeras
+          '213': otras_extranjeras
+          '214': otras_extranjeras
+          '216': otras_extranjeras
+          '217': otras_extranjeras
+          '218': otras_extranjeras
+          '219': otras_extranjeras
+          '220': otras_extranjeras
+          '227': otras_extranjeras
+          '228': marruecos
+          '230': otras_extranjeras
+          '234': otras_extranjeras
+          '236': otras_extranjeras
+          '239': otras_extranjeras
+          '248': otras_extranjeras
+          '299': otras_extranjeras
+          '301': otras_extranjeras
+          '302': otras_extranjeras
+          '303': otras_extranjeras
+          '314': otras_extranjeras
+          '315': otras_extranjeras
+          '317': otras_extranjeras
+          '319': otras_extranjeras
+          '321': honduras
+          '323': otras_extranjeras
+          '324': otras_extranjeras
+          '326': otras_extranjeras
+          '340': argentina
+          '341': otras_extranjeras
+          '342': otras_extranjeras
+          '343': colombia
+          '344': otras_extranjeras
+          '345': ecuador
+          '347': paraguay
+          '348': peru
+          '350': otras_extranjeras
+          '351': venezuela
+          '398': otras_extranjeras
+          '399': otras_extranjeras
+          '404': otras_extranjeras
+          '407': china
+          '409': otras_extranjeras
+          '410': otras_extranjeras
+          '411': otras_extranjeras
+          '412': otras_extranjeras
+          '413': otras_extranjeras
+          '414': otras_extranjeras
+          '415': otras_extranjeras
+          '416': otras_extranjeras
+          '420': otras_extranjeras
+          '424': otras_extranjeras
+          '426': otras_extranjeras
+          '430': otras_extranjeras
+          '433': otras_extranjeras
+          '435': otras_extranjeras
+          '436': otras_extranjeras
+          '437': otras_extranjeras
+          '443': otras_extranjeras
+          '499': otras_extranjeras
+          '501': otras_extranjeras
+          '599': otras_extranjeras
+          '555': otras_extranjeras
+    categorias:
+    - espanola
+    - marruecos
+    - colombia
+    - rumania
+    - venezuela
+    - italia
+    - reino_unido
+    - peru
+    - china
+    - ucrania
+    - honduras
+    - argentina
+    - ecuador
+    - alemania
+    - francia
+    - paraguay
+    - otras_extranjeras
   estado_civil:
     prioridad: P1
     nivel: persona
@@ -227,26 +1497,48 @@ variables:
     fuentes:
       censo2021_micro_hogares:
         variable_original: ECIVIL
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        recodificacion: &id002
+          '0': NC
+          '1': soltero
+          '2': casado
+          '3': viudo
+          '4': separado_divorciado
+        notas: 0 = No consta → NC; NP para menores de 16
       censo_anual_micro_completo:
         variable_original: ECIVIL
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
-        notas: edición 2024; 0 = No consta
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        notas: 0 = No consta → NC; NP para menores de 16
+        recodificacion: *id002
   nivel_estudios:
     prioridad: P0
     nivel: persona
     tipo: ordinal
     descripcion: Nivel de estudios terminados en detalle CNED-A/ISCED
-    dominio_pendiente: 'F2: niveles CNED-A tal como los codifica el diseño de registro del Censo Anual'
     fuente_principal: censo_anual
     fuentes:
       censo2021_micro_hogares:
         variable_original: ESREAL_CNEDA
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        recodificacion: &id003
+          '01': analfabetos
+          '02': primaria_incompleta
+          '03': primaria
+          '04': secundaria_1a_etapa
+          '05': bachillerato
+          '06': fp_grado_medio
+          '07': postsecundaria_no_superior
+          08: fp_grado_superior
+          09: grado_240
+          '10': grado_mas_240_licenciatura
+          '11': master
+          '12': doctorado
+        notas: en blanco = no aplica (menores de 15) → NP
       censo_anual_micro_completo:
         variable_original: ESREAL
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
-        notas: edición 2024
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        notas: en blanco = no aplica (menores de 15) → NP
+        recodificacion: *id003
       ecv:
         variable_original: PE041
         verificado_contra: disreg_ecv25 (INE)
@@ -259,6 +1551,19 @@ variables:
       encuesta_salud:
         variable_original: NIVEST
         verificado_contra: dr_ESdEadulto_2023.xlsx (INE)
+    categorias:
+    - analfabetos
+    - primaria_incompleta
+    - primaria
+    - secundaria_1a_etapa
+    - bachillerato
+    - fp_grado_medio
+    - postsecundaria_no_superior
+    - fp_grado_superior
+    - grado_240
+    - grado_mas_240_licenciatura
+    - master
+    - doctorado
   estudios_3:
     prioridad: P0
     nivel: persona
@@ -273,11 +1578,80 @@ variables:
     fuentes:
       censo2021_micro_hogares:
         variable_original: ESREAL_CNEDA
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        recodificacion: &id004
+          '01': hasta_obligatoria
+          '02': hasta_obligatoria
+          '03': hasta_obligatoria
+          '04': hasta_obligatoria
+          '05': secundaria_2a_etapa
+          '06': secundaria_2a_etapa
+          '07': secundaria_2a_etapa
+          08: superior
+          09: superior
+          '10': superior
+          '11': superior
+          '12': superior
+        notas: en blanco = no aplica (menores de 15) → NP
       censo_anual_micro_completo:
         variable_original: ESREAL
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
-        notas: edición 2024
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        notas: en blanco = no aplica (menores de 15) → NP
+        recodificacion: *id004
+      ecv:
+        variable_original: PE041
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_T*_2025.json (INE)
+        recodificacion:
+          '000': hasta_obligatoria
+          '100': hasta_obligatoria
+          '200': hasta_obligatoria
+          '340': secundaria_2a_etapa
+          '344': secundaria_2a_etapa
+          '350': secundaria_2a_etapa
+          '353': secundaria_2a_etapa
+          '354': secundaria_2a_etapa
+          '450': secundaria_2a_etapa
+          '500': superior
+      epa:
+        variable_original: NFORMA
+        verificado_contra: dr_EPA_2026.json (INE)
+        recodificacion:
+          AN: hasta_obligatoria
+          P1: hasta_obligatoria
+          P2: hasta_obligatoria
+          S1: hasta_obligatoria
+          SG: secundaria_2a_etapa
+          SP: secundaria_2a_etapa
+          SU: superior
+      tic_h:
+        variable_original: NIVELEST
+        verificado_contra: dr_TICHcuestionario_2025.json (INE)
+        recodificacion:
+          '0': hasta_obligatoria
+          '1': hasta_obligatoria
+          '2': hasta_obligatoria
+          '3': secundaria_2a_etapa
+          '4': secundaria_2a_etapa
+          '5': superior
+          '6': superior
+          '7': superior
+          '8': superior
+          '9': NC
+        notas: 9 = no se puede codificar → NC
+      encuesta_salud:
+        variable_original: NIVEST
+        verificado_contra: dr_ESdEadulto_2023.json (INE)
+        recodificacion:
+          '02': hasta_obligatoria
+          '03': hasta_obligatoria
+          '04': hasta_obligatoria
+          '05': hasta_obligatoria
+          '06': secundaria_2a_etapa
+          '07': secundaria_2a_etapa
+          08: superior
+          09: superior
+          '01': NP
+          '99': NC
   relacion_actividad:
     prioridad: P0
     nivel: persona
@@ -287,29 +1661,64 @@ variables:
     - ocupado
     - parado
     - jubilado_pensionista
-    - estudiante
-    - labores_hogar
     - incapacidad_permanente
+    - estudiante
     - otra_inactividad
     fuente_principal: censo_anual / epa
     fuentes:
       censo2021_micro_hogares:
         variable_original: RELA
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
-        notas: sin categoría propia de labores del hogar (incluida en otra inactividad)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        notas: en blanco = menores de 16 → NP
+        recodificacion:
+          '1': ocupado
+          '2': parado
+          '4': incapacidad_permanente
+          '5': jubilado_pensionista
+          '6': otra_inactividad
+          '7': estudiante
       censo_anual_micro_completo:
         variable_original: RELA
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
-        notas: edición 2024
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        notas: en blanco = menores de 16 → NP
+        recodificacion:
+          '01': ocupado
+          '02': parado
+          '03': incapacidad_permanente
+          '04': jubilado_pensionista
+          '05': otra_inactividad
+          '06': estudiante
       ecv:
         variable_original: PL032
-        verificado_contra: disreg_ecv25 (INE)
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_T*_2025.json (INE)
+        recodificacion:
+          '1': ocupado
+          '2': parado
+          '3': jubilado_pensionista
+          '4': incapacidad_permanente
+          '5': estudiante
+          '6': otra_inactividad
+          '8': otra_inactividad
+          '7': NC
+        notas: 6 = labores del hogar → otra_inactividad (D-018); 7 = sin cuestionario → NC
       epa:
         variable_original: AOI
         verificado_contra: dr_EPA_2026.xlsx (INE)
       tic_h:
         variable_original: SIT_LAB
-        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
+        verificado_contra: dr_TICHcuestionario_2025.json (INE)
+        recodificacion:
+          '1': ocupado
+          '2': ocupado
+          '3': ocupado
+          '4': ocupado
+          '5': parado
+          '6': estudiante
+          '7': jubilado_pensionista
+          '8': incapacidad_permanente
+          '9': otra_inactividad
+          '0': otra_inactividad
+        notas: 9 = labores del hogar → otra_inactividad
   ocupacion:
     prioridad: P1
     nivel: persona
@@ -330,14 +1739,152 @@ variables:
     fuentes:
       censo2021_micro_hogares:
         variable_original: OCU63
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        recodificacion:
+          '11': '1'
+          '12': '1'
+          '13': '1'
+          '14': '1'
+          '15': '1'
+          '21': '2'
+          '22': '2'
+          '23': '2'
+          '24': '2'
+          '25': '2'
+          '26': '2'
+          '27': '2'
+          '28': '2'
+          '29': '2'
+          '31': '3'
+          '32': '3'
+          '33': '3'
+          '34': '3'
+          '35': '3'
+          '36': '3'
+          '37': '3'
+          '38': '3'
+          '41': '4'
+          '42': '4'
+          '43': '4'
+          '44': '4'
+          '45': '4'
+          '50': '5'
+          '51': '5'
+          '52': '5'
+          '53': '5'
+          '54': '5'
+          '55': '5'
+          '56': '5'
+          '57': '5'
+          '58': '5'
+          '59': '5'
+          '61': '6'
+          '62': '6'
+          '63': '6'
+          '64': '6'
+          '71': '7'
+          '72': '7'
+          '73': '7'
+          '74': '7'
+          '75': '7'
+          '76': '7'
+          '77': '7'
+          '78': '7'
+          '81': '8'
+          '82': '8'
+          '83': '8'
+          '84': '8'
+          '91': '9'
+          '92': '9'
+          '93': '9'
+          '94': '9'
+          '95': '9'
+          '96': '9'
+          '97': '9'
+          '98': '9'
+          XX: NC
+        notas: primer dígito del código CNO-11; XX = No consta → NC
       censo_anual_micro_completo:
         variable_original: CNO
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
-        notas: edición 2023
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        notas: primer dígito del código CNO-11; XX = No consta → NC
+        recodificacion:
+          '11': '1'
+          '12': '1'
+          '13': '1'
+          '14': '1'
+          '15': '1'
+          '21': '2'
+          '22': '2'
+          '23': '2'
+          '24': '2'
+          '25': '2'
+          '26': '2'
+          '27': '2'
+          '28': '2'
+          '29': '2'
+          '31': '3'
+          '32': '3'
+          '33': '3'
+          '34': '3'
+          '35': '3'
+          '36': '3'
+          '37': '3'
+          '38': '3'
+          '41': '4'
+          '42': '4'
+          '43': '4'
+          '44': '4'
+          '45': '4'
+          '50': '5'
+          '51': '5'
+          '52': '5'
+          '53': '5'
+          '54': '5'
+          '55': '5'
+          '56': '5'
+          '57': '5'
+          '58': '5'
+          '59': '5'
+          '61': '6'
+          '62': '6'
+          '63': '6'
+          '64': '6'
+          '71': '7'
+          '72': '7'
+          '73': '7'
+          '74': '7'
+          '75': '7'
+          '76': '7'
+          '77': '7'
+          '78': '7'
+          '81': '8'
+          '82': '8'
+          '83': '8'
+          '84': '8'
+          '91': '9'
+          '92': '9'
+          '93': '9'
+          '94': '9'
+          '95': '9'
+          '96': '9'
+          '97': '9'
+          '98': '9'
+          XX: NC
       epa:
         variable_original: OCUP1
-        verificado_contra: dr_EPA_2026.xlsx (INE)
+        verificado_contra: dr_EPA_2026.json (INE)
+        recodificacion:
+          '0': '0'
+          '1': '1'
+          '2': '2'
+          '3': '3'
+          '4': '4'
+          '5': '5'
+          '6': '6'
+          '7': '7'
+          '8': '8'
+          '9': '9'
   sector_actividad:
     prioridad: P2
     nivel: persona
@@ -369,34 +1916,233 @@ variables:
     fuentes:
       censo2021_micro_hogares:
         variable_original: ACT89
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        recodificacion:
+          '01': A
+          '02': A
+          '03': A
+          '05': B
+          '06': B
+          '07': B
+          08: B
+          09: B
+          '10': C
+          '11': C
+          '12': C
+          '13': C
+          '14': C
+          '15': C
+          '16': C
+          '17': C
+          '18': C
+          '19': C
+          '20': C
+          '21': C
+          '22': C
+          '23': C
+          '24': C
+          '25': C
+          '26': C
+          '27': C
+          '28': C
+          '29': C
+          '30': C
+          '31': C
+          '32': C
+          '33': C
+          '35': D
+          '36': E
+          '37': E
+          '38': E
+          '39': E
+          '41': F
+          '42': F
+          '43': F
+          '45': G
+          '46': G
+          '47': G
+          '49': H
+          '50': H
+          '51': H
+          '52': H
+          '53': H
+          '55': I
+          '56': I
+          '58': J
+          '59': J
+          '60': J
+          '61': J
+          '62': J
+          '63': J
+          '64': K
+          '65': K
+          '66': K
+          '68': L
+          '69': M
+          '70': M
+          '71': M
+          '72': M
+          '73': M
+          '74': M
+          '75': M
+          '77': N
+          '78': N
+          '79': N
+          '80': N
+          '81': N
+          '82': N
+          '84': O
+          '85': P
+          '86': Q
+          '87': Q
+          '88': Q
+          '90': R
+          '91': R
+          '92': R
+          '93': R
+          '94': S
+          '95': S
+          '96': S
+          '97': T
+          '98': T
+          '99': U
+          XX: NC
+        notas: división CNAE-09 → sección; XX = No consta → NC
       censo_anual_micro_completo:
         variable_original: CNAE
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
-        notas: edición 2023
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        notas: división CNAE-09 → sección; XX = No consta → NC
+        recodificacion:
+          '01': A
+          '02': A
+          '03': A
+          '05': B
+          '06': B
+          '07': B
+          08: B
+          09: B
+          '10': C
+          '11': C
+          '12': C
+          '13': C
+          '14': C
+          '15': C
+          '16': C
+          '17': C
+          '18': C
+          '19': C
+          '20': C
+          '21': C
+          '22': C
+          '23': C
+          '24': C
+          '25': C
+          '26': C
+          '27': C
+          '28': C
+          '29': C
+          '30': C
+          '31': C
+          '32': C
+          '33': C
+          '35': D
+          '36': E
+          '37': E
+          '38': E
+          '39': E
+          '41': F
+          '42': F
+          '43': F
+          '45': G
+          '46': G
+          '47': G
+          '49': H
+          '50': H
+          '51': H
+          '52': H
+          '53': H
+          '55': I
+          '56': I
+          '58': J
+          '59': J
+          '60': J
+          '61': J
+          '62': J
+          '63': J
+          '64': K
+          '65': K
+          '66': K
+          '68': L
+          '69': M
+          '70': M
+          '71': M
+          '72': M
+          '73': M
+          '74': M
+          '75': M
+          '77': N
+          '78': N
+          '79': N
+          '80': N
+          '81': N
+          '82': N
+          '84': O
+          '85': P
+          '86': Q
+          '87': Q
+          '88': Q
+          '90': R
+          '91': R
+          '92': R
+          '93': R
+          '94': S
+          '95': S
+          '96': S
+          '97': T
+          '98': T
+          '99': U
+          XX: NC
   situacion_profesional:
     prioridad: P1
     nivel: persona
     tipo: categorica
     categorias:
-    - asalariado_publico
-    - asalariado_privado
-    - autonomo
     - empresario
+    - autonomo
+    - asalariado_indefinido
+    - asalariado_temporal
+    - asalariado
+    - otra
     descripcion: Situación profesional
     fuente_principal: epa / censo
     fuentes:
       censo2021_micro_hogares:
         variable_original: SITU
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
-        notas: no distingue sector público y privado; sí cuenta propia con/sin asalariados y ajena fija/temporal
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        notas: en blanco = no ocupado → NP
+        recodificacion: &id005
+          '1': empresario
+          '2': autonomo
+          '3': asalariado_indefinido
+          '4': asalariado_temporal
+          '5': otra
       censo_anual_micro_completo:
         variable_original: SITU
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
-        notas: edición 2023
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        notas: en blanco = no ocupado → NP
+        recodificacion: *id005
       epa:
         variable_original: SITU
-        verificado_contra: dr_EPA_2026.xlsx (INE)
+        verificado_contra: dr_EPA_2026.json (INE)
+        recodificacion:
+          '01': empresario
+          '03': autonomo
+          '05': otra
+          '06': otra
+          '07': asalariado
+          08: asalariado
+          09: otra
+        notas: la EPA no separa indefinido/temporal en SITU (va en DUCON1)
   tipo_jornada:
     prioridad: P2
     nivel: persona
@@ -409,7 +2155,10 @@ variables:
     fuentes:
       epa:
         variable_original: PARCO1
-        verificado_contra: dr_EPA_2026.xlsx (INE)
+        verificado_contra: dr_EPA_2026.json (INE)
+        recodificacion:
+          '1': completa
+          '6': parcial
   teletrabajo:
     prioridad: P2
     nivel: persona
@@ -422,22 +2171,65 @@ variables:
     fuente_principal: epa / tic_h
     fuentes:
       tic_h:
-        variable_original: TTRAB_ACTUAL, ULT_TTRAB
-        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
+        variable_original: TELETRAB + ULT_TTRAB + TTRAB_ACTUAL
+        verificado_contra: dr_TICHcuestionario_2025.json (INE)
+        recodificacion:
+          6|: nunca
+          1|1: habitual
+          1|2: habitual
+          1|3: habitual
+          1|4: habitual
+          1|5: habitual
+          1|6: ocasional
+          1|7: ocasional
+        notas: clave = ULT_TTRAB|TTRAB_ACTUAL; TELETRAB = 6 (el trabajo exige presencia, no se pregunta ULT_TTRAB)
+          → clave 6| → nunca; habitual = 2 días o más por semana
   anio_llegada_espana:
     prioridad: P2
     nivel: persona
     tipo: ordinal
     descripcion: Tramo del año de llegada a España
-    dominio_pendiente: 'F2: tramos según el diseño de registro del Censo Anual'
     fuente_principal: censo_anual
     fuentes:
       censo2021_micro_hogares:
         variable_original: VARANOE
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        recodificacion: &id006
+          '0001': antes_1981
+          '0002': '1981_1990'
+          '0003': '1991_2000'
+          '0004': '2001_2010'
+          '0005': '2011_2015'
+          '9999': NP
+          '2016': '2016_2020'
+          '2017': '2016_2020'
+          '2018': '2016_2020'
+          '2019': '2016_2020'
+          '2020': '2016_2020'
+          '2021': 2021_o_despues
+          '2022': 2021_o_despues
+          '2023': 2021_o_despues
+          '2024': 2021_o_despues
+          '2025': 2021_o_despues
+          '2026': 2021_o_despues
+          '2027': 2021_o_despues
+          '2028': 2021_o_despues
+          '2029': 2021_o_despues
+          '2030': 2021_o_despues
+        notas: los años desde 2016 vienen como año literal; 9999 = siempre en España → NP
       censo_anual_micro_completo:
         variable_original: VARANOE
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        recodificacion: *id006
+        notas: los años desde 2016 vienen como año literal; 9999 = siempre en España → NP
+    categorias:
+    - antes_1981
+    - '1981_1990'
+    - '1991_2000'
+    - '2001_2010'
+    - '2011_2015'
+    - '2016_2020'
+    - 2021_o_despues
   discapacidad_limitacion:
     prioridad: P1
     nivel: persona
@@ -451,10 +2243,19 @@ variables:
     fuentes:
       ecv:
         variable_original: PH030
-        verificado_contra: disreg_ecv25 (INE)
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_T*_2025.json (INE)
+        recodificacion:
+          '1': limitacion_grave
+          '2': limitacion_moderada
+          '3': sin_limitacion
       encuesta_salud:
         variable_original: C3a
-        verificado_contra: dr_ESdEadulto_2023.xlsx (INE)
+        verificado_contra: dr_ESdEadulto_2023.json (INE)
+        recodificacion:
+          '1': limitacion_grave
+          '2': limitacion_moderada
+          '3': sin_limitacion
+          '9': NC
   salud_autopercibida:
     prioridad: P1
     nivel: persona
@@ -470,10 +2271,22 @@ variables:
     fuentes:
       ecv:
         variable_original: PH010
-        verificado_contra: disreg_ecv25 (INE)
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_T*_2025.json (INE)
+        recodificacion:
+          '1': muy_buena
+          '2': buena
+          '3': regular
+          '4': mala
+          '5': muy_mala
       encuesta_salud:
         variable_original: C1
-        verificado_contra: dr_ESdEadulto_2023.xlsx (INE)
+        verificado_contra: dr_ESdEadulto_2023.json (INE)
+        recodificacion:
+          '1': muy_buena
+          '2': buena
+          '3': regular
+          '4': mala
+          '5': muy_mala
   uso_internet:
     prioridad: P1
     nivel: persona
@@ -487,8 +2300,17 @@ variables:
     fuente_principal: tic_h
     fuentes:
       tic_h:
-        variable_original: ULT_INT, FREC_INT
-        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
+        variable_original: ULT_INT + FREC_INT
+        verificado_contra: dr_TICHcuestionario_2025.json (INE)
+        recodificacion:
+          4|: nunca
+          3|: menos_frecuente
+          2|: menos_frecuente
+          1|1: diario
+          1|2: diario
+          1|3: semanal
+          1|4: menos_frecuente
+        notas: clave = ULT_INT|FREC_INT; FREC_INT solo para quien usó internet en 3 meses
   competencias_digitales:
     prioridad: P2
     nivel: persona
@@ -506,13 +2328,22 @@ variables:
   compra_online:
     prioridad: P2
     nivel: persona
-    tipo: booleana
+    tipo: categorica
     descripcion: Compra por internet en los últimos 3 meses
     fuente_principal: tic_h
     fuentes:
       tic_h:
         variable_original: ULT_COM
-        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
+        verificado_contra: dr_TICHcuestionario_2025.json (INE)
+        recodificacion:
+          '1': si
+          '2': 'no'
+          '3': 'no'
+          '4': 'no'
+        notas: compra en los últimos 3 meses; vacío = no ha usado internet → no
+    categorias:
+    - si
+    - 'no'
   tipo_hogar:
     prioridad: P0
     nivel: hogar
@@ -528,8 +2359,38 @@ variables:
     fuente_principal: censo2021
     fuentes:
       censo2021_micro_hogares:
-        variable_original: TIPO_HOG + ESTRUC_HOG + TIPO_NUC
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        variable_original: TIPO_HOG|TIPO_NUC (TIPO_NUC del primer núcleo del hogar)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        recodificacion:
+          01|9: unipersonal
+          02|9: varias_familias_no_emparentadas
+          03|9: otros
+          04|1: pareja_sin_hijos
+          04|2: pareja_con_hijos
+          04|3: monoparental
+          04|4: monoparental
+          05|1: otros
+          06|1: otros
+          07|1: varias_familias_no_emparentadas
+          08|1: varias_familias_no_emparentadas
+          05|2: otros
+          06|2: otros
+          07|2: varias_familias_no_emparentadas
+          08|2: varias_familias_no_emparentadas
+          05|3: otros
+          06|3: otros
+          07|3: varias_familias_no_emparentadas
+          08|3: varias_familias_no_emparentadas
+          05|4: otros
+          06|4: otros
+          07|4: varias_familias_no_emparentadas
+          08|4: varias_familias_no_emparentadas
+          05|9: otros
+          06|9: otros
+          07|9: varias_familias_no_emparentadas
+          08|9: varias_familias_no_emparentadas
+        notas: 05 y 06 (un núcleo o varios con otros parientes) → otros; 02, 07 y 08 (personas no emparentadas o
+          varias familias) → varias_familias_no_emparentadas (D-025)
   tamano_hogar:
     prioridad: P0
     nivel: hogar
@@ -547,6 +2408,12 @@ variables:
         variable_original: TAM_HOG
         verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
         notas: 5 = «5 o más»
+        recodificacion:
+          '1': '1'
+          '2': '2'
+          '3': '3'
+          '4': '4'
+          '5': 5+
       ecp:
         variable_original: Tamaño del hogar (tabla 60133)
         verificado_contra: INEbase, API Tempus
@@ -628,7 +2495,14 @@ variables:
         notas: 'solo propiedad / alquiler / otro: sin hipoteca ni tipo de alquiler'
       ecv:
         variable_original: HH021
-        verificado_contra: disreg_ecv25 (INE)
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_T*_2025.json (INE)
+        recodificacion:
+          '1': propiedad_sin_hipoteca
+          '2': propiedad_con_hipoteca
+          '3': alquiler_mercado
+          '4': alquiler_inferior_cesion
+          '5': alquiler_inferior_cesion
+        notas: 5 = cesión gratuita
   renta_hogar_decil:
     prioridad: P1
     nivel: hogar
@@ -674,13 +2548,21 @@ variables:
   privacion_material:
     prioridad: P1
     nivel: hogar
-    tipo: booleana
+    tipo: categorica
     descripcion: Indicador oficial de privación material
     fuente_principal: ecv
     fuentes:
       ecv:
-        variable_original: vrMATSOCDEP / vhMATDEP
-        verificado_contra: disreg_ecv25 (INE)
+        variable_original: vrMATSOCDEP
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_T*_2025.json (INE)
+        recodificacion:
+          '1': si
+          '0': 'no'
+          '9': NP
+        notas: carencia material y social severa (indicador oficial UE desde 2021)
+    categorias:
+    - si
+    - 'no'
   privacion_material_n:
     prioridad: P1
     nivel: hogar
@@ -711,17 +2593,31 @@ variables:
     fuentes:
       ecv:
         variable_original: HS120
-        verificado_contra: disreg_ecv25 (INE)
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_T*_2025.json (INE)
+        recodificacion:
+          '1': mucha_dificultad
+          '2': dificultad
+          '3': cierta_dificultad
+          '4': cierta_facilidad
+          '5': facilidad
+          '6': mucha_facilidad
   vehiculo_hogar:
     prioridad: P2
     nivel: hogar
-    tipo: booleana
+    tipo: categorica
     descripcion: Dispone de vehículo
     fuente_principal: ecv / censo2021
     fuentes:
       ecv:
         variable_original: HS110
-        verificado_contra: disreg_ecv25 (INE)
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_T*_2025.json (INE)
+        recodificacion:
+          '1': si
+          '2': 'no'
+          '3': 'no'
+    categorias:
+    - si
+    - 'no'
   ccaa:
     prioridad: P0
     nivel: territorio
@@ -760,16 +2656,79 @@ variables:
         verificado_contra: INEbase, API Tempus
       ecv:
         variable_original: DB040
-        verificado_contra: disreg_ecv25 (INE)
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_T*_2025.json (INE)
+        recodificacion:
+          ES61: '01'
+          ES24: '02'
+          ES12: '03'
+          ES53: '04'
+          ES70: '05'
+          ES13: '06'
+          ES41: '07'
+          ES42: 08
+          ES51: 09
+          ES52: '10'
+          ES43: '11'
+          ES11: '12'
+          ES30: '13'
+          ES62: '14'
+          ES22: '15'
+          ES21: '16'
+          ES23: '17'
+          ES63: '18'
+          ES64: '19'
+        notas: región NUTS-2 → código INE de CCAA
       epa:
         variable_original: CCAA
-        verificado_contra: dr_EPA_2026.xlsx (INE)
+        verificado_contra: dr_EPA_2026.json (INE)
+        recodificacion:
+          '01': '01'
+          '02': '02'
+          '03': '03'
+          '04': '04'
+          '05': '05'
+          '06': '06'
+          '07': '07'
+          08: 08
+          09: 09
+          '10': '10'
+          '11': '11'
+          '12': '12'
+          '13': '13'
+          '14': '14'
+          '15': '15'
+          '16': '16'
+          '17': '17'
+          '51': '18'
+          '52': '19'
+        notas: 51 Ceuta → 18; 52 Melilla → 19
       tic_h:
         variable_original: CCAA
-        verificado_contra: dr_TICHcuestionario_2025.xlsx (INE)
+        verificado_contra: dr_TICHcuestionario_2025.json (INE)
+        recodificacion: &id007
+          '01': '01'
+          '02': '02'
+          '03': '03'
+          '04': '04'
+          '05': '05'
+          '06': '06'
+          '07': '07'
+          08: 08
+          09: 09
+          '10': '10'
+          '11': '11'
+          '12': '12'
+          '13': '13'
+          '14': '14'
+          '15': '15'
+          '16': '16'
+          '17': '17'
+          '18': '18'
+          '19': '19'
       encuesta_salud:
         variable_original: CCAA
-        verificado_contra: dr_ESdEadulto_2023.xlsx (INE)
+        verificado_contra: dr_ESdEadulto_2023.json (INE)
+        recodificacion: *id007
       censo_anual_micro_demograficas:
         variable_original: CPRO (derivada)
         verificado_contra: dr_CensoAnual_2026.xlsx (INE)
@@ -864,15 +2823,30 @@ variables:
     fuentes:
       censo2021_micro_hogares:
         variable_original: CMUN
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
-        notas: códigos 991–993 para <10.000 hab.; para ≥10.000 se asigna con la población municipal
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        notas: 991–993 = tamaño; el resto son municipios ≥10.000 hab. y se clasifican con la población municipal
+          del Censo Anual exhaustivo 2025
+        recodificacion:
+          '991': hasta_2000
+          '992': de_2001_a_10000
+          '993': de_2001_a_10000
       censo_anual_micro_completo:
         variable_original: CMUN
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        recodificacion:
+          '991': hasta_2000
+          '992': de_2001_a_10000
+          '993': de_2001_a_10000
+        notas: 991–993 = tamaño; el resto son municipios ≥10.000 hab. y se clasifican con la población municipal
+          del Censo Anual exhaustivo 2025
       censo_anual_micro_demograficas:
         variable_original: CMUN
-        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
+        verificado_contra: dr_CensoAnual_2026.json (INE)
         notas: códigos de tamaño para <10.000 hab.
+        recodificacion:
+          '991': hasta_2000
+          '992': de_2001_a_10000
+          '993': de_2001_a_10000
   grado_urbanizacion:
     prioridad: P0
     nivel: territorio
@@ -886,16 +2860,26 @@ variables:
     fuentes:
       censo2021_micro_hogares:
         variable_original: TIPO_MUN_DEGURBA
-        verificado_contra: dr_CensoPersonas_2021.xlsx (INE)
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        recodificacion: &id008
+          '1': ciudad
+          '2': intermedio
+          '3': rural
       censo_anual_micro_completo:
         variable_original: DEGURBA
-        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE, versión 2025)
+        verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
+        recodificacion: *id008
       censo_anual_micro_demograficas:
         variable_original: DEGURBA
-        verificado_contra: dr_CensoAnual_2026.xlsx (INE)
+        verificado_contra: dr_CensoAnual_2026.json (INE)
+        recodificacion: *id008
       ecv:
         variable_original: DB100
-        verificado_contra: disreg_ecv25 (INE)
+        verificado_contra: dr_ECV_SM_Td_2025.json (INE)
+        recodificacion:
+          '1': ciudad
+          '2': intermedio
+          '3': rural
   municipio:
     prioridad: P2
     nivel: territorio
@@ -1273,3 +3257,110 @@ variables:
     - 10
     descripcion: Rasgo latente
     fuente_principal: cis_barometros / ess
+  tenencia_censo:
+    prioridad: P1
+    nivel: hogar
+    tipo: categorica
+    descripcion: Régimen de tenencia según el Censo (D-018.3)
+    categorias:
+    - propiedad
+    - alquiler
+    - otro
+    fuente_principal: censo2021
+    fuentes:
+      censo2021_micro_hogares:
+        variable_original: TENEN_VIV
+        verificado_contra: dr_CensoPersonas_2021.json (INE)
+        recodificacion:
+          '2': propiedad
+          '3': alquiler
+          '4': otro
+          '9': NC
+  nacionalidad_esp_ext:
+    prioridad: P1
+    nivel: persona
+    tipo: categorica
+    descripcion: Nacionalidad española o extranjera (llave común con las encuestas)
+    categorias:
+    - espanola
+    - extranjera
+    fuente_principal: censo / encuestas
+    derivada_de: nacionalidad_grupo
+    fuentes:
+      ecv:
+        variable_original: RB290
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_T*_2025.json (INE)
+        recodificacion:
+          '1': espanola
+          '2': extranjera
+          '3': extranjera
+      epa:
+        variable_original: NAC1
+        verificado_contra: dr_EPA_2026.json (INE)
+        recodificacion:
+          '1': espanola
+          '2': espanola
+          '3': extranjera
+        notas: 2 = española y doble nacionalidad → española
+      tic_h:
+        variable_original: NACIONALIDAD
+        verificado_contra: dr_TICHcuestionario_2025.json (INE)
+        recodificacion:
+          '1': espanola
+          '2': extranjera
+          '3': espanola
+          '4': extranjera
+        notas: 3 = española y otra → española; 4 = ninguna (apátrida) → extranjera
+      encuesta_salud:
+        variable_original: A2a_1
+        verificado_contra: dr_ESdEadulto_2023.json (INE)
+        recodificacion:
+          '1': espanola
+          '2': extranjera
+        notas: A2a_1 = 1 si tiene nacionalidad española
+  relacion_actividad_3:
+    prioridad: P1
+    nivel: persona
+    tipo: categorica
+    descripcion: Relación con la actividad en tres grupos (llave común con la EPA)
+    categorias:
+    - ocupado
+    - parado
+    - inactivo
+    fuente_principal: censo / epa
+    derivada_de: relacion_actividad
+    fuentes:
+      epa:
+        variable_original: AOI
+        verificado_contra: dr_EPA_2026.json (INE)
+        recodificacion:
+          '03': ocupado
+          '04': ocupado
+          '05': parado
+          '06': parado
+          '07': inactivo
+          08: inactivo
+          09: inactivo
+        notas: clasificación OIT; la EPA no distingue los tipos de inactividad del Censo
+  sector_publico:
+    prioridad: P2
+    nivel: persona
+    tipo: categorica
+    descripcion: Asalariado del sector público (D-018.2)
+    categorias:
+    - si
+    - 'no'
+    fuente_principal: epa
+    fuentes:
+      epa:
+        variable_original: SITU
+        verificado_contra: dr_EPA_2026.json (INE)
+        recodificacion:
+          '07': si
+          08: 'no'
+          '01': 'no'
+          '03': 'no'
+          '05': 'no'
+          '06': 'no'
+          09: 'no'
+        notas: 07 = asalariado del sector público

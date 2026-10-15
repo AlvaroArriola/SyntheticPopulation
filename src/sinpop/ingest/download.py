@@ -85,7 +85,7 @@ def _fetch_resumable(url: str, tmp: Path, timeout: int = 120, retries: int = 8) 
     raise OSError(f"descarga incompleta de {url}")
 
 
-INE_TEMPUS = "https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/{tabla}?tip=A&{periodo}"
+INE_TEMPUS = "https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/{tabla}?tip={tip}&{periodo}"
 
 
 def download_ine_table(
@@ -95,13 +95,16 @@ def download_ine_table(
     condiciones: str,
     fecha: str | None = None,
     raw_dir: Path = RAW_DIR,
+    metadatos: bool = False,
 ) -> Entry:
     """Descarga una tabla de INEbase (API Tempus) en JSON.
+
+    Con `metadatos=True` (tip=AM) cada serie trae los códigos de sus dimensiones.
 
     `fecha` en formato AAAAMMDD selecciona un único periodo; sin ella, el último publicado.
     """
     periodo = f"date={fecha}" if fecha else "nult=1"
-    url = INE_TEMPUS.format(tabla=tabla, periodo=periodo)
+    url = INE_TEMPUS.format(tabla=tabla, periodo=periodo, tip="AM" if metadatos else "A")
     dest_dir = raw_dir / fuente / edicion
     dest_dir.mkdir(parents=True, exist_ok=True)
     dest = dest_dir / f"tabla_{tabla}_{fecha or 'ultimo'}.json"

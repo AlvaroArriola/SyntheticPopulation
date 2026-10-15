@@ -57,6 +57,9 @@ def ingest(
         int | None, typer.Option(help="Id de tabla de INEbase (API Tempus) a descargar en JSON")
     ] = None,
     date: Annotated[str | None, typer.Option(help="Periodo AAAAMMDD de la tabla INE")] = None,
+    metadata: Annotated[
+        bool, typer.Option(help="Tabla INE con códigos de dimensiones (tip=AM)")
+    ] = False,
     inventory: Annotated[bool, typer.Option(help="Genera el inventario de F1")] = False,
     extract: Annotated[
         list[str] | None, typer.Option(help="Patrón de ficheros a extraer del ZIP registrado")
@@ -99,7 +102,9 @@ def ingest(
     if ine_table is not None:
         from sinpop.ingest.download import download_ine_table
 
-        e = download_ine_table(ine_table, source, edition, f.condiciones, fecha=date)
+        e = download_ine_table(
+            ine_table, source, edition, f.condiciones, fecha=date, metadatos=metadata
+        )
         from sinpop.ingest.download import download_ine_table_meta
 
         download_ine_table_meta(ine_table, source, edition, f.condiciones)

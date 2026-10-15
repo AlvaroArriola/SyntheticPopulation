@@ -284,3 +284,11 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   1. **Illes Balears:** el PDF solo contiene el voto CERA; faltan los resultados generales.
   2. **Asturias:** el texto del PDF no es extraíble; se lee por OCR y se valida con la suma de candidaturas igual a votos a candidaturas.
 - **Aprobada por:** humano (aporte de las fuentes); el tratamiento de los huecos queda pendiente.
+
+## D-024 · Aprobación de F1 (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F1
+- **Estado:** aprobada
+- **Decisión:** el responsable aprueba el inventario, la matriz de cobertura, las verificaciones críticas y las decisiones D-015 a D-023 (puerta G1.6). Se inicia F2. Queda abierto el hueco de las autonómicas de Illes Balears (solo voto CERA), que no bloquea.
+- **Aprobada por:** humano
