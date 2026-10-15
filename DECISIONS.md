@@ -375,3 +375,25 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Especiales del CIS:** 0 NP, 8996 en blanco, 9977 nulo, 9993 mismo partido, 9995 no tenía edad, 9996 sin derecho a voto, 9997 no votó / ninguno / no votaría (según la variable), 9998 NS, 9999 NC. Se modelan como opciones legítimas (regla 10 de CLAUDE.md).
 - **Resultado:** 72 candidaturas de 2023 (5 izquierda estatal, 6 socialdemócrata, 1 centro-derecha, 1 derecha radical, 44 nacionalistas y regionalistas, 15 otros); 138 códigos en 3567 y 113 en 3411, 0 sin asignar.
 - **Aprobada por:** pendiente
+
+## D-031 · Lectura de las autonómicas: descuadres de las publicaciones oficiales y transcripciones (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F2
+- **Estado:** propuesta — **necesita decisión humana** (afecta a G2.6)
+- **Contexto:** cada comunidad tiene un lector (`harmonize/autonomicas/ccaa_XX.py`) que extrae de la publicación oficial los resultados por circunscripción y los comprueba: votantes = válidos + nulos, válidos = candidaturas + blancos y, si hay total publicado, suma de circunscripciones = total. Ningún número se deduce: lo que no publica el boletín queda vacío.
+- **Resultado:** 15 de 19 comunidades se leen sin ninguna diferencia aritmética (entre ellas Illes Balears, que además está incompleta). Detalle:
+  1. **Descuadres en la propia publicación** (comprobados con una segunda extracción del texto; se conservan las cifras publicadas y quedan en `notas`):
+     - Andalucía (BOJA nº 108/2026): en Granada los votos de las candidaturas suman 476.345 y el cuadro I publica 476.342 votos a candidaturas (+3); el total de Andalucía arrastra la misma diferencia.
+     - Canarias (BOC nº 121/2023): en El Hierro las candidaturas suman 6.218 y el anexo I publica 6.216 votos a candidaturas (+2).
+     - Galicia (DOG nº 47/2024): el total de la comunidad publica 100 votos válidos y a candidaturas más que la suma de partidos y provincias.
+     - Región de Murcia (BORM nº 135/2023): votantes publicados 694.906; válidos + nulos = 694.855 (+51).
+     - Comunitat Valenciana (DOGV nº 9618/2023): el total de electores publicado (2.426.278) es la suma de Castellón y Valencia sin Alicante; se deja vacío y se guarda la cifra impresa en `notas`. Las cifras provinciales cuadran.
+  2. **Cifras no publicadas** (se dejan vacías): votantes en Castilla y León (el anexo I no los trae); electores en Aragón (el informe solo da el censo de constitución de mesas).
+  3. **Navarra:** el acta del BON nº 147/2023 es una imagen escaneada sin capa de texto y el OCR confunde cifras. Se transcribe a mano, comprobando cada voto con su cifra en letra, la aritmética del acta y los 50 escaños; el número de electores no tiene comprobación independiente. El lector solo funciona con el PDF de huella SHA-256 registrada.
+  4. **Asturias:** se lee por OCR, con dos lecturas que deben coincidir y cada voto contrastado con su cifra en letra; si una cifra no es legible, el lector se detiene.
+  5. **Illes Balears:** confirmado que el BOIB nº 83/2023 solo trae el escrutinio del CERA (1.566 votantes); faltan los resultados generales (`MANUAL_DOWNLOADS.md`).
+  6. **Canarias:** se guardan por separado las 7 islas y la circunscripción autonómica (cada elector vota en ambas); no se suman.
+  7. **CERA:** solo La Rioja y Aragón permiten comprobar que el resultado incluye el voto CERA; en el resto la publicación no lo dice (queda anotado por comunidad).
+- **Propuesta:** aceptar los descuadres de las publicaciones como diferencias de la fuente (no del lector), usar las cifras por candidatura, que son las que sirven de objetivo, y dar por buena la transcripción de Navarra. G2.6 queda fallida mientras falten los totales oficiales de las generales (BOE) y los resultados generales de Illes Balears.
+- **Aprobada por:** pendiente

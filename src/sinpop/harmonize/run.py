@@ -48,6 +48,25 @@ def _pasos() -> list[Paso]:
         return ecp.colectivos(ecp.total(), ecp.viviendas_familiares())
 
     gen: list[pl.DataFrame] = []
+    aut: list[pl.DataFrame] = []
+
+    def autonomicas_(i: int) -> pl.DataFrame:
+        if not aut:
+            from sinpop.harmonize import autonomicas
+
+            res, vot = [], []
+            for d in autonomicas.todas().values():
+                if d["resultado"] is not None:
+                    r, v = d["resultado"].frames()
+                    res.append(r)
+                    vot.append(v)
+            aut.append(pl.concat(res, how="diagonal_relaxed").sort("ccaa", "circunscripcion"))
+            aut.append(
+                pl.concat(vot, how="diagonal_relaxed").sort(
+                    "ccaa", "circunscripcion", "candidatura"
+                )
+            )
+        return aut[i]
 
     def generales(i: int) -> pl.DataFrame:
         if not gen:
@@ -107,6 +126,18 @@ def _pasos() -> list[Paso]:
             "infoelectoral_resultados",
             ("infoelectoral_resultados/generales-2023/congreso", PADRON),
             lambda: generales(1),
+        ),
+        Paso(
+            "elecciones_autonomicas_circunscripciones",
+            "resultados_autonomicas",
+            ("resultados_autonomicas/",),
+            lambda: autonomicas_(0),
+        ),
+        Paso(
+            "elecciones_autonomicas_votos",
+            "resultados_autonomicas",
+            ("resultados_autonomicas/",),
+            lambda: autonomicas_(1),
         ),
     ]
 
