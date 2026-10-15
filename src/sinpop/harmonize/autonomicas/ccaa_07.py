@@ -14,10 +14,9 @@ de línea tras un guion o un paréntesis no se convierte en espacio), y se compr
 caracteres de la cabecera de cada página son exactamente los de esos nombres. Cada cifra se
 asigna a la columna cuyo TOTAL termina en la misma posición del texto (± `_TOLERANCIA`).
 
-Votantes: la publicación no la da. Como `Circunscripcion.votantes` es obligatoria, se toma
-válidos (TOTAL) + nulos del anexo I y se deja constancia en las notas; por eso la
-comprobación votantes = válidos + nulos no aporta nada aquí, pero sí las de válidos =
-candidaturas + blancos y votos a candidaturas = suma de candidaturas, y la del total.
+Votantes: la publicación no la da y no se deduce (regla 3 de CLAUDE.md): queda a `None`. Se
+comprueban válidos = candidaturas + blancos, votos a candidaturas = suma de candidaturas y el
+total de la comunidad.
 """
 
 from __future__ import annotations
@@ -200,7 +199,7 @@ def leer(path: Path = RUTA) -> Resultado:
             codigo=codigo,
             nombre=nombre,
             electores=electores,
-            votantes=validos + nulos,  # no publicada: válidos + nulos (véanse las notas)
+            votantes=None,  # no publicada
             nulos=nulos,
             blancos=blancos,
             votos=votos,
@@ -214,7 +213,7 @@ def leer(path: Path = RUTA) -> Resultado:
     notas = [
         "Fuente: BOCyL nº 80 (29/04/2026), Resolución de 27/4/2026 de la Junta Electoral de "
         "Castilla y León, anexos I, II y III.",
-        "VOTANTES NO PUBLICADOS: el anexo I no trae votantes; se toma válidos (TOTAL) + nulos.",
+        "VOTANTES NO PUBLICADOS: el anexo I no trae votantes; se dejan vacíos (no se deducen).",
         "Electores: según la resolución, la columna de electores del resumen general recoge los "
         "datos remitidos por la Oficina del Censo Electoral; no indica si incluyen el CERA.",
         "Voto CERA: la resolución publica aparte su escrutinio (anexo V) pero no dice "

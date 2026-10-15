@@ -29,7 +29,7 @@ def test_cifras_publicadas(res):
     # Cifras leídas a mano en los anexos I a III (páginas 240 a 244 del boletín).
     t = res.total
     assert (t.electores, t.validos, t.nulos, t.blancos) == (2_097_803, 1_255_323, 16_573, 18_570)
-    assert t.votantes == 1_271_896  # no publicada: válidos + nulos
+    assert t.votantes is None  # no publicada
     assert t.votos["PARTIDO POPULAR (PP)"] == 444_296
     assert t.escanos["PARTIDO POPULAR (PP)"] == 33
     por = {c.codigo: c for c in res.circunscripciones}

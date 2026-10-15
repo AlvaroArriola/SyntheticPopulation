@@ -203,9 +203,7 @@ def _anexos_ii_iii(path: Path) -> list[tuple[str, dict[str, int], dict[str, int]
         nombre = [
             w
             for w in ws
-            if y_etiqueta + 20 < w.y0
-            and w.y1 < y_cab + 15
-            and x_cab < w.x0 < etiquetas[-1].x1 + 15
+            if y_etiqueta + 20 < w.y0 and w.y1 < y_cab + 15 and x_cab < w.x0 < etiquetas[-1].x1 + 15
         ]
         lineas: list[list[_Palabra]] = []
         for w in sorted(nombre, key=lambda w: w.x0):

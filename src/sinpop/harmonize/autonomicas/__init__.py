@@ -30,7 +30,7 @@ class Circunscripcion:
     codigo: str  # provincia INE (2 cifras); isla o circunscripción: "<prov>-<sufijo>"
     nombre: str
     electores: int | None  # total de electores del acta (incluido CERA si el acta lo incluye)
-    votantes: int
+    votantes: int | None  # None si la publicación no lo da (no se deduce)
     nulos: int
     blancos: int
     votos: dict[str, int]  # candidatura (nombre tal como figura en la publicación) → votos
@@ -42,7 +42,7 @@ class Circunscripcion:
     def errores(self) -> list[str]:
         out = []
         validos = sum(self.votos.values()) + self.blancos
-        if self.votantes != validos + self.nulos:
+        if self.votantes is not None and self.votantes != validos + self.nulos:
             out.append(
                 f"{self.nombre}: votantes {self.votantes} ≠ candidaturas + blancos + nulos "
                 f"{validos + self.nulos}"
@@ -51,7 +51,11 @@ class Circunscripcion:
             out.append(f"{self.nombre}: válidos publicados {self.validos} ≠ {validos}")
         if self.a_candidaturas is not None and self.a_candidaturas != sum(self.votos.values()):
             out.append(f"{self.nombre}: votos a candidaturas publicados ≠ suma de candidaturas")
-        if self.electores is not None and self.votantes > self.electores:
+        if (
+            self.electores is not None
+            and self.votantes is not None
+            and self.votantes > self.electores
+        ):
             out.append(f"{self.nombre}: más votantes que electores")
         return out
 
@@ -100,7 +104,7 @@ class Resultado:
                 }
                 for c in self.circunscripciones
             ],
-            schema_overrides={"electores": pl.Int64},
+            schema_overrides={"electores": pl.Int64, "votantes": pl.Int64},
         )
         vot = pl.DataFrame(
             [
