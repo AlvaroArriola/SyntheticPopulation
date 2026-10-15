@@ -1,15 +1,1399 @@
 # Partidos por elección y familias estables (docs/02, sección 3.5, regla 1).
-# Estado F0: solo las familias propuestas. Las candidaturas, sus códigos oficiales y sus
-# códigos en cada estudio del CIS se completan en F2 desde los resultados oficiales y los
-# diseños de registro. Cada correspondencia entre elecciones se documenta en DECISIONS.md.
+# Generado por tools/generar_partidos.py (criterios en su cabecera y en D-030).
+# Las siglas de 2023 son las de las hojas del Ministerio del Interior; los códigos del
+# CIS, los de las etiquetas de valores de cada .sav (solo metadatos).
 familias:
-  - {id: izquierda_estatal, nombre: Izquierda de ámbito estatal}
-  - {id: socialdemocrata, nombre: Socialdemócrata}
-  - {id: centro_derecha_estatal, nombre: Centro-derecha de ámbito estatal}
-  - {id: derecha_radical, nombre: Derecha radical}
-  - {id: nacionalista_regionalista, nombre: Nacionalistas y regionalistas, desglose_por_territorio: true}
-  - {id: otros, nombre: Otras candidaturas}
-
+- id: izquierda_estatal
+  nombre: Izquierda de ámbito estatal
+- id: socialdemocrata
+  nombre: Socialdemócrata
+- id: centro_derecha_estatal
+  nombre: Centro-derecha de ámbito estatal
+- id: derecha_radical
+  nombre: Derecha radical
+- id: nacionalista_regionalista
+  nombre: Nacionalistas y regionalistas
+  desglose_por_territorio: true
+- id: otros
+  nombre: Otras candidaturas
 elecciones:
-  generales-2023: {fecha: 2023-07-23, fuente: infoelectoral_resultados, candidaturas: []}
-  europeas-2024: {fecha: 2024-06-09, fuente: infoelectoral_resultados, candidaturas: []}
+  generales-2023:
+    fecha: '2023-07-23'
+    fuente: infoelectoral_resultados
+    candidaturas:
+    - codigo_oficial: +RDS+
+      nombre: +RDS+
+      familia: nacionalista_regionalista
+      ambito: PROV:30
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: 3e
+      nombre: 3e
+      familia: otros
+      ambito: PROV:26,PROV:40
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: ADELANTE ANDALUCÍA
+      nombre: Adelante Andalucía
+      familia: nacionalista_regionalista
+      ambito: PROV:11
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: AHORA CANARIAS- PCPC
+      nombre: Ahora Canarias-Partido Comunista del Pueblo Canario
+      familia: nacionalista_regionalista
+      ambito: PROV:35,PROV:38
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: ALM
+      nombre: ALM
+      familia: nacionalista_regionalista
+      ambito: PROV:04
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: ASTURIAS EXISTE EV
+      nombre: Asturias Existe-España Vaciada
+      familia: nacionalista_regionalista
+      ambito: PROV:33
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: B.N.G.
+      nombre: Bloque Nacionalista Galego
+      familia: nacionalista_regionalista
+      ambito: PROV:15,PROV:27,PROV:32,PROV:36
+      codigos_cis:
+        '3567':
+        - '1201'
+    - codigo_oficial: BQEX
+      nombre: BQEX
+      familia: nacionalista_regionalista
+      ambito: PROV:06,PROV:10
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: CCD
+      nombre: CCD
+      familia: nacionalista_regionalista
+      ambito: PROV:32
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: CCa
+      nombre: Coalición Canaria
+      familia: nacionalista_regionalista
+      ambito: PROV:35,PROV:38
+      codigos_cis:
+        '3567':
+        - '503'
+    - codigo_oficial: CJ
+      nombre: Caminando Juntos
+      familia: otros
+      ambito: PROV:03,PROV:11,PROV:18,PROV:29,PROV:30,PROV:34,PROV:37,PROV:40,PROV:41,PROV:46
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: CUP-PR
+      nombre: Candidatura d'Unitat Popular-Per la Ruptura
+      familia: nacionalista_regionalista
+      ambito: PROV:08,PROV:17,PROV:25,PROV:43
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: CpM
+      nombre: Coalición por Melilla
+      familia: nacionalista_regionalista
+      ambito: PROV:52
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: EAJ-PNV
+      nombre: Euzko Alderdi Jeltzalea-Partido Nacionalista Vasco
+      familia: nacionalista_regionalista
+      ambito: PROV:01,PROV:20,PROV:48
+      codigos_cis:
+        '3567':
+        - '1601'
+    - codigo_oficial: EH Bildu
+      nombre: Euskal Herria Bildu
+      familia: nacionalista_regionalista
+      ambito: PROV:01,PROV:20,PROV:31,PROV:48
+      codigos_cis:
+        '3567':
+        - '1602'
+    - codigo_oficial: ERC
+      nombre: Esquerra Republicana de Catalunya
+      familia: nacionalista_regionalista
+      ambito: PROV:08,PROV:17,PROV:25,PROV:43
+      codigos_cis:
+        '3567':
+        - '901'
+    - codigo_oficial: ESCAÑOS EN BLANCO
+      nombre: Escaños en Blanco
+      familia: otros
+      ambito: PROV:01,PROV:14,PROV:16,PROV:20,PROV:22,PROV:26,PROV:30,PROV:44,PROV:47,PROV:50
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: ESCONS EN BLANC
+      nombre: Escons en Blanc
+      familia: otros
+      ambito: PROV:25
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: marca de Escaños en Blanco en catalán
+    - codigo_oficial: ESPAÑA VACIADA
+      nombre: España Vaciada
+      familia: nacionalista_regionalista
+      ambito: PROV:24,PROV:34,PROV:37,PROV:47
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: EV-PCAS- TC
+      nombre: España Vaciada-Partido Castellano-Tierra Comunera
+      familia: nacionalista_regionalista
+      ambito: PROV:09
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: EVB
+      nombre: EVB
+      familia: nacionalista_regionalista
+      ambito: PROV:46
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: EVC
+      nombre: EVC
+      familia: nacionalista_regionalista
+      ambito: PROV:43
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: EXISTE
+      nombre: Existe (Teruel Existe / Aragón Existe)
+      familia: nacionalista_regionalista
+      ambito: PROV:22,PROV:44,PROV:50
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: F.I.A.
+      nombre: F.I.A.
+      familia: nacionalista_regionalista
+      ambito: PROV:22,PROV:44,PROV:50
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: FE de las JONS
+      nombre: Falange Española de las JONS
+      familia: otros
+      ambito: ES
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: FO
+      nombre: Frente Obrero
+      familia: otros
+      ambito: ES
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: FUERZA CÍVICA
+      nombre: FUERZA CÍVICA
+      familia: nacionalista_regionalista
+      ambito: PROV:47
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: GBAI
+      nombre: Geroa Bai
+      familia: nacionalista_regionalista
+      ambito: PROV:31
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: GITV
+      nombre: GITV
+      familia: nacionalista_regionalista
+      ambito: PROV:34
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: JM+
+      nombre: Jaén Merece Más
+      familia: nacionalista_regionalista
+      ambito: PROV:23
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: JxCAT - JUNTS
+      nombre: Junts per Catalunya
+      familia: nacionalista_regionalista
+      ambito: PROV:08,PROV:17,PROV:25,PROV:43
+      codigos_cis:
+        '3567':
+        - '902'
+    - codigo_oficial: JxG
+      nombre: Juntos por Granada
+      familia: nacionalista_regionalista
+      ambito: PROV:18
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: LB
+      nombre: LB
+      familia: otros
+      ambito: PROV:04,PROV:51
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: MÉS PER MALLORCA- MÉS PER MENORCA- SUMAR
+      nombre: Més per Mallorca-Més per Menorca-Sumar
+      familia: izquierda_estatal
+      ambito: PROV:07
+      codigos_cis:
+        '3567':
+        - '21'
+      notas: marca de Sumar en Illes Balears
+    - codigo_oficial: NC-bc
+      nombre: Nueva Canarias-Bloque Canarista
+      familia: nacionalista_regionalista
+      ambito: PROV:35,PROV:38
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: PACMA
+      nombre: Partido Animalista con el Medio Ambiente
+      familia: otros
+      ambito: ES
+      codigos_cis:
+        '3567':
+        - '6'
+    - codigo_oficial: PAR
+      nombre: Partido Aragonés
+      familia: nacionalista_regionalista
+      ambito: PROV:22,PROV:44,PROV:50
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: PARTIDO AUTÓNOMOS
+      nombre: PARTIDO AUTÓNOMOS
+      familia: nacionalista_regionalista
+      ambito: PROV:03
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: PCTC
+      nombre: Partit Comunista dels Treballadors de Catalunya
+      familia: otros
+      ambito: PROV:08,PROV:17,PROV:25,PROV:43
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: marca territorial del PCTE
+    - codigo_oficial: PCTE
+      nombre: Partido Comunista de los Trabajadores de España
+      familia: otros
+      ambito: ES
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: PCTE/ELAK
+      nombre: PCTE/ELAK
+      familia: otros
+      ambito: PROV:20
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: marca territorial del PCTE
+    - codigo_oficial: PCTG
+      nombre: Partido Comunista dos Traballadores de Galiza
+      familia: otros
+      ambito: PROV:27,PROV:32,PROV:36
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: marca territorial del PCTE
+    - codigo_oficial: PDeCAT-E- CiU
+      nombre: Partit Demòcrata Europeu Català-Espai CiU
+      familia: nacionalista_regionalista
+      ambito: PROV:08,PROV:17,PROV:25,PROV:43
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: PH
+      nombre: Partido Humanista
+      familia: otros
+      ambito: PROV:28
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: POR MI REGIÓN
+      nombre: POR MI REGIÓN
+      familia: nacionalista_regionalista
+      ambito: PROV:30
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: PP
+      nombre: Partido Popular
+      familia: centro_derecha_estatal
+      ambito: ES
+      codigos_cis:
+        '3567':
+        - '2'
+    - codigo_oficial: PREPAL
+      nombre: Partido Regionalista del País Leonés
+      familia: nacionalista_regionalista
+      ambito: PROV:24,PROV:37,PROV:49
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: PSC
+      nombre: Partit dels Socialistes de Catalunya
+      familia: socialdemocrata
+      ambito: PROV:08,PROV:17,PROV:25,PROV:43
+      codigos_cis:
+        '3567':
+        - '1'
+      notas: federación del PSOE en Cataluña
+    - codigo_oficial: PSE-EE (PSOE)
+      nombre: Partido Socialista de Euskadi-Euskadiko Ezkerra
+      familia: socialdemocrata
+      ambito: PROV:01,PROV:20,PROV:48
+      codigos_cis:
+        '3567':
+        - '1'
+      notas: federación del PSOE
+    - codigo_oficial: PSIB-PSOE
+      nombre: Partit Socialista de les Illes Balears-PSOE
+      familia: socialdemocrata
+      ambito: PROV:07
+      codigos_cis:
+        '3567':
+        - '1'
+      notas: federación del PSOE
+    - codigo_oficial: PSN-PSOE
+      nombre: Partido Socialista de Navarra-PSOE
+      familia: socialdemocrata
+      ambito: PROV:31
+      codigos_cis:
+        '3567':
+        - '1'
+      notas: federación del PSOE
+    - codigo_oficial: PSOE
+      nombre: Partido Socialista Obrero Español
+      familia: socialdemocrata
+      ambito: ES
+      codigos_cis:
+        '3567':
+        - '1'
+    - codigo_oficial: PSdeG- PSOE
+      nombre: Partido dos Socialistas de Galicia-PSOE
+      familia: socialdemocrata
+      ambito: PROV:15,PROV:27,PROV:32,PROV:36
+      codigos_cis:
+        '3567':
+        - '1'
+      notas: federación del PSOE
+    - codigo_oficial: PUEDE
+      nombre: PUEDE
+      familia: nacionalista_regionalista
+      ambito: PROV:33
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: PUM+J
+      nombre: Por un Mundo Más Justo
+      familia: otros
+      ambito: ES
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: RECORTES CERO
+      nombre: Recortes Cero
+      familia: otros
+      ambito: ES
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: SUMAR
+      nombre: Sumar
+      familia: izquierda_estatal
+      ambito: ES
+      codigos_cis:
+        '3567':
+        - '21'
+      notas: coalición de Movimiento Sumar, IU, Más País y otros
+    - codigo_oficial: SUMAR - COMPROMÍS
+      nombre: Sumar-Compromís
+      familia: izquierda_estatal
+      ambito: PROV:03,PROV:12,PROV:46
+      codigos_cis:
+        '3567':
+        - '21'
+      notas: Compromís concurrió dentro de Sumar en la Comunitat Valenciana
+    - codigo_oficial: SUMAR - ECP
+      nombre: Sumar-En Comú Podem
+      familia: izquierda_estatal
+      ambito: PROV:08,PROV:17,PROV:25,PROV:43
+      codigos_cis:
+        '3567':
+        - '21'
+      notas: marca de Sumar en Cataluña; el CIS la recoge como Sumar
+    - codigo_oficial: SUMAR ARAGÓN
+      nombre: Sumar Aragón
+      familia: izquierda_estatal
+      ambito: PROV:22,PROV:50
+      codigos_cis:
+        '3567':
+        - '21'
+      notas: marca de Sumar en Aragón
+    - codigo_oficial: SY
+      nombre: Soria ¡Ya!
+      familia: nacionalista_regionalista
+      ambito: PROV:42
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: Somos Cc
+      nombre: Somos Cc
+      familia: nacionalista_regionalista
+      ambito: PROV:10
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: U.P.L.
+      nombre: Unión del Pueblo Leonés
+      familia: nacionalista_regionalista
+      ambito: PROV:24,PROV:49
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: U.P.N.
+      nombre: Unión del Pueblo Navarro
+      familia: nacionalista_regionalista
+      ambito: PROV:31
+      codigos_cis:
+        '3567':
+        - '1501'
+    - codigo_oficial: UNIDOS SI
+      nombre: UNIDOS SI
+      familia: nacionalista_regionalista
+      ambito: PROV:43
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: Ud.Ca
+      nombre: Ud.Ca
+      familia: nacionalista_regionalista
+      ambito: PROV:47
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: VB
+      nombre: Vía Burgalesa
+      familia: nacionalista_regionalista
+      ambito: PROV:09
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: VOX
+      nombre: VOX
+      familia: derecha_radical
+      ambito: ES
+      codigos_cis:
+        '3567':
+        - '3'
+    - codigo_oficial: VP
+      nombre: VP
+      familia: nacionalista_regionalista
+      ambito: PROV:34
+      codigos_cis:
+        '3567':
+        - '8995'
+      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+    - codigo_oficial: XAV
+      nombre: Por Ávila
+      familia: nacionalista_regionalista
+      ambito: PROV:05
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: XH
+      nombre: Por Huelva
+      familia: nacionalista_regionalista
+      ambito: PROV:21
+      codigos_cis:
+        '3567':
+        - '8995'
+    - codigo_oficial: Zsi
+      nombre: Zamora Sí
+      familia: nacionalista_regionalista
+      ambito: PROV:49
+      codigos_cis:
+        '3567':
+        - '8995'
+  europeas-2024:
+    fecha: 2024-06-09
+    fuente: infoelectoral_resultados
+    candidaturas: []
+cis:
+  '3567':
+    titulo: Barómetro CIS 3567
+    variables:
+    - RECUVOTOG
+    - RECUVOTOGR
+    - RECUERDO
+    - CERCANIA
+    - CERCANIAR
+    - CERCANIAR2
+    - INTENCIONG
+    - INTENCIONGR
+    - INTENCIONGALTER
+    - INTENCIONGALTERR
+    - VOTOSIMG
+    - VOTOSIMGR
+    - SIMPATIA
+    - SIMPATIAR
+    - INTENCIONA
+    - INTENCIONAR
+    codigos:
+      0:
+        etiqueta: No procede
+        especial: NP
+      1:
+        etiqueta: PSOE
+        familia: socialdemocrata
+      2:
+        etiqueta: PP
+        familia: centro_derecha_estatal
+      3:
+        etiqueta: VOX
+        familia: derecha_radical
+      4:
+        etiqueta: Unidas Podemos
+        familia: izquierda_estatal
+      5:
+        etiqueta: Ciudadanos
+        familia: centro_derecha_estatal
+      6:
+        etiqueta: PACMA
+        familia: otros
+      7:
+        etiqueta: Más País
+        familia: izquierda_estatal
+      8:
+        etiqueta: Podemos
+        familia: izquierda_estatal
+      9:
+        etiqueta: IU
+        familia: izquierda_estatal
+      10:
+        etiqueta: Los Verdes
+        familia: otros
+      11:
+        etiqueta: EQUO
+        familia: izquierda_estatal
+        notas: concurrió en coaliciones con representación (Compromís-Q 2011, Más País 2019)
+      12:
+        etiqueta: Falange Española de las JONS
+        familia: otros
+      13:
+        etiqueta: Escaños en Blanco
+        familia: otros
+      14:
+        etiqueta: España 2000
+        familia: otros
+      15:
+        etiqueta: Partido Libertario
+        familia: otros
+      16:
+        etiqueta: Recortes Cero
+        familia: otros
+      17:
+        etiqueta: Partido Feminista de España
+        familia: otros
+      18:
+        etiqueta: UPyD
+        familia: centro_derecha_estatal
+        notas: representación en el Congreso 2008–2015
+      19:
+        etiqueta: PCPE
+        familia: otros
+      20:
+        etiqueta: IGRE
+        familia: otros
+      21:
+        etiqueta: Sumar
+        familia: izquierda_estatal
+      22:
+        etiqueta: ACTUA
+        familia: otros
+      23:
+        etiqueta: Democracia Nacional
+        familia: otros
+      24:
+        etiqueta: Partido Humanista
+        familia: otros
+      25:
+        etiqueta: Por un Mundo más Justo (M+J)
+        familia: otros
+      26:
+        etiqueta: Caminando Juntos
+        familia: otros
+      27:
+        etiqueta: Frente Obrero
+        familia: otros
+      28:
+        etiqueta: Se Acabó la Fiesta
+        familia: derecha_radical
+        notas: representación en el Parlamento Europeo desde 2024
+      29:
+        etiqueta: Coalición de izquierdas
+        familia: otros
+        notas: etiqueta genérica del CIS sin partido identificable
+      101:
+        etiqueta: Adelante Andalucía
+        familia: nacionalista_regionalista
+      102:
+        etiqueta: Jaén Merece Más
+        familia: nacionalista_regionalista
+      103:
+        etiqueta: Por Andalucía
+        familia: izquierda_estatal
+        notas: coalición de IU, Podemos y Más País en Andalucía
+      104:
+        etiqueta: Levanta Jaén
+        familia: nacionalista_regionalista
+      105:
+        etiqueta: Juntos por Granada
+        familia: nacionalista_regionalista
+      106:
+        etiqueta: Por Huelva
+        familia: nacionalista_regionalista
+      107:
+        etiqueta: Andalucía Por Sí
+        familia: nacionalista_regionalista
+      201:
+        etiqueta: PAR
+        familia: nacionalista_regionalista
+      202:
+        etiqueta: Teruel Existe
+        familia: nacionalista_regionalista
+      203:
+        etiqueta: CHA
+        familia: nacionalista_regionalista
+      204:
+        etiqueta: Zaragoza en Común
+        familia: izquierda_estatal
+        notas: confluencia municipal con IU y Podemos
+      205:
+        etiqueta: IU-MOVIMIENTO SUMAR
+        familia: izquierda_estatal
+      206:
+        etiqueta: PODEMOS-AV
+        familia: izquierda_estatal
+      207:
+        etiqueta: EXISTE
+        familia: nacionalista_regionalista
+      301:
+        etiqueta: FAC
+        familia: nacionalista_regionalista
+      401:
+        etiqueta: MÉS (PSM-Entesa)
+        familia: nacionalista_regionalista
+      402:
+        etiqueta: PI (Proposta per les Illes)
+        familia: nacionalista_regionalista
+      403:
+        etiqueta: MXME (Més per Menorca)
+        familia: nacionalista_regionalista
+      501:
+        etiqueta: CC-PNC
+        familia: nacionalista_regionalista
+      502:
+        etiqueta: Nueva Canarias
+        familia: nacionalista_regionalista
+      503:
+        etiqueta: CCa
+        familia: nacionalista_regionalista
+      504:
+        etiqueta: PNC (Partido Nacionalista Canario)
+        familia: nacionalista_regionalista
+      505:
+        etiqueta: ASG
+        familia: nacionalista_regionalista
+      506:
+        etiqueta: Drago Canarias Verdes
+        familia: nacionalista_regionalista
+      601:
+        etiqueta: PRC
+        familia: nacionalista_regionalista
+      801:
+        etiqueta: UPL
+        familia: nacionalista_regionalista
+      802:
+        etiqueta: Soria Ya
+        familia: nacionalista_regionalista
+      803:
+        etiqueta: Por Ávila
+        familia: nacionalista_regionalista
+      804:
+        etiqueta: Vía Burgalesa
+        familia: nacionalista_regionalista
+      805:
+        etiqueta: Puede Palencia
+        familia: nacionalista_regionalista
+      806:
+        etiqueta: Centrados (Segovia)
+        familia: nacionalista_regionalista
+      807:
+        etiqueta: Zamora Decide
+        familia: nacionalista_regionalista
+      808:
+        etiqueta: España Vaciada
+        familia: nacionalista_regionalista
+      809:
+        etiqueta: PREPAL
+        familia: nacionalista_regionalista
+      810:
+        etiqueta: Por Zamora
+        familia: nacionalista_regionalista
+      811:
+        etiqueta: Unión Regionalista
+        familia: nacionalista_regionalista
+      812:
+        etiqueta: Partido Castellano-Tierra Comunera-Recortes Cero
+        familia: nacionalista_regionalista
+      813:
+        etiqueta: Coalición por el Bierzo
+        familia: nacionalista_regionalista
+      814:
+        etiqueta: Valladolid Toma la Palabra
+        familia: izquierda_estatal
+        notas: confluencia municipal con IU y Podemos
+      815:
+        etiqueta: En Común (IU-Movimiento Sumar-Verdes Equo)
+        familia: izquierda_estatal
+      816:
+        etiqueta: Podemos-Alianza Verde
+        familia: izquierda_estatal
+      817:
+        etiqueta: Ahora Decide-España Vaciada
+        familia: nacionalista_regionalista
+      818:
+        etiqueta: Unidas Podemos Castilla y León (Podemos-IU-AV)
+        familia: izquierda_estatal
+      901:
+        etiqueta: ERC
+        familia: nacionalista_regionalista
+      902:
+        etiqueta: Junts
+        familia: nacionalista_regionalista
+      903:
+        etiqueta: En Comú Podem
+        familia: izquierda_estatal
+      904:
+        etiqueta: CUP
+        familia: nacionalista_regionalista
+      905:
+        etiqueta: PdeCat
+        familia: nacionalista_regionalista
+      906:
+        etiqueta: Directe 68
+        familia: nacionalista_regionalista
+      907:
+        etiqueta: CDC
+        familia: nacionalista_regionalista
+      908:
+        etiqueta: Barcelona pel Canvi
+        familia: centro_derecha_estatal
+        notas: candidatura municipal en coalición con Ciudadanos
+      909:
+        etiqueta: Crida Nacional per la República
+        familia: nacionalista_regionalista
+      910:
+        etiqueta: Poble Lliure (Front República)
+        familia: nacionalista_regionalista
+      911:
+        etiqueta: PNC
+        familia: nacionalista_regionalista
+      912:
+        etiqueta: Comuns Sumar
+        familia: izquierda_estatal
+      913:
+        etiqueta: Cat-Junts+
+        familia: nacionalista_regionalista
+      914:
+        etiqueta: CUP-DT
+        familia: nacionalista_regionalista
+      915:
+        etiqueta: Aliança Catalana
+        familia: nacionalista_regionalista
+      916:
+        etiqueta: Alhora
+        familia: nacionalista_regionalista
+      1001:
+        etiqueta: Compromís
+        familia: nacionalista_regionalista
+      1002:
+        etiqueta: Bloc
+        familia: nacionalista_regionalista
+      1003:
+        etiqueta: Soms Valencians
+        familia: nacionalista_regionalista
+      1004:
+        etiqueta: Compromís-Podemos-EUPV
+        familia: nacionalista_regionalista
+        notas: coalición encabezada por Compromís
+      1101:
+        etiqueta: Extremadura Unida
+        familia: nacionalista_regionalista
+      1102:
+        etiqueta: JUNTOS-LEVANTA
+        familia: nacionalista_regionalista
+      1103:
+        etiqueta: JUEX
+        familia: nacionalista_regionalista
+      1201:
+        etiqueta: BNG
+        familia: nacionalista_regionalista
+      1202:
+        etiqueta: En Común-Unidas Podemos
+        familia: izquierda_estatal
+      1203:
+        etiqueta: En Marea
+        familia: izquierda_estatal
+        notas: confluencia con Podemos y EU
+      1204:
+        etiqueta: PAYJ (Partido Anticorrupción y Justicia)
+        familia: nacionalista_regionalista
+      1205:
+        etiqueta: Compromiso por Galicia
+        familia: nacionalista_regionalista
+      1206:
+        etiqueta: Compostela Aberta
+        familia: izquierda_estatal
+        notas: confluencia municipal con Podemos y EU
+      1207:
+        etiqueta: Converxencia Galega
+        familia: nacionalista_regionalista
+      1208:
+        etiqueta: Terra Galega
+        familia: nacionalista_regionalista
+      1209:
+        etiqueta: Anova-Irmandade Nacionalista
+        familia: nacionalista_regionalista
+      1210:
+        etiqueta: Marea de Vigo
+        familia: izquierda_estatal
+        notas: confluencia municipal con Podemos y EU
+      1211:
+        etiqueta: Marea Galeguista (En Marea-CompromisoXGalicia-Partido Galeguista)
+        familia: nacionalista_regionalista
+      1212:
+        etiqueta: Democracia Ourensana
+        familia: nacionalista_regionalista
+      1213:
+        etiqueta: Espazo Común Galeguista
+        familia: nacionalista_regionalista
+      1301:
+        etiqueta: Más Madrid
+        familia: izquierda_estatal
+        notas: marca de Más País en Madrid
+      1501:
+        etiqueta: UPN
+        familia: nacionalista_regionalista
+      1502:
+        etiqueta: Geroa Bai
+        familia: nacionalista_regionalista
+      1601:
+        etiqueta: EAJ-PNV
+        familia: nacionalista_regionalista
+      1602:
+        etiqueta: EH Bildu
+        familia: nacionalista_regionalista
+      1603:
+        etiqueta: Elkarrekin Podemos-IU
+        familia: izquierda_estatal
+      1604:
+        etiqueta: Elkarrekin Podemos
+        familia: izquierda_estatal
+      1605:
+        etiqueta: Sumar Euskadi
+        familia: izquierda_estatal
+      1650:
+        etiqueta: PP+Ciudadanos
+        familia: centro_derecha_estatal
+        notas: coalición de PP y Ciudadanos en el País Vasco
+      1701:
+        etiqueta: Partido Riojano
+        familia: nacionalista_regionalista
+      1801:
+        etiqueta: Coalición Caballas
+        familia: nacionalista_regionalista
+      1802:
+        etiqueta: MDyC
+        familia: nacionalista_regionalista
+      1901:
+        etiqueta: Coalición por Melilla
+        familia: nacionalista_regionalista
+      5001:
+        etiqueta: Unidas Podemos Cambiar Europa
+        familia: izquierda_estatal
+      5002:
+        etiqueta: Ahora Repúblicas
+        familia: nacionalista_regionalista
+        notas: coalición de ERC, EH Bildu y BNG
+      5003:
+        etiqueta: Junts i Lliures per Europa
+        familia: nacionalista_regionalista
+      5004:
+        etiqueta: Por una Europa Solidaria
+        familia: nacionalista_regionalista
+      5005:
+        etiqueta: Compromiso por Europa
+        familia: nacionalista_regionalista
+      5006:
+        etiqueta: Se Acabó la Fiesta
+        familia: derecha_radical
+      5007:
+        etiqueta: La España Olvidada Existe
+        familia: nacionalista_regionalista
+      8995:
+        etiqueta: Otro partido / Otros partidos
+        familia: otros
+        notas: otro partido (sin identificar)
+      8996:
+        etiqueta: En blanco
+        especial: en_blanco
+      9977:
+        etiqueta: Nulo / Voto nulo
+        especial: nulo
+      9993:
+        etiqueta: (NO LEER) No votaría a ningún otro partido (cita el mismo partido)
+        especial: mismo_partido
+      9995:
+        etiqueta: No tenía edad
+        especial: no_tenia_edad
+      9996:
+        etiqueta: No tenía derecho a voto
+        especial: sin_derecho_voto
+      9997:
+        etiqueta: Ninguno / No votaría / No votó
+        especial: no_voto_o_ninguno
+        notas: «no votó» en el recuerdo; «ninguno» o «no votaría» en el resto
+      9998:
+        etiqueta: N.R. / N.S. / No sabe todavía
+        especial: NS
+      9999:
+        etiqueta: N.C.
+        especial: NC
+    recuerdo_de: generales-2023
+  '3411':
+    titulo: Preelectoral elecciones generales 2023 (CIS 3411)
+    variables:
+    - RECUVOTOG
+    - RECUVOTOGR
+    - RECUERDO
+    - CERCANIA
+    - CERCANIAR
+    - INTENCIONG
+    - INTENCIONGR
+    - INTENCIONGALTER
+    - INTENCIONGALTERR
+    - VOTOSIMG
+    - SIMPATIA
+    - SIMPATIAR
+    - PARTIDOGANA
+    - PARTIDOGUSTAR
+    - P8R
+    - P9R
+    - PARTIDO_1
+    - PARTIDO_2
+    - PARTIDO_1R
+    - PARTIDO_2R
+    codigos:
+      0:
+        etiqueta: N.P.
+        especial: NP
+      1:
+        etiqueta: PSOE
+        familia: socialdemocrata
+      2:
+        etiqueta: PP
+        familia: centro_derecha_estatal
+      3:
+        etiqueta: VOX
+        familia: derecha_radical
+      4:
+        etiqueta: UP / Unidas Podemos
+        familia: izquierda_estatal
+      5:
+        etiqueta: C's / Ciudadanos
+        familia: centro_derecha_estatal
+      6:
+        etiqueta: PACMA
+        familia: otros
+      7:
+        etiqueta: Más País
+        familia: izquierda_estatal
+      8:
+        etiqueta: Podemos
+        familia: izquierda_estatal
+      9:
+        etiqueta: IU
+        familia: izquierda_estatal
+      10:
+        etiqueta: Los Verdes / Los Verdes-Grupo Verde
+        familia: otros
+      11:
+        etiqueta: EQUO / Verdes Equo
+        familia: izquierda_estatal
+        notas: concurrió en coaliciones con representación (Compromís-Q 2011, Más País 2019)
+      12:
+        etiqueta: Falange Española de las JONS
+        familia: otros
+      13:
+        etiqueta: Escaños en Blanco
+        familia: otros
+      14:
+        etiqueta: España 2000
+        familia: otros
+      15:
+        etiqueta: Partido Libertario
+        familia: otros
+      16:
+        etiqueta: Recortes Cero
+        familia: otros
+      17:
+        etiqueta: Partido Feminista de España
+        familia: otros
+      18:
+        etiqueta: UPyD
+        familia: centro_derecha_estatal
+        notas: representación en el Congreso 2008–2015
+      19:
+        etiqueta: PCPE
+        familia: otros
+      20:
+        etiqueta: IGRE
+        familia: otros
+      21:
+        etiqueta: Movimiento Sumar / Sumar
+        familia: izquierda_estatal
+      22:
+        etiqueta: ACTUA
+        familia: otros
+      23:
+        etiqueta: Democracia Nacional
+        familia: otros
+      24:
+        etiqueta: Partido Humanista
+        familia: otros
+      25:
+        etiqueta: Por un Mundo más Justo (M+J)
+        familia: otros
+      26:
+        etiqueta: Caminando Juntos
+        familia: otros
+      101:
+        etiqueta: Adelante
+        familia: nacionalista_regionalista
+      102:
+        etiqueta: Jaén Merece Más
+        familia: nacionalista_regionalista
+      103:
+        etiqueta: Por Andalucía
+        familia: izquierda_estatal
+        notas: coalición de IU, Podemos y Más País en Andalucía
+      104:
+        etiqueta: Levanta Jaén
+        familia: nacionalista_regionalista
+      105:
+        etiqueta: Juntos por Granada
+        familia: nacionalista_regionalista
+      106:
+        etiqueta: Por Huelva
+        familia: nacionalista_regionalista
+      107:
+        etiqueta: Andalucía Por Sí
+        familia: nacionalista_regionalista
+      201:
+        etiqueta: PAR
+        familia: nacionalista_regionalista
+      202:
+        etiqueta: Existe / Teruel Existe
+        familia: nacionalista_regionalista
+      203:
+        etiqueta: CHA
+        familia: nacionalista_regionalista
+      204:
+        etiqueta: Zaragoza en Común
+        familia: izquierda_estatal
+        notas: confluencia municipal con IU y Podemos
+      301:
+        etiqueta: FAC
+        familia: nacionalista_regionalista
+      401:
+        etiqueta: MÉS (PSM-Entesa) / MÉS-PSM Entesa
+        familia: nacionalista_regionalista
+      402:
+        etiqueta: PI (Proposta per les Illes)
+        familia: nacionalista_regionalista
+      403:
+        etiqueta: MXME (Més per Menorca)
+        familia: nacionalista_regionalista
+      501:
+        etiqueta: CC-PNC / CC-PNC-NC / CCa-NC
+        familia: nacionalista_regionalista
+      502:
+        etiqueta: Nueva Canarias
+        familia: nacionalista_regionalista
+      503:
+        etiqueta: CC / CCa
+        familia: nacionalista_regionalista
+      504:
+        etiqueta: PNC (Partido Nacionalista Canario)
+        familia: nacionalista_regionalista
+      505:
+        etiqueta: ASG (Agrupación Socialista Gomera)
+        familia: nacionalista_regionalista
+      506:
+        etiqueta: Drago Verdes Canarias
+        familia: nacionalista_regionalista
+      601:
+        etiqueta: PRC
+        familia: nacionalista_regionalista
+      801:
+        etiqueta: UPL
+        familia: nacionalista_regionalista
+      802:
+        etiqueta: Soria Ya
+        familia: nacionalista_regionalista
+      803:
+        etiqueta: Por Ávila
+        familia: nacionalista_regionalista
+      804:
+        etiqueta: Vía Burgalesa
+        familia: nacionalista_regionalista
+      805:
+        etiqueta: Puede Palencia
+        familia: nacionalista_regionalista
+      806:
+        etiqueta: Centrados (Segovia)
+        familia: nacionalista_regionalista
+      807:
+        etiqueta: Zamora Decide
+        familia: nacionalista_regionalista
+      808:
+        etiqueta: España Vaciada
+        familia: nacionalista_regionalista
+      809:
+        etiqueta: PREPAL
+        familia: nacionalista_regionalista
+      810:
+        etiqueta: Por Zamora
+        familia: nacionalista_regionalista
+      811:
+        etiqueta: Unión Regionalista
+        familia: nacionalista_regionalista
+      812:
+        etiqueta: Partido Castellano-Tierra Comunera / Partido Castellano-Tierra Comunera-Recortes Cero
+        familia: nacionalista_regionalista
+      813:
+        etiqueta: Coalición por el Bierzo
+        familia: nacionalista_regionalista
+      814:
+        etiqueta: Valladolid Toma la palabra
+        familia: izquierda_estatal
+        notas: confluencia municipal con IU y Podemos
+      901:
+        etiqueta: ERC
+        familia: nacionalista_regionalista
+      902:
+        etiqueta: Junts / JxCat
+        familia: nacionalista_regionalista
+      903:
+        etiqueta: En Comú Podem
+        familia: izquierda_estatal
+      904:
+        etiqueta: CUP
+        familia: nacionalista_regionalista
+      905:
+        etiqueta: PDeCAT-E-CiU / PdeCat
+        familia: nacionalista_regionalista
+      906:
+        etiqueta: Directe 68
+        familia: nacionalista_regionalista
+      907:
+        etiqueta: CDC
+        familia: nacionalista_regionalista
+      908:
+        etiqueta: Barcelona pel Canvi
+        familia: centro_derecha_estatal
+        notas: candidatura municipal en coalición con Ciudadanos
+      909:
+        etiqueta: Crida Nacional per la República
+        familia: nacionalista_regionalista
+      910:
+        etiqueta: Poble Lliure (Front República)
+        familia: nacionalista_regionalista
+      911:
+        etiqueta: PNC
+        familia: nacionalista_regionalista
+      912:
+        etiqueta: Valents
+        familia: nacionalista_regionalista
+        notas: en este estudio el código 912 es Valents (partido de ámbito catalán)
+      1001:
+        etiqueta: Compromís / Més Compromís
+        familia: nacionalista_regionalista
+      1002:
+        etiqueta: Bloc
+        familia: nacionalista_regionalista
+      1003:
+        etiqueta: Soms Valencians
+        familia: nacionalista_regionalista
+      1004:
+        etiqueta: Compromís-Podemos-EUPV
+        familia: nacionalista_regionalista
+        notas: coalición encabezada por Compromís
+      1101:
+        etiqueta: Extremadura Unida
+        familia: nacionalista_regionalista
+      1201:
+        etiqueta: BNG
+        familia: nacionalista_regionalista
+      1202:
+        etiqueta: En Común-UP / En Común-Unidas Podemos
+        familia: izquierda_estatal
+      1203:
+        etiqueta: En Marea
+        familia: izquierda_estatal
+        notas: confluencia con Podemos y EU
+      1204:
+        etiqueta: PAYJ (Partido Anticorrupción y Justicia)
+        familia: nacionalista_regionalista
+      1205:
+        etiqueta: Compromiso por Galicia
+        familia: nacionalista_regionalista
+      1206:
+        etiqueta: Compostela Aberta
+        familia: izquierda_estatal
+        notas: confluencia municipal con Podemos y EU
+      1207:
+        etiqueta: Converxencia Galega
+        familia: nacionalista_regionalista
+      1208:
+        etiqueta: Terra Galega
+        familia: nacionalista_regionalista
+      1209:
+        etiqueta: Anova-Irmandade Nacionalista
+        familia: nacionalista_regionalista
+      1210:
+        etiqueta: Marea de Vigo
+        familia: izquierda_estatal
+        notas: confluencia municipal con Podemos y EU
+      1301:
+        etiqueta: Más Madrid
+        familia: izquierda_estatal
+        notas: marca de Más País en Madrid
+      1501:
+        etiqueta: Na+ / UPN
+        familia: nacionalista_regionalista
+        notas: Na+ (UPN, PP y Cs) en las variables de 2019; UPN en las de 2023
+      1502:
+        etiqueta: Geroa Bai
+        familia: nacionalista_regionalista
+      1601:
+        etiqueta: EAJ-PNV
+        familia: nacionalista_regionalista
+      1602:
+        etiqueta: EH Bildu
+        familia: nacionalista_regionalista
+      1603:
+        etiqueta: PP+Ciudadanos
+        familia: centro_derecha_estatal
+        notas: en este estudio el código 1603 es PP+Ciudadanos
+      1701:
+        etiqueta: Partido Riojano
+        familia: nacionalista_regionalista
+      1801:
+        etiqueta: Coalición Caballas
+        familia: nacionalista_regionalista
+      1802:
+        etiqueta: MDyC
+        familia: nacionalista_regionalista
+      1901:
+        etiqueta: Coalición por Melilla
+        familia: nacionalista_regionalista
+      8888:
+        etiqueta: Otros partidos locales
+        familia: otros
+        notas: otros partidos locales (sin identificar)
+      8889:
+        etiqueta: Otros partidos autonómicos
+        familia: nacionalista_regionalista
+        notas: otros partidos autonómicos (sin identificar)
+      8993:
+        etiqueta: Otros partidos de izquierda
+        familia: otros
+        notas: otros partidos de izquierda (sin identificar)
+      8994:
+        etiqueta: Otros partidos de derecha
+        familia: otros
+        notas: otros partidos de derecha (sin identificar)
+      8995:
+        etiqueta: Otro partido / Otros partidos
+        familia: otros
+        notas: otro partido (sin identificar)
+      8996:
+        etiqueta: En blanco
+        especial: en_blanco
+      9977:
+        etiqueta: Nulo / Voto nulo
+        especial: nulo
+      9993:
+        etiqueta: (NO LEER) No votaría a ningún otro partido (cita el mismo partido)
+        especial: mismo_partido
+      9995:
+        etiqueta: No tenía edad
+        especial: no_tenia_edad
+      9996:
+        etiqueta: No tenía derecho a voto
+        especial: sin_derecho_voto
+      9997:
+        etiqueta: Abstención / Ninguno / No votaría / No votó
+        especial: no_voto_o_ninguno
+        notas: «no votó» en el recuerdo; «ninguno» o «no votaría» en el resto
+      9998:
+        etiqueta: N.S. / No recuerda / No sabe todavía
+        especial: NS
+      9999:
+        etiqueta: N.C.
+        especial: NC

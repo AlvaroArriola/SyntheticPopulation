@@ -26,6 +26,7 @@ OFFICIAL_DOMAINS = (
     "gencat.cat",
     "ehu.eus",
     "europa.eu",
+    "boe.es",
 )
 
 

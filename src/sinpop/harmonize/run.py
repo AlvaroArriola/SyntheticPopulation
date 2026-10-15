@@ -35,7 +35,7 @@ class Paso:
 
 
 def _pasos() -> list[Paso]:
-    from sinpop.harmonize import censos, ecp, encuestas
+    from sinpop.harmonize import censos, ecp, elecciones, encuestas
 
     tam: dict[str, str] = {}
 
@@ -46,6 +46,13 @@ def _pasos() -> list[Paso]:
 
     def colectivos() -> pl.DataFrame:
         return ecp.colectivos(ecp.total(), ecp.viviendas_familiares())
+
+    gen: list[pl.DataFrame] = []
+
+    def generales(i: int) -> pl.DataFrame:
+        if not gen:
+            gen.extend(elecciones.generales_2023())
+        return gen[i]
 
     return [
         Paso(
@@ -89,6 +96,18 @@ def _pasos() -> list[Paso]:
             colectivos,
         ),
         Paso("ecp_hogares", "ecp", ("ecp/2026-01-01/tabla_60133",), ecp.hogares),
+        Paso(
+            "elecciones_generales_2023_municipios",
+            "infoelectoral_resultados",
+            ("infoelectoral_resultados/generales-2023/congreso", PADRON),
+            lambda: generales(0),
+        ),
+        Paso(
+            "elecciones_generales_2023_votos",
+            "infoelectoral_resultados",
+            ("infoelectoral_resultados/generales-2023/congreso", PADRON),
+            lambda: generales(1),
+        ),
     ]
 
 

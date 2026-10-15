@@ -433,8 +433,41 @@ class Candidatura(Strict):
     nombre: str
     familia: str
     ambito: str | None = None
-    codigos_cis: dict[str, str] = Field(default_factory=dict)
+    codigos_cis: dict[str, list[str]] = Field(default_factory=dict)
     notas: str | None = None
+
+
+EspecialCIS = Literal[
+    "NP",
+    "NS",
+    "NC",
+    "en_blanco",
+    "nulo",
+    "no_voto_o_ninguno",
+    "no_tenia_edad",
+    "sin_derecho_voto",
+    "mismo_partido",
+]
+
+
+class CodigoCIS(Strict):
+    etiqueta: str
+    familia: str | None = None
+    especial: EspecialCIS | None = None
+    notas: str | None = None
+
+    @model_validator(mode="after")
+    def _uno(self) -> CodigoCIS:
+        if (self.familia is None) == (self.especial is None):
+            raise ValueError(f"{self.etiqueta}: indicar familia o especial (solo uno)")
+        return self
+
+
+class EstudioCIS(Strict):
+    titulo: str
+    variables: list[str] = Field(min_length=1)
+    recuerdo_de: str | None = None  # elección a la que se refiere el recuerdo de voto
+    codigos: dict[int, CodigoCIS]
 
 
 class EleccionPartidos(Strict):
@@ -446,6 +479,7 @@ class EleccionPartidos(Strict):
 class PartidosConfig(Strict):
     familias: list[Familia] = Field(min_length=1)
     elecciones: dict[str, EleccionPartidos] = Field(default_factory=dict)
+    cis: dict[str, EstudioCIS] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def _familias_existen(self) -> PartidosConfig:
@@ -454,6 +488,17 @@ class PartidosConfig(Strict):
             malas = [c.nombre for c in e.candidaturas if c.familia not in ids]
             if malas:
                 raise ValueError(f"{eid}: candidaturas con familia desconocida: {malas}")
+            for c in e.candidaturas:
+                for est, cods in c.codigos_cis.items():
+                    if est not in self.cis:
+                        raise ValueError(f"{c.nombre}: estudio CIS no declarado {est}")
+                    faltan = [k for k in cods if int(k) not in self.cis[est].codigos]
+                    if faltan:
+                        raise ValueError(f"{c.nombre}: códigos CIS inexistentes {faltan}")
+        for est, d in self.cis.items():
+            malas = [k for k, c in d.codigos.items() if c.familia and c.familia not in ids]
+            if malas:
+                raise ValueError(f"CIS {est}: códigos con familia desconocida: {malas}")
         return self
 
 
