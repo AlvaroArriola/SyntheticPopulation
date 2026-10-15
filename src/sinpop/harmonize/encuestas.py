@@ -36,12 +36,16 @@ def con_deciles(df: pl.DataFrame, valor: str, nombre: str, por: str | None = Non
     ordenar por `valor` (dentro de `por`, si se indica).
     """
     keys = [por] if por else []
-    tmp = df.with_row_index("_i").sort([*keys, valor])
+    tmp = df.with_row_index("_i").sort([*keys, valor, "_i"])
     cum = pl.col("peso").cum_sum()
     tot = pl.col("peso").sum()
     if por:
         cum, tot = cum.over(por), tot.over(por)
-    tmp = tmp.with_columns(((cum / tot) * 10).ceil().clip(1, 10).cast(pl.Int32).alias("_d"))
+    # redondeo a 9 decimales antes del techo: evita que un límite exacto (p. ej. 0,1 · 10)
+    # caiga en el decil siguiente por error de coma flotante
+    tmp = tmp.with_columns(
+        ((cum / tot) * 10).round(9).ceil().clip(1, 10).cast(pl.Int32).alias("_d")
+    )
     tmp = tmp.with_columns(
         pl.format("D{}", pl.col("_d").cast(pl.Utf8).str.pad_start(2, "0")).alias(nombre)
     )

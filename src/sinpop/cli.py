@@ -11,6 +11,8 @@ from typing import Annotated
 
 import typer
 
+from sinpop import REPORTS_DIR
+
 app = typer.Typer(
     help="Población sintética de las personas adultas residentes en España.",
     no_args_is_help=True,
@@ -134,9 +136,22 @@ def ingest(
 @app.command()
 def harmonize(
     source: Annotated[str, typer.Option(help="Id de fuente o 'all'")] = "all",
+    check: Annotated[
+        bool, typer.Option("--check", help="Reproduce las cifras oficiales publicadas (G2.4)")
+    ] = False,
 ) -> None:
     """Lee cada fuente con su diseño de registro y la armoniza a configs/variables.yaml (F2)."""
-    _pendiente("harmonize", "F2")
+    if check:
+        from sinpop.harmonize import oficiales
+
+        res = oficiales.informe(oficiales.todas(), REPORTS_DIR / "fase_02_cifras_oficiales")
+        for f, n, k in res.iter_rows():
+            typer.echo(f"{f}: {k}/{n} cifras dentro de tolerancia")
+        return
+    from sinpop.harmonize.run import ejecutar
+
+    for nombre, info in ejecutar(source).items():
+        typer.echo(f"{nombre}: {info['filas']} filas · sha256 {info['sha256'][:12]}")
 
 
 @app.command()

@@ -238,9 +238,13 @@ def censo2021(raw: Path = C21, tam: dict[str, str] | None = None) -> pl.DataFram
         (edad < 18).sum().alias("_n18"),
         (edad >= 65).sum().alias("n_mayores_65_hogar"),
         (edad >= 80).sum().alias("n_mayores_80_hogar"),
-        pl.len().alias("_nper"),
+        pl.len().alias("n_personas_hogar"),
     )
-    nuc = df.filter(pl.col("NUCLEO") == "01").group_by("NVIV").agg(pl.col("TIPO_NUC").first())
+    nuc = (
+        df.filter(pl.col("NUCLEO") == "01")
+        .group_by("NVIV", maintain_order=True)
+        .agg(pl.col("TIPO_NUC").first())
+    )
     hh = (
         df.select("NVIV", "TIPO_HOG")
         .unique("NVIV")
@@ -325,6 +329,7 @@ def censo_anual_exhaustivo(path: Path = EXH, tam: dict[str, str] | None = None) 
         .group_by("CPRO", "CMUN", "SEXO", "VAREDAD", "PNACIO", "PNACIM", "DEGURBA")
         .agg(pl.len().alias("personas"))
         .collect()
+        .sort("CPRO", "CMUN", "SEXO", "VAREDAD", "PNACIO", "PNACIM", "DEGURBA")
         .with_columns(pl.col("VAREDAD").cast(pl.Utf8))
     )
     edad = pl.col("VAREDAD").cast(pl.Int32)

@@ -56,9 +56,19 @@ def _proporciones(
     cifra: str,
     referencia: str,
     f: float = 0.10,
+    sin_colectivos: bool = False,
 ) -> list[Cifra]:
+    """Compara proporciones publicadas con las de una muestra de fracción `f`.
+
+    Con `sin_colectivos=True` (muestra del Censo 2021, solo viviendas familiares, frente a
+    tablas que incluyen establecimientos colectivos) se suma a la tolerancia la cota del sesgo
+    de cobertura: si c es la proporción del universo que vive en colectivos,
+    p_total = (1 − c)·p_fam + c·p_col, luego |p_fam − p_total| = c·|p_fam − p_col| ≤ c.
+    c se estima como 1 − n / (f · N_publicado) (D-027).
+    """
     to = sum(oficial.values())
     n = sum(muestra.values())
+    c = max(0.0, 1 - n / (f * to)) if sin_colectivos else 0.0
     out = []
     for k in oficial:
         p = oficial[k] / to
@@ -71,8 +81,8 @@ def _proporciones(
                 k,
                 round(100 * p, 3),
                 round(100 * q, 3),
-                round(100 * 3 * _ee(p, n, f), 3),
-                "muestral",
+                round(100 * (3 * _ee(p, n, f) + c), 3),
+                "muestral+cobertura" if sin_colectivos else "muestral",
                 referencia,
             )
         )
@@ -297,6 +307,7 @@ def censos() -> list[Cifra]:
         _cuenta(c21, "nivel_estudios", pl.col("edad") >= 15, FORMACION),
         fuente="censo2021_micro_hogares",
         edicion="2021",
+        sin_colectivos=True,
         cifra="Nivel de formación (15+), %",
         referencia=r21.format(t=66601),
     )
@@ -309,6 +320,7 @@ def censos() -> list[Cifra]:
         _cuenta(c21, "relacion_actividad", pl.col("edad") >= 16, ACTIVIDAD),
         fuente="censo2021_micro_hogares",
         edicion="2021",
+        sin_colectivos=True,
         cifra="Relación con la actividad (16+), %",
         referencia=r21.format(t=67132),
     )
@@ -319,6 +331,7 @@ def censos() -> list[Cifra]:
         _cuenta(c21, "estado_civil", pl.col("edad") >= 16, ECIVIL),
         fuente="censo2021_micro_hogares",
         edicion="2021",
+        sin_colectivos=True,
         cifra="Estado civil (16+), %",
         referencia=r21.format(t=76291),
     )
@@ -595,28 +608,35 @@ def ecp_padron() -> list[Cifra]:
             ref.format(t="59589 − 60124"),
         ),
     ]
-    # Padrón municipal (tabla 29005) frente a la tabla provincial (2852)
+    # Padrón municipal (tabla 29005) frente a las 52 tablas provinciales de la operación 22
     from sinpop.harmonize.censos import poblacion_municipal
 
     pm = poblacion_municipal()
-    t2852 = leer(RAW_DIR / "padron_continuo/ultimo/tabla_2852_ultimo.json")
-    t2852 = t2852.filter(pl.col("Sexo") == "Total")
-    nac = float(t2852.filter(pl.col("Total Nacional").is_not_null())["valor"][0])
-    prov = dict(
-        t2852.filter(pl.col("Provincias").is_not_null())
-        .select("Provincias__cod", "valor")
-        .iter_rows()
-    )
+    prov: dict[str, float] = {}
+    muni: dict[str, float] = {}
+    for f in sorted((RAW_DIR / "padron_continuo/2025-01-01").glob("tabla_*_20250101.json")):
+        t = leer(f).filter((pl.col("Sexo") == "Total") & (pl.col("fecha") == "2025-01-01"))
+        fila = t.filter(pl.col("Provincias").is_not_null())
+        prov[fila["Provincias__cod"][0]] = float(fila["valor"][0])
+        muni.update(
+            dict(
+                t.filter(pl.col("Municipios").is_not_null())
+                .select("Municipios__cod", "valor")
+                .iter_rows()
+            )
+        )
     sm = dict(pm.group_by("CPRO").agg(pl.col("poblacion").sum()).iter_rows())
     malas = [p for p, v in prov.items() if sm.get(p) != v]
-    ref = "INE, Padrón a 01/01/2025: tabla 29005 (municipios) frente a tabla 2852 (provincias)"
+    pmd = dict(pm.select(pl.concat_str("CPRO", "CMUN"), "poblacion").iter_rows())
+    distintos = [m for m, v in muni.items() if pmd.get(m) != v]
+    ref = "INE, Padrón a 01/01/2025: tabla 29005 frente a las tablas provinciales 2854–2909"
     out += [
         Cifra(
             "padron_continuo",
             "2025-01-01",
             "Población (suma de municipios)",
             "España",
-            nac,
+            sum(prov.values()),
             float(pm["poblacion"].sum()),
             0,
             "exacta",
@@ -636,17 +656,381 @@ def ecp_padron() -> list[Cifra]:
         Cifra(
             "padron_continuo",
             "2025-01-01",
+            "Municipios con cifra distinta",
+            f"{len(muni)} municipios",
+            0,
+            float(len(distintos)),
+            0,
+            "exacta",
+            ref,
+        ),
+        Cifra(
+            "padron_continuo",
+            "2025-01-01",
             "Número de municipios",
             "España",
-            8132,
+            float(len(muni)),
             float(pm.height),
             0,
             "exacta",
-            "INE, tabla 29005 (8.132 municipios con dato)",
+            ref,
         ),
     ]
     return out
 
 
 def todas() -> list[Cifra]:
-    return censos() + encuestas() + ecp_padron()
+    return (
+        censos()
+        + tablas_censo()
+        + viviendas_censo2021()
+        + degurba()
+        + atlas()
+        + encuestas()
+        + ecp_padron()
+    )
+
+
+# --------------------------------------------------------------------------- DEGURBA y Atlas
+
+
+def degurba() -> list[Cifra]:
+    """Grado de urbanización del Censo Anual exhaustivo 2025 frente a la tabla 79341."""
+    ex = pl.read_parquet(INTERIM_DIR / "censo_anual_exhaustivo_2025.parquet")
+    t = leer(RAW_DIR / "degurba/ultimo/tabla_79341_ultimo.json").filter(
+        (pl.col("Sexo") == "Total") & (pl.col("Totales de edad") == "Todas las edades")
+    )
+    grado = {
+        "Área densamente poblada": "ciudad",
+        "Área poblada nivel intermedio": "intermedio",
+        "Área poco poblada": "rural",
+    }
+    ref = "INE, Censo Anual 2025, tabla 79341 (población por grado de urbanización)"
+    nac = t.filter(pl.col("Total Nacional").is_not_null())
+    eg = dict(ex.group_by("grado_urbanizacion").agg(pl.col("personas").sum()).iter_rows())
+    out = [
+        Cifra(
+            "degurba",
+            "2025",
+            "Población por grado de urbanización",
+            grado[g],
+            v,
+            float(eg.get(grado[g], 0)),
+            0,
+            "exacta",
+            ref,
+        )
+        for g, v in nac.filter(pl.col("Grado de urbanización") != "Total")
+        .select("Grado de urbanización", "valor")
+        .iter_rows()
+    ]
+    pv = t.filter(pl.col("Provincias").is_not_null() & (pl.col("Grado de urbanización") != "Total"))
+    ep = {
+        (p, g): v
+        for p, g, v in ex.group_by("provincia", "grado_urbanizacion")
+        .agg(pl.col("personas").sum())
+        .iter_rows()
+    }
+    malas = [
+        (p, g)
+        for p, g, v in pv.select("Provincias__cod", "Grado de urbanización", "valor").iter_rows()
+        if ep.get((p, grado[g]), 0) != v
+    ]
+    out.append(
+        Cifra(
+            "degurba",
+            "2025",
+            "Celdas provincia × grado que no coinciden",
+            f"{pv.height} celdas",
+            0,
+            float(len(malas)),
+            0,
+            "exacta",
+            ref,
+        )
+    )
+    return out
+
+
+ATLAS = RAW_DIR / "atlas_renta/ultimo"
+# Nota de prensa del ADRH 2023 (21/10/2025), registrada en atlas_renta/2023/ADRH2023.htm
+ATLAS_NOTA_PROV = {"20": 19616, "48": 18738, "28": 18142, "04": 11543, "23": 11847, "21": 12008}
+ATLAS_NOTA_MUNI = {
+    "Pozuelo de Alarcón": 30524,
+    "Matadepera": 26720,
+    "Boadilla del Monte": 26668,
+    "Iznalloz": 8399,
+    "Palmar de Troya, El": 8688,
+    "Huesa": 8825,
+}
+
+
+def atlas() -> list[Cifra]:
+    """Renta neta media por persona del ADRH 2023 frente a su nota de prensa."""
+    ref = "INE, nota de prensa ADRH 2023 (21/10/2025); tabla {t}"
+    renta = "Renta neta media por persona"
+    t = leer(ATLAS / "tabla_53689_ultimo.json").filter(
+        (pl.col("SALDOS CONTABLES") == renta) & (pl.col("fecha") == "2023-01-01")
+    )
+    out = [
+        Cifra(
+            "atlas_renta",
+            "2023",
+            renta,
+            "España",
+            15036,
+            float(t.filter(pl.col("Total Nacional").is_not_null())["valor"][0]),
+            0,
+            "exacta",
+            ref.format(t=53689),
+        ),
+    ]
+    prov = dict(
+        t.filter(pl.col("Provincias").is_not_null() & pl.col("Islas").is_null())
+        .select("Provincias__cod", "valor")
+        .iter_rows()
+    )
+    out += [
+        Cifra(
+            "atlas_renta",
+            "2023",
+            renta,
+            f"provincia {p}",
+            v,
+            float(prov.get(p, -1)),
+            0,
+            "exacta",
+            ref.format(t=53689),
+        )
+        for p, v in ATLAS_NOTA_PROV.items()
+    ]
+    muni: dict[str, tuple[float, str]] = {}
+    for f in sorted(ATLAS.glob("tabla_*_ultimo.json")):
+        d = leer(f)
+        if "Municipios" not in d.columns:
+            continue
+        d = d.filter(
+            pl.col("Municipios").is_in(list(ATLAS_NOTA_MUNI))
+            & pl.col("Distritos").is_null()
+            & pl.col("Secciones").is_null()
+            & (pl.col("SALDOS CONTABLES") == renta)
+            & (pl.col("fecha") == "2023-01-01")
+        )
+        for m, v in d.select("Municipios", "valor").iter_rows():
+            muni[m] = (v, f.stem.split("_")[1])
+    out += [
+        Cifra(
+            "atlas_renta",
+            "2023",
+            renta,
+            m,
+            v,
+            float(muni.get(m, (-1, ""))[0]),
+            0,
+            "exacta",
+            ref.format(t=muni.get(m, (0, "?"))[1]),
+        )
+        for m, v in ATLAS_NOTA_MUNI.items()
+    ]
+    return out
+
+
+# --------------------------------------------------------------------------- Censo 2021 viviendas
+
+
+def viviendas_censo2021() -> list[Cifra]:
+    """Muestra del 10 % de viviendas del Censo 2021 frente a su nota de prensa (27/06/2023).
+
+    Fichero no usado por ninguna variable de `variables.yaml` (sin enlace con personas); se
+    comprueba solo que la lectura con su diseño de registro es correcta.
+    """
+    import zipfile
+
+    z = zipfile.ZipFile(RAW_DIR / "censo2021_micro_viviendas/2021/CensoViviendas_2021.zip")
+    df = pl.read_csv(
+        z.read("CSV/CensoViviendas_2021.tab"), separator="\t", infer_schema=False
+    ).select("TIPO_VIV", "TENEN_VIV")
+    ref = "INE, nota de prensa Censo 2021 viviendas (censo_2021_jun.pdf)"
+    n = df.height
+    out = [
+        Cifra(
+            "censo2021_micro_viviendas",
+            "2021",
+            "Total de viviendas (muestra × 10)",
+            "España",
+            26623708,
+            10.0 * n,
+            round(10 * 3 * math.sqrt(n * 0.9), 0),
+            "muestral",
+            ref,
+        ),
+    ]
+    out += _proporciones(
+        {"principales": 18536616, "no_principales": 26623708 - 18536616},
+        {
+            "principales": df.filter(pl.col("TIPO_VIV") == "1").height,
+            "no_principales": df.filter(pl.col("TIPO_VIV") == "0").height,
+        },
+        fuente="censo2021_micro_viviendas",
+        edicion="2021",
+        cifra="Viviendas por tipo, %",
+        referencia=ref,
+    )
+    pr = df.filter(pl.col("TIPO_VIV") == "1")
+    m = dict(pr.group_by("TENEN_VIV").len().iter_rows())
+    np_ = pr.height
+    for cod, nom, pct in (("2", "propiedad", 75.5), ("3", "alquiler", 16.1)):
+        q = m.get(cod, 0) / np_
+        out.append(
+            Cifra(
+                "censo2021_micro_viviendas",
+                "2021",
+                "Viviendas principales por tenencia, %",
+                nom,
+                pct,
+                round(100 * q, 3),
+                round(0.05 + 100 * 3 * _ee(pct / 100, np_, 0.10), 3),
+                "muestral+redondeo",
+                ref,
+            )
+        )
+    return out
+
+
+# --------------------------------------------------------------------------- tablas censales
+
+
+def tablas_censo() -> list[Cifra]:
+    """Coherencia interna de las tablas censales leídas: los totales publicados coinciden con la
+    suma de sus desagregaciones (comprueba que el lector no pierde ni duplica series)."""
+    out: list[Cifra] = []
+    casos = [
+        ("censo_anual_tablas", "2025", TAB / "ultimo/tabla_67988_ultimo.json", None),
+        (
+            "censo_anual_tablas",
+            "2024",
+            TAB / "ultimo/tabla_66601_ultimo.json",
+            "Nivel de formación alcanzado",
+        ),
+        ("censo_anual_tablas", "2024", TAB / "ultimo/tabla_76291_ultimo.json", "Estado civil"),
+        ("censo2021_tablas", "2021", TAB / "2021-01-01/tabla_67988_20210101.json", None),
+        (
+            "censo2021_tablas",
+            "2021",
+            TAB / "2021-01-01/tabla_66601_20210101.json",
+            "Nivel de formación alcanzado",
+        ),
+        ("censo2021_tablas", "2021", TAB / "2021-01-01/tabla_76291_20210101.json", "Estado civil"),
+    ]
+    for fuente, ed, path, dim in casos:
+        t = leer(path)
+        tabla_id = path.stem.split("_")[1]
+        ref = f"INE, Censo Anual, tabla {tabla_id} ({path.parent.name})"
+        nac = t.filter(pl.col("Total Nacional").is_not_null() & (pl.col("Sexo") == "Total"))
+        if dim is None:
+            total = float(nac["valor"].max())
+            provs = float(
+                t.filter(pl.col("Provincias").is_not_null() & (pl.col("Sexo") == "Total"))[
+                    "valor"
+                ].sum()
+            )
+            out.append(
+                Cifra(
+                    fuente,
+                    ed,
+                    "Total nacional = suma de provincias",
+                    "España",
+                    total,
+                    provs,
+                    0,
+                    "exacta",
+                    ref,
+                )
+            )
+            sx = t.filter(pl.col("Total Nacional").is_not_null() & (pl.col("Sexo") != "Total"))
+            out.append(
+                Cifra(
+                    fuente,
+                    ed,
+                    "Total nacional = hombres + mujeres",
+                    "España",
+                    total,
+                    float(sx["valor"].sum()),
+                    0,
+                    "exacta",
+                    ref,
+                )
+            )
+            continue
+        semi = [c for c in t.columns if c.startswith("Semiintervalos") and not c.endswith("__cod")]
+        nac = nac.filter(pl.col(semi[0]) == t[semi[0]].drop_nulls().sort()[0])
+        tot = nac.filter((pl.col(dim) == "Total") & (pl.col("Nacionalidad") == "Total"))
+        partes = nac.filter((pl.col(dim) != "Total") & (pl.col("Nacionalidad") == "Total"))
+        por_nac = nac.filter((pl.col(dim) == "Total") & (pl.col("Nacionalidad") != "Total"))
+        total = float(tot["valor"][0])
+        out += [
+            Cifra(
+                fuente,
+                ed,
+                f"{dim}: total = suma de categorías",
+                "España",
+                total,
+                float(partes["valor"].sum()),
+                0,
+                "exacta",
+                ref,
+            ),
+            Cifra(
+                fuente,
+                ed,
+                f"{dim}: total = española + extranjera",
+                "España",
+                total,
+                float(por_nac["valor"].sum()),
+                0,
+                "exacta",
+                ref,
+            ),
+        ]
+    return out
+
+
+def informe(cifras: list[Cifra], destino: Path) -> pl.DataFrame:
+    """Escribe `<destino>.json` y `<destino>.md` con todas las cifras y un resumen por fuente."""
+    import json
+
+    t = tabla(cifras)
+    destino.with_suffix(".json").write_text(
+        json.dumps(t.to_dicts(), ensure_ascii=False, indent=1), encoding="utf-8"
+    )
+    res = (
+        t.group_by("fuente")
+        .agg(pl.len().alias("cifras"), pl.col("ok").sum().alias("dentro_tolerancia"))
+        .sort("fuente")
+    )
+    lineas = [
+        "# F2 · Cifras oficiales reproducidas (G2.4)",
+        "",
+        "Generado por `sinpop harmonize --check`. Tolerancias: D-027.",
+        "",
+        "## Resumen por fuente",
+        "",
+        "| Fuente | Cifras | Dentro de tolerancia |",
+        "|---|---:|---:|",
+    ]
+    lineas += [f"| `{f}` | {n} | {k} |" for f, n, k in res.iter_rows()]
+    lineas += [
+        "",
+        "## Detalle",
+        "",
+        "| Fuente | Edición | Cifra | Categoría | Oficial | Reproducida | Diferencia | Tolerancia | Tipo | OK | Referencia |",
+        "|---|---|---|---|---:|---:|---:|---:|---|---|---|",
+    ]
+    for c in cifras:
+        lineas.append(
+            f"| `{c.fuente}` | {c.edicion} | {c.cifra} | {c.categoria} | {c.oficial:,.3f} | "
+            f"{c.reproducida:,.3f} | {c.diferencia:,.3f} | {c.tolerancia:,.3f} | {c.tipo} | "
+            f"{'sí' if c.ok else '**no**'} | {c.referencia} |"
+        )
+    destino.with_suffix(".md").write_text("\n".join(lineas) + "\n", encoding="utf-8")
+    return res
