@@ -146,7 +146,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-14
 - **Fase:** F1
-- **Estado:** propuesta
+- **Estado:** aprobada
 - **Contexto:** `docs/02` propone el Padrón continuo como verdad de referencia y el último 1 de enero publicado como fecha. El INE publica hoy como cifras oficiales la Estadística Continua de Población (ECP, trimestral, provisional hasta 01/07/2026) y el Censo Anual de Población (definitivo hasta 01/01/2025, con un fichero exhaustivo de microdatos demográficos). Los bloques de estudios, actividad y estado civil del Censo Anual llegan a 2024 y la ocupación a 2023.
 - **Alternativas consideradas:**
   1. Fecha 01/01/2025 con el Censo Anual exhaustivo para todo: coherente, pero un año más antigua.
@@ -160,20 +160,20 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - Censo 2021: donantes y tipo de hogar (5 años de desfase en el tipo de hogar; se calibra el tamaño con la ECP 2026).
   - El grado de urbanización se toma de los microdatos censales (como pide `docs/02`), no de un fichero aparte. `padron_continuo`, `censo2021_tablas` y `degurba` pasan a P1 en `sources.yaml`; se añade `ecp` como P0.
 - **Consecuencias:** `targets.yaml` (F3) usará estas fuentes; la ficha de datos documenta el desfase de cada variable.
-- **Aprobada por:** pendiente de humano (revisión G1.6)
+- **Aprobada por:** humano (2026-10-15)
 
 ## D-016 · Hallazgos en los ficheros oficiales
 
 - **Fecha:** 2026-10-14
 - **Fase:** F1
-- **Estado:** propuesta
+- **Estado:** aprobada
 - **Contexto e evidencia:**
   1. Las muestras del Censo 2021 y del Censo Anual **no traen variable de peso**. El INE las describe como el 10 % de los hogares (2021) y el 10 % de la población (Censo Anual). Las muestras 2024 y 2025 tienen exactamente población/10 registros; se usa un factor uniforme de 10 y en F2 se contrasta por provincia.
   2. En el ZIP de la muestra 2024 del Censo Anual, el Parquet y el JSON del diseño están **desfasados** (sin DEGURBA ni residencia hace un año, y con actividad y estudios vacíos), mientras el TXT y el Excel siguen el diseño actualizado de 80 posiciones. Se usa el TXT con el Excel.
   3. La muestra 2023 tiene 4.807.670 registros frente a 4.808.536 (= población oficial 2023 / 10): 866 menos (−0,018 %). Probablemente se extrajo antes de la revisión de la cifra oficial. Solo se usa para la ocupación.
   4. Los códigos difieren entre fuentes: sexo 1/6 (no 1/2); relación con la actividad 1,2,4,5,6,7 en el Censo 2021 y 01–06 en el Censo Anual; `ECIVIL` = 0 «No consta» (4 % en 2024). Todo se recodifica en F2 desde los diccionarios oficiales, nunca por suposición.
 - **Decisión (propuesta):** factor uniforme 10 para las muestras censales; TXT + Excel para el Censo Anual; aceptar la muestra 2023 con la discrepancia documentada (G1.4 no se cumple al pie de la letra para ese fichero).
-- **Aprobada por:** pendiente de humano (revisión G1.6)
+- **Aprobada por:** humano (2026-10-15)
 
 ## D-017 · Universo de la población base: viviendas familiares
 
@@ -191,7 +191,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-14
 - **Fase:** F1
-- **Estado:** propuesta (se aplica en F2)
+- **Estado:** aprobada
 - **Contexto:** varias categorías de `docs/02` no existen en los donantes del Censo 2021.
 - **Decisión (propuesta):**
   1. `relacion_actividad`: el Censo no separa «labores del hogar» (va en otra inactividad). Categorías: ocupado, parado, jubilado_pensionista, incapacidad_permanente (pensionista de invalidez), estudiante, otra_inactividad.
@@ -200,13 +200,13 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   4. `relacion_persona_ref`: el Censo 2021 no define persona de referencia. Se deriva con una regla fija: miembro de mayor edad entre los cónyuges o progenitores del primer núcleo; si no hay núcleo, la persona adulta de mayor edad. Las relaciones se derivan de los punteros de cónyuge, progenitores y familia.
   5. `nacionalidad_grupo`: la doble nacionalidad no se identifica en ninguna fuente; se elimina la categoría `espanola_doble`.
   6. `tamano_municipio`: para municipios de 10.000 habitantes o más se asigna con la población municipal del Censo Anual exhaustivo; para los menores, con los códigos 991–993.
-- **Aprobada por:** pendiente de humano (revisión G1.6)
+- **Aprobada por:** humano (2026-10-15)
 
 ## D-019 · Fuentes de las capas de opinión y política: descarga manual y verificaciones aplazadas
 
 - **Fecha:** 2026-10-14
 - **Fase:** F1
-- **Estado:** propuesta
+- **Estado:** sustituida por D-021 y D-022
 - **Contexto:** Infoelectoral corta la conexión desde el entorno; el CIS sirve sus microdatos bajo petición y limita las peticiones automáticas; la ESS exige registro. Ninguna de estas fuentes interviene en el núcleo (F2–F7).
 - **Decisión (propuesta):** registrar estas fuentes en `MANUAL_DOWNLOADS.md` y aplazar las verificaciones críticas 6 y 7 al inicio de F8A/F8B, donde se reabre la parte correspondiente de F1. La puerta G1.5 queda con 5/7 hasta entonces.
 - **Aprobada por:** pendiente de humano (revisión G1.6)
@@ -236,3 +236,15 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - El CIS publica en abierto (CC BY 4.0) los microdatos, cuestionarios y fichas técnicas en la página de cada estudio. Se descargan respetando pausas de 20 s (el buscador del catálogo tiene protección contra robots; las páginas de estudio no).
 - **Consecuencias:** las cifras provisionales pueden diferir ligeramente del escrutinio definitivo. G2.6 («totales oficiales sin diferencias») se contrastará contra estos PDF y la diferencia con el definitivo se documentará si se obtiene.
 - **Aprobada por:** humano
+
+## D-022 · Elecciones europeas y estudio postelectoral fuera de las fuentes (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F1
+- **Estado:** aprobada
+- **Contexto:** `docs/02` y `docs/04` (F3, tarea 5) proponen las europeas de 2024 como elección reservada para validar la capa política (V-POL-RESERVADA), y la verificación 6 incluye los estudios postelectorales del CIS.
+- **Decisión del responsable:**
+  1. **Europeas de 2024 fuera:** no son buen identificador del comportamiento político (participación muy baja y voto a candidaturas que no se presentan a las generales). No se usan ni para construir ni para validar.
+  2. **Postelectoral del CIS no necesario:** se usan el preelectoral 3411 y los barómetros posteriores al 23J, que recogen el recuerdo de voto de 2023 (la documentación los admite: `docs/03`, §2.5).
+- **Consecuencias:** V-POL-RESERVADA necesita otra validación reservada. Propuesta del agente, para decidir en F3: reservar el detalle municipal de las generales de 2023 (calibrar el recuerdo de voto por provincia y validar contra los municipios, que no se usan para calibrar). `elecciones.yaml` registra esta alternativa en `validacion_reservada`.
+- **Aprobada por:** humano (puntos 1 y 2); la alternativa de validación queda propuesta.

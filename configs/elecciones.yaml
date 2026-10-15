@@ -1,19 +1,22 @@
-# Elecciones de referencia (docs/02, sección 2.4). Las autonómicas de cada comunidad se
-# añaden en F1 tras verificar cuál es la última y su fuente oficial.
+# Elecciones de referencia (docs/02, sección 2.4). Ver D-021 y D-022.
 elecciones:
-  - id: generales-2023
-    tipo: generales
-    fecha: 2023-07-23
-    ambito: ES
-    fuente: infoelectoral_resultados
-    uso: calibrar
-    url_oficial: https://infoelectoral.interior.gob.es/
-    verificar: [nivel más fino disponible, CERA por provincia]
-  - id: europeas-2024
-    tipo: europeas
-    fecha: 2024-06-09
-    ambito: ES
-    fuente: infoelectoral_resultados
-    uso: reservar
-    url_oficial: https://infoelectoral.interior.gob.es/
-    verificar: [nivel más fino disponible, CERA]
+- id: generales-2023
+  tipo: generales
+  fecha: 2023-07-23
+  ambito: ES
+  fuente: infoelectoral_resultados
+  uso: calibrar
+  url_oficial: https://infoelectoral.interior.gob.es/
+  verificar:
+  - escrutinio provisional por municipio, sin CERA (D-021)
+- id: europeas-2024
+  tipo: europeas
+  fecha: 2024-06-09
+  ambito: ES
+  fuente: infoelectoral_resultados
+  uso: excluida
+  url_oficial: https://infoelectoral.interior.gob.es/
+  verificar:
+  - excluidas por decisión del responsable (D-022)
+validacion_reservada: 'Propuesta D-022 (a decidir en F3): calibrar el recuerdo de voto de las generales de 2023
+  por provincia y reservar el detalle municipal para validar.'

@@ -466,20 +466,26 @@ class Eleccion(Strict):
     fecha: dt.date
     ambito: str
     fuente: str
-    uso: Literal["calibrar", "reservar", "pendiente"]
+    uso: Literal["calibrar", "reservar", "pendiente", "excluida"]
     url_oficial: str | None = None
     verificar: list[str] = Field(default_factory=list)
 
 
 class EleccionesConfig(Strict):
     elecciones: list[Eleccion]
+    # Validación reservada alternativa cuando no se reserva ninguna elección completa (D-022)
+    validacion_reservada: str | None = None
 
     @model_validator(mode="after")
     def _una_reservada(self) -> EleccionesConfig:
         ids = [e.id for e in self.elecciones]
         if len(ids) != len(set(ids)):
             raise ValueError("ids de elección duplicados")
-        if self.elecciones and not any(e.uso == "reservar" for e in self.elecciones):
+        if (
+            self.elecciones
+            and not any(e.uso == "reservar" for e in self.elecciones)
+            and not self.validacion_reservada
+        ):
             raise ValueError("debe reservarse al menos una elección para validar (F3, tarea 5)")
         return self
 

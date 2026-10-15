@@ -19,7 +19,6 @@ Todas las fuentes del núcleo (F1–F7) se han descargado automáticamente desde
 
 | Fuente (`id`) | Organismo | Qué falta | Página oficial | Motivo |
 | --- | --- | --- | --- | --- |
-| `infoelectoral_resultados` | Ministerio del Interior | Resultados por municipio de las europeas del 09/06/2024 | https://infoelectoral.interior.gob.es/ | el servidor corta la conexión desde el entorno; las generales 2023 ya están (aportadas por el responsable) |
+| `resultados_autonomicas` | Gobiernos y parlamentos autonómicos | Resultados por provincia (mejor por municipio) de la última elección autonómica de cada comunidad | web oficial de resultados de cada comunidad | pendiente de decisión (D-022) |
 | `ess` | ESS ERIC | European Social Survey, ronda 11 (y 12 si está publicada) | https://ess.sikt.no/ | R12 no publicada: primera publicación prevista en enero de 2027 |
-| `resultados_autonomicas` | Juntas electorales y gobiernos autonómicos | Resultados de las últimas elecciones autonómicas de cada comunidad | https://infoelectoral.interior.gob.es/ | última elección de cada comunidad y su fuente oficial; el servidor corta la conexión desde el entorno (no es una denegación de la política de red) |
 | `centros_autonomicos` | Centros autonómicos de opinión | Estudios de centros autonómicos (CEO, Euskobarómetro, Sociómetro y otros) | https://ceo.gencat.cat/ | requiere registro o aceptación de condiciones |

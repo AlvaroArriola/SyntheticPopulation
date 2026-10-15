@@ -51,6 +51,7 @@ def test_partidos_reject_unknown_family() -> None:
 
 def test_elecciones_require_a_reserved_election() -> None:
     raw = _raw("elecciones.yaml")
+    raw.pop("validacion_reservada", None)
     for e in raw["elecciones"]:
         e["uso"] = "calibrar"
     with pytest.raises(ValidationError, match="reservarse"):

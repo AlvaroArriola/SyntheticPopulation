@@ -53,11 +53,9 @@ verificaciones:
     sin descuadres internos; censo de residentes 35.146.062), aportados por el responsable a partir de la web del
     Ministerio del Interior. Censo electoral de residentes por municipio: se obtiene de esos mismos ficheros (participación
     + abstención). CIS: preelectoral de las generales de 2023 (estudio 3411; 29.201 entrevistas; pesos nacional,
-    provincial y autonómico; representatividad provincial). PENDIENTE: resultados de las europeas de 09/06/2024
-    (el PDF anunciado no ha llegado), últimas autonómicas de cada comunidad, y localizar el postelectoral del CIS
-    de 2023 (no aparece en las direcciones probadas; los barómetros posteriores sí recogen el recuerdo de voto de
-    2023).'
-  decision: D-021
+    provincial y autonómico; representatividad provincial). Europeas de 2024 y postelectoral del CIS: fuera por
+    decisión del responsable (D-022). PENDIENTE: últimas elecciones autonómicas de cada comunidad.'
+  decision: D-021, D-022
   evidencia:
   - data/raw/infoelectoral_resultados/generales-2023/
   - data/raw/cis_electorales/3411/FT3411.pdf
@@ -74,10 +72,9 @@ verificaciones:
   evidencia:
   - reports/fase_01_cis_variables.md
 recuentos_aceptados:
-  # G1.4: diferencias aceptadas expresamente por el responsable (D-020)
-  - fichero: md_Censo_muestra_2023.txt
-    motivo: 866 registros menos que la población oficial 2023 / 10 (−0,018 %); solo se usa para la ocupación
-    decision: D-020
-  - fichero: md_CensoPersonas_2021.parquet
-    motivo: la documentación declara el 10 % de los hogares sin cifra exacta; contraste por cociente provincial (0,956–1,011)
-    decision: D-020
+- fichero: md_Censo_muestra_2023.txt
+  motivo: 866 registros menos que la población oficial 2023 / 10 (−0,018 %); solo se usa para la ocupación
+  decision: D-020
+- fichero: md_CensoPersonas_2021.parquet
+  motivo: la documentación declara el 10 % de los hogares sin cifra exacta; contraste por cociente provincial (0,956–1,011)
+  decision: D-020
