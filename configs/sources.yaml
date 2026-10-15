@@ -254,11 +254,11 @@ fuentes:
   variable_peso: null
   nivel_geografico: CCAA y tamaño de municipio
   prioridad: P3
-  condiciones: 'CIS: citar el número de estudio y al CIS como fuente; puede requerir registro'
+  condiciones: 'CIS: CC BY 4.0; citar el número de estudio y al CIS como fuente'
   verificar:
-  - variables políticas y de valores presentes por estudio y su codificación
-  - microdatos bajo petición en el catálogo del CIS; el servidor limita las peticiones automáticas (HTTP 429)
-  descarga: manual
+  - microdatos en abierto (CC BY 4.0) en la página de cada estudio; descargar con pausas (el buscador tiene protección
+    contra robots)
+  descarga: automatica
 - id: cis_barometro_sanitario_2026
   nombre: Barómetro Sanitario 2026
   organismo: CIS y Ministerio de Sanidad
@@ -270,10 +270,11 @@ fuentes:
   unidad: persona
   nivel_geografico: CCAA
   prioridad: P3
-  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
-  descarga: manual
+  condiciones: 'CIS: CC BY 4.0; citar el número de estudio y al CIS como fuente'
+  descarga: automatica
   verificar:
-  - microdatos bajo petición en el catálogo del CIS; el servidor limita las peticiones automáticas (HTTP 429)
+  - microdatos en abierto (CC BY 4.0) en la página de cada estudio; descargar con pausas (el buscador tiene protección
+    contra robots)
 - id: ess
   nombre: European Social Survey, ronda 11 (y 12 si está publicada)
   organismo: ESS ERIC
@@ -295,18 +296,18 @@ fuentes:
   capa: A-POL
   tipo: resultados
   url_oficial: https://infoelectoral.interior.gob.es/
-  edicion: null
+  edicion: generales-2023 (escrutinio provisional por municipio, aportado por el responsable)
   universo: censo electoral (CER y CERA)
   unidad: mesa
   nivel_geografico: mesa, municipio, provincia
   prioridad: P3-POL
   condiciones: Datos públicos; citar la elección y la fuente
   verificar:
-  - generales 2023-07-23
-  - europeas 2024-06-09
-  - nivel más fino disponible
-  - el servidor corta la conexión desde el entorno (no es una denegación de la política de red)
+  - europeas 2024 pendientes; el servidor corta la conexión desde el entorno
   descarga: manual
+  documentacion_en_fichero: 'Hojas municipales del Ministerio del Interior: cada cifra está rotulada (Participación,
+    Abstención, Votos válidos, A candidatura, En blanco, Votos nulos y votos por candidatura). Lector y comprobaciones
+    internas en src/sinpop/ingest/elecciones_pdf.py.'
 - id: resultados_autonomicas
   nombre: Resultados de las últimas elecciones autonómicas de cada comunidad
   organismo: Juntas electorales y gobiernos autonómicos
@@ -345,12 +346,11 @@ fuentes:
   unidad: persona
   nivel_geografico: provincia (preelectorales de generales)
   prioridad: P3-POL
-  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  condiciones: 'CIS: CC BY 4.0; citar el número de estudio y al CIS como fuente'
   verificar:
-  - estudios disponibles para 23J 2023 y posteriores
-  - representatividad territorial
-  - microdatos bajo petición en el catálogo del CIS; el servidor limita las peticiones automáticas (HTTP 429)
-  descarga: manual
+  - microdatos en abierto (CC BY 4.0) en la página de cada estudio; descargar con pausas (el buscador tiene protección
+    contra robots)
+  descarga: automatica
 - id: centros_autonomicos
   nombre: Estudios de centros autonómicos (CEO, Euskobarómetro, Sociómetro y otros)
   organismo: Centros autonómicos de opinión
@@ -375,7 +375,8 @@ fuentes:
   unidad: territorio
   nivel_geografico: nacional
   prioridad: P3-POL
-  condiciones: 'CIS: citar al CIS como fuente'
-  descarga: manual
+  condiciones: 'CIS: CC BY 4.0; citar el número de estudio y al CIS como fuente'
+  descarga: automatica
   verificar:
-  - microdatos bajo petición en el catálogo del CIS; el servidor limita las peticiones automáticas (HTTP 429)
+  - microdatos en abierto (CC BY 4.0) en la página de cada estudio; descargar con pausas (el buscador tiene protección
+    contra robots)

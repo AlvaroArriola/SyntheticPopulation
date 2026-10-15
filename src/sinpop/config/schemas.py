@@ -40,6 +40,9 @@ class Source(Strict):
     descarga: Literal["automatica", "manual", "pendiente"] = "pendiente"
     condiciones: str
     verificar: list[str] = Field(default_factory=list)
+    # Si el fichero se documenta a sí mismo (p. ej. cada cifra rotulada en el PDF),
+    # aquí se explica; cuenta como documentación para G1.2.
+    documentacion_en_fichero: str | None = None
 
 
 class SourcesConfig(Strict):

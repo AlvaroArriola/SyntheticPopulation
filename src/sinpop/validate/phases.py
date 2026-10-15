@@ -142,7 +142,14 @@ def _g1_2_docs() -> Check:
 
     m = load_manifest()
     con_datos = {e.fuente for e in m.ficheros if e.tipo == "datos"}
-    con_doc = {e.fuente for e in m.ficheros if e.tipo != "datos"}
+    from sinpop.config import load_config
+
+    autodoc = {
+        f.id
+        for f in load_config("sources.yaml").fuentes  # type: ignore[attr-defined]
+        if f.documentacion_en_fichero
+    }
+    con_doc = {e.fuente for e in m.ficheros if e.tipo != "datos"} | autodoc
     sin_doc = sorted(con_datos - con_doc)
     ok = bool(con_datos) and not sin_doc
     valor = (
@@ -189,20 +196,39 @@ def _g1_4_records() -> Check:
             "igualdad exacta",
         )
     rec = json.loads(path.read_text(encoding="utf-8"))["recuentos"]
+    import yaml
+
+    vpath = REPORTS_DIR / "fase_01_verificaciones.yaml"
+    vdata = yaml.safe_load(vpath.read_text(encoding="utf-8")) if vpath.exists() else {}
+    aceptados = {a["fichero"]: a["decision"] for a in vdata.get("recuentos_aceptados") or []}
     decl = [r for r in rec if r["declarado"]]
-    malos = [Path(r["fichero"]).name for r in decl if not r["ok"]]
-    nodecl = [Path(r["fichero"]).name for r in rec if not r["declarado"]]
-    valor = f"{len(decl) - len(malos)}/{len(decl)} con cifra declarada coinciden"
+    malos = [
+        Path(r["fichero"]).name
+        for r in decl
+        if not r["ok"] and Path(r["fichero"]).name not in aceptados
+    ]
+    nodecl = [
+        Path(r["fichero"]).name
+        for r in rec
+        if not r["declarado"] and Path(r["fichero"]).name not in aceptados
+    ]
+    acept = [f for f in aceptados if any(Path(r["fichero"]).name == f for r in rec)]
+    exactos = sum(1 for r in decl if r["ok"])
+    valor = f"{exactos}/{len(decl)} con cifra declarada coinciden exactamente"
     if malos:
         valor += f"; no coinciden: {', '.join(malos)}"
     if nodecl:
         valor += f"; sin cifra exacta declarada: {', '.join(nodecl)}"
+    if acept:
+        valor += "; diferencias aceptadas por el responsable: " + ", ".join(
+            f"{f} ({aceptados[f]})" for f in acept
+        )
     return Check(
         "G1.4",
         "Registros leídos = registros declarados por la documentación",
-        bool(decl) and not malos,
+        bool(decl) and not malos and not nodecl,
         valor,
-        "igualdad exacta",
+        "igualdad exacta o diferencia aceptada por el responsable",
     )
 
 

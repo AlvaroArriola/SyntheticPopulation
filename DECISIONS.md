@@ -179,7 +179,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-14
 - **Fase:** F1
-- **Estado:** propuesta
+- **Estado:** sustituida por D-021
 - **Contexto:** la muestra de hogares del Censo 2021 no incluye establecimientos colectivos. Según la ECP a 01/01/2026, 386.003 residentes (0,78 %) viven en ellos, sobre todo personas mayores.
 - **Alternativas consideradas:**
   1. Módulo aparte con personas de colectivos modeladas a partir de tablas por edad y sexo (sin donantes reales: atributos modelados).
@@ -220,4 +220,19 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   1. **G1.4 aceptada:** se acepta la muestra 2023 del Censo Anual con su diferencia de −866 registros (−0,018 %) y el contraste por cociente del Censo 2021, cuya documentación no declara una cifra exacta (D-016, puntos 1 y 3).
   2. Se siguen las revisiones humanas tal y como las fija la documentación (no se agrupan).
   3. D-017 (universo) y D-018.4 (persona de referencia) quedan pendientes de aclaración; D-019 (aplazar G1.5 a F8) no se aprueba por ahora.
+- **Aprobada por:** humano
+
+## D-021 · Decisiones del responsable sobre colectivos, persona de referencia y fuentes políticas (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F1
+- **Estado:** aprobada
+- **Decisión del responsable:**
+  1. **Establecimientos colectivos (sustituye a D-017): opción B.** La población incluye a los residentes en establecimientos colectivos (386.003 personas a 01/01/2026; el 5,2 % de los de 90 años o más). Se generan en un módulo aparte con las cifras oficiales por provincia, sexo y edad (ECP: población total menos población en viviendas familiares). Sus demás atributos se modelan a partir de personas parecidas y se marcan como `modelada` en `__calidad`; la ficha de datos advierte de su menor fiabilidad. Se implementa en F4/F5 y se audita en F7.
+  2. **Persona de referencia (concreta D-018.4): la persona de más edad del hogar.** En caso de empate, la de menor número de orden (`NORDEN`) en el fichero del Censo. Las relaciones (pareja, hijo, padre o madre, otro familiar, no familiar) se derivan de los punteros de cónyuge, progenitores y familia respecto a esa persona.
+  3. **G1.5:** no se aplazan las verificaciones 6 y 7 a F8: se completan en F1 con los ficheros aportados y con nuevos intentos en el CIS.
+- **Evidencia nueva:**
+  - El responsable aporta 52 PDF con los resultados municipales del Congreso del 23/07/2023 publicados por el Ministerio del Interior. Son las hojas del **escrutinio provisional** (sello horario de la noche electoral, 23–24/07/2023). Se han leído los 8.131 municipios sin ningún descuadre interno: válidos = candidatura + blancos; participación = válidos + nulos; suma de candidaturas = votos a candidatura. Censo de residentes: 35.146.062; participación: 24.743.612. No incluyen el voto CERA, que es justo el universo que pide `docs/02` (§3.5, regla 2). Tres ficheros venían con el nombre cambiado (`34.pdf` = Málaga, `48.pdf` = Toledo, `Málaga.pdf` = Melilla); se identifican por su contenido y se guardan con el código INE de provincia.
+  - El CIS publica en abierto (CC BY 4.0) los microdatos, cuestionarios y fichas técnicas en la página de cada estudio. Se descargan respetando pausas de 20 s (el buscador del catálogo tiene protección contra robots; las páginas de estudio no).
+- **Consecuencias:** las cifras provisionales pueden diferir ligeramente del escrutinio definitivo. G2.6 («totales oficiales sin diferencias») se contrastará contra estos PDF y la diferencia con el definitivo se documentará si se obtiene.
 - **Aprobada por:** humano

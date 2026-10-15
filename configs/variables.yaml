@@ -955,6 +955,11 @@ variables:
     - ateo
     - indiferente
     fuente_principal: cis_barometros
+    fuentes:
+      cis_barometros:
+        variable_original: RELIGION
+        verificado_contra: 3567.sav (CIS, etiquetas de valores)
+        notas: 9 = N.C.
   identidad_territorial:
     prioridad: P3
     nivel: opinion
@@ -988,6 +993,11 @@ variables:
     - obrera
     descripcion: Clase social subjetiva
     fuente_principal: cis_barometros
+    fuentes:
+      cis_barometros:
+        variable_original: CLASESOCIAL
+        verificado_contra: 3567.sav (CIS, etiquetas de valores)
+        notas: 98 = no sabe; 99 = N.C.
   situacion_economica_personal:
     prioridad: P3
     nivel: opinion
@@ -995,6 +1005,10 @@ variables:
     descripcion: Valoración de la situación económica personal
     dominio_pendiente: 'F8A: escala según el cuestionario del CIS'
     fuente_principal: cis_barometros
+    fuentes:
+      cis_barometros:
+        variable_original: pendiente de confirmar en el cuestionario
+        verificado_contra: 3567.sav (CIS, etiquetas de valores)
   medio_informacion_principal:
     prioridad: P3
     nivel: opinion
@@ -1094,6 +1108,10 @@ variables:
     tipo: booleana
     descripcion: Derecho a voto en generales y autonómicas
     fuente_principal: derivada
+    fuentes:
+      infoelectoral_resultados:
+        variable_original: censo de residentes = participación + abstención por municipio
+        verificado_contra: PDF del escrutinio provisional
   derecho_voto_europeas:
     prioridad: P3-POL
     nivel: politica
@@ -1114,6 +1132,15 @@ variables:
       sin_derecho, NS, NC'
     descripcion: Recuerdo de voto en las generales de 2023
     fuente_principal: cis_electorales
+    fuentes:
+      cis_barometros:
+        variable_original: RECUVOTOG / RECUERDO
+        verificado_contra: 3567.sav (CIS, etiquetas de valores)
+        notas: 8996 = en blanco; 9998 = no recuerda; 9999 = N.C.; 0 = no procede
+      infoelectoral_resultados:
+        variable_original: votos por candidatura, blancos, nulos y abstención por municipio
+        verificado_contra: PDF del escrutinio provisional (Ministerio del Interior)
+        notas: escrutinio provisional; sin CERA
   recuerdo_voto_autonomicas:
     prioridad: P3-POL
     nivel: politica
@@ -1145,6 +1172,11 @@ variables:
     - '10'
     descripcion: Escala 1 (izquierda) a 10 (derecha); NS y NC como categorías especiales
     fuente_principal: cis_barometros
+    fuentes:
+      cis_barometros:
+        variable_original: ESCIDEOL
+        verificado_contra: 3567.sav (CIS, etiquetas de valores)
+        notas: 98 = N.S.; 99 = N.C.
   ideologia_eje_territorial:
     prioridad: P3-POL
     nivel: politica
@@ -1159,6 +1191,11 @@ variables:
     dominio_pendiente: 'F2: según partidos.yaml + ninguno'
     descripcion: Partido más cercano
     fuente_principal: cis_barometros
+    fuentes:
+      cis_barometros:
+        variable_original: CERCANIA
+        verificado_contra: 3567.sav (CIS, etiquetas de valores)
+        notas: 9998 = N.S.; 9999 = N.C.
   interes_politica:
     prioridad: P3-POL
     nivel: politica
@@ -1186,6 +1223,11 @@ variables:
     - 10
     descripcion: Confianza por institución (escala de la fuente)
     fuente_principal: ess / cis_barometros
+    fuentes:
+      cis_barometros:
+        variable_original: CONFIANZAPTE, CONFIANZAOPOSIC
+        verificado_contra: 3567.sav (CIS, etiquetas de valores)
+        notas: solo líderes en este estudio
   satisfaccion_democracia:
     prioridad: P3-POL
     nivel: politica

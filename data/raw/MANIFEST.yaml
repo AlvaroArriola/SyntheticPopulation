@@ -1540,6 +1540,111 @@ ficheros:
   bytes: 5433295
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3567/FT3567.pdf
+  tipo: metodologia
+  edicion: '3567'
+  url_oficial: https://www.cis.es/documents/20117/14139753/FT3567.pdf
+  fecha_descarga: '2026-10-15'
+  sha256: b0d20d9a8328f753f437a7ffff435cdfcbda65d120e073e59993d9cbd317cb03
+  bytes: 27751
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente; puede requerir
+    registro'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3567/MD3567.zip
+  tipo: datos
+  edicion: '3567'
+  url_oficial: https://www.cis.es/documents/20117/14139753/MD3567.zip
+  fecha_descarga: '2026-10-15'
+  sha256: 2bc9ef65a01cab8c8d4a0964fa9fe1f3d583ff69765cc3c2cabdd7c80a63dc13
+  bytes: 2135192
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente; puede requerir
+    registro'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3567/cues3567.pdf
+  tipo: cuestionario
+  edicion: '3567'
+  url_oficial: https://www.cis.es/documents/20117/14139753/cues3567.pdf
+  fecha_descarga: '2026-10-15'
+  sha256: 100a627e5f5556a951364a9b895c8c8ad7ca3625cc26033bbdf3b9a629d2e932
+  bytes: 149153
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente; puede requerir
+    registro'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3567/extraido/3567.sav
+  tipo: datos
+  edicion: '3567'
+  url_oficial: https://www.cis.es/documents/20117/14139753/MD3567.zip#3567.sav
+  fecha_descarga: '2026-10-15'
+  sha256: 4e60c2d864a7a8f611b266275d13286435a6adcd66c69176d8ca2c1ad85fbd48
+  bytes: 1125130
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente; puede requerir
+    registro'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3567/extraido/codigo3567.pdf
+  tipo: datos
+  edicion: '3567'
+  url_oficial: https://www.cis.es/documents/20117/14139753/MD3567.zip#codigo3567.pdf
+  fecha_descarga: '2026-10-15'
+  sha256: 89e20dc733d14a6e9f1661d699ec65cde04447bc0a1baca841eb351ae53f39e6
+  bytes: 396646
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente; puede requerir
+    registro'
+  via: automatica
+- fuente: cis_electorales
+  fichero: cis_electorales/3411/FT3411.pdf
+  tipo: metodologia
+  edicion: '3411'
+  url_oficial: https://www.cis.es/documents/20117/1557956/FT3411.pdf
+  fecha_descarga: '2026-10-15'
+  sha256: 7a9a2b4cb9736ae8957547e16ce587559df4b2f5084616a330ecc72bd6ea6d3c
+  bytes: 75313
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_electorales
+  fichero: cis_electorales/3411/MD3411.zip
+  tipo: datos
+  edicion: '3411'
+  url_oficial: https://www.cis.es/documents/20117/1557956/MD3411.zip
+  fecha_descarga: '2026-10-15'
+  sha256: bfb6de07d89c58e3266c6a5ca1ad8b44d1f795dc4424200faafaf0e01c2bd681
+  bytes: 14194752
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_electorales
+  fichero: cis_electorales/3411/cues3411.pdf
+  tipo: cuestionario
+  edicion: '3411'
+  url_oficial: https://www.cis.es/documents/20117/1557956/cues3411.pdf
+  fecha_descarga: '2026-10-15'
+  sha256: 7a42375d08760ade140f3cb1b2e1d73fa0a09bbf952dab48bcf1e087172d9f55
+  bytes: 179892
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_electorales
+  fichero: cis_electorales/3411/extraido/3411.sav
+  tipo: datos
+  edicion: '3411'
+  url_oficial: https://www.cis.es/documents/20117/1557956/MD3411.zip#3411.sav
+  fecha_descarga: '2026-10-15'
+  sha256: ee43e635e71c357a915afee18351ab5dff1927219388a51d7d22e9c2afbd418b
+  bytes: 11420776
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_electorales
+  fichero: cis_electorales/3411/extraido/codigo3411.pdf
+  tipo: datos
+  edicion: '3411'
+  url_oficial: https://www.cis.es/documents/20117/1557956/MD3411.zip#codigo3411.pdf
+  fecha_descarga: '2026-10-15'
+  sha256: 749f8298ab081771c6bd5d0f8ae1299958b4cd6fbb5ef67d8283cf63035799dc
+  bytes: 687795
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
 - fuente: ecp
   fichero: ecp/2026-01-01/tabla_59589_20260101.json
   tipo: datos
@@ -2380,6 +2485,526 @@ ficheros:
   bytes: 165573
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov01.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 72dfcf8498ad224a523efae1a1d064ab07751ac1d3efb8e9fa0289713d24dc23
+  bytes: 702506
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov02.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: efcd543f61c13108e2368475146709fe0b22a4feee326070d9a78fc33c732bb4
+  bytes: 853004
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov03.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: c8aeb69eb3a837b6c98c6cccf5a6205f2b2d6d09f632ea7191e2db6cd638b611
+  bytes: 1404491
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov04.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: d1302228340d53cae8024552ab2c98b972a128b5ac634a89f53f01e0c147aebb
+  bytes: 1105770
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov05.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: d6a7e8e1731c441a25f40316eb2d2b884b56b04876b1e567bf8ec41a22bce000
+  bytes: 3100477
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov06.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 556dad582352e12fd3856312c66ea4ff03b32381ea7d4ba061d97eab21fbb1f8
+  bytes: 1668202
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov07.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: b7f6bd790890c3264a3bf65db5468b575f9f737df00c7ba40f83330765858bfc
+  bytes: 632402
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov08.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 93db77f426c627145273c69fff2f17ec05b67c46eb36945b526ea1036e379ef2
+  bytes: 4167695
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov09.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: c0c30a97998867a7c026ae6a3a87e87a8f67ce1be6a359bf620ed90604817017
+  bytes: 4363873
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov10.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 65b8e1fe2ad82d74426c7de8cea97889c47cd1c3018d2d7c4311f74be86146f1
+  bytes: 9968759
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov11.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 83a3619babf7bfcd3ad22205f47879518be4fe615d690057d684634a26773d5f
+  bytes: 501445
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov12.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 37ab8c7e3d580ffca828ceb62132194824b4f25aafdd008feda022b340188d23
+  bytes: 1328865
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov13.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: a6ba420c177e401086ed2d2984a043511314ba28a57ba34e7bdef6433a86f152
+  bytes: 996707
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov14.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: f9db39f0f75fa68266941ddbaff1ecc0f8501460d282fdff3980e27b8e17fa94
+  bytes: 907734
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov15.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: e3fbfe9362735481d18ce2a58daa26db6ea8ee5213ca9f233a1bc68fc84a3523
+  bytes: 967011
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov16.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: d4fef5de782662e8eee8c0c1effdb32b6c31e241cfdced80b936b7f46e0f7b25
+  bytes: 2592664
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov17.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: d1ed4f80470192ca6fea19e0ae7d2a41133275c222395a581ab3e63c7c44b636
+  bytes: 11827841
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov18.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 08fd953c93b0125a45081edacb40e1be9905c4cdeb2fda9926c08a90c13e96c8
+  bytes: 2004785
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov19.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 428b81f17fd66e7cb89c64670634ec9736a4154a214c840b98f6fb6b9b2f44a6
+  bytes: 3294430
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov20.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 97f7e62bd660d2feaaafc569288f6881b1da8dc4b44caae68135c6ae8d3909a8
+  bytes: 1227363
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov21.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 81bde36a6ba2ed08d187eb4a044d4c6d3c311e217396594556fe00b6ee817ce2
+  bytes: 788394
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov22.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: cb159b8f91867ad37d85d3e461211909b92f058b284e43dc3bf09757f0d31e4d
+  bytes: 2734367
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov23.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 844aed6f9a5fee470934e731a079143e981984fc0b8a4fd3e658c26ae3cc57e8
+  bytes: 4200572
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov24.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: ba8ffd9650698387801a2927cd5353a4bb703fe6281c67d83c6f42440cc4a6f6
+  bytes: 2729546
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov25.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: fc7be92341ff4093973d78398bded2e690393c4bd5f11c93fc239a13423a5c88
+  bytes: 12659035
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov26.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 432cf224744f6046ed85360832b2b5d35642900bf39e9fedde8bb40210c82510
+  bytes: 2112191
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov27.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 531a4c324fc8d883533b2220a88331b28ae9f3906fa03ebd16cad16c70bba84c
+  bytes: 820890
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov28.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: a588e5d95711d1cf0ad61c704e37e308a3efb06e6b358fb1c69184eaab9b7617
+  bytes: 8941448
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov29.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: b459f1d0689ba504fbcda2734ed3b137c6b7326da57aeb72e420c4f717feaa1c
+  bytes: 1055808
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov30.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: a0695504cc0ba93b5b702d072ae6b8c44c51b074897ab1ef34936dc6a18d1c21
+  bytes: 542000
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov31.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 45dd79600fcd37369d88a1b3c7d29c8d1abb844ba457dde962a60e4401f648e0
+  bytes: 3378884
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov32.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 2400f5a21582b01c31d66fce9b94d0233239096eb459936f51326ba807f587c3
+  bytes: 1177990
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov33.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 9d673541071e9f501b83d4acab850a8d2937bef6049c0453a4cb0a09071eff47
+  bytes: 921914
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov34.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 8cd11d083465b4f3edfa2a214fd2e1c2460707a6749acb66c99737b214467a59
+  bytes: 2605294
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov35.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 83a009a434cd22fc10e9376b34005b85761d41c8e2f8b9fdd4c3ed18314e43ed
+  bytes: 419625
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov36.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: dc6fdbbae0b3c04e6932f56d3671026033da0f1e44b9cbc5597f8d520d9138ea
+  bytes: 705859
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov37.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: bd35664568158db80d8f79657511672d645a2c46a0920cfb98dba49daee5bee7
+  bytes: 4577497
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov38.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: abeff181b72951f7385160e0e7776a41c17f735b41c1aeb2008128f37b281974
+  bytes: 539849
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov39.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 45189577e00a853c0ead9fae5d10c229bd75f7a3ef47c4bfe2eaafde1eac4e4b
+  bytes: 997355
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov40.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 0736239e6adfa5b03d3a9e1d85f15255e1d6e78f81615a62e8a27085b8e9565b
+  bytes: 2394195
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov41.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 741df0e1be666011090f6e3fe4e542f83e759f973e6150b53e1fece216c086c7
+  bytes: 1272023
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov42.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: c1ce90a84ea8e0e4dcc3d129792e05bef5a36a7135041658c6b0a494d862f045
+  bytes: 2040629
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov43.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: c8852bb0f458f9fd24380719b7777ad3755865581063742f6995497028e7948a
+  bytes: 10358827
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov44.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 790711e2887f93b40e8ab9f1624951fddbd30c869a5ee4eb9daa901661b96161
+  bytes: 2918099
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov45.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 48d82c0589286d8c5ba1b688ab96783a6be4019e16da5ac28c166b61d1d2ed39
+  bytes: 2094143
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov46.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 246b09098d7279d8808650fd3c10c69c02b2f720612a1a137a1a9867258d9655
+  bytes: 12387289
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov47.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 2b1e519a745ff7c0993cef7beca5a12adb0a555c129eaa654aa46d1742515e4e
+  bytes: 3050928
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov48.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 13ae0d24007f42753deef9f92b81514c0925cf0d47dc910930e94fb8ad67e23a
+  bytes: 1476576
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov49.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: f131dbe4cd1f6489d9c44d06106867fd1a04c25c7755c1718d8598df1743a855
+  bytes: 3241936
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov50.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 2fe4e0c8505f35adc22b772a42991f8597b7f624b71eb7f8dc6bf148a9af70b3
+  bytes: 4153424
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov51.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 26d3bca82a9cd47981f45dd96e7cb565ea87b56c16a0e3e6284afeceb1a521c6
+  bytes: 36585
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/congreso2023_prov52.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://infoelectoral.interior.gob.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 2d6e6ba51aba150484b403f7cf97528d0739e8fe993c009f7d8a112ae48d16fa
+  bytes: 36820
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: manual
 - fuente: tic_h
   fichero: tic_h/2025/datos_2025.zip
   tipo: datos

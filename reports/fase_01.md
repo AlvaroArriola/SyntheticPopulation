@@ -1,6 +1,7 @@
 # Fase 01 · Inventario y adquisición de datos
 
-**Estado:** pendiente de revisión humana (G1.4 y G1.5 necesitan decisión)
+**Estado:** pendiente de revisión humana (G1.5: falta parte de la verificación 6)
+**Última actualización:** 2026-10-15
 **Fecha:** 2026-10-14 · **Versión del código:** ver `fase_01_puerta.md`
 **Comando para reproducir:** `sinpop ingest --verify && sinpop ingest --inventory && sinpop validate --phase 1` (las descargas se repiten con los comandos `sinpop ingest --source … --url …` / `--ine-table …` registrados en `data/raw/MANIFEST.yaml`, que guarda la URL y el SHA-256 de cada fichero).
 
@@ -23,10 +24,10 @@ El manifiesto tiene 251 ficheros. Del Atlas de renta falta 1 de 54 tablas provin
 | ID | Comprobación | Resultado | Valor | Umbral |
 | --- | --- | --- | --- | --- |
 | G1.1 | Fuentes P0 descargadas y con hash verificado | ✅ | 5/5 | 5/5 |
-| G1.2 | Diseño de registro o documentación de cada fichero | ✅ | todas | todas |
+| G1.2 | Diseño de registro o documentación de cada fichero | ✅ | todas (los PDF electorales llevan cada cifra rotulada) | todas |
 | G1.3 | Matriz de cobertura sin variables P0 sin fuente | ✅ | 15/15 | 15/15 |
-| G1.4 | Registros leídos = declarados | ❌ | 3/4 coinciden; muestra 2023 −866; Censo 2021 sin cifra exacta declarada | igualdad exacta |
-| G1.5 | 7 verificaciones críticas resueltas | ❌ | 5/7 (pendientes 6 y 7, solo F8) | 7/7 |
+| G1.4 | Registros leídos = declarados | ✅ | 3/4 exactos; muestra 2023 (−0,018 %) y Censo 2021 (sin cifra declarada) aceptados por el responsable (D-020) | igualdad exacta o diferencia aceptada |
+| G1.5 | 7 verificaciones críticas resueltas | ❌ | 6/7: falta parte de la 6 (europeas 2024, autonómicas, postelectoral del CIS) | 7/7 |
 | G1.6 | Revisión humana | ⏸️ | pendiente | aprobación |
 
 Detalle automático: [`fase_01_puerta.md`](fase_01_puerta.md). Inventario completo: [`fase_01_inventario.md`](fase_01_inventario.md).
@@ -60,8 +61,8 @@ Registros × 10 frente a la población oficial de 2021: el cociente va de 0,956 
 | 3 | Universo de la TIC-H | ✅ | 16 años o más, sin límite superior (edades 16–104) |
 | 4 | Ronda 12 de la ESS | ✅ | No publicada (prevista para enero de 2027): se usa la ronda 11 |
 | 5 | Encuesta de salud más reciente | ✅ | Encuesta de Salud de España 2023 (INE) |
-| 6 | Fuentes electorales | ⏳ | Infoelectoral corta la conexión desde el entorno; los microdatos del CIS se sirven bajo petición → D-019 |
-| 7 | Variables políticas por barómetro | ⏳ | Requiere los cuestionarios y microdatos del CIS → D-019 |
+| 6 | Fuentes electorales | ⏳ | **Generales 2023:** escrutinio provisional por municipio (8.131 municipios, sin descuadres; censo de residentes 35.146.062), aportado por el responsable. **CIS:** preelectoral 3411 (29.201 entrevistas, representatividad provincial). **Faltan:** europeas 2024, últimas autonómicas y el postelectoral del CIS → D-021 |
+| 7 | Variables políticas por barómetro | ✅ | Inventario automático desde el SPSS oficial (barómetro 3567 y preelectoral 3411): recuerdo de voto, ideología, cercanía, religiosidad, clase subjetiva… Los códigos especiales varían por variable → [`fase_01_cis_variables.md`](fase_01_cis_variables.md) |
 
 Fuente: [`fase_01_verificaciones.yaml`](fase_01_verificaciones.yaml).
 
@@ -123,7 +124,9 @@ Ninguna variable P0 queda sin fuente. Algunas variables P1/P2 solo existen en la
 - D-016 · Hallazgos en los ficheros: las muestras censales no tienen peso (factor 10); el Parquet de 2024 está desfasado y se usa el TXT; la muestra 2023 difiere en 866 registros; los códigos varían entre fuentes (propuesta).
 - D-017 · Población base = residentes en viviendas familiares; los colectivos (0,78 %) se declaran como limitación (propuesta).
 - D-018 · Ajustes del diccionario: actividad sin «labores del hogar», situación profesional según el Censo, tenencia en dos pasos, regla de persona de referencia y sin doble nacionalidad (propuesta).
-- D-019 · Fuentes del CIS, Infoelectoral y ESS en descarga manual; verificaciones 6 y 7 aplazadas a F8 (propuesta).
+- D-019 · (no aprobada: las verificaciones 6 y 7 no se aplazan).
+- D-020 · G1.4 aceptada por el responsable; se siguen las revisiones humanas del ZIP.
+- D-021 · Los establecimientos colectivos se incluyen como módulo modelado; la persona de referencia es la de más edad del hogar; se aportan los resultados de las generales de 2023; el CIS se descarga en abierto con pausas.
 
 ## Problemas abiertos y riesgos
 
@@ -134,7 +137,7 @@ Ninguna variable P0 queda sin fuente. Algunas variables P1/P2 solo existen en la
 
 ## Qué necesita revisión humana
 
-1. ¿Se aprueban **D-015 a D-019**? En concreto: la fecha de referencia 01/01/2026, el universo de viviendas familiares y la regla de la persona de referencia.
-2. **G1.4:** ¿se acepta la muestra 2023 del Censo Anual con su diferencia de −0,018 %? Solo se usa para la distribución de la ocupación. ¿Se acepta el contraste por cociente para el Censo 2021, cuya documentación no declara una cifra exacta?
-3. **G1.5:** ¿se aplazan las verificaciones 6 y 7 (fuentes del CIS y electorales) al inicio de F8A/F8B? No intervienen en la población sociodemográfica.
-4. Si se quiere la capa política: descargar a mano los ficheros de `data/raw/MANUAL_DOWNLOADS.md` (Infoelectoral, CIS, ESS) cuando llegue F8.
+1. **Europeas del 09/06/2024:** el PDF anunciado no ha llegado. Hacen falta para cerrar la verificación 6 y, más adelante, como elección reservada para validar la capa política (V-POL-RESERVADA).
+2. **Últimas autonómicas de cada comunidad:** la verificación 6 las incluye. Solo se usan para `recuerdo_voto_autonomicas`. ¿Se consiguen, o se registra que esa variable queda fuera hasta tenerlas?
+3. **Postelectoral del CIS de 2023:** no aparece en las direcciones probadas (el buscador del CIS bloquea a los robots). Si se dispone del número de estudio o del enlace, se descarga; si no, la documentación admite usar el preelectoral y los barómetros posteriores, que sí recogen el recuerdo de voto de 2023.
+4. **D-015, D-016 y D-018** (fecha de referencia 01/01/2026, factor 10 en las muestras censales y ajustes del diccionario) siguen pendientes de aprobación expresa.

@@ -1,59 +1,83 @@
 # Verificaciones críticas de F1 (docs/04_fases.md, F1 tarea 5). Leído por la puerta G1.5.
 # estado: resuelta | pendiente
 verificaciones:
-  - id: 1
-    tema: Nivel geográfico de los microdatos del Censo 2021 y del Censo Anual
-    estado: resuelta
-    resultado: >-
-      Ambos traen provincia (CPRO, 52 valores), municipio identificado solo si tiene 10.000
-      habitantes o más (si no, tamaño: 991 ≤2.000; 992 2.001–5.000; 993 5.001–10.000) y grado
-      de urbanización (TIPO_MUN_DEGURBA en el Censo 2021; DEGURBA en el Censo Anual). La
-      provincia es P0 disponible; no hace falta el plan alternativo.
-    evidencia: [dr_CensoPersonas_2021.xlsx, dr_CensoAnual_muestra_2022.xlsx, reports/fase_01_inventario.md]
-    decision: D-015
-  - id: 2
-    tema: Cobertura de establecimientos colectivos en la muestra de hogares del Censo 2021
-    estado: resuelta
-    resultado: >-
-      No los cubre: el fichero es una muestra del 10 % de los hogares (viviendas familiares).
-      La ECP a 01/01/2026 da 49.596.376 residentes, de los que 49.210.373 viven en viviendas
-      familiares: 386.003 personas (0,78 %) en establecimientos colectivos, sobre todo en edades
-      altas. Propuesta: la población base es la residente en viviendas familiares, calibrada a la
-      ECP de viviendas familiares; los colectivos se declaran como limitación cuantificada.
-    evidencia: [ecp tablas 59589 y 60124 a 01/01/2026, Leeme del Censo 2021]
-    decision: D-017
-  - id: 3
-    tema: Universo de edad de la TIC-H en la última edición
-    estado: resuelta
-    resultado: >-
-      TIC-H 2025: personas de 16 años o más sin límite superior (edades observadas 16–104,
-      total ponderado con FACTOR_P 42.057.112). Los mayores de 74 están cubiertos.
-    evidencia: [reports/fase_01_inventario.md, dr_TICHcuestionario_2025.xlsx]
-  - id: 4
-    tema: Publicación de la ronda 12 de la ESS
-    estado: resuelta
-    resultado: >-
-      No publicada. La ESS anuncia la primera publicación de la ronda 12 para enero de 2027.
-      Se usa la ronda 11 (descarga con registro, en MANUAL_DOWNLOADS.md).
-    evidencia: ["https://www.europeansocialsurvey.org/news/article/initial-round-12-data-release-scheduled-early-2027"]
-  - id: 5
-    tema: Edición más reciente con microdatos de la encuesta de salud
-    estado: resuelta
-    resultado: >-
-      Encuesta de Salud de España (ESdE) 2023 del INE: adultos de 15 años o más (21.032
-      registros, peso FACTORADULTO), con estado de salud (C1) y limitación GALI (C3a).
-    evidencia: [dr_ESdEadulto_2023.xlsx, reports/fase_01_inventario.md]
-  - id: 6
-    tema: Fuentes electorales (resultados oficiales, censo electoral, estudios pre/postelectorales del CIS)
-    estado: pendiente
-    resultado: >-
-      infoelectoral.interior.gob.es corta la conexión desde el entorno (no es denegación de la
-      política de red) y el catálogo del CIS limita las peticiones automáticas (HTTP 429) y sirve
-      los microdatos bajo petición. Registradas en MANUAL_DOWNLOADS.md. Solo afectan a F8B.
-    decision: D-019
-  - id: 7
-    tema: Variables políticas y de valores en cada barómetro del CIS y su codificación
-    estado: pendiente
-    resultado: >-
-      Requiere los cuestionarios y microdatos del CIS (descarga manual). Solo afecta a F8A y F8B.
-    decision: D-019
+- id: 1
+  tema: Nivel geográfico de los microdatos del Censo 2021 y del Censo Anual
+  estado: resuelta
+  resultado: 'Ambos traen provincia (CPRO, 52 valores), municipio identificado solo si tiene 10.000 habitantes o
+    más (si no, tamaño: 991 ≤2.000; 992 2.001–5.000; 993 5.001–10.000) y grado de urbanización (TIPO_MUN_DEGURBA
+    en el Censo 2021; DEGURBA en el Censo Anual). La provincia es P0 disponible; no hace falta el plan alternativo.'
+  evidencia:
+  - dr_CensoPersonas_2021.xlsx
+  - dr_CensoAnual_muestra_2022.xlsx
+  - reports/fase_01_inventario.md
+  decision: D-015
+- id: 2
+  tema: Cobertura de establecimientos colectivos en la muestra de hogares del Censo 2021
+  estado: resuelta
+  resultado: 'No los cubre: el fichero es una muestra del 10 % de los hogares (viviendas familiares). La ECP a 01/01/2026
+    da 49.596.376 residentes, de los que 49.210.373 viven en viviendas familiares: 386.003 personas (0,78 %) en
+    establecimientos colectivos, sobre todo en edades altas. Propuesta: la población base es la residente en viviendas
+    familiares, calibrada a la ECP de viviendas familiares; los colectivos se declaran como limitación cuantificada.'
+  evidencia:
+  - ecp tablas 59589 y 60124 a 01/01/2026
+  - Leeme del Censo 2021
+  decision: D-017
+- id: 3
+  tema: Universo de edad de la TIC-H en la última edición
+  estado: resuelta
+  resultado: 'TIC-H 2025: personas de 16 años o más sin límite superior (edades observadas 16–104, total ponderado
+    con FACTOR_P 42.057.112). Los mayores de 74 están cubiertos.'
+  evidencia:
+  - reports/fase_01_inventario.md
+  - dr_TICHcuestionario_2025.xlsx
+- id: 4
+  tema: Publicación de la ronda 12 de la ESS
+  estado: resuelta
+  resultado: No publicada. La ESS anuncia la primera publicación de la ronda 12 para enero de 2027. Se usa la ronda
+    11 (descarga con registro, en MANUAL_DOWNLOADS.md).
+  evidencia:
+  - https://www.europeansocialsurvey.org/news/article/initial-round-12-data-release-scheduled-early-2027
+- id: 5
+  tema: Edición más reciente con microdatos de la encuesta de salud
+  estado: resuelta
+  resultado: 'Encuesta de Salud de España (ESdE) 2023 del INE: adultos de 15 años o más (21.032 registros, peso
+    FACTORADULTO), con estado de salud (C1) y limitación GALI (C3a).'
+  evidencia:
+  - dr_ESdEadulto_2023.xlsx
+  - reports/fase_01_inventario.md
+- id: 6
+  tema: Fuentes electorales (resultados oficiales, censo electoral, estudios pre/postelectorales del CIS)
+  estado: pendiente
+  resultado: 'Generales 23/07/2023: resultados del escrutinio provisional por municipio (8.131 municipios, 52 provincias,
+    sin descuadres internos; censo de residentes 35.146.062), aportados por el responsable a partir de la web del
+    Ministerio del Interior. Censo electoral de residentes por municipio: se obtiene de esos mismos ficheros (participación
+    + abstención). CIS: preelectoral de las generales de 2023 (estudio 3411; 29.201 entrevistas; pesos nacional,
+    provincial y autonómico; representatividad provincial). PENDIENTE: resultados de las europeas de 09/06/2024
+    (el PDF anunciado no ha llegado), últimas autonómicas de cada comunidad, y localizar el postelectoral del CIS
+    de 2023 (no aparece en las direcciones probadas; los barómetros posteriores sí recogen el recuerdo de voto de
+    2023).'
+  decision: D-021
+  evidencia:
+  - data/raw/infoelectoral_resultados/generales-2023/
+  - data/raw/cis_electorales/3411/FT3411.pdf
+- id: 7
+  tema: Variables políticas y de valores en cada barómetro del CIS y su codificación
+  estado: resuelta
+  resultado: 'Inventario automático de las variables políticas y de valores desde el SPSS oficial (sinpop.ingest.cis_inventory):
+    barómetro 3567 (junio de 2026) y preelectoral 3411. Hay recuerdo de voto, participación, intención, cercanía,
+    simpatía, autoubicación ideológica, religiosidad, clase subjetiva, confianza y situación económica personal,
+    más pesos (PESO, PESOPROV, PESOCCAA) y geografía (CCAA, provincia, tamaño de municipio). Los códigos especiales
+    varían por variable (8/9, 98/99, 9998/9999, 8996 = en blanco, 0 = no procede, N.R. = no recuerda). No aparecen
+    identidad territorial ni lengua en estos dos estudios. Cada estudio que se añada en F8A pasa por la misma herramienta.'
+  decision: D-021
+  evidencia:
+  - reports/fase_01_cis_variables.md
+recuentos_aceptados:
+  # G1.4: diferencias aceptadas expresamente por el responsable (D-020)
+  - fichero: md_Censo_muestra_2023.txt
+    motivo: 866 registros menos que la población oficial 2023 / 10 (−0,018 %); solo se usa para la ocupación
+    decision: D-020
+  - fichero: md_CensoPersonas_2021.parquet
+    motivo: la documentación declara el 10 % de los hogares sin cifra exacta; contraste por cociente provincial (0,956–1,011)
+    decision: D-020
