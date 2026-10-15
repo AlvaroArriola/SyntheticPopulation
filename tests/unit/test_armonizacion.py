@@ -113,3 +113,20 @@ def test_persona_de_referencia_y_parentescos() -> None:
     out = df.with_columns(pl.Series("r", rel))
     n = out.group_by("NVIV").agg((pl.col("r") == "persona_referencia").sum().alias("n"))
     assert n["n"].to_list() == [1] * 4
+
+
+def test_descarte_d026_solo_con_ocupacion_publicada() -> None:
+    from sinpop.harmonize.censos import descartados_d026
+
+    con = pl.DataFrame(
+        {
+            "RELA": ["01", "01", "02"],
+            "CNO": ["", "2", ""],
+            "CNAE": ["", "C", ""],
+            "SITU": ["", "07", ""],
+        }
+    )
+    assert descartados_d026(con).to_list() == [True, False, False]
+    # fichero que no publica ocupación (muestras 2024 y 2025): no se descarta a nadie
+    sin = pl.DataFrame({"RELA": ["01", "01"], "CNO": ["", ""], "CNAE": ["", ""], "SITU": ["", ""]})
+    assert descartados_d026(sin).to_list() == [False, False]

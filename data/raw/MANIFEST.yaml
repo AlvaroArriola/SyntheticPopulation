@@ -2636,6 +2636,26 @@ ficheros:
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
 - fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/BOE-A-2023-18907.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://www.boe.es/boe/dias/2023/09/01/pdfs/BOE-A-2023-18907.pdf
+  fecha_descarga: '2026-10-15'
+  sha256: f2146cfbf00d2b6eb6f8dd0dcdebc1e10298019589b2254e244e0ebc513d2f8a
+  bytes: 1915000
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: automatica
+- fuente: infoelectoral_resultados
+  fichero: infoelectoral_resultados/generales-2023/BOE-A-2023-19537.pdf
+  tipo: datos
+  edicion: generales-2023
+  url_oficial: https://www.boe.es/boe/dias/2023/09/16/pdfs/BOE-A-2023-19537.pdf
+  fecha_descarga: '2026-10-15'
+  sha256: e677d2406deb08e0e473228ff5cdca0439808f287515f9d58d8713d789a1d4ec
+  bytes: 191494
+  condiciones: Datos públicos; citar la elección y la fuente
+  via: automatica
+- fuente: infoelectoral_resultados
   fichero: infoelectoral_resultados/generales-2023/congreso2023_prov01.pdf
   tipo: datos
   edicion: generales-2023
@@ -4276,6 +4296,16 @@ ficheros:
   condiciones: Varían por comunidad; revisar en F1
   via: manual
 - fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa04-2023/boib78_2023_proclamacion.pdf
+  tipo: datos
+  edicion: ccaa04-2023
+  url_oficial: https://www.caib.es/eboibfront/pdf/es/2023/78/1138877
+  fecha_descarga: '2026-10-15'
+  sha256: b986c8f34b6f51e172cd4ef30949fb583f4d45f4b57b0adb0d5ff3d10dbc5d22
+  bytes: 166321
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
   fichero: resultados_autonomicas/ccaa05-2023/autonomicas_ccaa05_2023-05-28.pdf
   tipo: datos
   edicion: ccaa05-2023
@@ -4383,6 +4413,16 @@ ficheros:
   fecha_descarga: '2026-10-15'
   sha256: 24348e8ca40eae5714d5b851518ce378933e7493fca361c93b0fd71dfef26e05
   bytes: 1096083
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa15-2023/navarra_resultados_definitivos_web.pdf
+  tipo: datos
+  edicion: ccaa15-2023
+  url_oficial: https://www.navarra.es/
+  fecha_descarga: '2026-10-15'
+  sha256: 2cdc7d3ba80936b39c78d2da88c6c0c8ca4c29f9796df242aaa3ebc97018f37b
+  bytes: 2607743
   condiciones: Varían por comunidad; revisar en F1
   via: manual
 - fuente: resultados_autonomicas

@@ -116,12 +116,13 @@ def _personales(df: pl.DataFrame, fuente: str, cols: dict[str, str]) -> pl.DataF
         )
         series.append(ec.alias("estado_civil"))
     if cols.get("cno") and df[cols["cno"]].str.strip_chars().ne("").any():
+        # Un ocupado con el campo en blanco no está documentado: detiene el proceso (los 4 casos
+        # de la muestra 2023 se descartan antes, D-026)
         no_ocup = pl.col(cols["rela"]).cast(pl.Utf8).str.strip_chars() != cols["ocupado"]
-        ocup = ~no_ocup  # ocupados con el campo en blanco: «no consta» (D-026)
         series += [
-            recode(df, cols["cno"], "ocupacion", fuente, np_si=no_ocup, nc_si=ocup),
-            recode(df, cols["cnae"], "sector_actividad", fuente, np_si=no_ocup, nc_si=ocup),
-            recode(df, "SITU", "situacion_profesional", fuente, np_si=no_ocup, nc_si=ocup),
+            recode(df, cols["cno"], "ocupacion", fuente, np_si=no_ocup),
+            recode(df, cols["cnae"], "sector_actividad", fuente, np_si=no_ocup),
+            recode(df, "SITU", "situacion_profesional", fuente, np_si=no_ocup),
         ]
     return out.with_columns(series)
 
@@ -292,10 +293,23 @@ def censo2021(raw: Path = C21, tam: dict[str, str] | None = None) -> pl.DataFram
 # --------------------------------------------------------------------------- Censo Anual
 
 
+def descartados_d026(df: pl.DataFrame) -> pl.Series:
+    """Ocupados con ocupación, actividad y situación profesional en blanco en un fichero que sí
+    publica esas variables (4 registros de la muestra 2023): se descartan por su peso
+    despreciable (D-026, aprobada). En los ficheros sin ocupación (2024, 2025) no se descarta
+    nada."""
+    vacio = [df[c].cast(pl.Utf8).str.strip_chars() == "" for c in ("CNO", "CNAE", "SITU")]
+    if vacio[0].all():
+        return pl.Series([False] * df.height)
+    ocupado = df["RELA"].cast(pl.Utf8).str.strip_chars() == "01"
+    return ocupado & vacio[0] & vacio[1] & vacio[2]
+
+
 def censo_anual_muestra(anio: str, tam: dict[str, str] | None = None) -> pl.DataFrame:
     base = RAW_DIR / f"censo_anual_micro_completo/{anio}/extraido"
     lay = layout_from_xlsx(base / "dr_CensoAnual_muestra_2022.xlsx")
     df = read_fixed_width(base / f"md_Censo_muestra_{anio}.txt", lay)
+    df = df.filter(~descartados_d026(df))
     if tam is None:
         tam = tamanos_municipales(poblacion_municipal())
     p = _personales(

@@ -297,7 +297,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-15
 - **Fase:** F2
-- **Estado:** propuesta (revisión humana en G2.8)
+- **Estado:** aprobada
 - **Contexto:** `docs/02` fija las variables P0–P2 y sus categorías, pero algunas tablas de correspondencia dependen de los diccionarios oficiales. Todas las tablas están en `configs/variables.yaml` (generadas por `tools/generar_recodificaciones_censos.py` y `tools/generar_recodificaciones_encuestas.py`), cada una con `verificado_contra` el diseño de registro del INE.
 - **Decisiones:**
   1. **Grupos de país** (`nacionalidad_grupo`, `pais_nacimiento_grupo`): UE-27 por nombre del país en los diccionarios del INE (incluido «Otros países de la Unión Europea»); Canadá y EE. UU. van a «otros» porque `docs/02` no prevé un grupo norteamericano; los códigos agregados 5xx, 555 y 966 («otros países» o «apátridas») van a «otros»; el 999 («no consta») no aparece en los ficheros usados.
@@ -309,23 +309,24 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   7. **Nueva variable `tenencia_censo`:** régimen de tenencia del Censo 2021 (propiedad, alquiler, otro), más pobre que la `tenencia_vivienda` de la ECV; se guarda para el enlace en F6.
   8. **Universos:** relación con la actividad y estudios, NP para menores de 15 (el INE los deja en blanco); estado civil, NP para menores de 16 (el Censo 2021 codifica «soltero» también a los niños); ocupación, sector y situación profesional, NP para quien no está ocupado.
 - **Evidencia:** `tests/unit/test_recodificaciones.py` (un test por tabla: destinos dentro del dominio, todos los códigos traducidos y un código inventado detiene el proceso); `reports/fase_02_cifras_oficiales.md`.
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-15)
 
 ## D-026 · Ocupados con ocupación, actividad o situación profesional en blanco (2026-10-15)
 
 - **Fecha:** 2026-10-15
 - **Fase:** F2
-- **Estado:** propuesta
+- **Estado:** aprobada con cambio del responsable
 - **Contexto:** en la muestra del Censo Anual 2023 hay 4 personas ocupadas con CNO, CNAE y SITU en blanco. El diseño de registro no documenta el blanco para ocupados.
 - **Decisión:** se codifican como «NC» (no consta) y no como NP, porque están dentro del universo de la pregunta. No se imputan. La regla se aplica igual al Censo 2021 (`nc_si` en `censos._personales`).
 - **Alternativas:** detener la armonización (regla 2 de CLAUDE.md); descartado porque el blanco dentro del universo es, por definición, un dato que no consta y su peso es despreciable (4 de 4,8 millones de registros).
-- **Aprobada por:** pendiente
+- **Decisión final del responsable:** se **descartan** los 4 registros por su peso despreciable (no se codifican como NC). Implementado en `censos.descartados_d026`, que solo actúa en ficheros que publican la ocupación (muestra 2023); se retira la regla `nc_si`, de modo que un blanco nuevo vuelve a detener la armonización. G2.3 descuenta los descartados (48.076.700 → 48.076.660).
+- **Aprobada por:** humano (2026-10-15)
 
 ## D-027 · Tolerancias para reproducir cifras oficiales (G2.4) (2026-10-15)
 
 - **Fecha:** 2026-10-15
 - **Fase:** F2
-- **Estado:** propuesta — **necesita decisión humana** (afecta a la puerta G2.4)
+- **Estado:** aprobada
 - **Contexto:** G2.4 pide reproducir 3 cifras oficiales por fuente P0 y P1 «dentro de la tolerancia de redondeo de la publicación». Para muestras, la diferencia esperada no es el redondeo sino el error de muestreo.
 - **Decisión propuesta:**
   1. Ficheros exhaustivos y tablas: igualdad exacta.
@@ -333,13 +334,13 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   3. Encuestas con tasas publicadas redondeadas: redondeo de la publicación + 3 · EE.
   4. **Muestra del Censo 2021 (solo viviendas familiares) frente a tablas que incluyen colectivos:** se suma a la tolerancia la cota del sesgo de cobertura, c = proporción del universo que vive en colectivos (|p_fam − p_total| = c · |p_fam − p_col| ≤ c; c ≈ 0,8 %). Con 3 · EE sin esa cota, 11 de 21 cifras quedan fuera (diferencia máxima 0,24 puntos, en ocupados y casados, justo donde más difieren las residencias de mayores); con la cota, las 21 entran. El INE no publica tablas del Censo 2021 limitadas a viviendas familiares en su API (comprobado en las operaciones 8 y 463).
 - **Resultado:** 111 cifras de 14 fuentes P0/P1, todas dentro de tolerancia (`reports/fase_02_cifras_oficiales.md`).
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-15)
 
 ## D-028 · Armonización de las encuestas (ECV, EPA, TIC-H, ESdE) (2026-10-15)
 
 - **Fecha:** 2026-10-15
 - **Fase:** F2
-- **Estado:** propuesta
+- **Estado:** aprobada
 - **Decisiones:**
   1. **ECV 2025:** se unen los ficheros R, P, H y D. RB082 = −1 (nacidos en 2025) → edad 0; RB082 tiene tope en 86 años según el diseño. Universo de las preguntas personales: quien no está en el fichero P (menores de 16) → NP; marca `_F = −1` o PL032 = 7 (sin cuestionario) → NC. Variables del hogar: `_F = −2` → NP, `_F = −1` → NC. `vrMATSOCDEP` trae 958 blancos no documentados: NC. Renta equivalente = vhRentaa / HX240; deciles ponderados con RB050 (nacionales y por comunidad).
   2. **EPA 2T2026:** `edad_4` vacía para el grupo de 16 a 19 años, porque la EPA no permite separar a los de 18 y 19; la EPA no distingue tipos de inactividad (se usa `relacion_actividad_3`) ni indefinido/temporal en SITU (categoría «asalariado»).
@@ -347,24 +348,24 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   4. **ESdE 2023:** NIVEST 01 («no procede, es menor de 10 años»; no puede darse en el fichero de adultos) → NP; 99 → NC.
   5. **Nuevas variables llave:** `nacionalidad_esp_ext`, `relacion_actividad_3` y `sector_publico`; `compra_online`, `privacion_material` y `vehiculo_hogar` pasan a categóricas sí/no; `situacion_profesional` añade «asalariado» para la EPA.
   6. **Denominadores al reproducir cifras:** la ESdE excluye el «no consta» del denominador y la ECV lo incluye, como hace el INE en cada nota de prensa (comprobado con las cifras publicadas).
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-15)
 
 ## D-029 · Generales 2023: código INE de los municipios (2026-10-15)
 
 - **Fecha:** 2026-10-15
 - **Fase:** F2
-- **Estado:** propuesta
+- **Estado:** aprobada
 - **Contexto:** las hojas del Ministerio del Interior identifican el municipio solo por su nombre de 2023.
 - **Decisión:** se asigna el código INE comparando con los nombres del Padrón 2025 (tabla 29005), sin tildes ni signos y con el artículo pospuesto. 8.115 municipios se emparejan de forma única. Los 16 que han cambiado de nombre se fijan en `harmonize/elecciones.py` (`RENOMBRADOS`), comprobando que el censo electoral de 2023 es coherente con la población de 2025 (cociente entre 0,53 y 1,09, dentro del rango de los demás municipios: 0,11–1,88; el más bajo, Castell-Platja d'Aro, es un municipio turístico con muchos residentes extranjeros): Alcocer de Planes → Alcosser; Facheca → Fageca; Vall de Gallinera; Bigues i Riells → Bigues i Riells del Fai; Santa María Rivarredonda → Ribarredonda; Higuera → Higuera de Albalat; Herbés → Herbers; Castell-Platja d'Aro → Castell d'Aro, Platja d'Aro i s'Agaró; Masarac → Masarac i Vilarnadal; La Zarza-Perrunal; Candín → Valle de Ancares; Lumbreras → Lumbreras de Cameros; A Rúa de Valdeorras → Rúa, A; La Bisbal de Falset → Bisbal de Montsant, La; Alfarp → Alfarb; Villanueva de Castellón → Castelló.
 - **Consecuencia:** Usansolo (48916) se segregó de Galdakao después de las elecciones: su voto de 2023 está dentro del de Galdakao (48036). Los 6 códigos de la tabla 29005 sin población (municipios fusionados o suprimidos) no tienen resultados.
 - **G2.6:** los totales oficiales provinciales del Congreso (BOE-A-2023-18907, Junta Electoral Central) no se pueden descargar: `www.boe.es` no está permitido en la red del entorno y el área de descargas de Interior corta la conexión. Se registra en `data/raw/MANUAL_DOWNLOADS.md`. Mientras, solo se comprueba la coherencia interna de cada municipio (0 descuadres en 8.131).
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-15): «acepto lo que decidas»; con el BOE accesible se completa en D-032
 
 ## D-030 · Familias de partidos y códigos del CIS (`partidos.yaml`) (2026-10-15)
 
 - **Fecha:** 2026-10-15
 - **Fase:** F2
-- **Estado:** propuesta — **necesita revisión humana** (asignaciones de familia)
+- **Estado:** aprobada
 - **Contexto:** `docs/02` (§3.5) pide dos niveles: la candidatura votada y una familia estable. G2.7 exige que cada código de partido de cada estudio del CIS usado tenga correspondencia.
 - **Criterios (iguales para todos los electorados):**
   1. Partidos estatales: por su posición, si han tenido representación en el Congreso o en el Parlamento Europeo desde 2015; si no, «otros».
@@ -374,13 +375,13 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Correspondencias con el CIS:** el barómetro 3567 recoge el recuerdo de las generales de 2023 (RECUVOTOG, RECUERDO) con 12 partidos más «otro partido»; las candidaturas sin código propio se asocian al 8995 («otro partido»). Las federaciones del PSOE comparten el código 1 y las marcas de Sumar el 21. El preelectoral 3411 se usa solo con su catálogo (su recuerdo es de 2019). En 3411 el código 1501 es Na+ (UPN, PP y Cs) en las variables de 2019 y UPN en las de 2023: se asigna a nacionalistas y regionalistas; 1603 es PP+Cs y 912 es Valents.
 - **Especiales del CIS:** 0 NP, 8996 en blanco, 9977 nulo, 9993 mismo partido, 9995 no tenía edad, 9996 sin derecho a voto, 9997 no votó / ninguno / no votaría (según la variable), 9998 NS, 9999 NC. Se modelan como opciones legítimas (regla 10 de CLAUDE.md).
 - **Resultado:** 72 candidaturas de 2023 (5 izquierda estatal, 6 socialdemócrata, 1 centro-derecha, 1 derecha radical, 44 nacionalistas y regionalistas, 15 otros); 138 códigos en 3567 y 113 en 3411, 0 sin asignar.
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-15)
 
 ## D-031 · Lectura de las autonómicas: descuadres de las publicaciones oficiales y transcripciones (2026-10-15)
 
 - **Fecha:** 2026-10-15
 - **Fase:** F2
-- **Estado:** propuesta — **necesita decisión humana** (afecta a G2.6)
+- **Estado:** aprobada
 - **Contexto:** cada comunidad tiene un lector (`harmonize/autonomicas/ccaa_XX.py`) que extrae de la publicación oficial los resultados por circunscripción y los comprueba: votantes = válidos + nulos, válidos = candidaturas + blancos y, si hay total publicado, suma de circunscripciones = total. Ningún número se deduce: lo que no publica el boletín queda vacío.
 - **Resultado:** 15 de 19 comunidades se leen sin ninguna diferencia aritmética (entre ellas Illes Balears, que además está incompleta). Detalle:
   1. **Descuadres en la propia publicación** (comprobados con una segunda extracción del texto; se conservan las cifras publicadas y quedan en `notas`):
@@ -396,4 +397,22 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   6. **Canarias:** se guardan por separado las 7 islas y la circunscripción autonómica (cada elector vota en ambas); no se suman.
   7. **CERA:** solo La Rioja y Aragón permiten comprobar que el resultado incluye el voto CERA; en el resto la publicación no lo dice (queda anotado por comunidad).
 - **Propuesta:** aceptar los descuadres de las publicaciones como diferencias de la fuente (no del lector), usar las cifras por candidatura, que son las que sirven de objetivo, y dar por buena la transcripción de Navarra. G2.6 queda fallida mientras falten los totales oficiales de las generales (BOE) y los resultados generales de Illes Balears.
+- **Aprobada por:** humano (2026-10-15), con las revisiones de D-032 (Alicante, Baleares, Navarra, Galicia)
+
+## D-032 · Segunda ronda de F2: BOE de las generales, Baleares, Navarra, Alicante y Galicia (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F2
+- **Estado:** propuesta (revisión humana en G2.8)
+- **Contexto:** el responsable da acceso a `www.boe.es`, aporta el BOIB nº 78/2023 (Baleares) y la página de resultados definitivos del Gobierno de Navarra, y pide revisar Alicante y Galicia.
+- **Decisiones y hallazgos:**
+  1. **Generales 2023, resultado oficial:** se cargan los cuadros I, II y III del Congreso del BOE-A-2023-18907 (Junta Electoral Central, escrutinio general, con voto CERA): 52 provincias, 59 candidaturas, 350 escaños. Todas las comprobaciones cuadran: votantes = válidos + nulos, válidos = candidaturas + blancos, suma de partidos = votos a candidaturas, escaños, y cada columna y cada partido reproducen el «Total estatal» publicado (37.469.458 electores; 24.952.447 votantes). Única errata: el total de Geroa Bai se imprime «9.938.» con un punto final. La corrección BOE-A-2023-19537 solo afecta al Senado. Salidas: `elecciones_generales_2023_provincias` y `_provincias_votos`.
+  2. **Detalle municipal:** las hojas de Interior (escrutinio provisional, sin CERA) se mantienen como detalle municipal y como resultado de los **residentes**, que es el universo de la población sintética (regla 2 de `docs/02`, §3.5). Por provincia quedan siempre por debajo del BOE: 2.323.396 electores (el CERA) y 208.835 votantes en total (`elecciones.comparar_provisional_definitivo`). La diferencia mezcla el voto CERA y los cambios del escrutinio definitivo; no se pueden separar sin el escrutinio CERA por provincia.
+  3. **Siglas de Interior y del BOE** (`partidos.yaml`, campo `codigo_boe`): las federaciones del PSOE (PSdeG, PSE-EE, PSIB, PSN) van dentro de «PSOE» en el BOE y el PSC aparte; las cuatro marcas de Sumar, dentro de «SUMAR»; JxCAT-JUNTS = JUNTS; Escons en Blanc dentro de Escaños en Blanco; PCTC, PCTG y PCTE/ELAK dentro del PCTE; Asturias Existe-EV dentro de España Vaciada; EVC = EVR («Entre Veïns Catalunya»). Cada enlace se comprueba: la candidatura del BOE tiene fila en todas las provincias donde se presentó la de Interior. Las 18 siglas que no se podían verificar tienen ya su nombre completo del BOE; su familia sigue los criterios aprobados en D-030 (por ámbito).
+  4. **Illes Balears:** el BOIB nº 78 (13/06/2023, anuncio 5722) trae las actas de proclamación de las cuatro islas; se leen sin ninguna diferencia (59 escaños). El voto CERA del BOIB nº 83 se conserva aparte (`ccaa_04.leer_cera`). Hueco cerrado.
+  5. **Navarra:** la página «Resultados Definitivos» del portal electoral del Gobierno de Navarra (texto extraíble) confirma todas las cifras transcritas del acta del BON, incluidos los electores (334.493 votantes + 184.505 abstenciones = 518.998). `ccaa_15.leer` hace este contraste cada vez y falla si algo no coincide.
+  6. **Alicante:** la cifra de Alicante (1.304.381 electores) es correcta y coherente con el resto de su columna; lo erróneo es el total de la Comunitat impreso en el DOGV (2.426.278), que es exactamente Castellón (430.308) + Valencia (1.995.970), es decir, el total sin Alicante. Por eso el total de electores de la comunidad queda vacío y la suma correcta de provincias es 3.730.659. Las demás cifras del total cuadran.
+  7. **Galicia:** en el resumen de la comunidad del DOG, los «votos a candidaturas» se imprimen como 1.488.805, cuando la suma de las cuatro provincias es 1.488.705 (608.185 + 186.070 + 176.022 + 518.428) y la de los votos de cada partido también. Es una errata de un dígito (centenas 7 → 8). Los «votos válidos» del total (1.501.857) se calcularon a partir de esa cifra errónea (1.488.805 + 13.052 blancos); con la cifra correcta son 1.501.757, y entonces votantes = válidos + nulos (1.501.757 + 14.187 = 1.515.944) cuadra. Electores, votantes, blancos, nulos y los votos de cada partido no tienen errores.
+  8. **Descuadres aceptados (D-031):** se registran con su texto exacto en `autonomicas.ACEPTADOS`; G2.6 no los cuenta como fallo, pero cualquier otro descuadre sí.
+- **Para revisar:** seis listas de una sola provincia tienen nombres que no indican un partido regional (PUEDE «Partido Unionista Estado de España», +RDS+ «Referéndum Sistema Dinero», UNIDOS SI, Fuerza Cívica, CCD «Coalición de Centro Democrático», Partido Autónomos; 2.401 votos en total). Por el criterio 3 de D-030 (ámbito) quedan en «nacionalistas y regionalistas»; se pueden pasar a «otros» si el responsable lo prefiere.
 - **Aprobada por:** pendiente

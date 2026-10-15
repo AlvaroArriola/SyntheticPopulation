@@ -123,13 +123,19 @@ def g23_totales() -> list[Total]:
             suma("censo2021_personas", "peso"),
         )
     )
+    from sinpop.ingest.readers import layout_from_xlsx, read_fixed_width
+
     for a in ("2023", "2024", "2025"):
-        base = RAW_DIR / f"censo_anual_micro_completo/{a}/extraido/md_Censo_muestra_{a}.txt"
+        base = RAW_DIR / f"censo_anual_micro_completo/{a}/extraido"
+        lay = layout_from_xlsx(base / "dr_CensoAnual_muestra_2022.xlsx")
+        crudo = read_fixed_width(base / f"md_Censo_muestra_{a}.txt", lay)
+        assert crudo.height == _filas_txt(base / f"md_Censo_muestra_{a}.txt")
+        desc = int(censos.descartados_d026(crudo).sum())
         out.append(
             Total(
                 f"censo_anual_muestra_{a}",
-                "personas × factor 10",
-                10.0 * _filas_txt(base),
+                f"personas × factor 10 (sin {desc} descartados, D-026)",
+                10.0 * (crudo.height - desc),
                 suma(f"censo_anual_muestra_{a}", "peso"),
             )
         )

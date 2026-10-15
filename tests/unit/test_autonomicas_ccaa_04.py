@@ -1,4 +1,5 @@
-"""Lector de las autonómicas de Illes Balears 2023 (BOIB núm. 83): solo voto CERA."""
+"""Lector de las autonómicas de Illes Balears 2023: resultado oficial (BOIB núm. 78) y voto
+CERA (BOIB núm. 83)."""
 
 from __future__ import annotations
 
@@ -6,12 +7,31 @@ import pytest
 
 from sinpop.harmonize.autonomicas import ccaa_04
 
-pytestmark = pytest.mark.skipif(not ccaa_04.PDF.exists(), reason="falta el PDF del BOIB")
+pytestmark = pytest.mark.skipif(
+    not (ccaa_04.PDF.exists() and ccaa_04.PDF_CERA.exists()), reason="faltan los PDF del BOIB"
+)
 
 
 @pytest.fixture(scope="module")
 def res():
+    return ccaa_04.leer_cera()
+
+
+@pytest.fixture(scope="module")
+def oficial():
     return ccaa_04.leer()
+
+
+def test_oficial(oficial):
+    assert oficial.errores() == []
+    assert [c.codigo for c in oficial.circunscripciones] == ["07-MA", "07-ME", "07-EF", "07-FO"]
+    ma, me, ef, fo = oficial.circunscripciones
+    assert (ma.electores, ma.votantes, ma.validos, ma.nulos) == (647_787, 367_812, 363_305, 4_507)
+    assert ma.votos["Partido Popular"] == 124_401 and ma.escanos["Partido Popular"] == 13
+    assert (me.electores, me.votantes) == (74_585, 39_604)
+    assert (ef.electores, ef.votantes) == (98_726, 45_276)
+    assert fo.votos["Sa Unió de Formentera (PP-Compromís)"] == 1_747
+    assert sum(sum(c.escanos.values()) for c in oficial.circunscripciones) == 59
 
 
 def test_sin_errores(res):

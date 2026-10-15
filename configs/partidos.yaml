@@ -22,22 +22,23 @@ elecciones:
     fuente: infoelectoral_resultados
     candidaturas:
     - codigo_oficial: +RDS+
-      nombre: +RDS+
+      codigo_boe: +RDS+
+      nombre: Referéndum Sistema Dinero
       familia: nacionalista_regionalista
       ambito: PROV:30
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: 3e
-      nombre: 3e
+      codigo_boe: 3e
+      nombre: Tercera Edad en Acción
       familia: otros
       ambito: PROV:26,PROV:40
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: ADELANTE ANDALUCÍA
+      codigo_boe: ADELANTE ANDALUCÍA
       nombre: Adelante Andalucía
       familia: nacionalista_regionalista
       ambito: PROV:11
@@ -45,6 +46,7 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: AHORA CANARIAS- PCPC
+      codigo_boe: AHORA CANARIAS-PCPC
       nombre: Ahora Canarias-Partido Comunista del Pueblo Canario
       familia: nacionalista_regionalista
       ambito: PROV:35,PROV:38
@@ -52,21 +54,24 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: ALM
-      nombre: ALM
+      codigo_boe: ALM
+      nombre: Almerienses-Regionalistas Pro Almería
       familia: nacionalista_regionalista
       ambito: PROV:04
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: ASTURIAS EXISTE EV
+      codigo_boe: ESPAÑA VACIADA
       nombre: Asturias Existe-España Vaciada
       familia: nacionalista_regionalista
       ambito: PROV:33
       codigos_cis:
         '3567':
         - '8995'
+      notas: en el BOE figura dentro de «España Vaciada (ESPAÑA VACIADA)»
     - codigo_oficial: B.N.G.
+      codigo_boe: BNG
       nombre: Bloque Nacionalista Galego
       familia: nacionalista_regionalista
       ambito: PROV:15,PROV:27,PROV:32,PROV:36
@@ -74,22 +79,23 @@ elecciones:
         '3567':
         - '1201'
     - codigo_oficial: BQEX
-      nombre: BQEX
+      codigo_boe: BQEX
+      nombre: Bloque Extremeño
       familia: nacionalista_regionalista
       ambito: PROV:06,PROV:10
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: CCD
-      nombre: CCD
+      codigo_boe: CCD
+      nombre: Coalición de Centro Democrático
       familia: nacionalista_regionalista
       ambito: PROV:32
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: CCa
+      codigo_boe: CCa
       nombre: Coalición Canaria
       familia: nacionalista_regionalista
       ambito: PROV:35,PROV:38
@@ -97,6 +103,7 @@ elecciones:
         '3567':
         - '503'
     - codigo_oficial: CJ
+      codigo_boe: CJ
       nombre: Caminando Juntos
       familia: otros
       ambito: PROV:03,PROV:11,PROV:18,PROV:29,PROV:30,PROV:34,PROV:37,PROV:40,PROV:41,PROV:46
@@ -104,13 +111,15 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: CUP-PR
-      nombre: Candidatura d'Unitat Popular-Per la Ruptura
+      codigo_boe: CUP-PR
+      nombre: Candidatura D'Unitat Popular-Per La Ruptura
       familia: nacionalista_regionalista
       ambito: PROV:08,PROV:17,PROV:25,PROV:43
       codigos_cis:
         '3567':
         - '8995'
     - codigo_oficial: CpM
+      codigo_boe: CpM
       nombre: Coalición por Melilla
       familia: nacionalista_regionalista
       ambito: PROV:52
@@ -118,6 +127,7 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: EAJ-PNV
+      codigo_boe: EAJ-PNV
       nombre: Euzko Alderdi Jeltzalea-Partido Nacionalista Vasco
       familia: nacionalista_regionalista
       ambito: PROV:01,PROV:20,PROV:48
@@ -125,6 +135,7 @@ elecciones:
         '3567':
         - '1601'
     - codigo_oficial: EH Bildu
+      codigo_boe: EH Bildu
       nombre: Euskal Herria Bildu
       familia: nacionalista_regionalista
       ambito: PROV:01,PROV:20,PROV:31,PROV:48
@@ -132,6 +143,7 @@ elecciones:
         '3567':
         - '1602'
     - codigo_oficial: ERC
+      codigo_boe: ERC
       nombre: Esquerra Republicana de Catalunya
       familia: nacionalista_regionalista
       ambito: PROV:08,PROV:17,PROV:25,PROV:43
@@ -139,21 +151,25 @@ elecciones:
         '3567':
         - '901'
     - codigo_oficial: ESCAÑOS EN BLANCO
-      nombre: Escaños en Blanco
+      codigo_boe: ESCAÑOS EN BLANCO
+      nombre: Escaños en Blanco para dejar Escaños Vacíos
       familia: otros
       ambito: PROV:01,PROV:14,PROV:16,PROV:20,PROV:22,PROV:26,PROV:30,PROV:44,PROV:47,PROV:50
       codigos_cis:
         '3567':
         - '8995'
     - codigo_oficial: ESCONS EN BLANC
+      codigo_boe: ESCAÑOS EN BLANCO
       nombre: Escons en Blanc
       familia: otros
       ambito: PROV:25
       codigos_cis:
         '3567':
         - '8995'
-      notas: marca de Escaños en Blanco en catalán
+      notas: marca de Escaños en Blanco en catalán; en el BOE figura dentro de «Escaños en Blanco para
+        dejar Escaños Vacíos (ESCAÑOS EN BLANCO)»
     - codigo_oficial: ESPAÑA VACIADA
+      codigo_boe: ESPAÑA VACIADA
       nombre: España Vaciada
       familia: nacionalista_regionalista
       ambito: PROV:24,PROV:34,PROV:37,PROV:47
@@ -161,6 +177,7 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: EV-PCAS- TC
+      codigo_boe: EV-PCAS-TC
       nombre: España Vaciada-Partido Castellano-Tierra Comunera
       familia: nacionalista_regionalista
       ambito: PROV:09
@@ -168,37 +185,40 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: EVB
-      nombre: EVB
+      codigo_boe: EVB
+      nombre: Estat Valencià del Benestar
       familia: nacionalista_regionalista
       ambito: PROV:46
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: EVC
-      nombre: EVC
+      codigo_boe: EVR
+      nombre: Entre Veïns Catalunya
       familia: nacionalista_regionalista
       ambito: PROV:43
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
+      notas: en el BOE figura dentro de «Entre Veïns Catalunya (EVR)»
     - codigo_oficial: EXISTE
-      nombre: Existe (Teruel Existe / Aragón Existe)
+      codigo_boe: EXISTE
+      nombre: Coalición Existe
       familia: nacionalista_regionalista
       ambito: PROV:22,PROV:44,PROV:50
       codigos_cis:
         '3567':
         - '8995'
     - codigo_oficial: F.I.A.
-      nombre: F.I.A.
+      codigo_boe: FIA
+      nombre: Federación de los Independientes de Aragón
       familia: nacionalista_regionalista
       ambito: PROV:22,PROV:44,PROV:50
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: FE de las JONS
+      codigo_boe: FE de las JONS
       nombre: Falange Española de las JONS
       familia: otros
       ambito: ES
@@ -206,6 +226,7 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: FO
+      codigo_boe: FO
       nombre: Frente Obrero
       familia: otros
       ambito: ES
@@ -213,14 +234,15 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: FUERZA CÍVICA
-      nombre: FUERZA CÍVICA
+      codigo_boe: FUERZA CÍVICA
+      nombre: Fuerza Cívica
       familia: nacionalista_regionalista
       ambito: PROV:47
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: GBAI
+      codigo_boe: GBAI
       nombre: Geroa Bai
       familia: nacionalista_regionalista
       ambito: PROV:31
@@ -228,14 +250,15 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: GITV
-      nombre: GITV
+      codigo_boe: GITV
+      nombre: Grupo Independiente Palencia Tierra Viva
       familia: nacionalista_regionalista
       ambito: PROV:34
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: JM+
+      codigo_boe: JM +
       nombre: Jaén Merece Más
       familia: nacionalista_regionalista
       ambito: PROV:23
@@ -243,13 +266,16 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: JxCAT - JUNTS
+      codigo_boe: JUNTS
       nombre: Junts per Catalunya
       familia: nacionalista_regionalista
       ambito: PROV:08,PROV:17,PROV:25,PROV:43
       codigos_cis:
         '3567':
         - '902'
+      notas: en el BOE figura dentro de «Junts (JUNTS)»
     - codigo_oficial: JxG
+      codigo_boe: JxG
       nombre: Juntos por Granada
       familia: nacionalista_regionalista
       ambito: PROV:18
@@ -257,22 +283,24 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: LB
-      nombre: LB
+      codigo_boe: LB
+      nombre: Libres
       familia: otros
       ambito: PROV:04,PROV:51
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: MÉS PER MALLORCA- MÉS PER MENORCA- SUMAR
+      codigo_boe: SUMAR
       nombre: Més per Mallorca-Més per Menorca-Sumar
       familia: izquierda_estatal
       ambito: PROV:07
       codigos_cis:
         '3567':
         - '21'
-      notas: marca de Sumar en Illes Balears
+      notas: marca de Sumar en Illes Balears; en el BOE figura dentro de «Sumar (SUMAR)»
     - codigo_oficial: NC-bc
+      codigo_boe: NC-bc
       nombre: Nueva Canarias-Bloque Canarista
       familia: nacionalista_regionalista
       ambito: PROV:35,PROV:38
@@ -280,6 +308,7 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: PACMA
+      codigo_boe: PACMA
       nombre: Partido Animalista con el Medio Ambiente
       familia: otros
       ambito: ES
@@ -287,6 +316,7 @@ elecciones:
         '3567':
         - '6'
     - codigo_oficial: PAR
+      codigo_boe: PAR
       nombre: Partido Aragonés
       familia: nacionalista_regionalista
       ambito: PROV:22,PROV:44,PROV:50
@@ -294,22 +324,25 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: PARTIDO AUTÓNOMOS
-      nombre: PARTIDO AUTÓNOMOS
+      codigo_boe: PARTIDO AUTÓNOMOS
+      nombre: Partido Autónomos
       familia: nacionalista_regionalista
       ambito: PROV:03
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: PCTC
+      codigo_boe: PCTE
       nombre: Partit Comunista dels Treballadors de Catalunya
       familia: otros
       ambito: PROV:08,PROV:17,PROV:25,PROV:43
       codigos_cis:
         '3567':
         - '8995'
-      notas: marca territorial del PCTE
+      notas: marca territorial del PCTE; en el BOE figura dentro de «Partido Comunista de los Trabajadores
+        de España (PCTE)»
     - codigo_oficial: PCTE
+      codigo_boe: PCTE
       nombre: Partido Comunista de los Trabajadores de España
       familia: otros
       ambito: ES
@@ -317,29 +350,35 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: PCTE/ELAK
+      codigo_boe: PCTE
       nombre: PCTE/ELAK
       familia: otros
       ambito: PROV:20
       codigos_cis:
         '3567':
         - '8995'
-      notas: marca territorial del PCTE
+      notas: marca territorial del PCTE; en el BOE figura dentro de «Partido Comunista de los Trabajadores
+        de España (PCTE)»
     - codigo_oficial: PCTG
+      codigo_boe: PCTE
       nombre: Partido Comunista dos Traballadores de Galiza
       familia: otros
       ambito: PROV:27,PROV:32,PROV:36
       codigos_cis:
         '3567':
         - '8995'
-      notas: marca territorial del PCTE
+      notas: marca territorial del PCTE; en el BOE figura dentro de «Partido Comunista de los Trabajadores
+        de España (PCTE)»
     - codigo_oficial: PDeCAT-E- CiU
-      nombre: Partit Demòcrata Europeu Català-Espai CiU
+      codigo_boe: PDeCAT-E-CiU
+      nombre: Partit Demòcrata Europeu Català-Espai CIU
       familia: nacionalista_regionalista
       ambito: PROV:08,PROV:17,PROV:25,PROV:43
       codigos_cis:
         '3567':
         - '8995'
     - codigo_oficial: PH
+      codigo_boe: PH
       nombre: Partido Humanista
       familia: otros
       ambito: PROV:28
@@ -347,14 +386,15 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: POR MI REGIÓN
-      nombre: POR MI REGIÓN
+      codigo_boe: POR MI REGIÓN
+      nombre: Por Mi Región
       familia: nacionalista_regionalista
       ambito: PROV:30
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: PP
+      codigo_boe: PP
       nombre: Partido Popular
       familia: centro_derecha_estatal
       ambito: ES
@@ -362,6 +402,7 @@ elecciones:
         '3567':
         - '2'
     - codigo_oficial: PREPAL
+      codigo_boe: PREPAL
       nombre: Partido Regionalista del País Leonés
       familia: nacionalista_regionalista
       ambito: PROV:24,PROV:37,PROV:49
@@ -369,7 +410,8 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: PSC
-      nombre: Partit dels Socialistes de Catalunya
+      codigo_boe: PSC
+      nombre: Partit dels Socialistes de Catalunya (PSC-PSOE)
       familia: socialdemocrata
       ambito: PROV:08,PROV:17,PROV:25,PROV:43
       codigos_cis:
@@ -377,30 +419,34 @@ elecciones:
         - '1'
       notas: federación del PSOE en Cataluña
     - codigo_oficial: PSE-EE (PSOE)
+      codigo_boe: PSOE
       nombre: Partido Socialista de Euskadi-Euskadiko Ezkerra
       familia: socialdemocrata
       ambito: PROV:01,PROV:20,PROV:48
       codigos_cis:
         '3567':
         - '1'
-      notas: federación del PSOE
+      notas: federación del PSOE; en el BOE figura dentro de «Partido Socialista Obrero Español (PSOE)»
     - codigo_oficial: PSIB-PSOE
+      codigo_boe: PSOE
       nombre: Partit Socialista de les Illes Balears-PSOE
       familia: socialdemocrata
       ambito: PROV:07
       codigos_cis:
         '3567':
         - '1'
-      notas: federación del PSOE
+      notas: federación del PSOE; en el BOE figura dentro de «Partido Socialista Obrero Español (PSOE)»
     - codigo_oficial: PSN-PSOE
+      codigo_boe: PSOE
       nombre: Partido Socialista de Navarra-PSOE
       familia: socialdemocrata
       ambito: PROV:31
       codigos_cis:
         '3567':
         - '1'
-      notas: federación del PSOE
+      notas: federación del PSOE; en el BOE figura dentro de «Partido Socialista Obrero Español (PSOE)»
     - codigo_oficial: PSOE
+      codigo_boe: PSOE
       nombre: Partido Socialista Obrero Español
       familia: socialdemocrata
       ambito: ES
@@ -408,29 +454,32 @@ elecciones:
         '3567':
         - '1'
     - codigo_oficial: PSdeG- PSOE
+      codigo_boe: PSOE
       nombre: Partido dos Socialistas de Galicia-PSOE
       familia: socialdemocrata
       ambito: PROV:15,PROV:27,PROV:32,PROV:36
       codigos_cis:
         '3567':
         - '1'
-      notas: federación del PSOE
+      notas: federación del PSOE; en el BOE figura dentro de «Partido Socialista Obrero Español (PSOE)»
     - codigo_oficial: PUEDE
-      nombre: PUEDE
+      codigo_boe: PUEDE
+      nombre: Partido Unionista Estado de España
       familia: nacionalista_regionalista
       ambito: PROV:33
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: PUM+J
-      nombre: Por un Mundo Más Justo
+      codigo_boe: PUM+J
+      nombre: Por un Mundo más Justo
       familia: otros
       ambito: ES
       codigos_cis:
         '3567':
         - '8995'
     - codigo_oficial: RECORTES CERO
+      codigo_boe: RECORTES CERO
       nombre: Recortes Cero
       familia: otros
       ambito: ES
@@ -438,6 +487,7 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: SUMAR
+      codigo_boe: SUMAR
       nombre: Sumar
       familia: izquierda_estatal
       ambito: ES
@@ -446,30 +496,36 @@ elecciones:
         - '21'
       notas: coalición de Movimiento Sumar, IU, Más País y otros
     - codigo_oficial: SUMAR - COMPROMÍS
+      codigo_boe: SUMAR
       nombre: Sumar-Compromís
       familia: izquierda_estatal
       ambito: PROV:03,PROV:12,PROV:46
       codigos_cis:
         '3567':
         - '21'
-      notas: Compromís concurrió dentro de Sumar en la Comunitat Valenciana
+      notas: Compromís concurrió dentro de Sumar en la Comunitat Valenciana; en el BOE figura dentro de
+        «Sumar (SUMAR)»
     - codigo_oficial: SUMAR - ECP
+      codigo_boe: SUMAR
       nombre: Sumar-En Comú Podem
       familia: izquierda_estatal
       ambito: PROV:08,PROV:17,PROV:25,PROV:43
       codigos_cis:
         '3567':
         - '21'
-      notas: marca de Sumar en Cataluña; el CIS la recoge como Sumar
+      notas: marca de Sumar en Cataluña; el CIS la recoge como Sumar; en el BOE figura dentro de «Sumar
+        (SUMAR)»
     - codigo_oficial: SUMAR ARAGÓN
+      codigo_boe: SUMAR
       nombre: Sumar Aragón
       familia: izquierda_estatal
       ambito: PROV:22,PROV:50
       codigos_cis:
         '3567':
         - '21'
-      notas: marca de Sumar en Aragón
+      notas: marca de Sumar en Aragón; en el BOE figura dentro de «Sumar (SUMAR)»
     - codigo_oficial: SY
+      codigo_boe: SY
       nombre: Soria ¡Ya!
       familia: nacionalista_regionalista
       ambito: PROV:42
@@ -477,21 +533,23 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: Somos Cc
-      nombre: Somos Cc
+      codigo_boe: Somos Cc
+      nombre: Somos Cáceres
       familia: nacionalista_regionalista
       ambito: PROV:10
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: U.P.L.
-      nombre: Unión del Pueblo Leonés
+      codigo_boe: UPL
+      nombre: Unión del Pueblo Leones
       familia: nacionalista_regionalista
       ambito: PROV:24,PROV:49
       codigos_cis:
         '3567':
         - '8995'
     - codigo_oficial: U.P.N.
+      codigo_boe: UPN
       nombre: Unión del Pueblo Navarro
       familia: nacionalista_regionalista
       ambito: PROV:31
@@ -499,22 +557,23 @@ elecciones:
         '3567':
         - '1501'
     - codigo_oficial: UNIDOS SI
-      nombre: UNIDOS SI
+      codigo_boe: UNIDOS SI
+      nombre: Unidos por la Solidaridad Internacional
       familia: nacionalista_regionalista
       ambito: PROV:43
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: Ud.Ca
-      nombre: Ud.Ca
+      codigo_boe: Ud.Ca
+      nombre: Unidad Castellana
       familia: nacionalista_regionalista
       ambito: PROV:47
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: VB
+      codigo_boe: VB
       nombre: Vía Burgalesa
       familia: nacionalista_regionalista
       ambito: PROV:09
@@ -522,6 +581,7 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: VOX
+      codigo_boe: VOX
       nombre: VOX
       familia: derecha_radical
       ambito: ES
@@ -529,14 +589,15 @@ elecciones:
         '3567':
         - '3'
     - codigo_oficial: VP
-      nombre: VP
+      codigo_boe: VP
+      nombre: Vamos Palencia
       familia: nacionalista_regionalista
       ambito: PROV:34
       codigos_cis:
         '3567':
         - '8995'
-      notas: nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)
     - codigo_oficial: XAV
+      codigo_boe: XAV
       nombre: Por Ávila
       familia: nacionalista_regionalista
       ambito: PROV:05
@@ -544,6 +605,7 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: XH
+      codigo_boe: XH
       nombre: Por Huelva
       familia: nacionalista_regionalista
       ambito: PROV:21
@@ -551,6 +613,7 @@ elecciones:
         '3567':
         - '8995'
     - codigo_oficial: Zsi
+      codigo_boe: Zsi
       nombre: Zamora Sí
       familia: nacionalista_regionalista
       ambito: PROV:49

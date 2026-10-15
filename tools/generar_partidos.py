@@ -22,6 +22,7 @@ Uso: python tools/generar_partidos.py
 
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -42,7 +43,6 @@ IZQ, SOC, CDE, DRA, NAC, OTR = (
     "nacionalista_regionalista",
     "otros",
 )
-BOE = "nombre completo por verificar con BOE-A-2023-18907 (no accesible desde el entorno)"
 
 # ----------------------------------------------------------------- generales 2023
 # siglas → (nombre, familia, códigos del estudio 3567 en RECUVOTOG/RECUERDO, notas)
@@ -349,26 +349,71 @@ def catalogo(estudio: str) -> dict:
     return out
 
 
+# Siglas de las hojas de Interior → siglas del BOE cuando no coinciden al normalizar
+# (federaciones, marcas territoriales, coaliciones y grafías distintas). D-030 y D-032.
+INTERIOR_A_BOE = {
+    "PSdeG- PSOE": "PSOE",
+    "PSE-EE (PSOE)": "PSOE",
+    "PSIB-PSOE": "PSOE",
+    "PSN-PSOE": "PSOE",
+    "SUMAR - ECP": "SUMAR",
+    "SUMAR - COMPROMÍS": "SUMAR",
+    "MÉS PER MALLORCA- MÉS PER MENORCA- SUMAR": "SUMAR",
+    "SUMAR ARAGÓN": "SUMAR",
+    "JxCAT - JUNTS": "JUNTS",
+    "ESCONS EN BLANC": "ESCAÑOS EN BLANCO",
+    "PCTC": "PCTE",
+    "PCTG": "PCTE",
+    "PCTE/ELAK": "PCTE",
+    "ASTURIAS EXISTE EV": "ESPAÑA VACIADA",
+    "EVC": "EVR",
+}
+
+
+def _norm(s: str) -> str:
+    return "".join(ch for ch in s.upper() if ch.isalnum() or ch == "+")
+
+
 def candidaturas_2023() -> list[dict]:
+    from sinpop.harmonize import boe_generales
+
     votos = pl.read_parquet(ROOT / "data/interim/elecciones_generales_2023_votos.parquet")
+    _, boe, _ = boe_generales.leer()
+    boe_nombre = dict(boe.select("siglas", "candidatura").unique().iter_rows())
+    boe_prov = {
+        k: set(v) for k, v in boe.group_by("siglas").agg(pl.col("provincia").unique()).iter_rows()
+    }
+    por_norma = {_norm(k): k for k in boe_nombre}
     ccaa = ccaa_de_provincia()
     amb = votos.group_by("candidatura").agg(pl.col("provincia").unique().sort())
     out = []
     for sig, provs in amb.sort("candidatura").iter_rows():
+        sb = INTERIOR_A_BOE.get(sig) or por_norma.get(_norm(sig))
+        if sb is None:
+            raise ValueError(f"{sig}: sin candidatura en el BOE")
+        if not set(provs) <= boe_prov[sb]:
+            raise ValueError(f"{sig} → {sb}: provincias sin fila en el BOE")
         comunidades = sorted({ccaa[p] for p in provs})
         ambito = (
             "ES"
             if len(comunidades) > 1 and len(provs) > 10
             else ",".join(f"PROV:{p}" for p in provs)
         )
+        nombre_boe = re.sub(r"\s*\([^()]*\)\.?$", "", boe_nombre[sb]).strip()
         if sig in CANDIDATURAS_2023:
             nombre, fam, cis, nota = CANDIDATURAS_2023[sig]
+            if sig not in INTERIOR_A_BOE:
+                nombre = nombre_boe
         elif len(comunidades) == 1:
-            nombre, fam, cis, nota = sig, NAC, [8995], BOE
+            nombre, fam, cis, nota = nombre_boe, NAC, [8995], None
         else:
-            nombre, fam, cis, nota = sig, OTR, [8995], BOE
+            nombre, fam, cis, nota = nombre_boe, OTR, [8995], None
+        if sig in INTERIOR_A_BOE:
+            dentro = f"en el BOE figura dentro de «{boe_nombre[sb]}»"
+            nota = f"{nota}; {dentro}" if nota else dentro
         c = {
             "codigo_oficial": sig,
+            "codigo_boe": sb,
             "nombre": nombre,
             "familia": fam,
             "ambito": ambito,

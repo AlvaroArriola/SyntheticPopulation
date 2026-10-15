@@ -29,3 +29,11 @@ def test_navarra_otro_fichero(tmp_path):
     otro.write_bytes(b"%PDF-1.4\n")
     with pytest.raises(ValueError, match="no es el fichero transcrito"):
         ccaa_15.leer(otro)
+
+
+@pytest.mark.skipif(not ccaa_15.PDF_WEB.exists(), reason="falta la página de resultados")
+def test_contraste_con_la_web(monkeypatch):
+    assert ccaa_15.contraste_web() == []
+    # una cifra alterada se detecta
+    monkeypatch.setitem(ccaa_15._RESUMEN, "electores", 518_999)
+    assert ccaa_15.contraste_web() == ["electores: acta 518999 ≠ web 518998"]

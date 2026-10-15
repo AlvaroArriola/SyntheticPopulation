@@ -1,20 +1,16 @@
-"""Illes Balears, elecciones al Parlamento de 28 de mayo de 2023: SOLO voto CERA (BOIB).
+"""Illes Balears, elecciones al Parlamento de 28 de mayo de 2023.
 
-Fuente: BOIB núm. 83, de 20 de junio de 2023, anuncio 5935 de la Junta Electoral de las
-Illes Balears: «Datos relativos a la votación en las elecciones al Parlamento de las Illes
-Balears de las personas inscritas en el Censo de los Electores Residentes-Ausentes». Trae,
-por circunscripción insular, el acta de escrutinio del voto CERA (electores CERA, votantes,
-blancos, nulos y votos por candidatura) y un anexo con los votos por consulado.
+Resultado oficial (`leer`): BOIB núm. 78, de 13 de junio de 2023, anuncio 5722 de la Junta
+Electoral de las Illes Balears: actas de proclamación de cada circunscripción insular, con
+electores, votantes, votos a candidaturas, blancos, válidos, nulos y votos y electos por
+candidatura. Las actas no dicen si incluyen el voto CERA.
 
-El fichero NO contiene los resultados generales de las circunscripciones (el escrutinio de
-las mesas en territorio): solo el voto de los residentes ausentes. Por eso cada
-`Circunscripcion` de este lector es únicamente el escrutinio CERA, y `electores` es el censo
-CERA («Total electores» del acta CERA), no el censo total de la isla. No hay escaños (el
-acta CERA no los reparte) ni total de la comunidad.
+Voto CERA (`leer_cera`): BOIB núm. 83, de 20 de junio de 2023, anuncio 5935: acta de
+escrutinio del voto de los residentes ausentes por circunscripción y anexo por consulado. Se
+guarda como información complementaria; no se suma al resultado oficial.
 
 Códigos: "07-MA" Mallorca, "07-ME" Menorca, "07-EF" Eivissa (el acta dice «IBIZA»),
 "07-FO" Formentera. Nombres de candidatura tal como figuran, sin el número de orden.
-Se contrasta además que la suma del anexo por consulado coincide con los votantes del acta.
 """
 
 from __future__ import annotations
@@ -25,7 +21,8 @@ from pathlib import Path
 
 from sinpop.harmonize.autonomicas import AUTONOMICAS, Circunscripcion, Resultado
 
-PDF = AUTONOMICAS / "ccaa04-2023" / "autonomicas_ccaa04_2023-05-28.pdf"
+PDF = AUTONOMICAS / "ccaa04-2023" / "boib78_2023_proclamacion.pdf"
+PDF_CERA = AUTONOMICAS / "ccaa04-2023" / "autonomicas_ccaa04_2023-05-28.pdf"
 ELECCION = "autonomicas-04-2023"
 
 # Rótulo en el acta → (código, nombre)
@@ -84,7 +81,8 @@ def _seccion(texto: str, rotulo: str) -> dict:
     return {"resumen": resumen, "votos": votos, "anexo": anexo}
 
 
-def leer(path: Path = PDF) -> Resultado:
+def leer_cera(path: Path = PDF_CERA) -> Resultado:
+    """Escrutinio del voto CERA (BOIB núm. 83): complementario, no es el resultado oficial."""
     texto = _texto(path)
     partes = re.split(r"^\s*CIRCUMSCRIPCIÓN DE ([A-ZÁÉÍÓÚ]+)\s*$", texto, flags=re.M)
     secciones = dict(zip(partes[1::2], partes[2::2], strict=True))
@@ -118,4 +116,73 @@ def leer(path: Path = PDF) -> Resultado:
                 notas="Solo voto CERA.",
             )
         )
+    return Resultado(ccaa="04", eleccion=ELECCION, circunscripciones=circs, notas=notas)
+
+
+# --------------------------------------------------------------------------- resultado oficial
+
+_PROCLAMACION = {
+    "electores": r"Núm\. de electores",
+    "votantes": r"Núm\. de votantes",
+    "a_candidaturas": r"Núm\. votos candidaturas",
+    "blancos": r"Núm\. votos en blanco",
+    "validos": r"Núm\. de votos v[aá]lidos",
+    "nulos": r"Núm\. de votos nulos",
+}
+
+
+def _proclamacion(texto: str, rotulo: str) -> tuple[dict[str, int], dict[str, int], dict]:
+    resumen: dict[str, int] = {}
+    for clave, etiqueta in _PROCLAMACION.items():
+        ms = re.findall(r"^\s*" + etiqueta + r"\s+" + _NUM + r"\s*$", texto, re.M)
+        if len(ms) != 1:
+            raise ValueError(f"{rotulo}: «{etiqueta}» aparece {len(ms)} veces")
+        resumen[clave] = _int(ms[0])
+    ini = texto.index("VOTOS OBTENIDOS")
+    fin = texto.index("De acuerdo con los resultados")
+    votos: dict[str, int] = {}
+    escanos: dict[str, int] = {}
+    for ln in texto[ini:fin].splitlines():
+        m = re.match(r"^\s*(\d+)\.\s*(\S.*?)\s{2,}" + _NUM + r"\s+(\d+)\s*$", ln)
+        if not m:
+            continue
+        if int(m.group(1)) != len(votos) + 1:
+            raise ValueError(f"{rotulo}: candidatura nº {m.group(1)} fuera de orden")
+        nombre = re.sub(r"\s+", " ", m.group(2)).strip()
+        votos[nombre] = _int(m.group(3))
+        escanos[nombre] = int(m.group(4))
+    return resumen, votos, escanos
+
+
+def leer(path: Path = PDF) -> Resultado:
+    """Resultado oficial por circunscripción insular (actas de proclamación, BOIB núm. 78)."""
+    texto = _texto(path)
+    partes = re.split(r"^\s*CIRCUMSCRIPCIÓN DE ([A-ZÁÉÍÓÚ]+)\s*$", texto, flags=re.M)
+    secciones = dict(zip(partes[1::2], partes[2::2], strict=True))
+    if list(secciones) != list(CIRCUNSCRIPCIONES):
+        raise ValueError(f"circunscripciones inesperadas: {list(secciones)}")
+    circs = []
+    for rotulo, (codigo, nombre) in CIRCUNSCRIPCIONES.items():
+        r, votos, escanos = _proclamacion(secciones[rotulo], rotulo)
+        circs.append(
+            Circunscripcion(
+                codigo=codigo,
+                nombre=nombre,
+                electores=r["electores"],
+                votantes=r["votantes"],
+                nulos=r["nulos"],
+                blancos=r["blancos"],
+                votos=votos,
+                escanos=escanos,
+                validos=r["validos"],
+                a_candidaturas=r["a_candidaturas"],
+            )
+        )
+    notas = [
+        "Fuente: BOIB núm. 78 (13/06/2023), anuncio 5722: actas de proclamación de la Junta "
+        "Electoral de las Illes Balears.",
+        "Voto CERA: las actas no dicen si lo incluyen; su escrutinio está aparte en el BOIB "
+        "núm. 83 (leer_cera).",
+        "Sin total de la comunidad: cada isla es una circunscripción.",
+    ]
     return Resultado(ccaa="04", eleccion=ELECCION, circunscripciones=circs, notas=notas)

@@ -430,6 +430,7 @@ class Familia(Strict):
 
 class Candidatura(Strict):
     codigo_oficial: str
+    codigo_boe: str | None = None  # siglas en el resumen oficial del BOE, si difieren
     nombre: str
     familia: str
     ambito: str | None = None

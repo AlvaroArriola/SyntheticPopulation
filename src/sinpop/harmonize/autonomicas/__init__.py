@@ -125,7 +125,29 @@ class Resultado:
 
 
 # Comunidades cuyos resultados oficiales están incompletos (D-023): no superan G2.6
-INCOMPLETAS = {"04": "solo voto CERA; faltan los resultados generales (MANUAL_DOWNLOADS.md)"}
+INCOMPLETAS: dict[str, str] = {}
+
+# Descuadres impresos en la propia publicación oficial, comprobados con una segunda extracción y
+# aceptados por el responsable (D-031): no cuentan como error del lector. Cualquier otro
+# descuadre sí.
+ACEPTADOS: dict[str, list[str]] = {
+    "01": [
+        "Granada: válidos publicados 480675 ≠ 480678",
+        "Granada: votos a candidaturas publicados ≠ suma de candidaturas",
+        "Andalucía: válidos publicados 4198230 ≠ 4198233",
+        "Andalucía: votos a candidaturas publicados ≠ suma de candidaturas",
+    ],
+    "05": [
+        "El Hierro: votantes 6473 ≠ candidaturas + blancos + nulos 6475",
+        "El Hierro: válidos publicados 6323 ≠ 6325",
+        "El Hierro: votos a candidaturas publicados ≠ suma de candidaturas",
+    ],
+    "12": [
+        "Galicia: válidos publicados 1501857 ≠ 1501757",
+        "Galicia: votos a candidaturas publicados ≠ suma de candidaturas",
+    ],
+    "14": ["Murcia: votantes 694906 ≠ candidaturas + blancos + nulos 694855"],
+}
 
 
 def lector(ccaa: str):
@@ -148,12 +170,22 @@ def todas() -> dict[str, dict]:
             out[c] = {"errores": [], "pendiente": True, "resumen": "sin lector", "resultado": None}
             continue
         r = leer()
-        err = r.errores()
+        todos = r.errores()
+        aceptados = [e for e in todos if e in ACEPTADOS.get(c, [])]
+        err = [e for e in todos if e not in aceptados]
         pend = c in INCOMPLETAS
         resumen = f"{len(r.circunscripciones)} circunscripciones"
+        if aceptados:
+            resumen += f"; {len(aceptados)} descuadres de la publicación aceptados (D-031)"
         if err:
             resumen += f"; {len(err)} errores: {err[0]}"
         if pend:
             resumen += f"; {INCOMPLETAS[c]}"
-        out[c] = {"errores": err, "pendiente": pend, "resumen": resumen, "resultado": r}
+        out[c] = {
+            "errores": err,
+            "aceptados": aceptados,
+            "pendiente": pend,
+            "resumen": resumen,
+            "resultado": r,
+        }
     return out

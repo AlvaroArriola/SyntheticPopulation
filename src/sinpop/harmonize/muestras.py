@@ -77,6 +77,7 @@ def muestras() -> dict[str, tuple[int, str]]:
         base = RAW_DIR / f"censo_anual_micro_completo/{a}/extraido"
         lay = layout_from_xlsx(base / "dr_CensoAnual_muestra_2022.xlsx")
         crudo = read_fixed_width(base / f"md_Censo_muestra_{a}.txt", lay)
+        crudo = crudo.filter(~censos.descartados_d026(crudo))
         out[f"censo_anual_micro_completo_{a}"] = _por_fila(f"censo_anual_muestra_{a}", crudo, rng)
         ref[f"censo_anual_micro_completo_{a}"] = "dr_CensoAnual_muestra_2022.xlsx"
 

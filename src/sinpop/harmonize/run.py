@@ -48,6 +48,19 @@ def _pasos() -> list[Paso]:
         return ecp.colectivos(ecp.total(), ecp.viviendas_familiares())
 
     gen: list[pl.DataFrame] = []
+    boe: list[pl.DataFrame] = []
+
+    def boe_(i: int) -> pl.DataFrame:
+        if not boe:
+            from sinpop.harmonize import boe_generales
+
+            prov, vot, tot = boe_generales.leer()
+            err = boe_generales.errores(prov, vot, tot)
+            if err:
+                raise ValueError(f"BOE generales 2023: {err}")
+            boe.extend([prov.sort("provincia"), vot.sort("provincia", "siglas")])
+        return boe[i]
+
     aut: list[pl.DataFrame] = []
 
     def autonomicas_(i: int) -> pl.DataFrame:
@@ -126,6 +139,18 @@ def _pasos() -> list[Paso]:
             "infoelectoral_resultados",
             ("infoelectoral_resultados/generales-2023/congreso", PADRON),
             lambda: generales(1),
+        ),
+        Paso(
+            "elecciones_generales_2023_provincias",
+            "infoelectoral_resultados",
+            ("infoelectoral_resultados/generales-2023/BOE-A-2023-18907",),
+            lambda: boe_(0),
+        ),
+        Paso(
+            "elecciones_generales_2023_provincias_votos",
+            "infoelectoral_resultados",
+            ("infoelectoral_resultados/generales-2023/BOE-A-2023-18907",),
+            lambda: boe_(1),
         ),
         Paso(
             "elecciones_autonomicas_circunscripciones",

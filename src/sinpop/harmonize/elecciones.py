@@ -149,23 +149,55 @@ def codigos_cis_sin_asignar() -> dict[str, dict[str, list[int]]]:
     return out
 
 
+def comparar_provisional_definitivo() -> pl.DataFrame:
+    """Por provincia: escrutinio definitivo del BOE (con CERA) menos la suma de las hojas
+    municipales del escrutinio provisional (sin CERA). Sirve para documentar la diferencia."""
+    from sinpop.harmonize import boe_generales
+
+    prov = boe_generales.leer()[0]
+    m = (
+        generales_2023()[0]
+        .group_by("provincia")
+        .agg(pl.col("censo_residentes", "votantes", "blancos", "nulos").sum())
+    )
+    return (
+        prov.join(m, on="provincia", suffix="_provisional")
+        .select(
+            "provincia",
+            "nombre",
+            (pl.col("electores") - pl.col("censo_residentes")).alias("dif_electores"),
+            (pl.col("votantes") - pl.col("votantes_provisional")).alias("dif_votantes"),
+            (pl.col("blancos") - pl.col("blancos_provisional")).alias("dif_blancos"),
+            (pl.col("nulos") - pl.col("nulos_provisional")).alias("dif_nulos"),
+        )
+        .sort("provincia")
+    )
+
+
 def estado_g26() -> dict:
-    """Estado de G2.6: resultados cargados frente a los totales oficiales publicados."""
-    from sinpop.harmonize import autonomicas
+    """Estado de G2.6: resultados cargados frente a los totales oficiales publicados.
+
+    Generales: los resultados oficiales cargados son los del BOE (definitivos, por provincia y
+    candidatura); deben reproducir el «Total estatal» y sus cuadros sin diferencias. Las hojas
+    municipales del escrutinio provisional (sin CERA) se guardan como detalle y su diferencia
+    con el BOE se documenta, no se exige que sea cero (D-029).
+    """
+    from sinpop.harmonize import autonomicas, boe_generales
 
     partes, ok = [], True
     res = generales_2023()[0]
-    internos = 0  # los errores internos por municipio ya detienen generales_2023()
-    partes.append(
-        f"generales 2023: {res.height} municipios, {internos} descuadres internos; "
-        + (
-            "totales oficiales del BOE disponibles"
-            if BOE_GENERALES_2023.exists()
-            else "faltan los totales oficiales (BOE-A-2023-18907, descarga manual)"
+    if BOE_GENERALES_2023.exists():
+        prov, vot, tot = boe_generales.leer()
+        err = boe_generales.errores(prov, vot, tot)
+        ok = not err
+        partes.append(
+            f"generales 2023 (BOE): {prov.height} provincias, {vot['siglas'].n_unique()} "
+            f"candidaturas, {len(err)} diferencias con el Total estatal publicado"
+            f"; detalle municipal provisional: {res.height} municipios sin descuadres"
         )
-    )
-    if not BOE_GENERALES_2023.exists():
+    else:
         ok = False
+        partes.append("generales 2023: faltan los totales oficiales (BOE-A-2023-18907)")
     aut = autonomicas.todas()
     malas = {k: v for k, v in aut.items() if v["errores"] or v["pendiente"]}
     partes.append(
