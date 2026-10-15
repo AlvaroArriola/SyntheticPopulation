@@ -1,7 +1,7 @@
 # Puerta de la fase F2
 
 **Resultado:** fallida  
-**Fecha:** 2026-10-15 · **Versión del código:** git:542be96-dirty  
+**Fecha:** 2026-10-15 · **Versión del código:** git:8dd392e  
 **Comando:** `sinpop validate --phase 2`
 
 | ID | Comprobación | Resultado | Valor | Umbral |
