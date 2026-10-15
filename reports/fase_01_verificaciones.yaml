@@ -48,17 +48,21 @@ verificaciones:
   - reports/fase_01_inventario.md
 - id: 6
   tema: Fuentes electorales (resultados oficiales, censo electoral, estudios pre/postelectorales del CIS)
-  estado: pendiente
+  estado: resuelta
   resultado: 'Generales 23/07/2023: resultados del escrutinio provisional por municipio (8.131 municipios, 52 provincias,
     sin descuadres internos; censo de residentes 35.146.062), aportados por el responsable a partir de la web del
     Ministerio del Interior. Censo electoral de residentes por municipio: se obtiene de esos mismos ficheros (participación
     + abstención). CIS: preelectoral de las generales de 2023 (estudio 3411; 29.201 entrevistas; pesos nacional,
     provincial y autonómico; representatividad provincial). Europeas de 2024 y postelectoral del CIS: fuera por
-    decisión del responsable (D-022). PENDIENTE: últimas elecciones autonómicas de cada comunidad.'
-  decision: D-021, D-022
+    decisión del responsable (D-022). Autonómicas: últimas elecciones de las 17 comunidades y de Ceuta y Melilla
+    localizadas en boletines oficiales (resultados definitivos por circunscripción; Aragón por municipio), aportadas
+    por el responsable (D-023). Hueco detectado: de Illes Balears solo llega el voto CERA, faltan sus resultados
+    generales.'
+  decision: D-021, D-022, D-023
   evidencia:
   - data/raw/infoelectoral_resultados/generales-2023/
   - data/raw/cis_electorales/3411/FT3411.pdf
+  - data/raw/resultados_autonomicas/
 - id: 7
   tema: Variables políticas y de valores en cada barómetro del CIS y su codificación
   estado: resuelta

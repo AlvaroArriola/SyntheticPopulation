@@ -19,6 +19,6 @@ Todas las fuentes del núcleo (F1–F7) se han descargado automáticamente desde
 
 | Fuente (`id`) | Organismo | Qué falta | Página oficial | Motivo |
 | --- | --- | --- | --- | --- |
-| `resultados_autonomicas` | Gobiernos y parlamentos autonómicos | Resultados por provincia (mejor por municipio) de la última elección autonómica de cada comunidad | web oficial de resultados de cada comunidad | pendiente de decisión (D-022) |
 | `ess` | ESS ERIC | European Social Survey, ronda 11 (y 12 si está publicada) | https://ess.sikt.no/ | R12 no publicada: primera publicación prevista en enero de 2027 |
 | `centros_autonomicos` | Centros autonómicos de opinión | Estudios de centros autonómicos (CEO, Euskobarómetro, Sociómetro y otros) | https://ceo.gencat.cat/ | requiere registro o aceptación de condiciones |
+| `resultados_autonomicas` | Junta Electoral de las Illes Balears | Resultados generales (no solo CERA) de las elecciones al Parlament de les Illes Balears del 28/05/2023, por circunscripción insular | https://www.caib.es/eboibfront/ | el PDF aportado solo trae el voto CERA (D-023) |

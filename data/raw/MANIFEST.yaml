@@ -3005,6 +3005,196 @@ ficheros:
   bytes: 36820
   condiciones: Datos públicos; citar la elección y la fuente
   via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa01-2026/autonomicas_ccaa01_2026-05-17.pdf
+  tipo: datos
+  edicion: ccaa01-2026
+  url_oficial: https://www.juntadeandalucia.es/eboja
+  fecha_descarga: '2026-10-15'
+  sha256: 402ca0c986268767ebcb9056c859850053fb6d1aa472b486cee5f02a7733ec6c
+  bytes: 2149130
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa02-2026/autonomicas_ccaa02_2026-02-08.pdf
+  tipo: datos
+  edicion: ccaa02-2026
+  url_oficial: https://www.aragon.es/portal-de-elecciones/resultados-electorales
+  fecha_descarga: '2026-10-15'
+  sha256: 53ee1fae443eb0b2948f5a956a43b06e457d27cb125ae18824512a1ec8494a22
+  bytes: 3459564
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa03-2023/autonomicas_ccaa03_2023-05-28.pdf
+  tipo: datos
+  edicion: ccaa03-2023
+  url_oficial: https://sede.asturias.es/bopa
+  fecha_descarga: '2026-10-15'
+  sha256: 9ce943ab00292a023e7b23d5b02a534519d330d105cb2687ea9ae04813a7d4d1
+  bytes: 797732
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa04-2023/autonomicas_ccaa04_2023-05-28.pdf
+  tipo: datos
+  edicion: ccaa04-2023
+  url_oficial: https://www.caib.es/eboibfront/pdf/es/2023/83/1139303
+  fecha_descarga: '2026-10-15'
+  sha256: 8659f664bb256908ee7f639c280d88a1e9fdfb494f77e1fd4cfd66011baff5a8
+  bytes: 250363
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa05-2023/autonomicas_ccaa05_2023-05-28.pdf
+  tipo: datos
+  edicion: ccaa05-2023
+  url_oficial: https://sede.gobiernodecanarias.org/boc
+  fecha_descarga: '2026-10-15'
+  sha256: d7beab9b787ef2ad7ddd936ec08b0359b5fbf6cc802315ca7edbbf0ede9e2eff
+  bytes: 449738
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa06-2023/autonomicas_ccaa06_2023-05-28.pdf
+  tipo: datos
+  edicion: ccaa06-2023
+  url_oficial: https://boc.cantabria.es
+  fecha_descarga: '2026-10-15'
+  sha256: 6b931e31dae15e2fc3e565447e091b1a67aee8b16efe420296ea1dce8a96b9ff
+  bytes: 313755
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa07-2026/autonomicas_ccaa07_2026-03-15.pdf
+  tipo: datos
+  edicion: ccaa07-2026
+  url_oficial: https://bocyl.jcyl.es
+  fecha_descarga: '2026-10-15'
+  sha256: 8e9097e48551c2812904a586824c6699058a090cd8846d032a6dda4e0df1354d
+  bytes: 3384403
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa08-2023/autonomicas_ccaa08_2023-05-28.pdf
+  tipo: datos
+  edicion: ccaa08-2023
+  url_oficial: https://docm.jccm.es
+  fecha_descarga: '2026-10-15'
+  sha256: 4b22df603559d5e9c98a442bac8ebd76f266bf9ad8bd9bddfb770b1087fc8b36
+  bytes: 330797
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa09-2024/autonomicas_ccaa09_2024-05-12.pdf
+  tipo: datos
+  edicion: ccaa09-2024
+  url_oficial: https://www.gencat.cat/dogc
+  fecha_descarga: '2026-10-15'
+  sha256: ba538fbd7ce020b342858e1920f5546d045a57881c971ee7074f6342a294a9e9
+  bytes: 1818199
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa10-2023/autonomicas_ccaa10_2023-05-28.pdf
+  tipo: datos
+  edicion: ccaa10-2023
+  url_oficial: https://dogv.gva.es
+  fecha_descarga: '2026-10-15'
+  sha256: 2addf10f49dfaf0b8f971bc0013db254facca8a757085f471ac44e12cf5ea1e0
+  bytes: 366810
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa11-2025/autonomicas_ccaa11_2025-12-21.pdf
+  tipo: datos
+  edicion: ccaa11-2025
+  url_oficial: https://doe.juntaex.es
+  fecha_descarga: '2026-10-15'
+  sha256: 1ec9def160dc75056f06dc81051f4c1d4fe46422b074200d7ab43ba95bbc887e
+  bytes: 125897
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa12-2024/autonomicas_ccaa12_2024-02-18.pdf
+  tipo: datos
+  edicion: ccaa12-2024
+  url_oficial: https://www.xunta.gal/diario-oficial-galicia
+  fecha_descarga: '2026-10-15'
+  sha256: c2e521db161c4db088b1a1ea3311d06566a0f17c371fd74043ff0107c743bc14
+  bytes: 377813
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa13-2023/autonomicas_ccaa13_2023-05-28.pdf
+  tipo: datos
+  edicion: ccaa13-2023
+  url_oficial: https://www.bocm.es
+  fecha_descarga: '2026-10-15'
+  sha256: 58314abb7293de973c69d9c66e2038cde0396406c4af7a6cde78d89140c8205f
+  bytes: 122962
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa14-2023/autonomicas_ccaa14_2023-05-28.pdf
+  tipo: datos
+  edicion: ccaa14-2023
+  url_oficial: https://www.borm.es
+  fecha_descarga: '2026-10-15'
+  sha256: 606cfbd6b54084075942f390d78d80f0fe77363cce34220423970b412d7f061f
+  bytes: 577032
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa15-2023/autonomicas_ccaa15_2023-05-28.pdf
+  tipo: datos
+  edicion: ccaa15-2023
+  url_oficial: https://bon.navarra.es/es/anuncio/-/texto/2023/147/20
+  fecha_descarga: '2026-10-15'
+  sha256: 24348e8ca40eae5714d5b851518ce378933e7493fca361c93b0fd71dfef26e05
+  bytes: 1096083
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa16-2024/autonomicas_ccaa16_2024-04-21.pdf
+  tipo: datos
+  edicion: ccaa16-2024
+  url_oficial: https://www.euskadi.eus/bopv
+  fecha_descarga: '2026-10-15'
+  sha256: cf0e5165591d78b28b0e84c99e5fb40475aac5213027a0faaa4b303e59bc4c08
+  bytes: 114614
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa17-2023/autonomicas_ccaa17_2023-05-28.pdf
+  tipo: datos
+  edicion: ccaa17-2023
+  url_oficial: https://www.larioja.org/bor
+  fecha_descarga: '2026-10-15'
+  sha256: 8b10fe138a809d631a38696ed11a6342874382a2eff86730edc6571cd65479e3
+  bytes: 554993
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa18-2023/autonomicas_ccaa18_2023-05-28.pdf
+  tipo: datos
+  edicion: ccaa18-2023
+  url_oficial: https://www.boe.es
+  fecha_descarga: '2026-10-15'
+  sha256: 8b4cc6975e03bcff7b95dae8323ba21a21103d1751c56e3d3753d3d5606d139d
+  bytes: 4461252
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
+- fuente: resultados_autonomicas
+  fichero: resultados_autonomicas/ccaa19-2023/autonomicas_ccaa19_2023-05-28.pdf
+  tipo: datos
+  edicion: ccaa19-2023
+  url_oficial: https://www.boe.es
+  fecha_descarga: '2026-10-15'
+  sha256: 8b4cc6975e03bcff7b95dae8323ba21a21103d1751c56e3d3753d3d5606d139d
+  bytes: 4461252
+  condiciones: Varían por comunidad; revisar en F1
+  via: manual
 - fuente: tic_h
   fichero: tic_h/2025/datos_2025.zip
   tipo: datos

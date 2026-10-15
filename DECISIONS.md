@@ -248,3 +248,39 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   2. **Postelectoral del CIS no necesario:** se usan el preelectoral 3411 y los barómetros posteriores al 23J, que recogen el recuerdo de voto de 2023 (la documentación los admite: `docs/03`, §2.5).
 - **Consecuencias:** V-POL-RESERVADA necesita otra validación reservada. Propuesta del agente, para decidir en F3: reservar el detalle municipal de las generales de 2023 (calibrar el recuerdo de voto por provincia y validar contra los municipios, que no se usan para calibrar). `elecciones.yaml` registra esta alternativa en `validacion_reservada`.
 - **Aprobada por:** humano (puntos 1 y 2); la alternativa de validación queda propuesta.
+
+## D-023 · Resultados de las últimas elecciones autonómicas (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F1
+- **Estado:** aprobada (fuentes aportadas por el responsable)
+- **Contexto:** la verificación 6 de F1 pide las últimas autonómicas de cada comunidad, para `recuerdo_voto_autonomicas` (voto dual).
+- **Evidencia:** el responsable aporta 18 PDF de boletines oficiales y juntas electorales; las asambleas de Ceuta y Melilla se toman del BOE de resultados de las elecciones locales de 2023, que contiene también otras provincias que no se usan. La fecha de Aragón (08/02/2026) no figura en su PDF y se ha confirmado en el portal oficial del Gobierno de Aragón; los escaños del PDF coinciden con los de ese portal.
+
+  | Comunidad | Fecha | Publicación | Nivel | Voto CERA | Notas |
+  | --- | --- | --- | --- | --- | --- |
+  | Andalucía | 2026-05-17 | BOJA nº 108, 08/06/2026 (Junta Electoral de Andalucía) | provincia | sí | — |
+  | Aragón | 2026-02-08 | Informe de resultados definitivos del Gobierno de Aragón | provincia, comarca y municipio | por verificar | la fecha no figura en el PDF: confirmada en el portal oficial |
+  | Asturias, Principado de | 2023-05-28 | BOPA nº 119, 22/06/2023 (Junta Electoral Provincial de Asturias) | circunscripción (Central, Occidental, Oriental) | sí | texto no extraíble: requiere OCR (tesseract, spa) |
+  | Balears, Illes | 2023-05-28 | BOIB nº 83, 2023 (Junta Electoral de las Illes Balears) | circunscripción insular | solo CERA | SOLO contiene el voto de los residentes en el extranjero: faltan los resultados generales |
+  | Canarias | 2023-05-28 | BOC nº 121, 22/06/2023 (Junta Electoral de Canarias) | circunscripción insular y autonómica | sí | — |
+  | Cantabria | 2023-05-28 | BOC extraordinario nº 46, 07/06/2023 (Junta Electoral Provincial de Cantabria) | comunidad (circunscripción única) | sí | — |
+  | Castilla y León | 2026-03-15 | BOCyL nº 80, 29/04/2026 (Junta Electoral de Castilla y León) | provincia | sí | — |
+  | Castilla-La Mancha | 2023-05-28 | DOCM nº 114, 16/06/2023 (Junta Electoral de Castilla-La Mancha) | provincia | sí | — |
+  | Cataluña | 2024-05-12 | DOGC nº 9178, 06/06/2024 (Junta Electoral Central) | provincia | sí | — |
+  | Comunitat Valenciana | 2023-05-28 | DOGV nº 9618, 15/06/2023 (Junta Electoral de la Comunitat Valenciana) | provincia | por verificar | — |
+  | Extremadura | 2025-12-21 | DOE nº 8, 14/01/2026 (Junta Electoral de Extremadura) | provincia | por verificar | — |
+  | Galicia | 2024-02-18 | DOG nº 47, 06/03/2024 (Junta Electoral de Galicia) | provincia | por verificar | — |
+  | Madrid, Comunidad de | 2023-05-28 | BOCM nº 136, 09/06/2023 (Junta Electoral Provincial de Madrid) | comunidad (circunscripción única) | por verificar | — |
+  | Murcia, Región de | 2023-05-28 | BORM nº 135, 14/06/2023 (Junta Electoral Provincial de Murcia) | comunidad (circunscripción única) | sí | primera página con texto desordenado; el resto se lee |
+  | Navarra, Comunidad Foral de | 2023-05-28 | BON nº 147, 14/07/2023 (Resolución 73/2023) | comunidad (circunscripción única) | por verificar | — |
+  | País Vasco | 2024-04-21 | BOPV nº 90, 09/05/2024 (Junta Electoral de la CA del País Vasco) | territorio histórico | por verificar | — |
+  | Rioja, La | 2023-05-28 | BOR nº 125, 20/06/2023 (Junta Electoral de La Rioja) | comunidad (circunscripción única) | por verificar | — |
+  | Ceuta | 2023-05-28 | BOE nº 261, 01/11/2023 (Junta Electoral Central, elecciones locales) | ciudad autónoma | — | Asamblea de Ceuta: elegida en las elecciones locales; el PDF incluye otras provincias que no se usan |
+  | Melilla | 2023-05-28 | BOE nº 261, 01/11/2023 (Junta Electoral Central, elecciones locales) | ciudad autónoma | — | Asamblea de Melilla: elegida en las elecciones locales; mismo PDF que Ceuta |
+
+- **Decisión:** se usan como verdad de referencia del recuerdo de voto autonómico, a nivel de circunscripción (provincia, isla o territorio histórico), salvo Aragón, que llega a municipio. Son resultados **definitivos** (actas de las juntas electorales), a diferencia de los de las generales (escrutinio provisional). El voto CERA se descuenta cuando el boletín lo da por separado (`docs/02`, §3.5, regla 2); donde no, se documenta.
+- **Huecos:**
+  1. **Illes Balears:** el PDF solo contiene el voto CERA; faltan los resultados generales.
+  2. **Asturias:** el texto del PDF no es extraíble; se lee por OCR y se valida con la suma de candidaturas igual a votos a candidaturas.
+- **Aprobada por:** humano (aporte de las fuentes); el tratamiento de los huecos queda pendiente.

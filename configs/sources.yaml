@@ -314,15 +314,17 @@ fuentes:
   capa: A-POL
   tipo: resultados
   url_oficial: https://infoelectoral.interior.gob.es/
-  edicion: null
+  edicion: última de cada comunidad (2023–2026); ver elecciones.yaml
   universo: censo electoral autonómico
   unidad: mesa
   prioridad: P3-POL
   condiciones: Varían por comunidad; revisar en F1
   verificar:
-  - última elección de cada comunidad y su fuente oficial
-  - el servidor corta la conexión desde el entorno (no es una denegación de la política de red)
+  - 'Illes Balears: solo voto CERA, faltan resultados generales (D-023)'
   descarga: manual
+  nivel_geografico: circunscripción (provincia, isla o territorio histórico); Aragón por municipio
+  documentacion_en_fichero: 'Actas y boletines oficiales: cada cifra va rotulada (electores, votantes, blancos,
+    nulos y votos por candidatura).'
 - id: censo_electoral
   nombre: Censo electoral
   organismo: INE (Oficina del Censo Electoral)

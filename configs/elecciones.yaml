@@ -1,4 +1,4 @@
-# Elecciones de referencia (docs/02, sección 2.4). Ver D-021 y D-022.
+# Elecciones de referencia (docs/02, sección 2.4). Ver D-021, D-022 y D-023.
 elecciones:
 - id: generales-2023
   tipo: generales
@@ -18,5 +18,220 @@ elecciones:
   url_oficial: https://infoelectoral.interior.gob.es/
   verificar:
   - excluidas por decisión del responsable (D-022)
+- id: autonomicas-01-2026
+  tipo: autonomicas
+  fecha: '2026-05-17'
+  ambito: CCAA:01
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://www.juntadeandalucia.es/eboja
+  verificar:
+  - 'fuente: BOJA nº 108, 08/06/2026 (Junta Electoral de Andalucía)'
+  - 'nivel: provincia'
+  - 'voto CERA: sí'
+- id: autonomicas-02-2026
+  tipo: autonomicas
+  fecha: '2026-02-08'
+  ambito: CCAA:02
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://www.aragon.es/portal-de-elecciones/resultados-electorales
+  verificar:
+  - 'fuente: Informe de resultados definitivos del Gobierno de Aragón'
+  - 'nivel: provincia, comarca y municipio'
+  - 'voto CERA: por verificar'
+  - 'la fecha no figura en el PDF: confirmada en el portal oficial'
+- id: autonomicas-03-2023
+  tipo: autonomicas
+  fecha: '2023-05-28'
+  ambito: CCAA:03
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://sede.asturias.es/bopa
+  verificar:
+  - 'fuente: BOPA nº 119, 22/06/2023 (Junta Electoral Provincial de Asturias)'
+  - 'nivel: circunscripción (Central, Occidental, Oriental)'
+  - 'voto CERA: sí'
+  - 'texto no extraíble: requiere OCR (tesseract, spa)'
+- id: autonomicas-04-2023
+  tipo: autonomicas
+  fecha: '2023-05-28'
+  ambito: CCAA:04
+  fuente: resultados_autonomicas
+  uso: pendiente
+  url_oficial: https://www.caib.es/eboibfront/pdf/es/2023/83/1139303
+  verificar:
+  - 'fuente: BOIB nº 83, 2023 (Junta Electoral de las Illes Balears)'
+  - 'nivel: circunscripción insular'
+  - 'voto CERA: solo CERA'
+  - 'SOLO contiene el voto de los residentes en el extranjero: faltan los resultados generales'
+- id: autonomicas-05-2023
+  tipo: autonomicas
+  fecha: '2023-05-28'
+  ambito: CCAA:05
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://sede.gobiernodecanarias.org/boc
+  verificar:
+  - 'fuente: BOC nº 121, 22/06/2023 (Junta Electoral de Canarias)'
+  - 'nivel: circunscripción insular y autonómica'
+  - 'voto CERA: sí'
+- id: autonomicas-06-2023
+  tipo: autonomicas
+  fecha: '2023-05-28'
+  ambito: CCAA:06
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://boc.cantabria.es
+  verificar:
+  - 'fuente: BOC extraordinario nº 46, 07/06/2023 (Junta Electoral Provincial de Cantabria)'
+  - 'nivel: comunidad (circunscripción única)'
+  - 'voto CERA: sí'
+- id: autonomicas-07-2026
+  tipo: autonomicas
+  fecha: '2026-03-15'
+  ambito: CCAA:07
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://bocyl.jcyl.es
+  verificar:
+  - 'fuente: BOCyL nº 80, 29/04/2026 (Junta Electoral de Castilla y León)'
+  - 'nivel: provincia'
+  - 'voto CERA: sí'
+- id: autonomicas-08-2023
+  tipo: autonomicas
+  fecha: '2023-05-28'
+  ambito: CCAA:08
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://docm.jccm.es
+  verificar:
+  - 'fuente: DOCM nº 114, 16/06/2023 (Junta Electoral de Castilla-La Mancha)'
+  - 'nivel: provincia'
+  - 'voto CERA: sí'
+- id: autonomicas-09-2024
+  tipo: autonomicas
+  fecha: '2024-05-12'
+  ambito: CCAA:09
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://www.gencat.cat/dogc
+  verificar:
+  - 'fuente: DOGC nº 9178, 06/06/2024 (Junta Electoral Central)'
+  - 'nivel: provincia'
+  - 'voto CERA: sí'
+- id: autonomicas-10-2023
+  tipo: autonomicas
+  fecha: '2023-05-28'
+  ambito: CCAA:10
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://dogv.gva.es
+  verificar:
+  - 'fuente: DOGV nº 9618, 15/06/2023 (Junta Electoral de la Comunitat Valenciana)'
+  - 'nivel: provincia'
+  - 'voto CERA: por verificar'
+- id: autonomicas-11-2025
+  tipo: autonomicas
+  fecha: '2025-12-21'
+  ambito: CCAA:11
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://doe.juntaex.es
+  verificar:
+  - 'fuente: DOE nº 8, 14/01/2026 (Junta Electoral de Extremadura)'
+  - 'nivel: provincia'
+  - 'voto CERA: por verificar'
+- id: autonomicas-12-2024
+  tipo: autonomicas
+  fecha: '2024-02-18'
+  ambito: CCAA:12
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://www.xunta.gal/diario-oficial-galicia
+  verificar:
+  - 'fuente: DOG nº 47, 06/03/2024 (Junta Electoral de Galicia)'
+  - 'nivel: provincia'
+  - 'voto CERA: por verificar'
+- id: autonomicas-13-2023
+  tipo: autonomicas
+  fecha: '2023-05-28'
+  ambito: CCAA:13
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://www.bocm.es
+  verificar:
+  - 'fuente: BOCM nº 136, 09/06/2023 (Junta Electoral Provincial de Madrid)'
+  - 'nivel: comunidad (circunscripción única)'
+  - 'voto CERA: por verificar'
+- id: autonomicas-14-2023
+  tipo: autonomicas
+  fecha: '2023-05-28'
+  ambito: CCAA:14
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://www.borm.es
+  verificar:
+  - 'fuente: BORM nº 135, 14/06/2023 (Junta Electoral Provincial de Murcia)'
+  - 'nivel: comunidad (circunscripción única)'
+  - 'voto CERA: sí'
+  - primera página con texto desordenado; el resto se lee
+- id: autonomicas-15-2023
+  tipo: autonomicas
+  fecha: '2023-05-28'
+  ambito: CCAA:15
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://bon.navarra.es/es/anuncio/-/texto/2023/147/20
+  verificar:
+  - 'fuente: BON nº 147, 14/07/2023 (Resolución 73/2023)'
+  - 'nivel: comunidad (circunscripción única)'
+  - 'voto CERA: por verificar'
+- id: autonomicas-16-2024
+  tipo: autonomicas
+  fecha: '2024-04-21'
+  ambito: CCAA:16
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://www.euskadi.eus/bopv
+  verificar:
+  - 'fuente: BOPV nº 90, 09/05/2024 (Junta Electoral de la CA del País Vasco)'
+  - 'nivel: territorio histórico'
+  - 'voto CERA: por verificar'
+- id: autonomicas-17-2023
+  tipo: autonomicas
+  fecha: '2023-05-28'
+  ambito: CCAA:17
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://www.larioja.org/bor
+  verificar:
+  - 'fuente: BOR nº 125, 20/06/2023 (Junta Electoral de La Rioja)'
+  - 'nivel: comunidad (circunscripción única)'
+  - 'voto CERA: por verificar'
+- id: autonomicas-18-2023
+  tipo: autonomicas
+  fecha: '2023-05-28'
+  ambito: CCAA:18
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://www.boe.es
+  verificar:
+  - 'fuente: BOE nº 261, 01/11/2023 (Junta Electoral Central, elecciones locales)'
+  - 'nivel: ciudad autónoma'
+  - 'voto CERA: —'
+  - 'Asamblea de Ceuta: elegida en las elecciones locales; el PDF incluye otras provincias que no se usan'
+- id: autonomicas-19-2023
+  tipo: autonomicas
+  fecha: '2023-05-28'
+  ambito: CCAA:19
+  fuente: resultados_autonomicas
+  uso: calibrar
+  url_oficial: https://www.boe.es
+  verificar:
+  - 'fuente: BOE nº 261, 01/11/2023 (Junta Electoral Central, elecciones locales)'
+  - 'nivel: ciudad autónoma'
+  - 'voto CERA: —'
+  - 'Asamblea de Melilla: elegida en las elecciones locales; mismo PDF que Ceuta'
 validacion_reservada: 'Propuesta D-022 (a decidir en F3): calibrar el recuerdo de voto de las generales de 2023
   por provincia y reservar el detalle municipal para validar.'
