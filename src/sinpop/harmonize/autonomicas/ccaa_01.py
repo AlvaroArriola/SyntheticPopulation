@@ -209,11 +209,25 @@ def leer(path: Path = PDF) -> Resultado:
         )
 
     circs = [circ(f, c, _NOMBRES[c]) for f, c in CODIGOS.items()]
+    total = circ("TOTAL", "total", "Andalucía")
+    # Discrepancias del propio BOJA: se conservan las cifras publicadas y se anotan.
+    for c in [*circs, total]:
+        suma = sum(c.votos.values())
+        if c.a_candidaturas != suma:
+            notas.append(
+                f"Discrepancia en el documento oficial ({c.nombre}): el cuadro I da "
+                f"{c.a_candidaturas} votos a candidaturas y {c.validos} válidos, pero las "
+                f"formaciones de los cuadros II-III suman {suma} ({suma - c.a_candidaturas:+d}); "
+                f"votantes {c.votantes} = suma de formaciones + blancos + nulos "
+                f"({suma + c.blancos + c.nulos}), no válidos publicados + nulos "
+                f"({c.validos + c.nulos}). Se conservan las cifras publicadas y errores() lo "
+                "señala."
+            )
     return Resultado(
         ccaa="01",
         eleccion="autonomicas-01-2026",
         circunscripciones=circs,
-        total=circ("TOTAL", "total", "Andalucía"),
+        total=total,
         notas=[
             "BOJA n.º 108 (08-06-2026): total de Andalucía publicado (fila TOTAL de los cuadros "
             "I-III) y contrastado con la suma de provincias.",

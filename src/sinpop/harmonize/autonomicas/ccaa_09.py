@@ -107,7 +107,7 @@ def _cuadro_ii(lineas: list[str], votos_etq: str) -> list[tuple[str, dict[str, t
     for pag in paginas:
         es_total = [t.strip() == "TOTAL" for t, _ in pag]
         ref = None
-        for (t, cifras), tot in zip(pag, es_total, strict=True):
+        for (_, cifras), tot in zip(pag, es_total, strict=True):
             votos = (
                 cifras[0::2] if tot else [c for c in cifras if not re.fullmatch(r"\d{1,2}", c[0])]
             )
