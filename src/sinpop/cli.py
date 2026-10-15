@@ -139,8 +139,17 @@ def harmonize(
     check: Annotated[
         bool, typer.Option("--check", help="Reproduce las cifras oficiales publicadas (G2.4)")
     ] = False,
+    samples: Annotated[
+        bool, typer.Option("--samples", help="Muestras de 20 registros por fuente (G2.8)")
+    ] = False,
 ) -> None:
     """Lee cada fuente con su diseño de registro y la armoniza a configs/variables.yaml (F2)."""
+    if samples:
+        from sinpop.harmonize import muestras
+
+        res = muestras.muestras()
+        typer.echo(f"{len(res)} muestras en data/interim/muestras_g28/ · {muestras.informe(res)}")
+        return
     if check:
         from sinpop.harmonize import oficiales
 

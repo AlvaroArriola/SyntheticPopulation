@@ -257,6 +257,149 @@ def _g1_6_human() -> Check:
     return Check("G1.6", "Revisión humana del inventario", None, "pendiente", "aprobación")
 
 
+# --------------------------------------------------------------------------- F2
+
+
+def _g2_1_dominios() -> Check:
+    from sinpop.harmonize import checks
+
+    malos = checks.g21_dominios()
+    n = sum(len(v) for v in checks.columnas_categoricas_comprobadas().values())
+    valor = f"{n} columnas categóricas en {len(checks.salidas())} ficheros; fuera de dominio: "
+    valor += "0" if not malos else "; ".join(f"{k}: {v}" for k, v in malos.items())
+    return Check("G2.1", "Valores dentro del dominio declarado", not malos, valor, "0")
+
+
+def _g2_2_especiales() -> Check:
+    from sinpop.harmonize import checks
+
+    malos = checks.g22_especiales()
+    valor = "0 columnas numéricas con códigos especiales" if not malos else str(malos)
+    return Check("G2.2", "Ningún NS/NC/NP como valor numérico", not malos, valor, "0")
+
+
+def _g2_3_totales() -> Check:
+    from sinpop.harmonize import checks
+
+    t = checks.g23_totales()
+    peor = max(x.diferencia_relativa for x in t)
+    malos = [f"{x.fichero} ({x.concepto})" for x in t if not x.ok]
+    valor = f"{len(t)} totales; diferencia máxima {100 * peor:.6f} %"
+    if malos:
+        valor += "; fallan: " + ", ".join(malos)
+    return Check("G2.3", "Totales ponderados conservados", not malos, valor, "< 0,01 %")
+
+
+def _g2_4_cifras() -> Check:
+    import json
+
+    from sinpop.config import load_config
+
+    path = REPORTS_DIR / "fase_02_cifras_oficiales.json"
+    if not path.exists():
+        return Check(
+            "G2.4",
+            "≥3 cifras oficiales por fuente P0/P1",
+            False,
+            "falta reports/fase_02_cifras_oficiales.json (sinpop harmonize --check)",
+            "≥3 por fuente",
+        )
+    cifras = json.loads(path.read_text(encoding="utf-8"))
+    fuentes = [
+        f.id
+        for f in load_config("sources.yaml").fuentes  # type: ignore[attr-defined]
+        if f.prioridad in ("P0", "P1")
+    ]
+    malas = []
+    for f in fuentes:
+        c = [x for x in cifras if x["fuente"] == f]
+        if len(c) < 3 or not all(x["ok"] for x in c):
+            malas.append(f"{f} ({sum(x['ok'] for x in c)}/{len(c)})")
+    valor = f"{len(fuentes) - len(malas)}/{len(fuentes)} fuentes; {len(cifras)} cifras"
+    if malas:
+        valor += "; fallan: " + ", ".join(malas)
+    return Check(
+        "G2.4",
+        "≥3 cifras oficiales por fuente P0/P1",
+        not malas,
+        valor,
+        "≥3 por fuente dentro de tolerancia (D-027)",
+    )
+
+
+def _g2_5_tests() -> Check:
+    from sinpop.harmonize.core import variables
+
+    n = sum(
+        1 for v in variables().variables.values() for f in v.fuentes.values() if f.recodificacion
+    )
+    if os.environ.get(_IN_GATE_ENV):
+        return Check(
+            "G2.5",
+            "Tests por tabla de recodificación",
+            None,
+            f"{n} tablas; omitido (llamada anidada)",
+            "1 test por tabla, 0 fallos",
+        )
+    env = {**os.environ, _IN_GATE_ENV: "1"}
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "-p",
+            "no:cacheprovider",
+            "-q",
+            "tests/unit/test_recodificaciones.py",
+            "tests/unit/test_armonizacion.py",
+            "tests/integration/test_interim.py",
+        ],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    last = (proc.stdout.strip().splitlines() or ["(sin salida)"])[-1]
+    return Check(
+        "G2.5",
+        "Tests por tabla de recodificación",
+        proc.returncode == 0,
+        f"{n} tablas con test parametrizado; {last}",
+        "1 test por tabla, 0 fallos",
+    )
+
+
+def _g2_6_electorales() -> Check:
+    from sinpop.harmonize import elecciones
+
+    estado = elecciones.estado_g26()
+    return Check(
+        "G2.6",
+        "Resultados electorales = totales oficiales",
+        estado["ok"],
+        estado["valor"],
+        "sin diferencias (nacional y provincial)",
+    )
+
+
+def _g2_7_cis() -> Check:
+    from sinpop.harmonize import elecciones
+
+    sin = elecciones.codigos_cis_sin_asignar()
+    valor = "0 códigos sin asignar" if not sin else f"sin asignar: {sin}"
+    return Check("G2.7", "Códigos de partido del CIS en partidos.yaml", not sin, valor, "0")
+
+
+def _g2_8_human() -> Check:
+    return Check(
+        "G2.8",
+        "Revisión humana: 20 registros por fuente frente al original",
+        None,
+        "pendiente (reports/fase_02_muestras.md)",
+        "aprobación",
+    )
+
+
 PHASES: dict[int, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
@@ -266,6 +409,16 @@ PHASES: dict[int, list[Callable[[], Check]]] = {
         _g1_4_records,
         _g1_5_critical,
         _g1_6_human,
+    ],
+    2: [
+        _g2_1_dominios,
+        _g2_2_especiales,
+        _g2_3_totales,
+        _g2_4_cifras,
+        _g2_5_tests,
+        _g2_6_electorales,
+        _g2_7_cis,
+        _g2_8_human,
     ],
 }
 

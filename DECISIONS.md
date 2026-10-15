@@ -292,3 +292,86 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Estado:** aprobada
 - **Decisión:** el responsable aprueba el inventario, la matriz de cobertura, las verificaciones críticas y las decisiones D-015 a D-023 (puerta G1.6). Se inicia F2. Queda abierto el hueco de las autonómicas de Illes Balears (solo voto CERA), que no bloquea.
 - **Aprobada por:** humano
+
+## D-025 · Recodificaciones del Censo 2021 y del Censo Anual (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F2
+- **Estado:** propuesta (revisión humana en G2.8)
+- **Contexto:** `docs/02` fija las variables P0–P2 y sus categorías, pero algunas tablas de correspondencia dependen de los diccionarios oficiales. Todas las tablas están en `configs/variables.yaml` (generadas por `tools/generar_recodificaciones_censos.py` y `tools/generar_recodificaciones_encuestas.py`), cada una con `verificado_contra` el diseño de registro del INE.
+- **Decisiones:**
+  1. **Grupos de país** (`nacionalidad_grupo`, `pais_nacimiento_grupo`): UE-27 por nombre del país en los diccionarios del INE (incluido «Otros países de la Unión Europea»); Canadá y EE. UU. van a «otros» porque `docs/02` no prevé un grupo norteamericano; los códigos agregados 5xx, 555 y 966 («otros países» o «apátridas») van a «otros»; el 999 («no consta») no aparece en los ficheros usados.
+  2. **Quince nacionalidades principales** (`nacionalidad_top`): las 15 nacionalidades extranjeras con más residentes en el Censo Anual exhaustivo de 2025 (Marruecos, Colombia, Rumanía, Venezuela, Italia, Reino Unido, Perú, China, Ucrania, Honduras, Argentina, Ecuador, Alemania, Francia, Paraguay); el resto, «otras_extranjeras».
+  3. **Tipo de hogar** (Censo 2021): clave `TIPO_HOG|TIPO_NUC` del núcleo principal. Unipersonal = 01; pareja sin hijos = 04|1; pareja con hijos = 04|2; monoparental = 04|3 y 04|4; dos o más familias o personas no emparentadas = 02, 07 y 08; el resto (03, 05, 06), «otros».
+  4. **Tamaño de municipio:** por la población del Padrón a 01/01/2025 (tabla 29005), no por el tramo que trae cada fichero. Tres municipios (18102, 31258, 36023) tenían más de 10.000 habitantes en 2021 y menos en 2025: se clasifican con la cifra de 2025, coherente con la fecha de referencia (D-015). Los códigos 991–993 (municipios de menos de 10.000 sin identificar) se traducen a sus tramos.
+  5. **Edad en grupos de 5 años:** el último grupo de `docs/02` («85+») se parte en «85-89» y «90+» para poder sobrerrepresentar a los muy mayores (`docs/06`); la ECP publica ambos grupos.
+  6. **Persona de referencia** (D-021): la de más edad del hogar; a igual edad, el menor NORDEN. Los parentescos se reconstruyen desde NORDEN_CON, NORDEN_PAD, NORDEN_MAD y FAMILIA: pareja, hijo (de la persona de referencia o de su pareja), padre o madre, otro familiar (misma familia) o no familiar.
+  7. **Nueva variable `tenencia_censo`:** régimen de tenencia del Censo 2021 (propiedad, alquiler, otro), más pobre que la `tenencia_vivienda` de la ECV; se guarda para el enlace en F6.
+  8. **Universos:** relación con la actividad y estudios, NP para menores de 15 (el INE los deja en blanco); estado civil, NP para menores de 16 (el Censo 2021 codifica «soltero» también a los niños); ocupación, sector y situación profesional, NP para quien no está ocupado.
+- **Evidencia:** `tests/unit/test_recodificaciones.py` (un test por tabla: destinos dentro del dominio, todos los códigos traducidos y un código inventado detiene el proceso); `reports/fase_02_cifras_oficiales.md`.
+- **Aprobada por:** pendiente
+
+## D-026 · Ocupados con ocupación, actividad o situación profesional en blanco (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F2
+- **Estado:** propuesta
+- **Contexto:** en la muestra del Censo Anual 2023 hay 4 personas ocupadas con CNO, CNAE y SITU en blanco. El diseño de registro no documenta el blanco para ocupados.
+- **Decisión:** se codifican como «NC» (no consta) y no como NP, porque están dentro del universo de la pregunta. No se imputan. La regla se aplica igual al Censo 2021 (`nc_si` en `censos._personales`).
+- **Alternativas:** detener la armonización (regla 2 de CLAUDE.md); descartado porque el blanco dentro del universo es, por definición, un dato que no consta y su peso es despreciable (4 de 4,8 millones de registros).
+- **Aprobada por:** pendiente
+
+## D-027 · Tolerancias para reproducir cifras oficiales (G2.4) (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F2
+- **Estado:** propuesta — **necesita decisión humana** (afecta a la puerta G2.4)
+- **Contexto:** G2.4 pide reproducir 3 cifras oficiales por fuente P0 y P1 «dentro de la tolerancia de redondeo de la publicación». Para muestras, la diferencia esperada no es el redondeo sino el error de muestreo.
+- **Decisión propuesta:**
+  1. Ficheros exhaustivos y tablas: igualdad exacta.
+  2. Muestras con factor de elevación conocido (Censo 2021, muestras del Censo Anual): |p̂ − p| ≤ 3 · EE, con EE de una proporción en muestreo aleatorio simple con fracción f = 0,10.
+  3. Encuestas con tasas publicadas redondeadas: redondeo de la publicación + 3 · EE.
+  4. **Muestra del Censo 2021 (solo viviendas familiares) frente a tablas que incluyen colectivos:** se suma a la tolerancia la cota del sesgo de cobertura, c = proporción del universo que vive en colectivos (|p_fam − p_total| = c · |p_fam − p_col| ≤ c; c ≈ 0,8 %). Con 3 · EE sin esa cota, 11 de 21 cifras quedan fuera (diferencia máxima 0,24 puntos, en ocupados y casados, justo donde más difieren las residencias de mayores); con la cota, las 21 entran. El INE no publica tablas del Censo 2021 limitadas a viviendas familiares en su API (comprobado en las operaciones 8 y 463).
+- **Resultado:** 111 cifras de 14 fuentes P0/P1, todas dentro de tolerancia (`reports/fase_02_cifras_oficiales.md`).
+- **Aprobada por:** pendiente
+
+## D-028 · Armonización de las encuestas (ECV, EPA, TIC-H, ESdE) (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F2
+- **Estado:** propuesta
+- **Decisiones:**
+  1. **ECV 2025:** se unen los ficheros R, P, H y D. RB082 = −1 (nacidos en 2025) → edad 0; RB082 tiene tope en 86 años según el diseño. Universo de las preguntas personales: quien no está en el fichero P (menores de 16) → NP; marca `_F = −1` o PL032 = 7 (sin cuestionario) → NC. Variables del hogar: `_F = −2` → NP, `_F = −1` → NC. `vrMATSOCDEP` trae 958 blancos no documentados: NC. Renta equivalente = vhRentaa / HX240; deciles ponderados con RB050 (nacionales y por comunidad).
+  2. **EPA 2T2026:** `edad_4` vacía para el grupo de 16 a 19 años, porque la EPA no permite separar a los de 18 y 19; la EPA no distingue tipos de inactividad (se usa `relacion_actividad_3`) ni indefinido/temporal en SITU (categoría «asalariado»).
+  3. **TIC-H 2025:** uso de internet = ULT_INT|FREC_INT; teletrabajo = ULT_TTRAB|TTRAB_ACTUAL, con TELETRAB = 6 («el trabajo exige presencia») → «nunca» y no ocupados → NP. Las competencias digitales no se armonizan en F2 (indicador compuesto: se decide en F6).
+  4. **ESdE 2023:** NIVEST 01 («no procede, es menor de 10 años»; no puede darse en el fichero de adultos) → NP; 99 → NC.
+  5. **Nuevas variables llave:** `nacionalidad_esp_ext`, `relacion_actividad_3` y `sector_publico`; `compra_online`, `privacion_material` y `vehiculo_hogar` pasan a categóricas sí/no; `situacion_profesional` añade «asalariado» para la EPA.
+  6. **Denominadores al reproducir cifras:** la ESdE excluye el «no consta» del denominador y la ECV lo incluye, como hace el INE en cada nota de prensa (comprobado con las cifras publicadas).
+- **Aprobada por:** pendiente
+
+## D-029 · Generales 2023: código INE de los municipios (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F2
+- **Estado:** propuesta
+- **Contexto:** las hojas del Ministerio del Interior identifican el municipio solo por su nombre de 2023.
+- **Decisión:** se asigna el código INE comparando con los nombres del Padrón 2025 (tabla 29005), sin tildes ni signos y con el artículo pospuesto. 8.115 municipios se emparejan de forma única. Los 16 que han cambiado de nombre se fijan en `harmonize/elecciones.py` (`RENOMBRADOS`), comprobando que el censo electoral de 2023 es coherente con la población de 2025 (cociente entre 0,53 y 1,09, dentro del rango de los demás municipios: 0,11–1,88; el más bajo, Castell-Platja d'Aro, es un municipio turístico con muchos residentes extranjeros): Alcocer de Planes → Alcosser; Facheca → Fageca; Vall de Gallinera; Bigues i Riells → Bigues i Riells del Fai; Santa María Rivarredonda → Ribarredonda; Higuera → Higuera de Albalat; Herbés → Herbers; Castell-Platja d'Aro → Castell d'Aro, Platja d'Aro i s'Agaró; Masarac → Masarac i Vilarnadal; La Zarza-Perrunal; Candín → Valle de Ancares; Lumbreras → Lumbreras de Cameros; A Rúa de Valdeorras → Rúa, A; La Bisbal de Falset → Bisbal de Montsant, La; Alfarp → Alfarb; Villanueva de Castellón → Castelló.
+- **Consecuencia:** Usansolo (48916) se segregó de Galdakao después de las elecciones: su voto de 2023 está dentro del de Galdakao (48036). Los 6 códigos de la tabla 29005 sin población (municipios fusionados o suprimidos) no tienen resultados.
+- **G2.6:** los totales oficiales provinciales del Congreso (BOE-A-2023-18907, Junta Electoral Central) no se pueden descargar: `www.boe.es` no está permitido en la red del entorno y el área de descargas de Interior corta la conexión. Se registra en `data/raw/MANUAL_DOWNLOADS.md`. Mientras, solo se comprueba la coherencia interna de cada municipio (0 descuadres en 8.131).
+- **Aprobada por:** pendiente
+
+## D-030 · Familias de partidos y códigos del CIS (`partidos.yaml`) (2026-10-15)
+
+- **Fecha:** 2026-10-15
+- **Fase:** F2
+- **Estado:** propuesta — **necesita revisión humana** (asignaciones de familia)
+- **Contexto:** `docs/02` (§3.5) pide dos niveles: la candidatura votada y una familia estable. G2.7 exige que cada código de partido de cada estudio del CIS usado tenga correspondencia.
+- **Criterios (iguales para todos los electorados):**
+  1. Partidos estatales: por su posición, si han tenido representación en el Congreso o en el Parlamento Europeo desde 2015; si no, «otros».
+  2. Federaciones, marcas territoriales y coaliciones encabezadas por un partido estatal: la familia de ese partido (PSC, PSdeG, PSE, PSIB, PSN → socialdemócrata; Sumar-ECP, Sumar-Compromís, Més-Sumar, Sumar Aragón, En Comú, Más Madrid, Elkarrekin, Por Andalucía → izquierda estatal; PP+Cs → centro-derecha).
+  3. Partidos de una sola comunidad, provincia o municipio sin vínculo con un partido estatal: nacionalistas y regionalistas, con desglose por territorio.
+  4. 18 siglas de 2023 cuyo nombre completo no se ha podido verificar (sin acceso al BOE) se clasifican por su ámbito con el criterio 3 o, si se presentan en más de una comunidad, como «otros», y quedan marcadas en `notas`.
+- **Correspondencias con el CIS:** el barómetro 3567 recoge el recuerdo de las generales de 2023 (RECUVOTOG, RECUERDO) con 12 partidos más «otro partido»; las candidaturas sin código propio se asocian al 8995 («otro partido»). Las federaciones del PSOE comparten el código 1 y las marcas de Sumar el 21. El preelectoral 3411 se usa solo con su catálogo (su recuerdo es de 2019). En 3411 el código 1501 es Na+ (UPN, PP y Cs) en las variables de 2019 y UPN en las de 2023: se asigna a nacionalistas y regionalistas; 1603 es PP+Cs y 912 es Valents.
+- **Especiales del CIS:** 0 NP, 8996 en blanco, 9977 nulo, 9993 mismo partido, 9995 no tenía edad, 9996 sin derecho a voto, 9997 no votó / ninguno / no votaría (según la variable), 9998 NS, 9999 NC. Se modelan como opciones legítimas (regla 10 de CLAUDE.md).
+- **Resultado:** 72 candidaturas de 2023 (5 izquierda estatal, 6 socialdemócrata, 1 centro-derecha, 1 derecha radical, 44 nacionalistas y regionalistas, 15 otros); 138 códigos en 3567 y 113 en 3411, 0 sin asignar.
+- **Aprobada por:** pendiente

@@ -118,3 +118,38 @@ class Resultado:
             schema_overrides={"escanos": pl.Int64},
         )
         return res, vot
+
+
+# Comunidades cuyos resultados oficiales están incompletos (D-023): no superan G2.6
+INCOMPLETAS = {"04": "solo voto CERA; faltan los resultados generales (MANUAL_DOWNLOADS.md)"}
+
+
+def lector(ccaa: str):
+    """Función `leer` del módulo `ccaa_XX`, o None si aún no existe."""
+    import importlib
+
+    try:
+        return importlib.import_module(f"sinpop.harmonize.autonomicas.ccaa_{ccaa}").leer
+    except ModuleNotFoundError:
+        return None
+
+
+def todas() -> dict[str, dict]:
+    """Lee las 19 comunidades y devuelve, por comunidad, errores, pendientes y un resumen."""
+    out = {}
+    for i in range(1, 20):
+        c = f"{i:02d}"
+        leer = lector(c)
+        if leer is None:
+            out[c] = {"errores": [], "pendiente": True, "resumen": "sin lector", "resultado": None}
+            continue
+        r = leer()
+        err = r.errores()
+        pend = c in INCOMPLETAS
+        resumen = f"{len(r.circunscripciones)} circunscripciones"
+        if err:
+            resumen += f"; {len(err)} errores: {err[0]}"
+        if pend:
+            resumen += f"; {INCOMPLETAS[c]}"
+        out[c] = {"errores": err, "pendiente": pend, "resumen": resumen, "resultado": r}
+    return out

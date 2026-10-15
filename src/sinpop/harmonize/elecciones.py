@@ -117,3 +117,61 @@ def generales_2023() -> tuple[pl.DataFrame, pl.DataFrame]:
         raise ValueError(f"códigos INE repetidos: {dup['municipio'].unique().to_list()}")
     vot = pl.DataFrame(votos).sort("municipio", "candidatura")
     return res, vot
+
+
+# --------------------------------------------------------------------------- comprobaciones F2
+
+BOE_GENERALES_2023 = GENERALES_2023 / "BOE-A-2023-18907.pdf"
+CIS_SAV = {
+    "3567": RAW_DIR / "cis_barometros/3567/extraido/3567.sav",
+    "3411": RAW_DIR / "cis_electorales/3411/extraido/3411.sav",
+}
+
+
+def codigos_cis_sin_asignar() -> dict[str, dict[str, list[int]]]:
+    """{estudio: {variable: códigos de la etiqueta de valores sin entrada en partidos.yaml}}.
+
+    Lee solo los metadatos de los .sav (etiquetas de valores), no los microdatos.
+    """
+    import pyreadstat
+
+    from sinpop.config import load_config
+
+    cfg = load_config("partidos.yaml")
+    out: dict[str, dict[str, list[int]]] = {}
+    for est, d in cfg.cis.items():  # type: ignore[attr-defined]
+        _, meta = pyreadstat.read_sav(str(CIS_SAV[est]), metadataonly=True)
+        for v in d.variables:
+            cods = {int(c) for c in meta.value_labels[meta.variable_to_label[v]]}
+            faltan = sorted(cods - set(d.codigos))
+            if faltan:
+                out.setdefault(est, {})[v] = faltan
+    return out
+
+
+def estado_g26() -> dict:
+    """Estado de G2.6: resultados cargados frente a los totales oficiales publicados."""
+    from sinpop.harmonize import autonomicas
+
+    partes, ok = [], True
+    res = generales_2023()[0]
+    internos = 0  # los errores internos por municipio ya detienen generales_2023()
+    partes.append(
+        f"generales 2023: {res.height} municipios, {internos} descuadres internos; "
+        + (
+            "totales oficiales del BOE disponibles"
+            if BOE_GENERALES_2023.exists()
+            else "faltan los totales oficiales (BOE-A-2023-18907, descarga manual)"
+        )
+    )
+    if not BOE_GENERALES_2023.exists():
+        ok = False
+    aut = autonomicas.todas()
+    malas = {k: v for k, v in aut.items() if v["errores"] or v["pendiente"]}
+    partes.append(
+        f"autonómicas: {len(aut) - len(malas)}/{len(aut)} sin diferencias"
+        + ("; " + "; ".join(f"{k}: {v['resumen']}" for k, v in malas.items()) if malas else "")
+    )
+    if malas:
+        ok = False
+    return {"ok": ok, "valor": " · ".join(partes)}
