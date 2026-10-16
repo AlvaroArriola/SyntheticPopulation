@@ -139,7 +139,18 @@ def v_cruce(p: pl.DataFrame, territorio: str, semilla: int = 0) -> pl.DataFrame:
         pl.max_horizontal(
             pl.col("tvd_ref"), pl.col("nivel").replace_strict(lim, return_dtype=pl.Float64)
         ).alias("umbral")
-    ).with_columns((pl.col("tvd") <= pl.col("umbral")).alias("ok"))
+    ).with_columns(
+        (pl.col("tvd") <= pl.col("umbral")).alias("ok"),
+        # Informativo (D-038, pendiente de decisión): el margen de V-MARG cuando domina el error
+        # de muestreo. El umbral oficial no cambia.
+        (
+            pl.col("tvd")
+            <= pl.max_horizontal(
+                1.2 * pl.col("tvd_ref") + 0.002,
+                pl.col("nivel").replace_strict(lim, return_dtype=pl.Float64),
+            )
+        ).alias("ok_propuesta"),
+    )
 
 
 def v_cramer(p: pl.DataFrame, territorio: str) -> pl.DataFrame:

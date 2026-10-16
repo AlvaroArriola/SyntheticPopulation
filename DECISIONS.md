@@ -491,7 +491,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-16
 - **Fase:** F3
-- **Estado:** propuesta (revisión con F4)
+- **Estado:** aprobada
 - **Contexto:** los objetivos de las autonómicas (D-036) necesitan la familia de cada una de las 295 candidaturas (236 nombres) de las 19 publicaciones.
 - **Decisión:** se aplican los criterios aprobados en D-030 y D-032, con las candidaturas de las generales como precedente (`tools/familias_autonomicas.py`; nombres tal como se imprimen). Resultado: 109 nacionalistas y regionalistas, 82 otros, 35 centro-derecha estatal, 28 izquierda estatal, 22 derecha radical, 19 socialdemócratas.
   - **Diez listas con nombre sin ninguna referencia territorial** pasan a «otros» por la regla de D-032: 100X100 Unidos, Sociedad Unida (Andalucía), Reset-Reinicio Político (Baleares), Hablemos Ahora, Ahora Tú, Movimiento Alternativo Electoral, Contigo Somos Democràcia (Canarias), Aquí Ahora, TÚ patria (Castilla-La Mancha) y Valores (Murcia).
@@ -501,7 +501,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
     - el Partido Comunista del Pueblo Andaluz (organización andaluza del PCPE), Izquierda Anticapitalista Revolucionaria y País con Gestores (se presenta en dos comunidades) → otros;
     - Verdes Equo Asturias → izquierda estatal (marca de EQUO).
 - **Erratas de los boletines** (se conservan): «PARITDO AUTÓNOMOS», «PODER ANDAlUZ», «CONTIGO SOMOS DEMOCRÁCIA», «PER UN MÓN MES JUST», y «Los Verdes-Ecopacifistas (CENTRO MODERADO)», cuyas siglas no corresponden al nombre.
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-16)
 
 ## D-038 · Síntesis de la población nacional base (F4) (2026-10-16)
 

@@ -78,6 +78,9 @@ def _validar(rid: str, territorio: str, semilla: int, completa: bool) -> dict:
             .select("objetivo", "tvd", "tvd_ref", "umbral", "ok")
             .to_dicts(),
             "tvd_media_espana": float(vc.filter(pl.col("nivel") == "espana")["tvd"].mean()),
+            "fallos_propuesta": vc.filter(~pl.col("ok_propuesta"))
+            .select("nivel", "territorio", "objetivo", "tvd", "umbral")
+            .to_dicts(),
         },
         "v_reglas_duras": duras.to_dicts(),
         "v_reglas_blandas": blandas.to_dicts(),
@@ -119,8 +122,18 @@ def v_semillas(pobs: list[dict], factor: float) -> list[dict]:
                 "n": n,
                 "proporciones": g.height,
                 "fuera": malos.height,
-                "razon_media": float((g["sd"] / g["sd_mas"]).mean()),
-                "razon_max": float((g["sd"] / g["sd_mas"]).max()),
+                "razon_media": float(
+                    g.filter(pl.col("sd_mas") > 0)
+                    .select(pl.col("sd") / pl.col("sd_mas"))
+                    .mean()
+                    .item()
+                ),
+                "razon_max": float(
+                    g.filter(pl.col("sd_mas") > 0)
+                    .select(pl.col("sd") / pl.col("sd_mas"))
+                    .max()
+                    .item()
+                ),
                 "peores": malos.sort("sd", descending=True)
                 .head(10)
                 .select("objetivo", "clave", "sd", "sd_mas")

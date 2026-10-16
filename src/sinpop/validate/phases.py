@@ -596,7 +596,9 @@ def _g4_2_cruce() -> Check:
         desc,
         not f and not cr,
         f"{n} comprobaciones; fallos TVD: {len(f)}"
-        f"{' (' + ej + ')' if f else ''}; fallos Cramér: {len(cr)}{' (' + ejc + ')' if cr else ''}",
+        f"{' (' + ej + ')' if f else ''}; con el margen propuesto en D-038: "
+        f"{sum(len(x['v_cruce'].get('fallos_propuesta', [])) for x in d['poblaciones'])}"
+        f"; fallos Cramér: {len(cr)}{' (' + ejc + ')' if cr else ''}",
         um,
     )
 

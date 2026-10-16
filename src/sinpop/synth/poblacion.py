@@ -296,6 +296,28 @@ def construir(
         # Colectivos y unidades trasladadas: el municipio del donante no es el suyo.
         pl.when(familiar & pl.col("local")).then(pl.col("municipio")).alias("municipio"),
     )
+    # Unidades trasladadas desde otra provincia (ampliación de donantes): su tamaño de municipio
+    # era el de origen y puede no existir en la de destino. Se toma la clase más frecuente entre
+    # los donantes locales de la provincia con el mismo grado de urbanización (`modelada`).
+    clase = (
+        p.filter(pl.col("local"))
+        .group_by("provincia", "grado_urbanizacion", "tamano_municipio")
+        .agg(pl.col("w").sum())
+        .sort("w", "tamano_municipio", descending=True)
+        .unique(["provincia", "grado_urbanizacion"], keep="first")
+        .select("provincia", "grado_urbanizacion", pl.col("tamano_municipio").alias("_tm"))
+    )
+    pers = (
+        pers.join(clase, on=["provincia", "grado_urbanizacion"], how="left")
+        .with_columns(
+            pl.when(pl.col("local"))
+            .then(pl.col("tamano_municipio"))
+            .otherwise(pl.coalesce("_tm", "tamano_municipio"))
+            .alias("tamano_municipio")
+        )
+        .drop("_tm")
+        .sort("k", "norden")
+    )
     calidad = []
     for c in COLUMNAS_PERSONA:
         modelada = (~familiar & pl.lit(c not in OBSERVADAS_COLECTIVO)) | (
