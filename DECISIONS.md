@@ -638,3 +638,66 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Estado:** aprobada
 - **Decisión:** el responsable aprueba el informe `reports/fase_05.md` (G5.6), con D-041 y D-042 aprobadas. F5 queda cerrada y se empieza F6.
 - **Aprobada por:** humano (2026-10-16)
+
+## D-044 · Diseño del enriquecimiento (F6) (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F6
+- **Estado:** en vigor (F6 no tiene puerta de revisión humana; se presenta en `reports/fase_06.md` y se revisa en F7)
+- **Contexto:** F6 añade las variables P1 y P2 que no están en los donantes censales, sin tocar las P0 (G6.5). Inventario de fuentes armonizadas (D-028):
+  - ECV 2025: 29.369 hogares y 60.825 personas de 16 o más años; renta del año anterior.
+  - EPA del 2T 2026: ocupados.
+  - TIC-H 2025: 16 o más años, sin límite superior de edad, así que no hay hueco de mayores de 74.
+  - Encuesta de Salud (ESdE) 2023.
+  - Atlas de renta 2023: municipio, provincia y España.
+- **Decisiones:**
+  1. **Método: hot-deck aleatorio ponderado por celdas, con colapso jerárquico** (docs/03 §2.3, opción «por estratos»).
+     - Cada persona u hogar sintético recibe un donante de la encuesta, sorteado con probabilidad proporcional al peso de la encuesta entre los donantes de su celda de llaves.
+     - Si la celda tiene menos de 10 donantes, se quita la llave menos importante y se repite. El orden de colapso es fijo y se registra el nivel usado.
+     - Así se reproduce la distribución condicionada ponderada de la encuesta: es lo que comprueban V-ENRIQ-MARG y V-ENRIQ-ASOC. Se asignan valores reales de donantes, nunca medias (docs/06, regresión a la media).
+     - Es determinista con la semilla de la población.
+  2. **Bloques heredados del mismo donante y llaves:**
+
+     | Bloque | Fuente | Unidad | Variables | Llaves, en orden de colapso inverso (la primera es la última que se quita) |
+     | --- | --- | --- | --- | --- |
+     | Hogar | ECV | hogar familiar | renta equivalente, `renta_hogar_decil`, `renta_hogar_decil_ccaa`, `tenencia_vivienda`, `dificultad_fin_mes`, `vehiculo_hogar` | comunidad; tenencia del Censo (compatible, ver 3); tamaño del hogar; ocupados del hogar (0, 1, 2+); estudios más altos de los adultos; menores (sí/no); 65+ (sí/no); algún adulto extranjero; grado de urbanización |
+     | Persona ECV | ECV | persona 16+ | `salud_autopercibida`, `discapacidad_limitacion`, `privacion_material`, `privacion_material_n` | comunidad; sexo; edad quinquenal; relación con la actividad; estudios; decil de renta del hogar (ya asignado); nacionalidad |
+     | Empleo | EPA | ocupado 16+ | `tipo_jornada`, `sector_publico` | comunidad; sexo; edad; ocupación (CNO-11 a 1 dígito); situación profesional (empresario / autónomo / asalariado); estudios; nacionalidad |
+     | Digital | TIC-H | persona 16+ | `uso_internet`, `compra_online`, `teletrabajo` | comunidad; sexo; edad quinquenal; relación con la actividad; estudios; nacionalidad |
+
+     El bloque de persona de la ECV se empareja después del de hogar y usa el decil asignado como llave, para conservar la relación renta-salud. La privación va en la persona porque el indicador oficial (`vrMATSOCDEP`) es personal: combina carencias del hogar y propias.
+  3. **Tenencia compatible con el Censo.**
+     - Correspondencias (códigos comprobados: Censo T_REGTE; ECV HH021, TH021H):
+       - propiedad ↔ ECV 1 y 2;
+       - alquiler ↔ ECV 3 y 4;
+       - otro ↔ ECV 4 y 5.
+     - El 4 («alquiler a precio inferior al de mercado») cabe en «alquiler» o en «otro» del Censo, que incluye la vivienda cedida a bajo precio.
+     - Así `tenencia_vivienda` (ECV) nunca contradice `tenencia_censo`.
+  4. **Universos.** Variables de persona: menores de 16 → NP. Bloque de empleo: no ocupados → NP. Bloque de hogar: los residentes en colectivos → NP, porque la ECV y la TIC-H solo cubren viviendas familiares (`__calidad = observada` con valor NP por universo).
+  5. **Renta y Atlas (tarea 4).** La renta de la ECV (renta disponible de 2024) y el Atlas (renta neta de 2023, de fuentes tributarias) no miden lo mismo en nivel, así que no se reescala ningún valor.
+     - El Atlas da el **nivel relativo** de cada provincia (y de cada municipio identificado en las listas de municipios) dentro de su comunidad, con la media de la renta por unidad de consumo.
+     - El objetivo es: media sintética de la provincia = media ECV de la comunidad × (Atlas provincia / Atlas comunidad).
+     - Se alcanza **inclinando el sorteo** de donantes dentro de la provincia, con probabilidad ∝ peso × exp(λ · renta) y un λ resuelto para cada provincia. Se conservan los valores reales y el bloque completo.
+     - Las comunidades uniprovinciales no se inclinan.
+     - Umbral propuesto para G6.6, pendiente de confirmar: |error relativo| ≤ 2 % donde se calibró; donde no, se informa.
+  6. **Contexto (P1).**
+     - `ctx_renta_municipio`: renta neta media por persona del Atlas 2023 del municipio. Si el municipio no está identificado, la media de su provincia y clase de tamaño, ponderada por población (`modelada`).
+     - `ctx_envejecimiento`: proporción de 65+ del municipio, con la misma regla y fuente oficial municipal.
+     - `ctx_precio_vivienda` (P2): sin fuente oficial descargada; hueco documentado.
+  7. **Huecos declarados (P2, no bloquean):**
+     - `competencias_digitales`: la TIC-H 2025 no trae el indicador derivado; construirlo exige la metodología de Eurostat (DSI), que se deja documentada para una ronda posterior.
+     - Consumo (EPF): sin variable en el diccionario.
+  8. **Implementación.**
+     - El enriquecimiento es la etapa 5 de `construir`, con su propia semilla derivada de la de la población. Escribe las columnas en `persons.parquet` y `households.parquet` con `__calidad = emparejada` (o `modelada` en el contexto imputado por clase) y la metadata de fuentes y nivel de colapso.
+     - G6.5 lo comprueba un test: las columnas P0 son idénticas con y sin enriquecimiento.
+  9. **Validación** (docs/05 §5):
+     - V-ENRIQ-MARG: intervalo de confianza del 95 % de la encuesta por bootstrap de registros ponderados, por CCAA × edad_4.
+     - V-ENRIQ-ASOC: V de Cramér con cada llave.
+     - V-ENRIQ-BLOQUE: V de Cramér o Spearman entre las variables de cada bloque.
+     - V-ENRIQ-HOLDOUT: emparejar sin estudios y comprobar que se recupera su asociación.
+     - La salud se triangula además con la ESdE 2023.
+- **Alternativas consideradas:**
+  - *Predictive mean matching*: necesita un modelo por variable y rompe los bloques si se aplica variable a variable.
+  - Vecino más próximo por distancia: tiende a concentrar donantes y a reducir la varianza.
+  - Reescalar la renta al Atlas: mezcla definiciones distintas.
+- **Aprobada por:** pendiente del informe de F6 (el umbral de G6.6 necesita confirmación humana)
