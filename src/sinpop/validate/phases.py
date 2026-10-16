@@ -580,30 +580,44 @@ def _g4_1_marg() -> Check:
 
 
 def _g4_2_cruce() -> Check:
+    """V-CRUCE con los criterios aprobados: umbral de D-038 A, excepciones de D-038 B y, por
+    D-039, se separa el azar del sesgo: cada población puede tener como mucho un 5 % de fallos y
+    ningún cruce puede fallar en todas las semillas de un mismo tamaño."""
+    from collections import Counter
+
+    from sinpop.config import load_config
+
     d, desc = _f4(), "Cruces reservados dentro de umbral (V-CRUCE)"
+    lim = load_config("thresholds.yaml").v_cruce.proporcion_fallos_max  # type: ignore[attr-defined]
     um = (
-        "TVD ≤ máx(1,2 × TVD_ref + 0,002, 0,03 / 0,05 / 0,08) (D-038 A); "
-        "|Δ V de Cramér| ≤ 0,03 (España)"
+        "TVD ≤ máx(1,2 × TVD_ref + 0,002, 0,03 / 0,05 / 0,08) (D-038 A); por población ≤ "
+        f"{100 * lim:.0f} % de fallos y ningún cruce fallido en todas las semillas (D-039); "
+        "|Δ V de Cramér| ≤ 0,03"
     )
     if d is None:
         return _sin_resumen("G4.2", desc, um)
     n = sum(x["v_cruce"]["comprobaciones"] for x in d["poblaciones"])
-    todos = [(x["run_id"], y) for x in d["poblaciones"] for y in x["v_cruce"]["fallos"]]
-    f = [(r, y) for r, y in todos if not y.get("excepcion")]
-    exc = len(todos) - len(f)
-    estricto = sum(len(x["v_cruce"].get("fallos_estricto", [])) for x in d["poblaciones"])
+    exc = sum(bool(y.get("excepcion")) for x in d["poblaciones"] for y in x["v_cruce"]["fallos"])
+    tasas, cuenta, semillas = [], Counter(), Counter()
+    for x in d["poblaciones"]:
+        f = [y for y in x["v_cruce"]["fallos"] if not y.get("excepcion")]
+        tasas.append((len(f) / x["v_cruce"]["comprobaciones"], x["run_id"]))
+        semillas[x["n"]] += 1
+        for y in f:
+            cuenta[(x["n"], y["nivel"], y["territorio"], y["objetivo"])] += 1
+    sistematicos = [k for k, v in cuenta.items() if v == semillas[k[0]]]
+    peor = max(tasas)
+    total = sum(cuenta.values())
     cr = [c for x in d["poblaciones"] for c in x.get("v_cramer", []) if not c["ok"]]
-    ej = "; ".join(
-        f"{r} {y['territorio']} {y['objetivo']} {y['tvd']:.4f}>{y['umbral']:.4f}" for r, y in f[:3]
-    )
-    ejc = "; ".join(f"{c['objetivo']} {c['par']} Δ={c['dif']:.3f}" for c in cr[:3])
+    ok = peor[0] <= lim and not sistematicos and not cr
     return Check(
         "G4.2",
         desc,
-        not f and not cr,
-        f"{n} comprobaciones; fallos: {len(f)}{' (' + ej + ')' if f else ''}; "
-        f"excepciones aceptadas (D-038 B): {exc}; con el criterio original: {estricto}; "
-        f"fallos Cramér: {len(cr)}{' (' + ejc + ')' if cr else ''}",
+        ok,
+        f"{n} comprobaciones; fallos por azar: {total} (máximo por población "
+        f"{100 * peor[0]:.1f} %, {peor[1]}); sistemáticos: "
+        f"{len(sistematicos)}{' ' + str(sistematicos[:3]) if sistematicos else ''}; "
+        f"excepciones aceptadas (D-038 B): {exc}; fallos Cramér: {len(cr)}",
         um,
     )
 

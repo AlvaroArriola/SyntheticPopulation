@@ -545,10 +545,10 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-16
 - **Fase:** F4
-- **Estado:** propuesta (necesita decisión humana para cerrar G4.2)
+- **Estado:** aprobada (opción 1)
 - **Contexto:** con el criterio aprobado en D-038 A y la excepción de Segovia (D-038 B), quedan 59 fallos de V-CRUCE en 12.775 comprobaciones (0,46 %): 43 con N = 10.000, 12 con N = 50.000, 4 con N = 100.000 y ninguno con N ≥ 500.000. Casi todos son provincias y comunidades pequeñas de poblaciones pequeñas que superan por poco el umbral fijo del nivel (0,08 o 0,05), en variables compartidas por todo el hogar (tamaño de municipio, estado civil, nacionalidad); uno es nacional, `tipo_hogar_edad4_ref` con N = 100.000 (0,0305 frente a 0,03), el desfase de fecha del objetivo de 2021 ya documentado. Ningún fallo se repite en las cinco semillas de un mismo tamaño salvo Segovia: son variación de muestreo, no sesgo.
 - **Opciones:**
   1. **Separar ruido de sesgo** (propuesta): la puerta exige (a) que ningún cruce falle en las cinco semillas de un mismo tamaño (sesgo sistemático) y (b) que en cada población la proporción de fallos no supere el 5 % de las comprobaciones (lo que cabe esperar por azar con un umbral de percentil 95). Resultado actual: (a) 0 fuera de las excepciones; (b) máximo 2,3 % (N = 10.000).
   2. **Tamaño mínimo:** exigir V-CRUCE solo desde el tamaño mínimo recomendado en `fase_04.md` (100.000 personas para España y comunidades, 500.000 para provincias) e informar el resto. Resultado actual: quedaría el fallo nacional de `tipo_hogar_edad4_ref` con N = 100.000.
   3. **Mantener el criterio actual:** G4.2 no se supera mientras se generen poblaciones de 10.000 a 100.000 personas.
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-16), opción 1. Se aplica en `thresholds.yaml` (V-CRUCE, `proporcion_fallos_max: 0.05`) y en la puerta G4.2.

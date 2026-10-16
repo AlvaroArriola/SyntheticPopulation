@@ -1,6 +1,6 @@
 # Fase 04 · Población nacional base
 
-**Estado:** pendiente de una decisión humana (D-039) para cerrar G4.2; D-036 y D-038 aprobadas
+**Estado:** comprobaciones automáticas superadas (G4.1–G4.7); pendiente la revisión humana G4.8. D-036, D-037, D-038 y D-039 aprobadas
 **Fecha:** 2026-10-16 · **Versión del código:** ver `fase_04_puerta.md`
 **Comando para reproducir:**
 
@@ -27,7 +27,13 @@ En 25 poblaciones de prueba (10.000 a 1.000.000 de personas, 5 semillas por tama
 - **V-RAREZA:** 0 combinaciones sin donante.
 - **Minorías:** las 21 vigiladas que tienen referencia, representadas con ratio entre 0,99 y 1,04 y sin concentración de donantes.
 
-**La puerta no se supera automáticamente por un punto: G4.2 (V-CRUCE)**, 207 fallos de 12.775. Casi todos están en provincias de unos cientos de personas con N = 10.000: el umbral, en esos casos, es el percentil 95 de una muestra aleatoria, que por definición se supera el 5 % de las veces. Con N ≥ 500.000 solo persiste un fallo, el tamaño de municipio de Segovia, que es una limitación de los datos. Propongo un criterio y necesito tu decisión (D-038, A y B). También te pido decisión sobre la fuente de la actividad (D-038 C) y el mínimo del sobremuestreo (D-038 D).
+**G4.2 (V-CRUCE)** se supera con los criterios que aprobó el responsable:
+
+- umbral con el margen de V-MARG (D-038 A);
+- Segovia como limitación aceptada de los datos (D-038 B);
+- separación de azar y sesgo (D-039).
+
+Quedan 59 fallos por azar en poblaciones de 10.000 a 100.000 personas, que no superan el 2,3 % de las comprobaciones de ninguna población, y ningún fallo sistemático. Con el criterio original habrían sido 207.
 
 ## Cómo se construye la población
 
@@ -55,7 +61,7 @@ Calibrar solo con marginales nacionales dejaba el reparto por provincias (reserv
 | ID | Comprobación | Resultado | Valor | Umbral |
 | --- | --- | --- | --- | --- |
 | G4.1 | Marginales calibradas (V-MARG) | ✅ | 25 poblaciones, 5.481 comprobaciones, 0 fallos | TVD ≤ 1,2 × TVD_ref(N) + 0,002 |
-| G4.2 | Cruces reservados (V-CRUCE) | ❌ | con el criterio aprobado (D-038 A): 59 fallos de 12.775, ninguno con N ≥ 500.000; 12 excepciones de Segovia aceptadas (D-038 B); 207 con el criterio original; V de Cramér: 0 fallos, Δ máx. 0,019 | máx(1,2 × TVD_ref + 0,002, 0,03 / 0,05 / 0,08); Δ Cramér ≤ 0,03 |
+| G4.2 | Cruces reservados (V-CRUCE) | ✅ | 59 fallos por azar de 12.775 (máx. 2,3 % por población), 0 sistemáticos; 12 excepciones de Segovia (D-038 B); V de Cramér: 0 fallos, Δ máx. 0,019 | máx(1,2 × TVD_ref + 0,002, 0,03 / 0,05 / 0,08); ≤ 5 % por población y ningún fallo en todas las semillas (D-039); Δ Cramér ≤ 0,03 |
 | G4.3 | Reglas duras (V-REGLAS) | ✅ | 0 violaciones | 0 |
 | G4.4 | Diagnóstico de pesos (V-PESOS) | ✅ | 19 comunidades; 100 % en rango; Kish/n ≥ 0,838 | ≥ 99 %; Kish/n ≥ 0,30 |
 | G4.5 | Variabilidad entre semillas (V-SEMILLAS) | ✅ | 1.030 proporciones, 0 fuera | sd ≤ 1,5 × sd MAS |
@@ -140,4 +146,4 @@ Con 1 millón de personas, las frecuencias de los casos raros (jubilados menores
 
 ## Qué necesita revisión humana
 
-El responsable aprobó D-036 y D-038 (A, B, C y D) el 16/10/2026. A y B están ya en `thresholds.yaml` y en la puerta. Falta **D-039**: cómo tratar los 59 fallos de V-CRUCE que quedan con poblaciones de 10.000 a 100.000 personas. Son variación de muestreo: ninguno se repite en las cinco semillas y no superan el 2,3 % de las comprobaciones de ninguna población. De esa decisión depende cerrar G4.2 y, con ella, la fase.
+**G4.8: la aprobación de este informe**, que cierra F4. Ya están decididas D-036 y D-038 (A, B, C y D), así como D-039 (opción 1), y las tres están aplicadas en `thresholds.yaml` y en la puerta.

@@ -16,6 +16,10 @@ V-CRUCE:
   # D-038 A (aprobada 2026-10-16): umbral = máx(factor · TVD_ref(N) + tolerancia, umbral del nivel).
   factor_tvd_ref: 1.2
   tolerancia: 0.002
+  # D-039 (aprobada 2026-10-16): en cada población de la serie de la puerta, los fallos no
+  # superan esta proporción de las comprobaciones, y ningún cruce falla en todas las semillas de
+  # un mismo tamaño (eso sería sesgo, no azar).
+  proporcion_fallos_max: 0.05
   excepciones:
     - territorio: PROV:40
       objetivo: tamano_municipio

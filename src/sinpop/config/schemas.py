@@ -284,6 +284,9 @@ class VCruce(_Th):
     factor_tvd_ref: float = 1.0
     tolerancia: float = 0.0
     excepciones: list[ExcepcionCruce] = []
+    # D-039 (aprobada): en la serie de poblaciones de la puerta, fallos tolerados por azar en cada
+    # población; un cruce que falla en todas las semillas de un tamaño es sesgo y no se tolera.
+    proporcion_fallos_max: float = 0.0
 
 
 class VReglasBlandas(_Th):
