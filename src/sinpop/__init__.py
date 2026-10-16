@@ -1,6 +1,15 @@
 """sinpop: población sintética de las personas adultas residentes en España."""
 
+import os
 from pathlib import Path
+
+# polars usa jemalloc, que por defecto retiene la memoria liberada: preparar los 4,7 millones de
+# donantes llegaba a 11 GB de memoria residente para 1 GB de datos. Con estas opciones la
+# devuelve al sistema enseguida (no cambia ningún resultado). Debe fijarse antes de importar
+# polars; el `setdefault` respeta una configuración del usuario.
+os.environ.setdefault(
+    "_RJEM_MALLOC_CONF", "background_thread:true,dirty_decay_ms:0,muzzy_decay_ms:0"
+)
 
 __version__ = "0.1.0"
 

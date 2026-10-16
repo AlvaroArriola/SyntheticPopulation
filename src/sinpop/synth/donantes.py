@@ -132,9 +132,13 @@ def colectivos(objetivos: pl.DataFrame, personas: pl.DataFrame) -> pl.DataFrame:
     from sinpop.harmonize.core import ccaa_de_provincia
 
     ccaa_de = ccaa_de_provincia()
-    cand = personas.with_columns(
-        _orden_determinista(pl.col("household_id"), pl.col("norden")).alias("_orden")
-    ).sort("_orden", "household_id", "norden")
+    # Solo las columnas de la selección (memoria); las filas elegidas recuperan después el resto.
+    claves = ["household_id", "norden", "sexo", "edad_5", "provincia", "ccaa"]
+    cand = (
+        personas.select(claves)
+        .with_columns(_orden_determinista(pl.col("household_id"), pl.col("norden")).alias("_orden"))
+        .sort("_orden", "household_id", "norden")
+    )
     grupos = cand.partition_by("sexo", "edad_5", as_dict=True)
     elegidos = []
     for prov, sexo, edad5, valor, n in obj.select(
@@ -166,7 +170,16 @@ def colectivos(objetivos: pl.DataFrame, personas: pl.DataFrame) -> pl.DataFrame:
                 pl.lit(valor / n).alias("peso_inicial"),
             )
         )
-    out = pl.concat(elegidos).drop("_orden")
+    out = (
+        pl.concat(elegidos)
+        .drop("_orden")
+        .join(
+            personas.drop("sexo", "edad_5", "provincia", "ccaa"),
+            on=["household_id", "norden"],
+            how="left",
+            maintain_order="left",
+        )
+    )
     # El colectivo reside en la provincia de destino; los atributos del hogar no proceden.
     ccaa_dest = pl.col("provincia_destino").replace_strict(ccaa_de)
     nulos = {

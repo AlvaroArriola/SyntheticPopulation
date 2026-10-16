@@ -114,12 +114,56 @@ def comparar(
     return pl.DataFrame(filas)
 
 
+def _residencia(p: pl.DataFrame, territorio: str, niveles: list[str], semilla: int) -> pl.DataFrame:
+    """Marginal implícita de los objetivos calibrados: residentes en viviendas familiares y en
+    establecimientos colectivos (edad5_sexo_familiares y edad5_sexo_colectivos)."""
+    from sinpop.targets import run
+
+    cfg = umbrales()["V-MARG"]
+    filas = []
+    for nivel in niveles:
+        for t in _territorios(territorio, nivel):
+            o = run.leer(t)
+            obj = [
+                o.filter(pl.col("objetivo") == f"edad5_sexo_{k}")["valor"].sum()
+                for k in ("familiares", "colectivos")
+            ]
+            sub = _subconjunto(p, t)
+            if sub.height == 0 or min(obj) <= 0:
+                continue
+            col = pl.col("tipo_residencia") == "establecimiento_colectivo"
+            sint = [float(sub.filter(~col)["peso"].sum()), float(sub.filter(col)["peso"].sum())]
+            n = sum(sint)
+            filas.append(
+                {
+                    "nivel": nivel,
+                    "territorio": t,
+                    "objetivo": "tipo_residencia (implícito)",
+                    "celdas": 2,
+                    "n": n,
+                    "tvd": M.tvd(sint, obj),
+                    "hellinger": M.hellinger(sint, obj),
+                    "tvd_ref": M.tvd_ref(
+                        obj, max(1, round(n)), cfg["muestras_ref"], cfg["percentil_ref"], semilla
+                    ),
+                    "fuera_dominio": 0.0,
+                }
+            )
+    return pl.DataFrame(filas)
+
+
 def v_marg(p: pl.DataFrame, territorio: str, semilla: int = 0) -> pl.DataFrame:
     """V-MARG: TVD ≤ 1,2 · TVD_ref(N) + 0,002 en cada marginal calibrada (territorio y, si se
     calibró por comunidades, cada comunidad)."""
     c = umbrales()["V-MARG"]
     niveles = ["espana", "ccaa"] if territorio == "ES" else ["espana"]
-    df = comparar(p, territorio, "calibrar", niveles, semilla)
+    df = pl.concat(
+        [
+            comparar(p, territorio, "calibrar", niveles, semilla),
+            _residencia(p, territorio, niveles, semilla),
+        ],
+        how="vertical_relaxed",
+    )
     return df.with_columns(
         (c["factor_tvd_ref"] * pl.col("tvd_ref") + c["tolerancia"]).alias("umbral")
     ).with_columns(

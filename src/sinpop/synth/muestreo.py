@@ -98,12 +98,13 @@ def equilibrar(
     bloque: np.ndarray,
     X,
     semilla: int,
+    tipo: np.ndarray | None = None,
     max_iter: int = 200_000,
     z_parada: float = 0.5,
 ) -> tuple[np.ndarray, dict]:
     """Equilibrado posterior al TRS (variante de la fase de aterrizaje del método del cubo,
     Deville y Tillé, 2004): intercambia una copia de una unidad seleccionada por otra unidad del
-    mismo bloque cuando el cambio reduce la discrepancia
+    mismo bloque y tipo (`tipo`: 0 hogar, 1 colectivo) cuando el cambio reduce la discrepancia
     Σ_j (C_j − E_j)² / máx(E_j, 1) entre los recuentos de la muestra (C = X'c) y los esperados
     (E = X'e) en las celdas calibradas. Se trabaja siempre sobre la celda más desviada y se para
     cuando todas las desviaciones tipificadas son ≤ `z_parada` o no hay intercambio que mejore.
@@ -119,11 +120,16 @@ def equilibrar(
     C = X.T @ c.astype(float)
     iw = 1.0 / np.maximum(E, 1.0)
     tope = np.ceil(e).astype(np.int64) + 1  # como mucho una copia más que el TRS
+    # Intercambios solo dentro del mismo bloque y tipo de unidad (hogar o colectivo): los
+    # colectivos tienen recuentos esperados muy pequeños por celda y, si se pudieran cambiar por
+    # hogares, su total se erosionaría.
+    t0 = np.zeros_like(bloque) if tipo is None else tipo
+    clave = bloque.astype(np.int64) * 2 + t0.astype(np.int64)
     grupos: dict[int, np.ndarray] = {}
-    orden = np.argsort(bloque, kind="stable")
-    cortes = np.flatnonzero(np.diff(bloque[orden]) != 0) + 1
+    orden = np.argsort(clave, kind="stable")
+    cortes = np.flatnonzero(np.diff(clave[orden]) != 0) + 1
     for g in np.split(orden, cortes):
-        grupos[int(bloque[g[0]])] = g
+        grupos[int(clave[g[0]])] = g
 
     def fila(i: int) -> tuple[np.ndarray, np.ndarray]:
         a, b = X.indptr[i], X.indptr[i + 1]
@@ -157,7 +163,7 @@ def equilibrar(
                 if len(sel) == 0:
                     break
                 a = int(sel[rng.integers(len(sel))])
-                g = grupos[int(bloque[a])]
+                g = grupos[int(clave[a])]
                 b = int(g[rng.integers(len(g))])
                 if c[b] >= tope[b] or e[b] <= 0 or b == a:
                     continue
@@ -166,7 +172,7 @@ def equilibrar(
                 if len(cand) == 0:
                     break
                 b = int(cand[rng.integers(len(cand))])
-                g = grupos[int(bloque[b])]
+                g = grupos[int(clave[b])]
                 gs = g[c[g] > 0]
                 if len(gs) == 0:
                     break

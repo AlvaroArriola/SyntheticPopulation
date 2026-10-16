@@ -137,12 +137,15 @@ def test_equilibrado_reduce_discrepancia_y_es_reproducible() -> None:
     def disc(cc):
         return float(np.sum((X.T @ cc - E) ** 2 / np.maximum(E, 1)))
 
-    c2, info = S.equilibrar(c, e, m, bloque, X, 9)
+    tipo = (rng.random(n) < 0.1).astype(np.int64)  # 10 % de unidades «colectivo»
+    c2, info = S.equilibrar(c, e, m, bloque, X, 9, tipo=tipo)
     assert disc(c2) < disc(c)
     assert info["z_max_final"] <= info["z_max_inicial"]
     assert np.all(c2 >= 0) and np.all(c2 <= np.ceil(e) + 1)
-    # Solo intercambia dentro de cada bloque: el número de copias por bloque no cambia.
+    # Solo intercambia dentro de cada bloque y tipo: el número de copias de cada uno no cambia.
     for b in range(3):
-        assert c2[bloque == b].sum() == c[bloque == b].sum()
-    c3, _ = S.equilibrar(c, e, m, bloque, X, 9)
+        for t in (0, 1):
+            sel = (bloque == b) & (tipo == t)
+            assert c2[sel].sum() == c[sel].sum()
+    c3, _ = S.equilibrar(c, e, m, bloque, X, 9, tipo=tipo)
     assert np.array_equal(c2, c3)

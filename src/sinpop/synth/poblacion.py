@@ -270,6 +270,7 @@ def construir(
         bloques_idx,
         _matriz_equilibrado(p, o, territorio),
         int(rng.integers(0, 2**31)),
+        tipo=(o["tipo_residencia"] != "vivienda_familiar").cast(pl.Int64).to_numpy(),
     )
     o = o.with_columns(pl.Series("copias", copias), pl.Series("peso", 1.0 / f))
     sel = o.filter(pl.col("copias") > 0).select("unidad_cal", "copias", "peso")
