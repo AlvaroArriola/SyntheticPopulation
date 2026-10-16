@@ -118,7 +118,7 @@ Generado por `sinpop harmonize --check` (D-033). Porcentajes ponderados. NP = no
 | `encuesta_salud` | `sexo` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
 | `encuesta_salud` | `ccaa` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
 | `encuesta_salud` | `nacionalidad_esp_ext` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
-| `encuesta_salud` | `estudios_3` | peso | 0.00 | 0.00 | 5.56 | 0.00 | **sí** |
+| `encuesta_salud` | `estudios_3` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
 | `encuesta_salud` | `salud_autopercibida` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
 | `encuesta_salud` | `discapacidad_limitacion` | peso | 0.00 | 0.00 | 0.84 | 0.00 |  |
 | `epa` | `edad_4` | peso | 13.62 | 4.40 | 0.00 | 0.00 |  |

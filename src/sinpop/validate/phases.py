@@ -400,11 +400,16 @@ def _g2_7_cis() -> Check:
 
 
 def _g2_8_human() -> Check:
+    """Revisión humana: se da por superada cuando DECISIONS.md registra la aprobación de F2."""
+    texto = (REPO_ROOT / "DECISIONS.md").read_text(encoding="utf-8")
+    i = texto.find("Aprobación de F2")
+    bloque = texto[i : texto.find("\n## D-", i)] if i >= 0 else ""
+    ok = "**Estado:** aprobada" in bloque
     return Check(
         "G2.8",
         "Revisión humana: 20 registros por fuente frente al original",
-        None,
-        "pendiente (reports/fase_02_muestras.md)",
+        True if ok else None,
+        "aprobada por el responsable (DECISIONS.md, D-035)" if ok else "pendiente",
         "aprobación",
     )
 

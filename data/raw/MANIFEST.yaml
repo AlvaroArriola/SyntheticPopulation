@@ -2045,6 +2045,66 @@ ficheros:
   bytes: 131
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
+- fuente: ecp
+  fichero: ecp/2026-01-01/tabla_77019_20260101.json
+  tipo: datos
+  edicion: '2026-01-01'
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/77019?tip=A&date=20260101
+  fecha_descarga: '2026-10-16'
+  sha256: 1f308563dd284b2d09f385c931cd0bb45c71665c6b9f5d0a43c1283c6e2f1b24
+  bytes: 2829742
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: ecp
+  fichero: ecp/2026-01-01/tabla_77019_dimensiones.json
+  tipo: metodologia
+  edicion: '2026-01-01'
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/77019
+  fecha_descarga: '2026-10-16'
+  sha256: 777551a47e92b5217c9ea959794fc3602bb7bcab339791aff601500eee8d1947
+  bytes: 203
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: ecp
+  fichero: ecp/2026-01-01/tabla_77023_20260101.json
+  tipo: datos
+  edicion: '2026-01-01'
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/77023?tip=A&date=20260101
+  fecha_descarga: '2026-10-16'
+  sha256: fb0cf08b7ad9cc93f07a1825f19f388eac608c4788cad75b0b795053a7944a42
+  bytes: 7292512
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: ecp
+  fichero: ecp/2026-01-01/tabla_77023_dimensiones.json
+  tipo: metodologia
+  edicion: '2026-01-01'
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/77023
+  fecha_descarga: '2026-10-16'
+  sha256: 5a09b0a439dd45eba986e337ac6800ed084de8aa34cbab93b400c099c064fc7e
+  bytes: 180
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: ecp
+  fichero: ecp/2026-01-01/tabla_79544_20260101.json
+  tipo: datos
+  edicion: '2026-01-01'
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/79544?tip=A&date=20260101
+  fecha_descarga: '2026-10-16'
+  sha256: d16f4dd2eed521d0562df74ee7faada7e068f6d80a53c617dc7494507226457d
+  bytes: 201490
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: ecp
+  fichero: ecp/2026-01-01/tabla_79544_dimensiones.json
+  tipo: metodologia
+  edicion: '2026-01-01'
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/79544
+  fecha_descarga: '2026-10-16'
+  sha256: 858ea5e6d27a33a3e7b441c7fd9bf4f17069d8b16ef3b1838706771407f1a11d
+  bytes: 124
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
 - fuente: ecv
   fichero: ecv/2025/ECV2025.pdf
   tipo: metodologia

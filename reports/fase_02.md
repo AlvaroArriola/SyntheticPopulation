@@ -1,6 +1,6 @@
 # Fase 02 · Comprensión y armonización
 
-**Estado:** pendiente de decisión humana (D-034, bloquea G2.4) y de revisión humana (G2.8)
+**Estado:** superada (aprobada por el responsable el 2026-10-16, D-035)
 **Fecha:** 2026-10-15 · **Versión del código:** ver `fase_02_puerta.md`
 **Comando para reproducir:**
 
@@ -17,7 +17,7 @@ Todas las fuentes del núcleo y de enriquecimiento se leen con su diseño de reg
 
 Segunda ronda (D-032), tras las decisiones del responsable: se cargan los resultados oficiales definitivos de las generales del BOE (cuadran con su «Total estatal»), se cierra el hueco de Illes Balears con el BOIB nº 78, la transcripción de Navarra queda confirmada por la web oficial, se explican los totales de la Comunitat Valenciana (Alicante) y de Galicia, y se descartan los 4 ocupados sin ocupación (D-026). **Todas las comprobaciones automáticas de la puerta se superan**; falta la revisión humana G2.8.
 
-Tercera ronda (D-033, D-034), a raíz de la revisión G2.8: cada celda vacía de los ficheros armonizados tiene ahora un motivo y una condición exacta, comprobados por G2.1. Esta comprobación ha destapado y corregido dos errores: `edad_4` de la EPA en los menores de 16 y el universo del fichero de adultos de la ECV. Se añade un informe de calidad por variable ([`fase_02_calidad.md`](fase_02_calidad.md)). Ese informe ha detectado que, en la Encuesta de Salud, el código 99 de estudios no se comporta como «no contesta». Una nueva cifra oficial de G2.4 (tabla 71335) lo confirma y **bloquea la puerta hasta que se decida D-034**.
+Tercera ronda (D-033, D-034), a raíz de la revisión G2.8: cada celda vacía de los ficheros armonizados tiene ahora un motivo y una condición exacta, comprobados por G2.1. Esta comprobación ha destapado y corregido dos errores: `edad_4` de la EPA en los menores de 16 y el universo del fichero de adultos de la ECV. El nuevo informe de calidad ([`fase_02_calidad.md`](fase_02_calidad.md)) ha detectado que, en la Encuesta de Salud, el código 99 de estudios agrupa sobre todo a quienes no terminaron primaria. Se recodifica con la evidencia de la tabla oficial 71335 (D-034, aprobada). El responsable revisa las muestras y aprueba la fase (D-035).
 
 ## Puerta de salida
 
@@ -26,11 +26,11 @@ Tercera ronda (D-033, D-034), a raíz de la revisión G2.8: cada celda vacía de
 | G2.1 | Dominio declarado y vacíos documentados | ✅ | 139 columnas categóricas en 19 ficheros; 0 fuera de dominio; 0 vacíos sin documentar | 0 y 0 |
 | G2.2 | Ningún NS/NC/NP como valor numérico | ✅ | 0 | 0 |
 | G2.3 | Totales ponderados conservados | ✅ | 14 totales; diferencia máxima 0 % | < 0,01 % |
-| G2.4 | ≥3 cifras oficiales por fuente P0/P1 | ❌ | 13/14 fuentes; 114 cifras; falla el nivel de estudios de la ESdE frente a la tabla 71335 (D-034) | ≥3 por fuente (tolerancias D-027, aprobadas) |
+| G2.4 | ≥3 cifras oficiales por fuente P0/P1 | ✅ | 14/14 fuentes; 114 cifras (incluido el nivel de estudios de la ESdE frente a la tabla 71335) | ≥3 por fuente (tolerancias D-027, aprobadas) |
 | G2.5 | Tests por tabla de recodificación | ✅ | 72 tablas, cada una con su test; 214 tests en total, 0 fallos | 1 por tabla, 0 fallos |
 | G2.6 | Resultados electorales = totales oficiales | ✅ | generales (BOE): 52 provincias, 59 candidaturas, 0 diferencias; autonómicas: 19/19 (descuadres de 4 boletines aceptados, D-031) | sin diferencias |
 | G2.7 | Códigos de partido del CIS en `partidos.yaml` | ✅ | 0 sin asignar (138 en 3567, 113 en 3411) | 0 |
-| G2.8 | Revisión humana de 20 registros por fuente | ⏸️ | muestras preparadas | aprobación |
+| G2.8 | Revisión humana de 20 registros por fuente | ✅ | aprobada por el responsable (D-035) | aprobación |
 
 Detalle automático: [`fase_02_puerta.md`](fase_02_puerta.md).
 
@@ -112,7 +112,9 @@ Detalle: [`fase_02_cifras_oficiales.md`](fase_02_cifras_oficiales.md).
 - D-033 · Celdas vacías documentadas e informe de calidad.
 - D-034 · ESdE: el código 99 de NIVEST no es «no contesta».
 
-D-025 y D-027 a D-032: aprobadas. D-026: aprobada con cambio (se descartan los 4 registros). D-033 y D-034: propuestas.
+- D-035 · Aprobación de F2.
+
+D-025 y D-027 a D-035: aprobadas. D-026: aprobada con cambio (se descartan los 4 registros).
 
 ## Problemas abiertos y riesgos
 
@@ -122,6 +124,4 @@ D-025 y D-027 a D-032: aprobadas. D-026: aprobada con cambio (se descartan los 4
 
 ## Qué necesita revisión humana
 
-1. **D-034:** ¿se recodifica el código 99 de estudios de la ESdE como «hasta obligatoria»? La evidencia está en `DECISIONS.md`.
-2. **D-033:** aprobar el registro de vacíos y el informe de calidad.
-3. **G2.8:** terminar la revisión de las muestras (ahora solo con los campos que se usan).
+Nada: fase aprobada (D-035).

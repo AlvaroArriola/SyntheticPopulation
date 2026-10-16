@@ -1651,7 +1651,9 @@ variables:
           08: superior
           09: superior
           '01': NP
-          '99': NC
+          '99': hasta_obligatoria
+        notas: '99: el diseño lo llama «No contesta», pero el fichero no usa el 03 (primaria incompleta) y el 99
+          reproduce el nivel básico de la tabla oficial 71335 (D-034)'
   relacion_actividad:
     prioridad: P0
     nivel: persona

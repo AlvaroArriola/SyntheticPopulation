@@ -254,7 +254,12 @@ def main() -> None:
         "estudiante",
         "otra_inactividad",
     ]
-    V["situacion_profesional"]["categorias"] = list(SITU.values())
+    # Sin pisar las categorías que añade el generador de encuestas (p. ej. «asalariado»)
+    cats = V["situacion_profesional"].get("categorias") or []
+    if not set(SITU.values()) <= set(cats):
+        V["situacion_profesional"]["categorias"] = list(
+            dict.fromkeys([*SITU.values(), *[c for c in cats if c not in SITU.values()]])
+        )
     V["anio_llegada_espana"].pop("dominio_pendiente", None)
     V["anio_llegada_espana"]["categorias"] = [
         "antes_1981",
@@ -265,7 +270,9 @@ def main() -> None:
         "2016_2020",
         "2021_o_despues",
     ]
-    V["edad_5"]["categorias"] = V["edad_5"]["categorias"][:-1] + ["85-89", "90+"]
+    # Idempotente: el último grupo de docs/02 («85+») se parte en 85-89 y 90+ (D-025)
+    e5 = [c for c in V["edad_5"]["categorias"] if c not in ("85+", "85-89", "90+")]
+    V["edad_5"]["categorias"] = [*e5, "85-89", "90+"]
     V["tamano_municipio"]["categorias"] = [
         "hasta_2000",
         "de_2001_a_10000",

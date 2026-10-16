@@ -138,10 +138,11 @@ TABLAS: dict[str, dict[str, tuple[str, dict[str, str], str, str | None]]] = {
                 "08": "superior",
                 "09": "superior",
                 "01": "NP",
-                "99": "NC",
+                "99": "hasta_obligatoria",
             },
             SAL,
-            None,
+            "99: el diseño lo llama «No contesta», pero el fichero no usa el 03 (primaria "
+            "incompleta) y el 99 reproduce el nivel básico de la tabla oficial 71335 (D-034)",
         ),
     },
     "relacion_actividad": {
@@ -312,7 +313,7 @@ TABLAS: dict[str, dict[str, tuple[str, dict[str, str], str, str | None]]] = {
     },
     "teletrabajo": {
         "tic_h": (
-            "ULT_TTRAB + TTRAB_ACTUAL",
+            "TELETRAB + ULT_TTRAB + TTRAB_ACTUAL",
             {
                 "6|": "nunca",
                 "1|1": "habitual",
@@ -324,7 +325,8 @@ TABLAS: dict[str, dict[str, tuple[str, dict[str, str], str, str | None]]] = {
                 "1|7": "ocasional",
             },
             TIC,
-            "clave = ULT_TTRAB|TTRAB_ACTUAL; habitual = 2 días o más por semana",
+            "clave = ULT_TTRAB|TTRAB_ACTUAL; TELETRAB = 6 (el trabajo exige presencia, no se "
+            "pregunta ULT_TTRAB) → clave 6| → nunca; habitual = 2 días o más por semana",
         ),
     },
 }

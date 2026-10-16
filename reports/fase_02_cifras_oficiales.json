@@ -1344,12 +1344,12 @@
   "cifra": "Nivel de estudios (15+), % sobre el total",
   "categoria": "hasta_obligatoria",
   "oficial": 44.593,
-  "reproducida": 38.137,
+  "reproducida": 43.692,
   "tolerancia": 1.078,
   "tipo": "muestral+redondeo",
   "referencia": "INE, ESdE 2023, tabla 71335 (población de 15 y más años por nivel de estudios)",
-  "diferencia": -6.456000000000003,
-  "ok": false
+  "diferencia": -0.9010000000000034,
+  "ok": true
  },
  {
   "fuente": "encuesta_salud",

@@ -1,6 +1,6 @@
 # F2 · Muestras para la revisión humana G2.8
 
-Generadas el 2026-10-15 con `sinpop harmonize --samples` (semilla 2026). Los ficheros están en `data/interim/muestras_g28/` y **no se versionan**: contienen registros originales, que no pueden salir del entorno local (regla 8 de CLAUDE.md).
+Generadas el 2026-10-16 con `sinpop harmonize --samples` (semilla 2026). Los ficheros están en `data/interim/muestras_g28/` y **no se versionan**: contienen registros originales, que no pueden salir del entorno local (regla 8 de CLAUDE.md).
 
 Cada fichero pone lado a lado los campos originales (`orig__…`) y los armonizados (`arm__…`). Para revisar: abrir el CSV, buscar cada código original en el diseño de registro indicado y comprobar que la categoría armonizada es la que fija `configs/variables.yaml` (o la regla de universo de D-025 a D-028).
 

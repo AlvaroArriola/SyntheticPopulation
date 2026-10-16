@@ -422,7 +422,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-15
 - **Fase:** F2
-- **Estado:** propuesta (revisión humana en G2.8)
+- **Estado:** aprobada
 - **Contexto:** en la revisión G2.8 el responsable pregunta por las celdas vacías de las muestras y pide que el tratamiento de datos sea impecable.
 - **Diagnóstico** (recuentos agregados, sin abrir registros):
   - Las celdas vacías de las muestras están casi todas en los **campos originales** (12–60 % en las encuestas): preguntas que no se hacen a esa persona (fuera de universo) o variables que esa edición no publica. En lo armonizado pasan a NP. Es correcto.
@@ -441,13 +441,13 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   3. **Muestras G2.8:** solo muestran los campos originales que lee la armonización, y la guía explica el significado de los vacíos.
   4. **Escaños autonómicos:** se dejan vacíos cuando la publicación no los imprime; no se deducen ceros (no se usan para construir la población).
 - **Resultado:** 0 vacíos sin documentar; una sola variable señalada en el informe de calidad (ver D-034).
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-16)
 
 ## D-034 · Encuesta de Salud: el código 99 de NIVEST no es «no contesta» (2026-10-15)
 
 - **Fecha:** 2026-10-15
 - **Fase:** F2
-- **Estado:** propuesta — **necesita decisión humana** (regla 2: la evidencia contradice el diseño de registro)
+- **Estado:** aprobada
 - **Contexto:** el informe de calidad señala `estudios_3` de la ESdE 2023, con un 5,6 % ponderado de «no consta» (código 99, «No contesta» según el diseño de registro). Además, el código 03 («Educación primaria incompleta») no aparece en el fichero ni una vez.
 - **Evidencia** (todo con agregados ponderados):
   1. El peso del código 99 sube con la edad como el de la primaria incompleta: 0,7 % en la veintena, 15,5 % a los 70, 30,1 % a los 80 y 38,3 % a los 90. Sumando 02 y 99, el perfil por edad sigue al de «analfabetos + primaria incompleta» del Censo Anual 2024, que no tiene ningún «no consta».
@@ -456,5 +456,14 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   4. Nueva cifra de G2.4 (reparto por nivel frente a la tabla 71335): con el 99 como NC el nivel básico queda en 38,1 % frente al 44,6 % oficial (−6,5 puntos: fuera de tolerancia); con el 99 en el básico, 43,7 % (−0,9 puntos, dentro de la tolerancia de 1,08). Queda una diferencia de unas 380.000 personas entre el básico y el intermedio que el fichero público no permite reproducir: el INE clasifica con un detalle de estudios más fino (CNED-14 a dos dígitos, según la metodología) que no se publica.
 - **Propuesta:** recodificar NIVEST 99 → `hasta_obligatoria` en `variables.yaml` (fuente `encuesta_salud`), anotando que contradice la etiqueta del diseño y por qué. No afecta a ninguna otra fuente: el informe de calidad no señala ninguna otra variable.
 - **Alternativas:** (a) mantener NC, lo que deja fuera del nivel básico a un 30–40 % de los mayores de 80 y sesga cualquier relación entre salud y estudios; (b) no usar los estudios de la ESdE.
-- **Mientras no se decida:** G2.4 falla en esa cifra y la puerta F2 no se supera.
-- **Aprobada por:** pendiente
+- **Aplicada:** NIVEST 99 → `hasta_obligatoria` (`tools/generar_recodificaciones_encuestas.py` → `variables.yaml`, con la nota del motivo). Reparto por nivel frente a la tabla 71335: básico 43,69 % (oficial 44,59), intermedio 23,85 % (23,08), superior 32,46 % (32,33): las tres dentro de tolerancia. El informe de calidad ya no señala ninguna variable.
+- **De paso:** los dos generadores de recodificaciones se han hecho idempotentes (ejecutarlos en cualquier orden deja `variables.yaml` igual); el de censos duplicaba «85-89» y reordenaba las categorías de situación profesional al volver a ejecutarse.
+- **Aprobada por:** humano (2026-10-16)
+
+## D-035 · Aprobación de F2 (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F2
+- **Estado:** aprobada
+- **Decisión:** el responsable revisa las muestras de 20 registros por fuente («tiene buena pinta», G2.8) y aprueba D-033 y D-034. Con las decisiones D-025 a D-034 aprobadas y la puerta automática superada (G2.1–G2.7), F2 queda cerrada y se inicia F3.
+- **Aprobada por:** humano (2026-10-16)

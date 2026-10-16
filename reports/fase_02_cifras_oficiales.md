@@ -16,7 +16,7 @@ Generado por `sinpop harmonize --check`. Tolerancias: D-027.
 | `degurba` | 4 | 4 |
 | `ecp` | 4 | 4 |
 | `ecv` | 3 | 3 |
-| `encuesta_salud` | 6 | 5 |
+| `encuesta_salud` | 6 | 6 |
 | `epa` | 4 | 4 |
 | `padron_continuo` | 4 | 4 |
 | `tic_h` | 3 | 3 |
@@ -128,7 +128,7 @@ Generado por `sinpop harmonize --check`. Tolerancias: D-027.
 | `encuesta_salud` | 2023 | Fuma a diario, % | España | 16.600 | 16.641 | 0.041 | 0.050 | exacta | sí | INE, nota de prensa ESdE 2023 (población de 15 y más años) |
 | `encuesta_salud` | 2023 | Enfermedad o problema de salud crónico, % | España | 57.700 | 57.706 | 0.006 | 0.050 | exacta | sí | INE, nota de prensa ESdE 2023 (población de 15 y más años) |
 | `encuesta_salud` | 2023 | Consultó al médico de familia en 4 semanas, % | España | 22.600 | 22.632 | 0.032 | 0.050 | exacta | sí | INE, nota de prensa ESdE 2023 (población de 15 y más años) |
-| `encuesta_salud` | 2023 | Nivel de estudios (15+), % sobre el total | hasta_obligatoria | 44.593 | 38.137 | -6.456 | 1.078 | muestral+redondeo | **no** | INE, ESdE 2023, tabla 71335 (población de 15 y más años por nivel de estudios) |
+| `encuesta_salud` | 2023 | Nivel de estudios (15+), % sobre el total | hasta_obligatoria | 44.593 | 43.692 | -0.901 | 1.078 | muestral+redondeo | sí | INE, ESdE 2023, tabla 71335 (población de 15 y más años por nivel de estudios) |
 | `encuesta_salud` | 2023 | Nivel de estudios (15+), % sobre el total | secundaria_2a_etapa | 23.075 | 23.845 | 0.770 | 0.922 | muestral+redondeo | sí | INE, ESdE 2023, tabla 71335 (población de 15 y más años por nivel de estudios) |
 | `encuesta_salud` | 2023 | Nivel de estudios (15+), % sobre el total | superior | 32.333 | 32.463 | 0.130 | 1.018 | muestral+redondeo | sí | INE, ESdE 2023, tabla 71335 (población de 15 y más años por nivel de estudios) |
 | `ecp` | 2026-01-01 | Población en viviendas familiares (suma de 52 provincias × sexo × edad × nacionalidad) | España | 49,210,373.000 | 49,210,373.000 | 0.000 | 0.000 | exacta | sí | INE, ECP a 01/01/2026, tabla 60124 (total nacional publicado) |
