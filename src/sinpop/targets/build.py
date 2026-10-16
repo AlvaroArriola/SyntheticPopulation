@@ -19,7 +19,7 @@ import polars as pl
 from sinpop import INTERIM_DIR
 from sinpop.config import load_config
 from sinpop.harmonize.core import edad_4, edad_5
-from sinpop.targets import fuentes
+from sinpop.targets import edades, fuentes
 from sinpop.targets.edades import agrupar, etiquetas
 
 FECHA = dt.date(2026, 1, 1)
@@ -370,6 +370,23 @@ def provincias() -> pl.DataFrame:
                 meta_nac,
             )
         )
+    top = nac.filter(pl.col("variable") == "nacionalidad_top").rename(
+        {"categoria": "nacionalidad_top"}
+    )
+    out.append(
+        _largo(
+            top.with_columns(
+                edades.agrupar(
+                    pl.col("edad_5").str.slice(0, 2).cast(pl.Int64),
+                    edades.cortes()["edad_nacionalidad"],
+                    "edad_nacionalidad",
+                )
+            ),
+            ["nacionalidad_top", "sexo", "edad_nacionalidad"],
+            "nacionalidad_top_sexo_edad",
+            meta_nac,
+        )
+    )
     out.append(
         _largo(
             adultos_nacionalidad(nac),

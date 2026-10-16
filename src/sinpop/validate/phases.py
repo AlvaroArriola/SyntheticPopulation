@@ -535,6 +535,176 @@ def _g3_6_electorales() -> Check:
     )
 
 
+# --------------------------------------------------------------------------- F4
+
+
+def _f4() -> dict | None:
+    import json
+
+    from sinpop.validate.fase4 import RESUMEN
+
+    return json.loads(RESUMEN.read_text(encoding="utf-8")) if RESUMEN.exists() else None
+
+
+def _sin_resumen(id_: str, desc: str, umbral: str) -> Check:
+    return Check(
+        id_,
+        desc,
+        False,
+        "falta reports/fase_04_validacion.json (python -m sinpop.validate.fase4)",
+        umbral,
+    )
+
+
+def _g4_1_marg() -> Check:
+    d, desc, um = (
+        _f4(),
+        "Marginales calibradas dentro del umbral ajustado al tamaño (V-MARG)",
+        ("TVD ≤ 1,2 × TVD_ref(N) + 0,002 (España y comunidades)"),
+    )
+    if d is None:
+        return _sin_resumen("G4.1", desc, um)
+    n = sum(x["v_marg"]["comprobaciones"] for x in d["poblaciones"])
+    f = [(x["run_id"], y) for x in d["poblaciones"] for y in x["v_marg"]["fallos"]]
+    ej = "; ".join(
+        f"{r} {y['territorio']} {y['objetivo']} {y['tvd']:.4f}>{y['umbral']:.4f}" for r, y in f[:3]
+    )
+    return Check(
+        "G4.1",
+        desc,
+        not f,
+        f"{len(d['poblaciones'])} poblaciones, {n} comprobaciones; "
+        f"fallos: {len(f)}{' (' + ej + ')' if f else ''}",
+        um,
+    )
+
+
+def _g4_2_cruce() -> Check:
+    d, desc = _f4(), "Cruces reservados dentro de umbral (V-CRUCE)"
+    um = "TVD ≤ máx(TVD_ref, 0,03 / 0,05 / 0,08); |Δ V de Cramér| ≤ 0,03 (España)"
+    if d is None:
+        return _sin_resumen("G4.2", desc, um)
+    n = sum(x["v_cruce"]["comprobaciones"] for x in d["poblaciones"])
+    f = [(x["run_id"], y) for x in d["poblaciones"] for y in x["v_cruce"]["fallos"]]
+    cr = [c for x in d["poblaciones"] for c in x.get("v_cramer", []) if not c["ok"]]
+    ej = "; ".join(
+        f"{r} {y['territorio']} {y['objetivo']} {y['tvd']:.4f}>{y['umbral']:.4f}" for r, y in f[:3]
+    )
+    ejc = "; ".join(f"{c['objetivo']} {c['par']} Δ={c['dif']:.3f}" for c in cr[:3])
+    return Check(
+        "G4.2",
+        desc,
+        not f and not cr,
+        f"{n} comprobaciones; fallos TVD: {len(f)}"
+        f"{' (' + ej + ')' if f else ''}; fallos Cramér: {len(cr)}{' (' + ejc + ')' if cr else ''}",
+        um,
+    )
+
+
+def _g4_3_reglas() -> Check:
+    d, desc, um = _f4(), "0 violaciones de las reglas de coherencia duras (V-REGLAS)", "0"
+    if d is None:
+        return _sin_resumen("G4.3", desc, um)
+    v = sum(r["violaciones"] for x in d["poblaciones"] for r in x["v_reglas_duras"])
+    bl = [r["regla"] for x in d["poblaciones"] for r in x["v_reglas_blandas"] if not r["ok"]]
+    ble = [
+        r["regla"] for x in d["poblaciones"] for r in x["v_reglas_blandas"] if not r["ok_estricto"]
+    ]
+    return Check(
+        "G4.3",
+        desc,
+        v == 0,
+        f"violaciones duras: {v}; reglas blandas (informativo): "
+        f"{len(bl)} fuera con margen de muestreo, {len(ble)} fuera sin él",
+        um,
+    )
+
+
+def _g4_4_pesos() -> Check:
+    d, desc = _f4(), "Diagnóstico de pesos dentro de umbral (V-PESOS)"
+    um = "desviación ≤ 0,1 %; ≥ 99 % de factores en [0,2; 5]; Kish/n ≥ 0,30; 0 pesos ≤ 0"
+    if d is None:
+        return _sin_resumen("G4.4", desc, um)
+    vp = d["calibracion"]["v_pesos"]
+    malos = [b["bloque"] for b in vp if not b["ok"]]
+    kmin = min(b["kish_ratio"] for b in vp)
+    rmin = min(b["proporcion_en_rango"] for b in vp)
+    return Check(
+        "G4.4",
+        desc,
+        not malos,
+        f"{len(vp)} bloques ({d['calibracion']['metodo']}); "
+        f"en rango mín {100 * rmin:.2f} %; Kish/n mín {kmin:.3f}; bloques fuera: {malos or 0}",
+        um,
+    )
+
+
+def _g4_5_semillas() -> Check:
+    d, desc, um = (
+        _f4(),
+        "Variabilidad entre semillas dentro de lo esperado (V-SEMILLAS)",
+        ("sd entre 5 semillas ≤ 1,5 × sd de muestra aleatoria simple"),
+    )
+    if d is None:
+        return _sin_resumen("G4.5", desc, um)
+    fuera = sum(x["fuera"] for x in d["v_semillas"])
+    tot = sum(x["proporciones"] for x in d["v_semillas"])
+    rm = max(x["razon_media"] for x in d["v_semillas"])
+    return Check(
+        "G4.5",
+        desc,
+        fuera == 0,
+        f"{tot} proporciones; fuera: {fuera}; razón media sd/sd_MAS máx {rm:.2f}",
+        um,
+    )
+
+
+def _g4_6_repro() -> Check:
+    d, desc, um = _f4(), "Reproducibilidad: misma semilla, mismo hash (V-REPRO)", "hashes iguales"
+    if d is None:
+        return _sin_resumen("G4.6", desc, um)
+    r = d["v_repro"]
+    return Check(
+        "G4.6",
+        desc,
+        r["hashes_iguales"],
+        f"{r['run_id']}: "
+        f"{'iguales' if r['hashes_iguales'] else 'distintos'} (persons, households, lineage)",
+        um,
+    )
+
+
+def _g4_7_sobremuestreo() -> Check:
+    d, desc = _f4(), "Modo de sobremuestreo: estimaciones ponderadas dentro del error de muestreo"
+    um = "TVD ponderada ≤ 1,2 × TVD_ref(n efectivo) + 0,002; mínimo alcanzado"
+    if d is None:
+        return _sin_resumen("G4.7", desc, um)
+    g = d["g47"]
+    malos = [m["objetivo"] for m in g["marginales"] if not m["ok"]]
+    return Check(
+        "G4.7",
+        desc,
+        g["ok"],
+        f"{g['spec']}: {g['miembros']} miembros "
+        f"(mínimo {g['minimo']}); marginales fuera: {malos or 0}",
+        um,
+    )
+
+
+def _g4_8_human() -> Check:
+    texto = (REPO_ROOT / "DECISIONS.md").read_text(encoding="utf-8")
+    i = texto.find("Aprobación de F4")
+    bloque = texto[i : texto.find("\n## D-", i)] if i >= 0 else ""
+    ok = "**Estado:** aprobada" in bloque
+    return Check(
+        "G4.8",
+        "Revisión humana del informe",
+        True if ok else None,
+        "aprobada" if ok else "pendiente (reports/fase_04.md)",
+        "aprobación",
+    )
+
+
 PHASES: dict[int, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
@@ -554,6 +724,16 @@ PHASES: dict[int, list[Callable[[], Check]]] = {
         _g2_6_electorales,
         _g2_7_cis,
         _g2_8_human,
+    ],
+    4: [
+        _g4_1_marg,
+        _g4_2_cruce,
+        _g4_3_reglas,
+        _g4_4_pesos,
+        _g4_5_semillas,
+        _g4_6_repro,
+        _g4_7_sobremuestreo,
+        _g4_8_human,
     ],
     3: [
         _g3_1_totales,

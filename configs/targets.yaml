@@ -11,6 +11,10 @@ agrupaciones_edad:
   edad_actividad: [16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]  # Censo Anual, tabla 67128
   edad_estado_civil: [16, 35, 55, 75]  # Censo Anual, tabla 76291
   edad_urbanizacion: [16, 65]  # Censo Anual, tabla 79341
+  # Perfil de edad de cada nacionalidad (reservado; F7, V-MINORIAS-PERFIL). La nacionalidad
+  # procede a todas las edades: el primer grupo, 00-19, no es NP. Límites múltiplos de 5 porque
+  # las celdas de nacionalidad van por edad quinquenal (D-038).
+  edad_nacionalidad: [20, 35, 50, 65]
 
 calibrar:
   - id: edad5_sexo
@@ -29,6 +33,10 @@ calibrar:
   - id: nacionalidad
     variables: [nacionalidad_grupo]
     descripcion: Española/extranjera de la ECP 2026; grupos del Censo Anual exhaustivo 2025
+  - id: nacionalidad_top
+    variables: [nacionalidad_top]
+    descripcion: Las 15 nacionalidades extranjeras más numerosas, una a una (Censo Anual
+      exhaustivo 2025 sobre los extranjeros ECP 2026); pasa de reservado a calibrado (D-038)
   - id: estudios_edad
     ambito: provincia
     variables: [estudios_3, edad_estudios]
@@ -94,8 +102,10 @@ reservar:
     unidad: hogar
     universo: hogares
     descripcion: Tipo de hogar por edad de la persona de referencia (Censo 2021)
-  - id: nacionalidad_top
-    variables: [nacionalidad_top]
+  - id: nacionalidad_top_sexo_edad
+    ambito: provincia
+    variables: [nacionalidad_top, sexo, edad_nacionalidad]
+    descripcion: Perfil por sexo y edad de cada nacionalidad (D-038)
   - id: estado_civil_edad
     ambito: provincia
     variables: [estado_civil, edad_estado_civil]

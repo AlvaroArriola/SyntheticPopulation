@@ -377,7 +377,7 @@ def main() -> None:
             "7": "estudiante",
         },
         "dr_CensoPersonas_2021.json (INE)",
-        "en blanco = menores de 16 → NP",
+        "en blanco = menores de 15 → NP (comprobado en los ficheros: los de 15 años tienen valor; D-038)",
     )
     put(
         "relacion_actividad",
@@ -392,7 +392,7 @@ def main() -> None:
             "06": "estudiante",
         },
         "dr_CensoAnual_muestra_2022.xlsx (INE)",
-        "en blanco = menores de 16 → NP",
+        "en blanco = menores de 15 → NP (comprobado en los ficheros: los de 15 años tienen valor; D-038)",
     )
     put(
         "tenencia_censo",

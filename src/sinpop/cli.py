@@ -196,7 +196,15 @@ def build(
     ] = None,
 ) -> None:
     """Genera una población sintética (F4 nacional, F5 territorial)."""
-    _pendiente("build", "F4/F5")
+    if territory.startswith("MUNIS:"):
+        _pendiente("build --territory MUNIS:…", "F5")
+    from sinpop.synth.poblacion import construir
+
+    meta = construir(territory, size, seed, oversample)
+    typer.echo(
+        f"{meta['run_id']}: {meta['tamano_obtenido']} personas, {meta['hogares']} hogares "
+        f"· data/populations/{meta['run_id']}/"
+    )
 
 
 @app.command()

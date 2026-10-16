@@ -21,7 +21,12 @@ def test_documented_commands_are_registered() -> None:
 
 
 def test_pending_commands_exit_with_code_2() -> None:
-    r = CliRunner().invoke(app, ["build", "--territory", "ES", "--size", "1000", "--seed", "1"])
+    # Los territorios por municipios se generan en F5.
+    r = CliRunner().invoke(
+        app, ["build", "--territory", "MUNIS:configs/territorios/ejemplo_almeria.yaml"]
+    )
+    assert r.exit_code == 2
+    r = CliRunner().invoke(app, ["audit", "--run", "x"])
     assert r.exit_code == 2
 
 

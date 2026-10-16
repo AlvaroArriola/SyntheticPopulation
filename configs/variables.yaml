@@ -1671,7 +1671,7 @@ variables:
       censo2021_micro_hogares:
         variable_original: RELA
         verificado_contra: dr_CensoPersonas_2021.json (INE)
-        notas: en blanco = menores de 16 → NP
+        notas: 'en blanco = menores de 15 → NP (comprobado en los ficheros: los de 15 años tienen valor; D-038)'
         recodificacion:
           '1': ocupado
           '2': parado
@@ -1682,7 +1682,7 @@ variables:
       censo_anual_micro_completo:
         variable_original: RELA
         verificado_contra: dr_CensoAnual_muestra_2022.xlsx (INE)
-        notas: en blanco = menores de 16 → NP
+        notas: 'en blanco = menores de 15 → NP (comprobado en los ficheros: los de 15 años tienen valor; D-038)'
         recodificacion:
           '01': ocupado
           '02': parado
@@ -3388,3 +3388,12 @@ variables:
     - 4+
     fuente_principal: ecp
     derivada_de: tamano_hogar
+  tipo_residencia:
+    prioridad: P0
+    nivel: persona
+    tipo: categorica
+    descripcion: Residencia en vivienda familiar o en establecimiento colectivo (D-021)
+    categorias:
+    - vivienda_familiar
+    - establecimiento_colectivo
+    fuente_principal: ecp
