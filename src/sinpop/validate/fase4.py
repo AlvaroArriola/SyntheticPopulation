@@ -261,6 +261,65 @@ def curva(res: dict) -> pl.DataFrame:
     )
 
 
+def complementos(res: dict) -> dict:
+    """V-DONANTES, V-RAREZA y validación externa (docs/05 §4 y §6) sobre la población más grande
+    de la primera semilla; se añaden al resumen."""
+    from sinpop.validate import externa as X
+
+    x = [y for y in res["poblaciones"] if "minorias" in y][0]
+    p, lin, _ = V.cargar(x["run_id"])
+    res["complementos"] = {
+        "run_id": x["run_id"],
+        "v_donantes": V.v_donantes(p, lin, res["territorio"]).to_dicts(),
+        "v_rareza": V.v_rareza(p).to_dicts(),
+        "externa": {k: v.to_dicts() for k, v in X.ejecutar(p).items()},
+    }
+    RESUMEN.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=float), "utf-8")
+    return res
+
+
+def _complementos_md(cp: dict) -> list[str]:
+    ex = cp["externa"]
+    epa = pl.DataFrame(ex["epa"]).select(
+        "ccaa",
+        "sint_ocupado",
+        "ref_ocupado",
+        "sint_parado",
+        "ref_parado",
+        "paro_sint",
+        "paro_epa",
+        "tvd",
+        "dentro",
+    )
+    pad = pl.DataFrame(ex["padron"]).select(
+        "provincia", "sint_extranjera", "ref_extranjera", "tvd", "dentro"
+    )
+    return [
+        f"## V-DONANTES ({cp['run_id']})",
+        "",
+        _tabla(pl.DataFrame(cp["v_donantes"]), 3),
+        "",
+        "## V-RAREZA",
+        "",
+        _tabla(pl.DataFrame(cp["v_rareza"])),
+        "",
+        "## Validación externa (no es puerta; se investiga si TVD > 2 × V-CRUCE)",
+        "",
+        "### EPA 2T 2026: ocupados, parados e inactivos de 16+ (viviendas familiares)",
+        "",
+        _tabla(epa),
+        "",
+        "### ECV 2025: personas por tamaño del hogar",
+        "",
+        _tabla(pl.DataFrame(ex["ecv"])),
+        "",
+        "### Padrón 01/01/2022: proporción de extranjeros por provincia",
+        "",
+        _tabla(pad),
+        "",
+    ]
+
+
 def _tabla(df: pl.DataFrame, decimales: int = 4) -> str:
     cols = df.columns
     filas = ["| " + " | ".join(cols) + " |", "| " + " | ".join("---" for _ in cols) + " |"]
@@ -421,6 +480,8 @@ def informe(res: dict) -> str:
         _tabla(pl.DataFrame(g["marginales"])),
         "",
     ]
+    if "complementos" in res:
+        t += _complementos_md(res["complementos"])
     r = res["v_repro"]
     t += [
         "## V-REPRO",
@@ -437,7 +498,7 @@ def informe(res: dict) -> str:
 
 
 if __name__ == "__main__":
-    r = ejecutar()
+    r = complementos(ejecutar())
     informe(r)
     print(curva(r))
     print(json.dumps(r["v_semillas"], indent=1)[:2000])
