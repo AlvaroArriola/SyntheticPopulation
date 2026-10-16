@@ -261,8 +261,184 @@ def curva(res: dict) -> pl.DataFrame:
     )
 
 
+def _tabla(df: pl.DataFrame, decimales: int = 4) -> str:
+    cols = df.columns
+    filas = ["| " + " | ".join(cols) + " |", "| " + " | ".join("---" for _ in cols) + " |"]
+    for r in df.iter_rows():
+        filas.append(
+            "| "
+            + " | ".join(
+                f"{v:.{decimales}f}"
+                if isinstance(v, float)
+                else ("✅" if v is True else "❌" if v is False else str(v))
+                for v in r
+            )
+            + " |"
+        )
+    return "\n".join(filas)
+
+
+def informe(res: dict) -> str:
+    """Tablas de `reports/fase_04_validacion.md` a partir del resumen."""
+    pobs = res["poblaciones"]
+    t = [
+        "# Fase 04 · Tablas de validación",
+        "",
+        f"Generado por `{res['comando']}` "
+        f"({res['version_codigo']}, {res['fecha']}). Resumen en `fase_04_validacion.json`; "
+        "detalle por población en `fase_04/`.",
+        "",
+    ]
+    t += [
+        "## Curva de error frente a tamaño (España; media de 5 semillas)",
+        "",
+        _tabla(curva(res)),
+        "",
+    ]
+    det = pl.concat(
+        [
+            pl.read_csv(DETALLE / f"{x['run_id']}_v_marg.csv").with_columns(
+                pl.lit(x["n"]).alias("N")
+            )
+            for x in pobs
+        ]
+    )
+    t += [
+        "## TVD por marginal calibrada (España; media de 5 semillas)",
+        "",
+        _tabla(
+            det.filter(pl.col("nivel") == "espana")
+            .group_by("objetivo", "N")
+            .agg(pl.col("tvd").mean())
+            .pivot(on="N", index="objetivo", values="tvd")
+            .sort("objetivo")
+        ),
+        "",
+    ]
+    detc = pl.concat(
+        [
+            pl.read_csv(DETALLE / f"{x['run_id']}_v_cruce.csv").with_columns(
+                pl.lit(x["n"]).alias("N")
+            )
+            for x in pobs
+        ]
+    )
+    t += [
+        "## TVD por cruce reservado (España; media de 5 semillas)",
+        "",
+        _tabla(
+            detc.filter(pl.col("nivel") == "espana")
+            .group_by("objetivo", "N")
+            .agg(pl.col("tvd").mean())
+            .pivot(on="N", index="objetivo", values="tvd")
+            .sort("objetivo")
+        ),
+        "",
+    ]
+    t += [
+        "## Fallos por tamaño",
+        "",
+        _tabla(
+            pl.DataFrame(
+                [
+                    {
+                        "N": x["n"],
+                        "semilla": x["semilla"],
+                        "v_marg": len(x["v_marg"]["fallos"]),
+                        "v_cruce": len(x["v_cruce"]["fallos"]),
+                        "v_cruce_propuesta": len(x["v_cruce"].get("fallos_propuesta", [])),
+                        "comprobaciones_cruce": x["v_cruce"]["comprobaciones"],
+                    }
+                    for x in pobs
+                ]
+            )
+        ),
+        "",
+    ]
+    fc = pl.DataFrame(
+        [dict(y, N=x["n"], semilla=x["semilla"]) for x in pobs for y in x["v_cruce"]["fallos"]]
+    )
+    if fc.height:
+        t += [
+            "### Fallos de V-CRUCE con 500.000 y 1.000.000 de personas",
+            "",
+            _tabla(fc.filter(pl.col("N") >= 500_000).sort("N", "semilla")),
+            "",
+        ]
+    t += ["## V-SEMILLAS", "", _tabla(pl.DataFrame(res["v_semillas"]).drop("peores")), ""]
+    t += [
+        "## V-PESOS (calibración por comunidades)",
+        "",
+        _tabla(pl.DataFrame(res["calibracion"]["v_pesos"])),
+        "",
+    ]
+    t += [
+        "## Ampliación de donantes",
+        "",
+        _tabla(pl.DataFrame(res["calibracion"]["ampliaciones"])),
+        "",
+    ]
+    if res["calibracion"]["fusiones"]:
+        t += [
+            "## Nacionalidades fusionadas con «otras extranjeras»",
+            "",
+            _tabla(pl.DataFrame(res["calibracion"]["fusiones"])),
+            "",
+        ]
+    grande = [x for x in pobs if "minorias" in x][0]
+    t += [f"## V de Cramér ({grande['run_id']})", "", _tabla(pl.DataFrame(grande["v_cramer"])), ""]
+    t += [
+        f"## Minorías, primera pasada ({grande['run_id']})",
+        "",
+        _tabla(pl.DataFrame(grande["minorias"]).drop("fuente")),
+        "",
+    ]
+    bl = pl.DataFrame([dict(r, N=x["n"]) for x in pobs for r in x["v_reglas_blandas"]])
+    t += [
+        "## Reglas blandas (media de 5 semillas; nº de semillas dentro)",
+        "",
+        _tabla(
+            bl.group_by("regla", "N")
+            .agg(
+                pl.col("frecuencia_donantes").first(),
+                pl.col("exceso_relativo").mean(),
+                pl.col("ok_estricto").sum(),
+                pl.col("ok").sum(),
+            )
+            .sort("regla", "N"),
+            6,
+        ),
+        "",
+    ]
+    g = res["g47"]
+    t += [
+        f"## G4.7 · Sobremuestreo ({g['spec']}, {g['run_id']})",
+        "",
+        f"Miembros del grupo: {g['miembros']} (mínimo pedido {g['minimo']}); "
+        f"α = {g['alfa_beta']['alfa']:.4f}, "
+        f"β = {g['alfa_beta']['beta']:.4f}; suma de pesos {g['suma_pesos']:.0f}.",
+        "",
+        _tabla(pl.DataFrame(g["marginales"])),
+        "",
+    ]
+    r = res["v_repro"]
+    t += [
+        "## V-REPRO",
+        "",
+        f"{r['run_id']} generado de nuevo en otro directorio: "
+        f"{'mismos hashes' if r['hashes_iguales'] else 'hashes distintos'}.",
+        "",
+    ]
+    for k, v in r["sha256"].items():
+        t.append(f"- `{k}`: `{v}`")
+    texto = "\n".join(t) + "\n"
+    (REPORTS_DIR / "fase_04_validacion.md").write_text(texto, encoding="utf-8")
+    return texto
+
+
 if __name__ == "__main__":
     r = ejecutar()
+    informe(r)
     print(curva(r))
     print(json.dumps(r["v_semillas"], indent=1)[:2000])
     print(r["v_repro"]["hashes_iguales"], r["g47"]["ok"])
