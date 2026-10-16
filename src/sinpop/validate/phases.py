@@ -726,6 +726,152 @@ def _g4_8_human() -> Check:
     )
 
 
+# --------------------------------------------------------------------------- F5
+
+
+def _f5() -> dict | None:
+    import json
+
+    from sinpop.validate.fase5 import RESUMEN
+
+    return json.loads(RESUMEN.read_text(encoding="utf-8")) if RESUMEN.exists() else None
+
+
+def _sin_f5(id_: str, desc: str, um: str) -> Check:
+    return Check(
+        id_,
+        desc,
+        False,
+        "falta reports/fase_05_validacion.json (python -m sinpop.validate.fase5)",
+        um,
+    )
+
+
+def _g5_1() -> Check:
+    d, desc = _f5(), "Todos los territorios superan V-MARG y V-REGLAS"
+    um = "0 fallos de V-MARG y 0 violaciones de reglas duras"
+    if d is None:
+        return _sin_f5("G5.1", desc, um)
+    ts = d["territorios"]
+    fm = [(x["territorio"], y["objetivo"]) for x in ts for y in x["v_marg"]["fallos"]]
+    fr = [x["territorio"] for x in ts if x["v_reglas_duras"]]
+    n = sum(x["v_marg"]["comprobaciones"] for x in ts)
+    return Check(
+        "G5.1",
+        desc,
+        not fm and not fr,
+        f"{len(ts)} territorios, {n} marginales; "
+        f"fallos V-MARG: {len(fm)} {fm[:3] if fm else ''}; con violaciones: {fr or 0}",
+        um,
+    )
+
+
+def _g5_2() -> Check:
+    from sinpop.config import load_config
+
+    d, desc = _f5(), "Cruces reservados por CCAA dentro de V-CRUCE (umbral territorial)"
+    lim = load_config("thresholds.yaml").v_cruce.proporcion_fallos_max  # type: ignore[attr-defined]
+    um = (
+        f"máx(1,2 × TVD_ref + 0,002, 0,05 / 0,08) (D-038 A); ≤ {100 * lim:.0f} % de fallos por "
+        "población (D-039); |Δ V de Cramér| ≤ 0,03"
+    )
+    if d is None:
+        return _sin_f5("G5.2", desc, um)
+    cc = [x for x in d["territorios"] if x["territorio"].startswith("CCAA:")]
+    peor = max(cc, key=lambda x: x["v_cruce"]["proporcion_fallos"])
+    cr = [(x["territorio"], c["par"]) for x in cc for c in x.get("v_cramer", []) if not c["ok"]]
+    nf = sum(len(x["v_cruce"]["fallos"]) for x in cc)
+    ok = peor["v_cruce"]["proporcion_fallos"] <= lim and not cr
+    return Check(
+        "G5.2",
+        desc,
+        ok,
+        f"19 comunidades; fallos: {nf} (máximo "
+        f"{100 * peor['v_cruce']['proporcion_fallos']:.1f} %, {peor['territorio']}); "
+        f"Cramér fuera: {len(cr)} {cr[:3] if cr else ''}",
+        um,
+    )
+
+
+def _g5_3() -> Check:
+    d, desc = _f5(), "La agregación de las 19 comunidades reproduce la nacional (V-COHERENCIA)"
+    um = "TVD ≤ 0,01 (calibradas) y ≤ 0,02 (reservadas)"
+    if d is None or "coherencia" not in d:
+        return _sin_f5("G5.3", desc, um)
+    f = d["coherencia"]["comparaciones"]
+    malos = [x["objetivo"] for x in f if not x["ok"]]
+    mx = max(f, key=lambda x: x["tvd"])
+    return Check(
+        "G5.3",
+        desc,
+        not malos,
+        f"{len(f)} comparaciones; fuera: {malos or 0}; máxima {mx['objetivo']} {mx['tvd']:.4f}",
+        um,
+    )
+
+
+def _g5_4() -> Check:
+    d, desc = _f5(), "Donantes no locales informados y tamaño efectivo mínimo (V-DONANTES)"
+    um = "Kish de los hogares donantes ≥ 200; proporción local informada"
+    if d is None:
+        return _sin_f5("G5.4", desc, um)
+    ts = d["territorios"]
+    dn = {x["territorio"]: x["donantes"] for x in ts}
+    bajos = [t for t, x in dn.items() if x["kish_hogares_donantes"] < x["kish_min"]]
+    red = [t for t, x in dn.items() if x["confianza_reducida"]]
+    kmin = min(dn, key=lambda t: dn[t]["kish_hogares_donantes"])
+    lmin = min(dn, key=lambda t: dn[t]["proporcion_local"])
+    txt = (
+        f"Kish mínimo {dn[kmin]['kish_hogares_donantes']:.0f} ({kmin}); local mínimo "
+        f"{100 * dn[lmin]['proporcion_local']:.1f} % ({lmin}); confianza reducida: "
+        f"{red or 'ninguno'}; bajo el mínimo: {bajos or 0}"
+    )
+    return Check("G5.4", desc, not bajos, txt, um)
+
+
+def _g5_5() -> Check:
+    import polars as pl
+
+    from sinpop.targets import run
+
+    d, desc = _f5(), "Ceuta, Melilla y 2+ provincias de < 150.000 habitantes, con su confianza"
+    um = "generadas sin errores, con confianza declarada"
+    if d is None:
+        return _sin_f5("G5.5", desc, um)
+    ts = {x["territorio"]: x for x in d["territorios"]}
+
+    def residentes(t: str) -> float:
+        return float(run.leer(t).filter(pl.col("objetivo") == "edad5_sexo")["valor"].sum())
+
+    pequenas = [
+        t
+        for t in ts
+        if t.startswith("PROV:") and t not in ("PROV:51", "PROV:52") and residentes(t) < 150_000
+    ]
+    cm = [t for t in ("PROV:51", "PROV:52") if t in ts]
+    ok = len(cm) == 2 and len(pequenas) >= 2
+    txt = "; ".join(
+        f"{t} ({residentes(t):,.0f} hab.): confianza {ts[t]['donantes']['confianza']}"
+        f"{', reducida' if ts[t]['donantes']['confianza_reducida'] else ''}"
+        for t in cm + pequenas
+    )
+    return Check("G5.5", desc, ok, txt, um)
+
+
+def _g5_6_human() -> Check:
+    texto = (REPO_ROOT / "DECISIONS.md").read_text(encoding="utf-8")
+    i = texto.find("Aprobación de F5")
+    bloque = texto[i : texto.find("\n## D-", i)] if i >= 0 else ""
+    ok = "**Estado:** aprobada" in bloque
+    return Check(
+        "G5.6",
+        "Revisión humana del informe",
+        True if ok else None,
+        "aprobada" if ok else "pendiente (reports/fase_05.md)",
+        "aprobación",
+    )
+
+
 PHASES: dict[int, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
@@ -746,6 +892,7 @@ PHASES: dict[int, list[Callable[[], Check]]] = {
         _g2_7_cis,
         _g2_8_human,
     ],
+    5: [_g5_1, _g5_2, _g5_3, _g5_4, _g5_5, _g5_6_human],
     4: [
         _g4_1_marg,
         _g4_2_cruce,

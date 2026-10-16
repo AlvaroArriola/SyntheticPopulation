@@ -436,7 +436,10 @@ def _calibrar_unidades(u: D.Unidades, ub: pl.DataFrame, obj, fusion, metodo, cca
     return uni, m, r
 
 
-def calibrar(u: D.Unidades, territorio: str, metodo: str = "logit") -> Calibrado:
+def calibrar(
+    u: D.Unidades, territorio: str, metodo: str = "logit", excluir: tuple[str, ...] = ()
+) -> Calibrado:
+    """`excluir`: objetivos calibrables que no se usan (prueba del territorio reservado, F5)."""
     from sinpop.harmonize.core import ccaa_de_provincia
     from sinpop.targets import run
 
@@ -446,7 +449,9 @@ def calibrar(u: D.Unidades, territorio: str, metodo: str = "logit") -> Calibrado
     for b in bloques(territorio):
         ps = provincias_bloque(b)
         obj, fusion = fusionar(
-            D.objetivos_calibrables(run.leer(b), municipios=b.startswith("MUNIS:"))
+            D.objetivos_calibrables(run.leer(b), municipios=b.startswith("MUNIS:")).filter(
+                ~pl.col("objetivo").is_in(list(excluir))
+            )
         )
         if todas is None or set(obj["objetivo"].unique()) != set(todas["objetivo"].unique()):
             todas = _celdas_por_unidad(u.personas, obj)

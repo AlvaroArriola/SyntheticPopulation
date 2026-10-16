@@ -109,14 +109,19 @@ def _entradas_calibracion(territorio: str) -> dict[str, str]:
 
 
 def calibracion(
-    u: D.Unidades, territorio: str, metodo: str = METODO, forzar: bool = False
+    u: D.Unidades,
+    territorio: str,
+    metodo: str = METODO,
+    forzar: bool = False,
+    excluir: tuple[str, ...] = (),
 ) -> tuple[P.Calibrado, dict]:
     """Calibración del territorio, desde la caché si sus entradas no han cambiado."""
     from sinpop.targets.run import nombre_fichero
 
     CALIBRACION_DIR.mkdir(parents=True, exist_ok=True)
-    base = CALIBRACION_DIR / f"{nombre_fichero(territorio)}_{metodo}"
-    ent = _entradas_calibracion(territorio)
+    sufijo = "_sin_" + "_".join(sorted(excluir)) if excluir else ""
+    base = CALIBRACION_DIR / f"{nombre_fichero(territorio)}_{metodo}{sufijo}"
+    ent = _entradas_calibracion(territorio) | {"excluir": ",".join(sorted(excluir))}
     meta_p = base.with_suffix(".json")
     if not forzar and meta_p.exists():
         meta = json.loads(meta_p.read_text(encoding="utf-8"))
@@ -129,7 +134,7 @@ def calibracion(
                 fusiones=pl.DataFrame(meta["fusiones"]),
             )
             return cal, meta
-    cal = P.calibrar(u, territorio, metodo)
+    cal = P.calibrar(u, territorio, metodo, excluir)
     cal.unidades.write_parquet(base.with_suffix(".parquet"), compression="zstd", statistics=False)
     meta = {
         "territorio": territorio,
@@ -184,13 +189,17 @@ def _orden(p: pl.DataFrame) -> pl.DataFrame:
     )
 
 
-def _matriz_equilibrado(p: pl.DataFrame, o: pl.DataFrame, territorio: str):
+def _matriz_equilibrado(
+    p: pl.DataFrame, o: pl.DataFrame, territorio: str, excluir: tuple[str, ...] = ()
+):
     """Unidades (en el orden de `o`) × celdas calibradas por bloque (bloque, objetivo, clave)."""
     from scipy import sparse
 
     from sinpop.targets import run
 
-    obj = D.objetivos_calibrables(run.leer(territorio), municipios=territorio.startswith("MUNIS:"))
+    obj = D.objetivos_calibrables(
+        run.leer(territorio), municipios=territorio.startswith("MUNIS:")
+    ).filter(~pl.col("objetivo").is_in(list(excluir)))
     trozos, base = [], 0
     for objetivo, unidad_obj, universo in (
         obj.select("objetivo", "unidad", "universo").unique(maintain_order=True).iter_rows()
@@ -313,11 +322,13 @@ def construir(
     metodo: str = METODO,
     u: D.Unidades | None = None,
     destino: Path = POPULATIONS_DIR,
+    excluir: tuple[str, ...] = (),
 ) -> dict:
+    """`excluir`: objetivos calibrables que no se usan (prueba del territorio reservado, F5)."""
     if not isinstance(semilla, int) or n <= 0:
         raise ValueError("hacen falta un tamaño positivo y una semilla entera")
     u = u if u is not None else unidades_todas()
-    cal, meta_cal = calibracion(u, territorio, metodo)
+    cal, meta_cal = calibracion(u, territorio, metodo, excluir=excluir)
     p = P.personas_ponderadas(u, cal)
     o = _orden(p)
     w, m = o["w"].to_numpy(), o["m"].to_numpy().astype(float)
@@ -344,7 +355,7 @@ def construir(
         e,
         m,
         bloques_idx,
-        _matriz_equilibrado(p, o, territorio),
+        _matriz_equilibrado(p, o, territorio, excluir),
         int(rng.integers(0, 2**31)),
         tipo=(o["tipo_residencia"] != "vivienda_familiar").cast(pl.Int64).to_numpy(),
     )
@@ -442,7 +453,9 @@ def construir(
     )
     from sinpop.targets.run import nombre_fichero
 
-    rid = run_id(territorio, n, semilla, sobremuestreo)
+    rid = run_id(territorio, n, semilla, sobremuestreo) + (
+        "_sin_" + "_".join(sorted(excluir)) if excluir else ""
+    )
     out = destino / rid
     out.mkdir(parents=True, exist_ok=True)
     hashes = {}
@@ -450,7 +463,7 @@ def construir(
         path = out / f"{nombre}.parquet"
         df.write_parquet(path, compression="zstd", statistics=False)
         hashes[path.name] = sha256_file(path)
-    meta = _metadata(rid, territorio, n, persons.height, semilla, sobremuestreo, info_sm)
+    meta = _metadata(rid, territorio, n, persons.height, semilla, sobremuestreo, info_sm, excluir)
     meta |= {
         "metodo_calibracion": f"{metodo} (Deville-Särndal, factores en [0,2; 5]); bloques: "
         + ", ".join(P.bloques(territorio)),
@@ -476,7 +489,7 @@ def construir(
     return meta
 
 
-def _metadata(rid, territorio, n, obtenido, semilla, sobremuestreo, info_sm) -> dict:
+def _metadata(rid, territorio, n, obtenido, semilla, sobremuestreo, info_sm, excluir=()) -> dict:
     from sinpop.config import load_config
     from sinpop.targets import run
 
@@ -506,11 +519,15 @@ def _metadata(rid, territorio, n, obtenido, semilla, sobremuestreo, info_sm) -> 
                 if b in meta_t
             ],
         ],
-        "objetivos_calibrados": [
-            o.id
-            for o in cfg.calibrar  # type: ignore[attr-defined]
-            if o.universo in {*D.UNIVERSOS_PERSONA, "hogares"} and o.ambito != "municipios"
-        ],
+        "objetivos_calibrados": sorted(
+            set(
+                D.objetivos_calibrables(
+                    run.leer(territorio), municipios=territorio.startswith("MUNIS:")
+                )["objetivo"].to_list()
+            )
+            - set(excluir)
+        ),
+        "objetivos_excluidos": sorted(excluir),
         "objetivos_reservados": [o.id for o in cfg.reservar],  # type: ignore[attr-defined]
         "objetivos_otras_fases": ["voto_generales_2023", "voto_autonomicas (F8B)"],
         "configuracion": {

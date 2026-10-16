@@ -181,6 +181,17 @@ def v_cruce(p: pl.DataFrame, territorio: str, semilla: int = 0) -> pl.DataFrame:
         territorio, ["espana", "provincia"] if territorio.startswith("CCAA:") else ["espana"]
     )
     df = comparar(p, territorio, "reservar", niveles, semilla)
+    # El nivel «del propio territorio» lleva el umbral de su tipo (docs/05 §4): comunidad 0,05;
+    # provincia 0,08; una lista de municipios, como una provincia (no hay umbral municipal).
+    propio = {"CCAA": "ccaa", "PROV": "provincia", "MUNIS": "provincia"}.get(
+        territorio.split(":")[0], "espana"
+    )
+    df = df.with_columns(
+        pl.when(pl.col("nivel") == "espana")
+        .then(pl.lit(propio))
+        .otherwise(pl.col("nivel"))
+        .alias("nivel")
+    )
     nivel = pl.col("nivel").replace_strict(lim, return_dtype=pl.Float64)
     return df.with_columns(
         pl.max_horizontal(

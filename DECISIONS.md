@@ -560,3 +560,22 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Estado:** aprobada
 - **Decisión:** el responsable aprueba el informe `reports/fase_04.md` (G4.8), con D-036, D-038 y D-039 aprobadas. F4 queda cerrada y se empieza F5.
 - **Aprobada por:** humano (2026-10-16)
+
+## D-041 · Generador territorial (F5) (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F5
+- **Estado:** propuesta (revisión humana G5.6)
+- **Contexto:** F5 pide generar cualquier territorio (comunidad, provincia o lista de municipios) con el mismo código que la nacional, con sus objetivos y sus donantes, y una jerarquía de donantes para territorios con pocos.
+- **Decisiones:**
+  1. **Jerarquía de donantes configurable** (`territories.yaml`): mismo territorio → misma provincia → misma comunidad con el mismo grado de urbanización → comunidades parecidas → España (último recurso, como en F4, D-038.5). Parámetros de la ampliación (5 unidades por celda; razón 3,5 → 2,5) en el mismo fichero.
+  2. **Comunidades parecidas, con los datos:** las 3 más próximas por la TVD media de sus objetivos de estructura de F3 (edad × sexo, 15 nacionalidades, estudios, actividad, urbanización, tipo de hogar). Ejemplos: Ceuta → Melilla, Madrid, Murcia; Asturias → Castilla y León, Galicia, País Vasco.
+  3. **Territorios por lista de municipios:** el Censo 2021 identifica los municipios de más de 10.000 habitantes. Sus hogares son donantes locales. Para los demás se usan los hogares sin municipio de su provincia y clase de tamaño (hasta 2.000; 2.001-10.000), con el peso inicial escalado por la parte de la población de esa clase y provincia que son los municipios de la lista (Padrón 2025), como nivel «misma provincia» (no locales). Los colectivos de esas provincias entran escalados por población. Se excluyen los donantes que caerían en categorías sin objetivo en la lista (p. ej. zona intermedia en un territorio rural). A cada hogar sin municipio de la lista se le asigna uno de su provincia y clase, al azar con la semilla y en proporción a la población (`municipio__calidad = modelada`); el tamaño de municipio pasa a ser el del Padrón 2025 del municipio asignado.
+  4. **Reparación de la calibración:** si la calibración acotada no llega a la tolerancia de V-PESOS (0,1 %), se añaden donantes de la jerarquía a las celdas que se quedan cortas, sin tomar unidades de las que se pasan, y se recalibra (hasta 3 rondas). Caso real: municipios rurales de Teruel, donde faltaban africanos no marroquíes. Se registra en la ampliación (`motivo: reparacion N`).
+  5. **Aceptación de la calibración:** la tolerancia es la de V-PESOS (0,1 %); la desviación alcanzada se guarda en el diagnóstico.
+  6. **V-CRUCE por territorio:** el nivel del propio territorio usa el umbral de su tipo (comunidad 0,05; provincia y lista de municipios 0,08).
+  7. **Informe de cada población** (`metadata.json`, `donantes`): proporción local, personas por nivel de la jerarquía, tamaño efectivo de Kish de los hogares donantes usados, confianza esperada (docs/02 §5: España alta, comunidad media-alta, provincia media, municipios baja) y «confianza reducida» si la proporción local es < 50 %.
+  8. **Territorios de ejemplo por municipios** (`tools/generar_territorios_ejemplo.py`, códigos tomados del Padrón, no escritos a mano): urbano, València y 11 municipios de L'Horta (selección técnica); rural, los 226 municipios de Teruel de menos de 2.000 habitantes.
+  9. **Prueba del territorio reservado:** Galicia calibrada sin actividad ni estudios, que se comprueban como reservados con el umbral de comunidad.
+- **Consecuencias:** la calibración nacional también sigue la nueva jerarquía (las importaciones de Ceuta, Melilla y otras celdas deficitarias salen de las comunidades parecidas antes que de toda España).
+- **Aprobada por:** pendiente
