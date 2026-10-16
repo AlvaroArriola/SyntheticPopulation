@@ -36,7 +36,6 @@ N = 1_000_000
 N_PRUEBA = 10_000
 RESUMEN = REPORTS_DIR / "fase_06_validacion.json"
 DETALLE = REPORTS_DIR / "fase_06"
-LLAVE_RESERVADA = "estudios_3"
 
 
 def _columnas_enriquecidas(df: pl.DataFrame, base: pl.DataFrame) -> list[str]:
@@ -62,28 +61,39 @@ def g65_igualdad(u) -> dict:
     return out
 
 
+LLAVES_RESERVADAS = ("sexo", "nacionalidad_esp_ext", "relacion_actividad", "estudios_3")
+
+
 def holdout(personas: pl.DataFrame, hogares: pl.DataFrame, base_cols: list[str]) -> pl.DataFrame:
-    """V-ENRIQ-HOLDOUT: enriquecimiento sin la llave reservada y su asociación recuperada."""
+    """V-ENRIQ-HOLDOUT: enriquecimiento sin cada llave reservada (por turno) y asociación de
+    cada variable enriquecida con ella, frente a la encuesta y frente a la independencia."""
     p0 = personas.select(base_cols)
     h0 = hogares.select([c for c in hogares.columns if not _es_enriquecida_hogar(c)])
-    pe, _, _ = ER.enriquecer(p0, h0, "ES", SEMILLA, quitar=(LLAVE_RESERVADA,))
     filas = []
-    for b in VE.BLOQUES:
-        s = VE._universo(pe, b, sintetica=True)
-        e = VE._encuesta(b)
-        for v in b.variables:
-            ve = VE._cramer(e, v, LLAVE_RESERVADA, b.peso)
-            vs = VE._cramer(s, v, LLAVE_RESERVADA, "peso")
-            filas.append(
-                {
-                    "bloque": b.nombre,
-                    "variable": v,
-                    "v_encuesta": ve,
-                    "v_sintetica": vs,
-                    "dif": abs(vs - ve),
-                    "dif_independencia": ve,
-                }
-            )
+    for llave in LLAVES_RESERVADAS:
+        pe, _, _ = ER.enriquecer(p0, h0, "ES", SEMILLA, quitar=(llave,))
+        for b in VE.BLOQUES:
+            s = VE._universo(pe, b, sintetica=True)
+            e = VE._encuesta(b)
+            if llave not in s.columns or llave not in e.columns:
+                continue
+            for v in b.variables:
+                ve = VE._cramer(e, v, llave, b.peso)
+                vs = VE._cramer(s, v, llave, "peso")
+                filas.append(
+                    {
+                        "llave": llave,
+                        "bloque": b.nombre,
+                        "variable": v,
+                        "v_encuesta": ve,
+                        "v_sintetica": vs,
+                        "dif": abs(vs - ve),
+                        "dif_independencia": ve,
+                        "recuperada": vs / ve if ve > 0 else None,
+                    }
+                )
+        del pe
+        gc.collect()
     return pl.DataFrame(filas)
 
 
@@ -255,7 +265,7 @@ def ejecutar() -> dict:
             "pares": blo.to_dicts(),
         },
         "v_enriq_holdout": {
-            "llave": LLAVE_RESERVADA,
+            "llaves": list(LLAVES_RESERVADAS),
             "umbral": thr["V-ENRIQ-HOLDOUT"]["max_abs_dif"],
             "filas": ho.to_dicts(),
         },

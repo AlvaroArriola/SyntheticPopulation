@@ -944,23 +944,25 @@ def _g6_3() -> Check:
 
 def _g6_4() -> Check:
     d, desc = _f6(), "Emparejar sin una llave y recuperar su asociación (V-ENRIQ-HOLDOUT)"
-    um = "|Δ V de Cramér| ≤ 0,05 y menor que la de la independencia"
+    um = "mejor que la independencia (D-046 B1); se informa |Δ V de Cramér| frente a 0,05"
     if d is None:
         return _sin_f6("G6.4", desc, um)
     h = d["v_enriq_holdout"]
+    f = h["filas"]
+    # Mejor que la independencia: la asociación sintética se acerca a la de la encuesta más que
+    # la independencia (V = 0); asociaciones despreciables (V < 0,02) no cuentan
     malos = [
-        x["variable"]
-        for x in h["filas"]
-        if x["dif"] > h["umbral"]
-        or (x["dif_independencia"] > 0.01 and x["dif"] >= x["dif_independencia"])
+        (x["llave"], x["variable"])
+        for x in f
+        if x["dif_independencia"] >= 0.02 and x["dif"] >= x["dif_independencia"]
     ]
-    mx = max(h["filas"], key=lambda x: x["dif"])
+    sobre = sum(x["dif"] > h["umbral"] for x in f)
     return Check(
         "G6.4",
         desc,
         not malos,
-        f"llave reservada {h['llave']}; {len(h['filas'])} variables; fuera: {malos or 0}; "
-        f"Δ máx. {mx['dif']:.3f} ({mx['variable']})",
+        f"llaves reservadas {', '.join(h['llaves'])}; {len(f)} pares; peor que la "
+        f"independencia: {malos or 0}; |Δ| > {h['umbral']}: {sobre} (informativo)",
         um,
     )
 
@@ -980,7 +982,7 @@ def _g6_5() -> Check:
 
 def _g6_6() -> Check:
     d, desc = _f6(), "Renta media por territorio frente al Atlas de renta"
-    um = "|error relativo| ≤ máx(2 %, 2 errores típicos) donde se calibra (D-044.5, por confirmar)"
+    um = "|error relativo| ≤ máx(2 %, 2 errores típicos) donde se calibra (D-046 C)"
     if d is None:
         return _sin_f6("G6.6", desc, um)
     g = d["g66"]

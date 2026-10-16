@@ -746,7 +746,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-16
 - **Fase:** F6
-- **Estado:** propuesta (decisión humana: afecta a una puerta y a variables P0)
+- **Estado:** aprobada (A2, B1 y C)
 - **Contexto:**
   - `reports/fase_06.md`: G6.2, G6.3, G6.5 y G6.6 se superan; G6.1 y G6.4 no.
   - Además, al revisar el contexto apareció un fallo de síntesis: unidades importadas de otra comunidad iban a provincias sin su grado de urbanización (18 personas de 1.000.000). Ya está corregido en `pesos._ampliar`. Hay que repetir las series F4 y F5, y conviene hacerlo una sola vez, después de esta decisión.
@@ -768,4 +768,4 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
     - No hay muchas más variables comunes entre la población y las encuestas.
     - La ganancia esperada es pequeña y el coste, alto.
 - **C. Umbral de G6.6:** máx(2 %, 2 errores típicos) donde se calibra. Hoy: 52 de 52 provincias dentro.
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-16): «Me gustan las propuestas… si tienes que volver a ejecutar las fases anteriores hazlo… la población más fehaciente posible a la real, con fecha de corte en junio de 2026».
