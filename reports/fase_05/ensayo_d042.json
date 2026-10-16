@@ -2,7 +2,7 @@
  {
   "territorio": "CCAA:09",
   "v_marg_fallos": 0,
-  "v_marg": 11,
+  "v_marg": 12,
   "v_cruce_fallos": [],
   "v_cruce": 36,
   "v_cruce_fallos_serie": 0,
@@ -10,16 +10,16 @@
   "cramer_adultos_nacionalidad": {
    "oficial": 0.017641292240564124,
    "serie": 0.022709324922054817,
-   "ensayo": 0.022709324922054817
+   "ensayo": 0.02250867210761495
   },
   "proporcion_local": 1.0,
-  "kish_hogares_donantes": 29889.427003765464,
+  "kish_hogares_donantes": 29692.186043475424,
   "kish_serie": 29889.427003765464
  },
  {
   "territorio": "CCAA:13",
   "v_marg_fallos": 0,
-  "v_marg": 11,
+  "v_marg": 12,
   "v_cruce_fallos": [],
   "v_cruce": 14,
   "v_cruce_fallos_serie": 0,
@@ -27,52 +27,52 @@
   "cramer_adultos_nacionalidad": {
    "oficial": 0.015927808536045047,
    "serie": 0.001168059999204295,
-   "ensayo": 0.001168059999204295
+   "ensayo": 0.018143013499069854
   },
   "proporcion_local": 1.0,
-  "kish_hogares_donantes": 29367.37081874143,
+  "kish_hogares_donantes": 29372.65918244444,
   "kish_serie": 29367.37081874143
  },
  {
   "territorio": "CCAA:18",
   "v_marg_fallos": 0,
-  "v_marg": 11,
+  "v_marg": 12,
   "v_cruce_fallos": [
    {
     "nivel": "ccaa",
     "territorio": "CCAA:18",
     "objetivo": "tipo_hogar_edad4_ref",
-    "tvd": 0.05181949507460886,
+    "tvd": 0.05408286309196136,
     "umbral": 0.05
    }
   ],
   "v_cruce": 12,
   "v_cruce_fallos_serie": 1,
-  "cramer_fuera": 1,
+  "cramer_fuera": 0,
   "cramer_adultos_nacionalidad": {
    "oficial": 0.08718854618830726,
    "serie": 0.03962599153568791,
-   "ensayo": 0.03962599153568791
+   "ensayo": 0.09047157574197924
   },
-  "proporcion_local": 0.997969979699797,
-  "kish_hogares_donantes": 1718.7477711262818,
+  "proporcion_local": 0.9969692726254301,
+  "kish_hogares_donantes": 1625.610152841695,
   "kish_serie": 1718.7477711262818
  },
  {
   "territorio": "CCAA:19",
   "v_marg_fallos": 0,
-  "v_marg": 11,
+  "v_marg": 12,
   "v_cruce_fallos": [],
   "v_cruce": 12,
   "v_cruce_fallos_serie": 0,
-  "cramer_fuera": 1,
+  "cramer_fuera": 0,
   "cramer_adultos_nacionalidad": {
    "oficial": 0.10721888717144468,
    "serie": 0.04901281641267344,
-   "ensayo": 0.04901281641267344
+   "ensayo": 0.11086631810014073
   },
-  "proporcion_local": 0.9781289064453222,
-  "kish_hogares_donantes": 1901.2075634177927,
+  "proporcion_local": 0.9778019978201962,
+  "kish_hogares_donantes": 1832.6770319493553,
   "kish_serie": 1901.2075634177927
  }
 ]

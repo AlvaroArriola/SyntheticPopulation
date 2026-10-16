@@ -213,9 +213,89 @@ def ejecutar(reanudar: bool = False) -> dict:
     return res
 
 
+ANEXO = REPORTS_DIR / "fase_05_anexo.md"
+
+
+def _nombre(t: str) -> str:
+    return t.replace("MUNIS:configs/territorios/", "MUNIS:").removesuffix(".yaml")
+
+
+def _num(x: float, d: int = 0) -> str:
+    return f"{x:,.{d}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def anexo(res: dict | None = None) -> str:
+    """Anexo por territorio de `reports/fase_05.md` (docs/04 F5), generado desde el resumen."""
+    from sinpop.targets import run
+
+    res = res or json.loads(RESUMEN.read_text("utf-8"))
+    out = [
+        "# F5 · Anexo por territorio",
+        "",
+        f"Generado desde `{RESUMEN.name}` (`python -m sinpop.validate.fase5 --anexo`). "
+        f"Semilla {res['semilla']}. Detalle de cada comprobación en `reports/fase_05/`.",
+    ]
+    for x in res["territorios"]:
+        t, d = x["territorio"], x["donantes"]
+        pob = run.leer(t).filter(pl.col("objetivo") == "edad5_sexo")["valor"].sum()
+        niveles = ", ".join(f"{k} {_num(v)}" for k, v in sorted(d["por_nivel"].items()))
+        out += [
+            "",
+            f"## {_nombre(t)}",
+            "",
+            f"- Población `{x['run_id']}`: {_num(x['obtenido'])} personas (pedidas "
+            f"{_num(x['n'])}) de {_num(pob)} residentes (1 por {_num(pob / x['obtenido'], 1)}).",
+            f"- Donantes: {_num(100 * d['proporcion_local'], 1)} % locales; personas por nivel: "
+            f"{niveles}; {_num(d['hogares_donantes'])} unidades donantes, Kish "
+            f"{_num(d['kish_hogares_donantes'])} (mínimo {d['kish_min']}).",
+            f"- Confianza esperada: {d['confianza']}"
+            + (" (reducida: menos del 50 % de donantes locales)" if d["confianza_reducida"] else "")
+            + ".",
+            f"- V-MARG: {len(x['v_marg']['fallos'])} fallos de {x['v_marg']['comprobaciones']} "
+            f"(TVD media {_num(x['v_marg']['tvd_media'], 4)}). Reglas duras: "
+            f"{x['v_reglas_duras']} violaciones.",
+            f"- V-CRUCE: {len(x['v_cruce']['fallos'])} fallos de "
+            f"{x['v_cruce']['comprobaciones']} (todos los niveles); excepciones "
+            f"{x['v_cruce']['excepciones']}.",
+            "",
+            "| Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |",
+            "| --- | ---: | ---: | ---: | --- |",
+        ]
+        for c in x["v_cruce"]["propio"]:
+            out.append(
+                f"| {c['objetivo']} | {_num(c['tvd'], 4)} | {_num(c['tvd_ref'], 4)} | "
+                f"{_num(c['umbral'], 3)} | {'✅' if c['ok'] else '❌'} |"
+            )
+        for c in x["v_cruce"]["fallos"]:
+            if c["territorio"] != t:
+                out.append(
+                    f"| {c['objetivo']} ({c['nivel']} {c['territorio']}) | "
+                    f"{_num(c['tvd'], 4)} | | {_num(c['umbral'], 3)} | ❌ |"
+                )
+        if x.get("v_cramer"):
+            out += [
+                "",
+                "| V de Cramér | Oficial | Sintética | Δ | |",
+                "| --- | ---: | ---: | ---: | --- |",
+            ]
+            for c in x["v_cramer"]:
+                out.append(
+                    f"| {c['par']} ({c['objetivo']}) | {_num(c['v_oficial'], 3)} | "
+                    f"{_num(c['v_sintetica'], 3)} | {_num(c['dif'], 3)} | "
+                    f"{'✅' if c['ok'] else '❌'} |"
+                )
+    texto = "\n".join(out) + "\n"
+    ANEXO.write_text(texto, encoding="utf-8")
+    return texto
+
+
 if __name__ == "__main__":
     import sys
 
+    if "--anexo" in sys.argv:
+        anexo()
+        raise SystemExit
     r = ejecutar(reanudar="--reanudar" in sys.argv)
+    anexo(r)
     print(json.dumps(r["coherencia"], indent=1)[:3000])
     print(json.dumps(r["territorio_reservado"], indent=1))

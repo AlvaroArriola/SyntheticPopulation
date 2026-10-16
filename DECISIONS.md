@@ -579,3 +579,44 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   9. **Prueba del territorio reservado:** Galicia calibrada sin actividad ni estudios, que se comprueban como reservados con el umbral de comunidad.
 - **Consecuencias:** la calibración nacional también sigue la nueva jerarquía (las importaciones de Ceuta, Melilla y otras celdas deficitarias salen de las comunidades parecidas antes que de toda España).
 - **Aprobada por:** pendiente
+
+## D-042 · Puerta F5: tres fallos y sus propuestas (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F5
+- **Estado:** propuesta (revisión humana G5.6)
+- **Contexto:** la serie F5 (19 comunidades, 10 provincias, 2 listas de municipios, España a 1M, semilla 1; `reports/fase_05.md`) supera G5.1, G5.4 y G5.5. G5.2 y G5.3 fallan por tres motivos. Ninguno se corrige sin decisión, porque A cambia los objetivos calibrados y B y C tocan umbrales.
+- **A. Nacionalidad por edad (G5.2, V de Cramér).**
+  - **Fallo:** en 7 comunidades (02, 07, 08, 15, 16, 18 y 19), la V de Cramér de `nacionalidad_esp_ext × es_adulto` se aleja de la oficial más de 0,03.
+  - **Es un sesgo sistemático, no azar:** las 19 comunidades tienen demasiados menores extranjeros y algo pocos adultos extranjeros. Por ejemplo, los menores son extranjeros en un 20,9 % en Cataluña frente al 17,3 % oficial, y en un 4,9 % en Ceuta frente al 2,5 %. Por edad quinquenal, el exceso se concentra en los 0-4 años: ×1,46 en Cataluña y Madrid, ×2,5 en Ceuta.
+  - **Causa:** solo se calibra el total de cada nacionalidad, no su edad. Para llegar a los extranjeros de 2026, la calibración pondera hacia arriba hogares extranjeros de 2021 con sus hijos, mientras que el crecimiento real desde 2021 ha sido sobre todo de adultos jóvenes. En Ceuta, además, los donantes de 2021 tienen el doble de niños extranjeros (9,6 %) que la ECP 2026 (3,8 %).
+  - **No es un error de datos:** comprobados la nacionalidad y la edad de los donantes del Censo 2021 y el universo del objetivo (residentes; ECP 2026 tabla 60129 más colectivos).
+  - **Propuesta:** nuevo objetivo calibrado `nacionalidad_edad`, española/extranjera × edad quinquenal (ECP 2026, residentes; las mismas celdas oficiales que ya alimentan `nacionalidad` y `adultos_nacionalidad`).
+  - **Ensayo** (`tools/ensayo_d042.py`, `reports/fase_05/ensayo_d042.json`; el objetivo se añade en memoria, sin tocar configuración ni objetivos):
+
+    | Comunidad | V oficial | V de la serie | V con el nuevo objetivo |
+    | --- | ---: | ---: | ---: |
+    | Cataluña | 0,018 | 0,023 | 0,023 |
+    | Madrid | 0,016 | 0,001 | 0,018 |
+    | Ceuta | 0,087 | 0,040 | 0,090 |
+    | Melilla | 0,107 | 0,049 | 0,111 |
+
+    En las cuatro comunidades del ensayo: V-MARG 0 fallos de 12, el resto de V-CRUCE sin cambios y Kish de los donantes casi igual (Ceuta 1.719 → 1.626).
+  - **Coste:** `adultos_nacionalidad` deja de ser una prueba independiente, porque queda casi implícita en lo calibrado; solo el corte 15-17 / 18-19 queda sin calibrar. Seguiría como comprobación del censo de españoles adultos (G3.6). La prueba de minorías por edad sigue en `nacionalidad_top_sexo_edad`: las 15 nacionalidades una a una, por sexo y edad, que sigue reservada.
+  - **Alternativa:** dejarlo como limitación documentada (pero afecta a una minoría y a los menores).
+  - **Si se aprueba:** se rehacen los objetivos (F3, G3.4 incluido) y la serie F4 y F5.
+- **B. V-COHERENCIA de los residentes en colectivos (G5.3).**
+  - **Fallo:** `edad5_sexo_colectivos` da TVD 0,0107 frente al umbral fijo de 0,01. Las otras 17 comparaciones están entre 0,0001 y 0,0025.
+  - **Causa:** la comparación cuenta 16.377 colectivos en las 19 poblaciones autonómicas y 7.790 en la nacional. Simulando dos muestras aleatorias de esos tamaños (300 réplicas), la TVD esperada por puro azar es 0,037 (p95 0,045). El 0,0107 observado es mucho mejor que el azar gracias al equilibrado. Con pesos (antes de integerizar), España es por construcción la unión de las comunidades (D-038.3), así que la coherencia es exacta.
+  - **Propuesta:** el mismo margen de muestreo que V-MARG y V-CRUCE (D-038 A), umbral = máx(0,01, 1,2 × TVD_ref + 0,002), con un TVD_ref de dos muestras.
+  - **Alternativa:** exigir 0,01 solo en los universos de más de 100.000 personas en las dos poblaciones e informar el resto.
+- **C. Ceuta, `tipo_hogar_edad4_ref` (G5.2).**
+  - **Fallo:** TVD 0,0518 frente a 0,05 a nivel de comunidad. Es 1 fallo de 12 comprobaciones (8,3 %), por encima del 5 % por población de D-039.
+  - **No es azar:** a N = 50.000 como provincia da lo mismo (0,0519, que pasa con el umbral de provincia, 0,08), y TVD_ref es 0,013.
+  - **Causa:** es el desfase de fecha ya documentado en D-038. El objetivo reservado usa la estructura de edad de la persona de referencia del Censo 2021, y la población está calibrada a la edad de 2026. Todos los territorios tienen la misma diferencia, de 0,02 a 0,05 (Canarias 0,046; Las Palmas 0,049), y Ceuta es la única que cruza el umbral.
+  - **Propuesta:** excepción documentada como la de Segovia (D-038 B), en `thresholds.yaml` para CCAA:18 / PROV:51 en `tipo_hogar_edad4_ref`.
+  - **Alternativa:** que F3 busque una fuente oficial más reciente de hogares por tipo y edad de la persona de referencia y, si no la hay, cambiar este cruce a «referencia 2021, informativo».
+- **Otros resultados que no requieren decisión** (ya corregidos, sin cambiar el método):
+  - España se calibra componiendo, un bloque cada vez, las calibraciones de sus comunidades. Es el mismo cálculo, pero de otro modo no cabía en memoria a 1M.
+  - En la prueba del territorio reservado, V-MARG del resto excluía mal los objetivos retirados.
+- **Aprobada por:** pendiente
