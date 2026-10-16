@@ -238,14 +238,19 @@ def calibrar(u: D.Unidades, territorio: str, metodo: str = "logit") -> Calibrado
         if todas is None or set(obj["objetivo"].unique()) != set(todas["objetivo"].unique()):
             todas = _celdas_por_unidad(u.personas, obj)
         todas_b = todas
-        for o, mapa in fusion.items():
-            todas_b = todas_b.with_columns(
-                pl.when(pl.col("objetivo") == o)
-                .then(pl.col("clave").replace(mapa))
-                .otherwise(pl.col("clave"))
-                .alias("clave")
-            )
-        todas_b = todas_b.group_by("unidad", "objetivo", "clave").agg(pl.col("x").sum())
+        if fusion:  # solo se rehacen las filas de los objetivos con celdas fusionadas
+            afectados = list(fusion)
+            resto = todas.filter(~pl.col("objetivo").is_in(afectados))
+            fus = todas.filter(pl.col("objetivo").is_in(afectados))
+            for o, mapa in fusion.items():
+                fus = fus.with_columns(
+                    pl.when(pl.col("objetivo") == o)
+                    .then(pl.col("clave").replace(mapa))
+                    .otherwise(pl.col("clave"))
+                    .alias("clave")
+                )
+            fus = fus.group_by("unidad", "objetivo", "clave").agg(pl.col("x").sum())
+            todas_b = pl.concat([resto, fus.select(resto.columns)])
         ub, reg = _ampliar(u, b, ps, obj, todas_b)
         fusiones.append(
             pl.DataFrame(
