@@ -502,3 +502,34 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
     - Verdes Equo Asturias → izquierda estatal (marca de EQUO).
 - **Erratas de los boletines** (se conservan): «PARITDO AUTÓNOMOS», «PODER ANDAlUZ», «CONTIGO SOMOS DEMOCRÁCIA», «PER UN MÓN MES JUST», y «Los Verdes-Ecopacifistas (CENTRO MODERADO)», cuyas siglas no corresponden al nombre.
 - **Aprobada por:** pendiente
+
+## D-038 · Síntesis de la población nacional base (F4) (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F4
+- **Estado:** propuesta (revisión humana G4.8)
+- **Contexto:** F4 pide comparar al menos dos métodos de calibración, elegir uno con evidencia, integerizar a tamaño N con semilla y validar. Durante el trabajo aparecieron varios problemas de datos que exigen decisiones.
+- **Decisiones:**
+  1. **Universo de la actividad (16+).** Los microdatos del Censo 2021 y del Censo Anual dan la relación con la actividad desde los 15 años; las tablas oficiales (67128) y la EPA la dan desde los 16, y V-REGLAS prohíbe ocupados menores de 16 (el Censo 2021 tiene 5). En la población, actividad, ocupación, sector y situación profesional son NP por debajo de 16. Se corrige la nota del diccionario («en blanco = menores de 15», comprobado en los ficheros).
+  2. **Método de calibración: logit acotado** (Deville-Särndal, factores en [0,2; 5]), resuelto por Newton con mínimos cuadrados (las restricciones son redundantes). Comparación sobre los mismos donantes y objetivos (calibración por comunidades):
+     | | Raking | Logit acotado |
+     | --- | --- | --- |
+     | Factores en [0,2; 5] | 99,90 % (Canarias 98,2 %: incumple V-PESOS) | 100 % en las 19 comunidades |
+     | Factor mínimo / máximo | 0,007 / 78 | 0,20 / 5,0 |
+     | Kish / n | 0,910 | 0,919 |
+     | TVD de los cruces reservados (pesos, antes de integerizar) | prácticamente iguales (diferencias < 0,0015) | |
+  3. **España = unión de las 19 comunidades.** Calibrando solo con marginales nacionales, el reparto por provincias (reservado) empeoraba de TVD 0,012 a 0,022; calibrando cada comunidad con sus objetivos y sus donantes queda en 0,006 y la población nacional reproduce también cada comunidad (V-COHERENCIA).
+  4. **Nacionalidades individuales calibradas** (`nacionalidad_top` pasa de reservado a calibrado; nuevo reservado `nacionalidad_top_sexo_edad`, perfil por sexo y edad de cada nacionalidad, con la agrupación `edad_nacionalidad` 0-19, 20-34, 35-49, 50-64, 65+). Con solo los 7 grupos calibrados, la composición interna era la de 2021 y las nacionalidades salían muy mal representadas (ratio Colombia 0,71; Ucrania 0,57; Perú 0,74; China 1,38; Ecuador 1,37), lo que haría fallar la auditoría de minorías.
+  5. **Ampliación jerárquica de donantes** (docs/02 §5). Una celda calibrada de una comunidad es deficitaria si tiene menos de 5 unidades donantes locales o si su objetivo supera 3,5 veces la masa inicial local (nacionalidades que más han crecido desde 2021: Perú en 5 comunidades, Ucrania en Asturias y la Comunitat Valenciana…). Se añaden unidades de otras comunidades que caen en la celda (orden pseudoaleatorio fijo, mismo grado de urbanización y tamaño de municipio preferentes, sin las que caerían en celdas con objetivo 0), repartidas entre las provincias en proporción al objetivo; pierden el municipio y se marcan como no locales. Proporción de donantes locales: ≥ 99 % en todas las comunidades.
+  6. **Fusión de nacionalidades muy pequeñas:** en cada comunidad, las nacionalidades con objetivo < 100 personas se calibran dentro de «otras extranjeras» (p. ej. 7,6 ecuatorianos en Melilla, cuyos dos hogares donantes ya pesan 55). Solo afecta a Ceuta, Melilla y celdas similares; la nacionalidad sigue calibrada por grupos.
+  7. **Ceros estructurales:** las celdas con objetivo 0 y sin donantes (estudios superiores a los 15-19 años; zona rural o intermedia en Ceuta y Melilla) salen de la calibración; si tuvieran donantes, la construcción se detiene.
+  8. **Colectivos (D-021):** cada celda provincia × sexo × edad_5 con residentes en colectivos recibe n = máx(5, objetivo/10) personas donantes de su provincia, sexo y edad (orden pseudoaleatorio fijo), como unidades individuales. Sus atributos distintos de edad, sexo y territorio se marcan `modelada`; los del hogar son NP y no tienen `household_id`.
+  9. **Integerización:** TRS con muestreo sistemático ordenado (bloque, provincia, grado de urbanización, tamaño de municipio, residencia, tipo y tamaño de hogar, nacionalidad y edad de la persona de referencia) seguido de un **equilibrado** (variante de la fase de aterrizaje del método del cubo, Deville y Tillé 2004): intercambios de unidades dentro de la misma comunidad que acercan los recuentos de la muestra a los esperados en las celdas calibradas. Sin equilibrado, el muestreo por hogares (conglomerados) dejaba algunas marginales autonómicas fuera de V-MARG por azar (4 de 200 con 100.000 personas); con él, 0 de 199.
+  10. **Interpretaciones de umbrales (pendientes de aprobación):**
+      - V-CRUCE, V de Cramér: se aplica al nivel del territorio de la población (España); por comunidad y provincia se informa.
+      - V-REGLAS-BLANDAS: la referencia son los donantes con los pesos calibrados. Se informa el resultado estricto (exceso ≤ 10 %) y con margen de muestreo (+ 2 errores típicos de una muestra aleatoria simple de tamaño N), porque con N pequeño un caso muy raro (p. ej. jubilados menores de 50, frecuencia 1,2 por 100.000) supera el 10 % por azar. Las reglas blandas no son puerta en docs/04 (G4.3 solo exige las duras).
+- **Riesgos y limitaciones:**
+  - El objetivo reservado `tipo_hogar_edad4_ref` usa la estructura de edad de la persona de referencia de 2021; la población, calibrada a la estructura de edad de 2026, tiene personas de referencia mayores (la proporción de adultos de 35-49 años bajó del 28,5 % al 25,4 %). Su TVD nacional (≈ 0,029-0,030) roza el umbral de 0,03 por esa diferencia de fechas.
+  - Los inmigrantes llegados después de 2021 se representan con residentes de su misma nacionalidad en 2021 (el perfil de sexo y edad por nacionalidad se valida con `nacionalidad_top_sexo_edad`).
+- **Evidencia:** `reports/fase_04.md` y `reports/fase_04_validacion.json`.
+- **Aprobada por:** pendiente
