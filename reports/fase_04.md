@@ -35,6 +35,23 @@ En 25 poblaciones de prueba (10.000 a 1.000.000 de personas, 5 semillas por tama
 
 Quedan 59 fallos por azar en poblaciones de 10.000 a 100.000 personas, que no superan el 2,3 % de las comprobaciones de ninguna población, y ningún fallo sistemático. Con el criterio original habrían sido 207.
 
+## Repetición con D-042 (16/10/2026)
+
+En F5 se añadió el objetivo calibrado `nacionalidad_edad`, española/extranjera × edad quinquenal (D-042 A), y una excepción documentada para Ceuta en `tipo_hogar_edad4_ref` (D-042 C). Con esos cambios se repitió la serie de 25 poblaciones, y la puerta F4 se sigue superando (`fase_04_puerta.md`):
+
+| Comprobación | Resultado |
+| --- | --- |
+| V-MARG | 0 fallos en 5.981 comprobaciones |
+| V-CRUCE | 66 fallos por azar en 12.775 comprobaciones (máximo 2,3 % por población) y 0 sistemáticos |
+| Excepciones (Segovia y Ceuta) | 14 |
+| V de Cramér | 0 fallos |
+| V-PESOS | Kish/n mínimo 0,836 |
+| V-SEMILLAS | 0 fuera |
+| V-REPRO | hashes iguales |
+| G4.7 | 0 marginales fuera |
+
+Las cifras de las secciones siguientes son las de la serie original.
+
 ## Cómo se construye la población
 
 1. **Donantes.** Los 1.853.662 hogares de la muestra del Censo 2021 (4.707.186 personas), completos, más un módulo de **colectivos** (D-021): 386.003 residentes en establecimientos colectivos a 01/01/2026, representados por personas donantes de su misma provincia, sexo y edad quinquenal (atributos distintos de edad, sexo y territorio marcados `modelada`; sin `household_id`). La actividad, la ocupación, el sector y la situación profesional son NP por debajo de 16 años, como en las tablas oficiales (D-038.1).
