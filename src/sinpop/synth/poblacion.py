@@ -366,9 +366,13 @@ def construir(
     """`excluir`: objetivos calibrables que no se usan (prueba del territorio reservado, F5)."""
     if not isinstance(semilla, int) or n <= 0:
         raise ValueError("hacen falta un tamaño positivo y una semilla entera")
+    propias = u is None
     u = u if u is not None else unidades_todas()
     cal, meta_cal = calibracion(u, territorio, metodo, excluir=excluir)
     p = P.personas_ponderadas(u, cal)
+    if propias:  # los donantes ya no hacen falta: con España a 1M la memoria es justa
+        del u
+        gc.collect()
     o = _orden(p)
     w, m = o["w"].to_numpy(), o["m"].to_numpy().astype(float)
     e = S.copias_esperadas(w, m, n)

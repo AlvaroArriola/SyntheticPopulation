@@ -151,7 +151,8 @@ def territorio_reservado(u: D.Unidades) -> dict:
         )
         d = M.tvd(g["sintetico"], g["valor"])
         filas.append({"objetivo": ob, "tvd": d, "tvd_ref": ref, "umbral": um, "ok": d <= um})
-    vm = V.v_marg(pp, RESERVADO, SEMILLA)
+    # Los objetivos excluidos no se calibran: se comprueban arriba como reservados, no en V-MARG.
+    vm = V.v_marg(pp, RESERVADO, SEMILLA).filter(~pl.col("objetivo").is_in(list(SOCIOECONOMICOS)))
     return {
         "territorio": RESERVADO,
         "run_id": m["run_id"],
@@ -175,6 +176,8 @@ def ejecutar(reanudar: bool = False) -> dict:
     if reanudar and RESUMEN.exists():
         previo = json.loads(RESUMEN.read_text("utf-8"))
         res["territorios"] = previo["territorios"]
+        if "territorio_reservado" in previo:
+            res["territorio_reservado"] = previo["territorio_reservado"]
         res["versiones_previas"] = sorted(
             {previo["version_codigo"], *previo.get("versiones_previas", [])}
         )
@@ -195,13 +198,17 @@ def ejecutar(reanudar: bool = False) -> dict:
         RESUMEN.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=float), "utf-8")
         del meta
         gc.collect()
-    nac = PB.construir("ES", N_ES, SEMILLA, u=u)
+    if "territorio_reservado" not in res:
+        res["territorio_reservado"] = territorio_reservado(u)
+        RESUMEN.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=float), "utf-8")
+    # España a 1M: `construir` carga los donantes y los suelta tras ponderar (memoria).
+    del u
+    gc.collect()
+    nac = PB.construir("ES", N_ES, SEMILLA)
     print(f"ES {N_ES}: {nac['run_id']}", flush=True)
     res["coherencia"] = coherencia(
         [x for x in res["territorios"] if x["territorio"].startswith("CCAA:")], nac["run_id"]
     )
-    RESUMEN.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=float), "utf-8")
-    res["territorio_reservado"] = territorio_reservado(u)
     RESUMEN.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=float), "utf-8")
     return res
 
