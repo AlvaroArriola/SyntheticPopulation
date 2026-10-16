@@ -769,3 +769,17 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
     - La ganancia esperada es pequeña y el coste, alto.
 - **C. Umbral de G6.6:** máx(2 %, 2 errores típicos) donde se calibra. Hoy: 52 de 52 provincias dentro.
 - **Aprobada por:** humano (2026-10-16): «Me gustan las propuestas… si tienes que volver a ejecutar las fases anteriores hazlo… la población más fehaciente posible a la real, con fecha de corte en junio de 2026».
+
+## D-047 · V-SEMILLAS con cinco semillas: azar frente a sesgo (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F4 (serie repetida con D-046)
+- **Estado:** propuesta (cambia la lectura de un umbral; necesita aprobación humana)
+- **Contexto:** al repetir la serie F4, G4.5 falla en 1 de 1.220 proporciones.
+  - Es la proporción de mujeres de 35-39 años entre los residentes en colectivos, con N = 10.000 (unos 80 residentes en colectivos por población).
+  - Su desviación típica entre las 5 semillas es 1,59 veces la de una muestra aleatoria simple; el umbral es 1,5.
+  - En los otros tamaños (50.000 a 1.000.000) no falla ninguna proporción. La razón media está entre 0,22 y 0,29.
+- **Por qué es azar:** con 5 semillas, la desviación típica se estima con 4 grados de libertad. Para una proporción con la variabilidad de una muestra aleatoria simple, P(s > 1,5 σ) = P(χ²₄ > 9) = 6,1 %. En los colectivos, que se muestrean casi como personas sueltas (el equilibrado apenas reduce su varianza), es esperable que alguna de las 38 celdas supere 1,5 por azar.
+- **Propuesta** (como D-039 para V-CRUCE): una proporción solo falla V-SEMILLAS si supera 1,5 en dos o más tamaños de población (sesgo sistemático). El resultado estricto se informa siempre.
+- **Alternativa:** más semillas (por ejemplo, 10) solo en N = 10.000. Así baja la probabilidad de falso fallo, pero cuesta otra serie.
+- **Aprobada por:** pendiente
