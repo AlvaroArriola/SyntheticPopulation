@@ -1337,6 +1337,175 @@
      "ok": true
     }
    ]
+  },
+  {
+   "territorio": "CCAA:09",
+   "run_id": "2026-01-01_CCAA_09_100000_s1",
+   "n": 100000,
+   "obtenido": 100008,
+   "donantes": {
+    "proporcion_local": 1.0,
+    "por_nivel": {
+     "mismo_territorio": 100008
+    },
+    "hogares_donantes": 39796,
+    "kish_hogares_donantes": 29889.427003765464,
+    "kish_min": 200,
+    "confianza": "media-alta",
+    "confianza_reducida": false
+   },
+   "v_marg": {
+    "comprobaciones": 11,
+    "fallos": [],
+    "tvd_media": 0.0029096275482033054
+   },
+   "v_cruce": {
+    "comprobaciones": 36,
+    "fallos": [],
+    "excepciones": 0,
+    "proporcion_fallos": 0.0,
+    "propio": [
+     {
+      "objetivo": "actividad_edad",
+      "tvd": 0.015745316557719293,
+      "tvd_ref": 0.008715138695077984,
+      "umbral": 0.05,
+      "ok": true
+     },
+     {
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.011234841473634571,
+      "tvd_ref": 0.0030942170860357135,
+      "umbral": 0.05,
+      "ok": true
+     },
+     {
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.02432839817087122,
+      "tvd_ref": 0.006223448661290686,
+      "umbral": 0.05,
+      "ok": true
+     },
+     {
+      "objetivo": "estudios_sexo_edad",
+      "tvd": 0.009153475999400385,
+      "tvd_ref": 0.010887328486642298,
+      "umbral": 0.05,
+      "ok": true
+     },
+     {
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.024912702985410866,
+      "tvd_ref": 0.010777036723662392,
+      "umbral": 0.05,
+      "ok": true
+     },
+     {
+      "objetivo": "provincia_si_calibra_ccaa",
+      "tvd": 0.0050032225234059036,
+      "tvd_ref": 0.002726972103289925,
+      "umbral": 0.05,
+      "ok": true
+     },
+     {
+      "objetivo": "tamano_municipio",
+      "tvd": 0.02081401862413714,
+      "tvd_ref": 0.00404841876513635,
+      "umbral": 0.05,
+      "ok": true
+     },
+     {
+      "objetivo": "tipo_hogar_edad4_ref",
+      "tvd": 0.028103067715993253,
+      "tvd_ref": 0.011972639983333096,
+      "umbral": 0.05,
+      "ok": true
+     }
+    ]
+   },
+   "v_reglas_duras": 0,
+   "v_cramer": [
+    {
+     "objetivo": "actividad_edad",
+     "par": "relacion_actividad × edad_actividad",
+     "v_oficial": 0.6121702751950443,
+     "v_sintetica": 0.6100644084750553,
+     "dif": 0.0021058667199890246,
+     "ok": true
+    },
+    {
+     "objetivo": "adultos_nacionalidad",
+     "par": "nacionalidad_esp_ext × es_adulto",
+     "v_oficial": 0.017641292240564124,
+     "v_sintetica": 0.022709324922054817,
+     "dif": 0.005068032681490694,
+     "ok": true
+    },
+    {
+     "objetivo": "estado_civil_edad",
+     "par": "estado_civil × edad_estado_civil",
+     "v_oficial": 0.625829146250644,
+     "v_sintetica": 0.6339273003790044,
+     "dif": 0.008098154128360346,
+     "ok": true
+    },
+    {
+     "objetivo": "estudios_sexo_edad",
+     "par": "estudios_3 × sexo",
+     "v_oficial": 0.04187800158242283,
+     "v_sintetica": 0.035230669377957984,
+     "dif": 0.006647332204464847,
+     "ok": true
+    },
+    {
+     "objetivo": "estudios_sexo_edad",
+     "par": "estudios_3 × edad_estudios",
+     "v_oficial": 0.625829457048562,
+     "v_sintetica": 0.6257169890790544,
+     "dif": 0.0001124679695075903,
+     "ok": true
+    },
+    {
+     "objetivo": "estudios_sexo_edad",
+     "par": "sexo × edad_estudios",
+     "v_oficial": 0.07620493379618554,
+     "v_sintetica": 0.07704182097183576,
+     "dif": 0.000836887175650225,
+     "ok": true
+    },
+    {
+     "objetivo": "nacionalidad_top_sexo_edad",
+     "par": "nacionalidad_top × sexo",
+     "v_oficial": 0.06080171774120254,
+     "v_sintetica": 0.05499016735329988,
+     "dif": 0.00581155038790266,
+     "ok": true
+    },
+    {
+     "objetivo": "nacionalidad_top_sexo_edad",
+     "par": "nacionalidad_top × edad_nacionalidad",
+     "v_oficial": 0.1249778321983269,
+     "v_sintetica": 0.13410534946490957,
+     "dif": 0.009127517266582674,
+     "ok": true
+    },
+    {
+     "objetivo": "nacionalidad_top_sexo_edad",
+     "par": "sexo × edad_nacionalidad",
+     "v_oficial": 0.06463197059015126,
+     "v_sintetica": 0.06514008904566787,
+     "dif": 0.0005081184555166124,
+     "ok": true
+    },
+    {
+     "objetivo": "tipo_hogar_edad4_ref",
+     "par": "tipo_hogar × edad_4",
+     "v_oficial": 0.19128903289897486,
+     "v_sintetica": 0.19193312119520886,
+     "dif": 0.0006440882962339967,
+     "ok": true
+    }
+   ]
   }
  ]
 }
