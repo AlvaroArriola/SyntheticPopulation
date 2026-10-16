@@ -1,7 +1,7 @@
 # Puerta de la fase F5
 
 **Resultado:** superada  
-**Fecha:** 2026-10-16 · **Versión del código:** git:c630c17-dirty  
+**Fecha:** 2026-10-16 · **Versión del código:** git:f569aac-dirty  
 **Comando:** `sinpop validate --phase 5`
 
 | ID | Comprobación | Resultado | Valor | Umbral |
@@ -11,4 +11,4 @@
 | G5.3 | La agregación de las 19 comunidades reproduce la nacional (V-COHERENCIA) | ✅ | 19 comparaciones; fuera: 0; máxima edad5_sexo_colectivos 0.0086 | TVD ≤ 0,01 (calibradas) y ≤ 0,02 (reservadas) |
 | G5.4 | Donantes no locales informados y tamaño efectivo mínimo (V-DONANTES) | ✅ | Kish mínimo 1310 (MUNIS:configs/territorios/ejemplo_teruel_rural.yaml); local mínimo 0.0 % (MUNIS:configs/territorios/ejemplo_teruel_rural.yaml); confianza reducida: ['MUNIS:configs/territorios/ejemplo_teruel_rural.yaml']; bajo el mínimo: 0 | Kish de los hogares donantes ≥ 200; proporción local informada |
 | G5.5 | Ceuta, Melilla y 2+ provincias de < 150.000 habitantes, con su confianza | ✅ | PROV:51 (84,196 hab.): confianza media; PROV:52 (86,908 hab.): confianza media; PROV:42 (90,824 hab.): confianza media; PROV:44 (137,173 hab.): confianza media | generadas sin errores, con confianza declarada |
-| G5.6 | Revisión humana del informe | ⏸️ | pendiente (reports/fase_05.md) | aprobación |
+| G5.6 | Revisión humana del informe | ✅ | aprobada | aprobación |

@@ -1,6 +1,6 @@
 # Fase 05 · Generador territorial
 
-**Estado:** en revisión humana (G5.6). G5.1-G5.5 superadas (`fase_05_puerta.md`).
+**Estado:** superada (G5.6 aprobada por el responsable el 16/10/2026, D-043)
 **Fecha:** 2026-10-16 · **Versión del código:** ver `fase_05_puerta.md`
 **Comando para reproducir:**
 

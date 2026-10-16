@@ -565,7 +565,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-16
 - **Fase:** F5
-- **Estado:** propuesta (revisión humana G5.6)
+- **Estado:** aprobada
 - **Contexto:** F5 pide generar cualquier territorio (comunidad, provincia o lista de municipios) con el mismo código que la nacional, con sus objetivos y sus donantes, y una jerarquía de donantes para territorios con pocos.
 - **Decisiones:**
   1. **Jerarquía de donantes configurable** (`territories.yaml`): mismo territorio → misma provincia → misma comunidad con el mismo grado de urbanización → comunidades parecidas → España (último recurso, como en F4, D-038.5). Parámetros de la ampliación (5 unidades por celda; razón 3,5 → 2,5) en el mismo fichero.
@@ -578,7 +578,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   8. **Territorios de ejemplo por municipios** (`tools/generar_territorios_ejemplo.py`, códigos tomados del Padrón, no escritos a mano): urbano, València y 11 municipios de L'Horta (selección técnica); rural, los 226 municipios de Teruel de menos de 2.000 habitantes.
   9. **Prueba del territorio reservado:** Galicia calibrada sin actividad ni estudios, que se comprueban como reservados con el umbral de comunidad.
 - **Consecuencias:** la calibración nacional también sigue la nueva jerarquía (las importaciones de Ceuta, Melilla y otras celdas deficitarias salen de las comunidades parecidas antes que de toda España).
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-16), con el informe de F5 (D-043)
 
 ## D-042 · Puerta F5: tres fallos y sus propuestas (2026-10-16)
 
@@ -630,3 +630,11 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - V-COHERENCIA de los colectivos: 0,0086.
   - Puerta F4 repetida: superada.
 - **Aprobada por:** humano (2026-10-16), por delegación
+
+## D-043 · Aprobación de F5 (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F5
+- **Estado:** aprobada
+- **Decisión:** el responsable aprueba el informe `reports/fase_05.md` (G5.6), con D-041 y D-042 aprobadas. F5 queda cerrada y se empieza F6.
+- **Aprobada por:** humano (2026-10-16)
