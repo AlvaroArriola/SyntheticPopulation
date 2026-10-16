@@ -1,0 +1,18 @@
+# Generado por tools/generar_territorios_ejemplo.py (F5). No editar a mano.
+nombre: 'Ejemplo urbano: València y municipios de L''Horta'
+descripcion: 'Selección técnica de 12 municipios de la provincia de Valencia (no es una delimitación oficial);
+  códigos tomados del Padrón 2025 por su nombre oficial: València, Paterna, Torrent, Burjassot, Mislata,
+  Xirivella, Quart de Poblet, Manises, Alboraia/Alboraya, Alfafar, Sedaví, Tavernes Blanques'
+municipios:
+- '46013'
+- '46022'
+- '46078'
+- '46102'
+- '46110'
+- '46159'
+- '46169'
+- '46190'
+- '46223'
+- '46237'
+- '46244'
+- '46250'

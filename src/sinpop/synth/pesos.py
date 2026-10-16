@@ -252,17 +252,43 @@ def _pesos_provincias(
 
 
 def _ampliar(
-    u: D.Unidades, b: str, ps: list[str], obj: pl.DataFrame, todas: pl.DataFrame
+    u: D.Unidades,
+    b: str,
+    ps: list[str],
+    obj: pl.DataFrame,
+    todas: pl.DataFrame,
+    reparar: pl.DataFrame | None = None,
+    previas: pl.DataFrame | None = None,
+    evitar_celdas: pl.DataFrame | None = None,
 ) -> tuple[pl.DataFrame, pl.DataFrame]:
-    """Unidades del bloque (base y añadidas, con `d_anadida`) y registro de ampliaciones."""
+    """Unidades del bloque (base y añadidas, con `d_anadida`) y registro de ampliaciones.
+
+    Con `reparar` (objetivo, clave, falta) se añade a `previas` la masa `falta` en esas celdas,
+    sin tomar unidades que caigan en `evitar_celdas` (objetivo, clave; véase `calibrar`)."""
     from sinpop.harmonize.core import ccaa_de_provincia
     from sinpop.targets import run
 
     cfg = _cfg()
     amp = cfg.ampliacion  # type: ignore[attr-defined]
     ccaa = ccaa_de_provincia()
-    base = base_bloque(u, b, ps)
-    loc = base.with_columns(pl.lit(None, dtype=pl.Float64).alias("d_anadida"))
+    base = base_bloque(u, b, ps) if previas is None else previas.drop("d_anadida")
+    if previas is None and b.startswith("MUNIS:"):
+        # Los hogares de la provincia y clase que caerían en una celda sin objetivo en la lista
+        # (p. ej. zona intermedia en un territorio rural) no representan a esos municipios.
+        validas = obj.filter(pl.col("valor") > 0).select("objetivo", "clave")
+        fuera = todas.join(validas, on=["objetivo", "clave"], how="anti").select("unidad")
+        base = base.join(
+            fuera.unique().join(
+                base.filter(pl.col("nivel") != "mismo_territorio").select("unidad"), on="unidad"
+            ),
+            on="unidad",
+            how="anti",
+        )
+    loc = (
+        base.with_columns(pl.lit(None, dtype=pl.Float64).alias("d_anadida"))
+        if previas is None
+        else previas
+    )
     cel = todas.join(base.select("unidad", "factor"), on="unidad").join(
         u.unidades.select("unidad", "d"), on="unidad"
     )
@@ -272,10 +298,20 @@ def _ampliar(
     )
     pos = obj.filter(pl.col("valor") > 0).select("objetivo", "clave", "valor")
     def_ = pos.join(n, on=["objetivo", "clave"], how="left").fill_null(0)
-    def_ = def_.filter(
-        (pl.col("locales") < amp.min_donantes_celda)
-        | (pl.col("valor") > amp.razon_max * pl.col("masa"))
-    ).sort("objetivo", "clave")
+    if reparar is None:
+        def_ = def_.filter(
+            (pl.col("locales") < amp.min_donantes_celda)
+            | (pl.col("valor") > amp.razon_max * pl.col("masa"))
+        ).sort("objetivo", "clave")
+        def_ = def_.with_columns(pl.lit(None, dtype=pl.Float64).alias("falta"))
+        evitar = pl.DataFrame(schema={"unidad": pl.Int64})
+    else:
+        def_ = def_.join(reparar.select("objetivo", "clave", "falta"), on=["objetivo", "clave"])
+        evitar = (
+            todas.join(evitar_celdas, on=["objetivo", "clave"]).select("unidad").unique()
+            if evitar_celdas is not None and evitar_celdas.height
+            else pl.DataFrame(schema={"unidad": pl.Int64})
+        )
     cols = ["bloque", "objetivo", "clave", "locales", "razon_inicial", "anadidas"]
     if def_.height == 0:
         return loc, pl.DataFrame(schema=dict.fromkeys(cols, pl.Utf8)).cast(
@@ -289,8 +325,12 @@ def _ampliar(
         .sort("len", "grado_urbanizacion", descending=True)
         .row(0)[0]
     )
-    cero = obj.filter(pl.col("valor") <= 0).select("objetivo", "clave")
-    incompatibles = todas.join(cero, on=["objetivo", "clave"]).select("unidad").unique()
+    # Incompatibles: unidades con alguna celda sin objetivo positivo en el bloque (objetivo 0 o,
+    # en las listas de municipios, categoría ausente).
+    positivas = obj.filter(pl.col("valor") > 0).select("objetivo", "clave")
+    incompatibles = (
+        todas.join(positivas, on=["objetivo", "clave"], how="anti").select("unidad").unique()
+    )
     orden = (
         u.unidades.select(
             "unidad",
@@ -301,6 +341,7 @@ def _ampliar(
         )
         .join(base.select("unidad"), on="unidad", how="anti")
         .join(incompatibles, on="unidad", how="anti")
+        .join(evitar, on="unidad", how="anti")
         .join(ctx.select("unidad", "grado_urbanizacion"), on="unidad", how="left")
         .with_columns(pl.col("provincia").replace_strict(ccaa).alias("_ccaa"))
     )
@@ -317,8 +358,8 @@ def _ampliar(
     prov_obj = {p: run.leer(f"PROV:{p}") for p in ps}
     anadidas, registro = [], []
     universo = dict(obj.select("objetivo", "universo").unique().iter_rows())
-    for objetivo, clave_, valor, locales, masa in def_.select(
-        "objetivo", "clave", "valor", "locales", "masa"
+    for objetivo, clave_, valor, locales, masa, falta_r in def_.select(
+        "objetivo", "clave", "valor", "locales", "masa", "falta"
     ).iter_rows():
         # Solo unidades del tipo de la celda: los colectivos no se importan para celdas de
         # hogares o de residentes (caerían también en las celdas de colectivos del bloque).
@@ -334,15 +375,15 @@ def _ampliar(
         cand = pl.concat(
             [cand.filter(filtros[nv]).with_columns(pl.lit(nv).alias("nivel")) for nv in niveles]
         ).unique("unidad", keep="first", maintain_order=True)
-        if locales < amp.min_donantes_celda:
-            t = cand.head(amp.min_donantes_celda - locales).with_columns(
-                pl.lit(valor / amp.min_donantes_celda).alias("d_anadida")
-            )
-        else:
-            falta = valor / amp.razon_objetivo - masa
+        if falta_r is not None or locales >= amp.min_donantes_celda:
+            falta = falta_r if falta_r is not None else valor / amp.razon_objetivo - masa
             acum = (pl.col("x") * pl.col("d")).cum_sum()
             t = cand.filter(acum.shift(1, fill_value=0) < falta).with_columns(
                 pl.col("d").alias("d_anadida")
+            )
+        elif locales < amp.min_donantes_celda:
+            t = cand.head(amp.min_donantes_celda - locales).with_columns(
+                pl.lit(valor / amp.min_donantes_celda).alias("d_anadida")
             )
         cuota = _pesos_provincias(b, ps, objetivo, clave_, prov_obj)
         tot = sum(cuota) or 1.0
@@ -365,6 +406,34 @@ def _ampliar(
     )
     reg = pl.DataFrame(registro, schema=cols, orient="row")
     return pl.concat([loc, add.select(loc.columns)]), reg
+
+
+RONDAS_REPARACION = 3
+
+
+def _calibrar_unidades(u: D.Unidades, ub: pl.DataFrame, obj, fusion, metodo, ccaa):
+    """Matriz y calibración de las unidades `ub` del bloque (índice local y provincia de
+    destino)."""
+    ubl = ub.with_row_index("_l")
+    pers = u.personas.drop("provincia", "ccaa").join(
+        ubl.select("unidad", "_l", "provincia"), on="unidad"
+    )
+    pers = pers.with_columns(pl.col("provincia").replace_strict(ccaa).alias("ccaa"))
+    uni = u.unidades.drop("provincia").join(ubl, on="unidad").sort("_l")
+    uni = uni.with_columns(
+        pl.coalesce("d_anadida", pl.col("d") * pl.col("factor")).alias("d")
+    ).drop("d_anadida")
+    sub = D.Unidades(
+        personas=pers.drop("unidad")
+        .rename({"_l": "unidad"})
+        .with_columns(pl.col("unidad").cast(pl.Int64)),
+        unidades=uni.drop("unidad")
+        .rename({"_l": "unidad"})
+        .with_columns(pl.col("unidad").cast(pl.Int64)),
+    )
+    m = D.matriz(sub, obj, fusion)
+    r = C.calibrar(m.X, m.d, m.celdas["valor"].to_numpy(), metodo)
+    return uni, m, r
 
 
 def calibrar(u: D.Unidades, territorio: str, metodo: str = "logit") -> Calibrado:
@@ -404,31 +473,34 @@ def calibrar(u: D.Unidades, territorio: str, metodo: str = "logit") -> Calibrado
             )
         )
         ampl.append(reg)
-        # Personas del bloque con índice local de unidad y la provincia de destino.
-        ub = ub.with_row_index("_l")
-        pers = u.personas.drop("provincia", "ccaa").join(
-            ub.select("unidad", "_l", "provincia"), on="unidad"
-        )
-        pers = pers.with_columns(pl.col("provincia").replace_strict(ccaa).alias("ccaa"))
-        uni = u.unidades.drop("provincia").join(ub, on="unidad").sort("_l")
-        uni = uni.with_columns(
-            pl.coalesce("d_anadida", pl.col("d") * pl.col("factor")).alias("d")
-        ).drop("d_anadida")
-        sub = D.Unidades(
-            personas=pers.drop("unidad")
-            .rename({"_l": "unidad"})
-            .with_columns(pl.col("unidad").cast(pl.Int64)),
-            unidades=uni.drop("unidad")
-            .rename({"_l": "unidad"})
-            .with_columns(pl.col("unidad").cast(pl.Int64)),
-        )
-        m = D.matriz(sub, obj, fusion)
-        r = C.calibrar(m.X, m.d, m.celdas["valor"].to_numpy(), metodo)
-        # Se busca 1e-7, pero el criterio de aceptación es el de V-PESOS (desviación relativa
-        # máxima ≤ 0,1 %); la desviación alcanzada queda en el diagnóstico.
         from sinpop.config import load_config
 
+        # Se busca 1e-7, pero el criterio de aceptación es el de V-PESOS (desviación relativa
+        # máxima ≤ 0,1 %); la desviación alcanzada queda en el diagnóstico.
         tol = load_config("thresholds.yaml").v_pesos.convergencia_max  # type: ignore[attr-defined]
+        uni, m, r = _calibrar_unidades(u, ub, obj, fusion, metodo, ccaa)
+        # Reparación (D-041): con pocos donantes, la calibración acotada puede no tener solución
+        # aunque ninguna celda sea deficitaria por sí sola (p. ej. faltan africanos que no sean
+        # marroquíes). Se añaden donantes a las celdas que no llegan, sin tomar unidades de las
+        # celdas que se pasan, y se recalibra (hasta RONDAS_REPARACION veces).
+        ronda = 0
+        while r.desviacion_max > tol and ronda < RONDAS_REPARACION:
+            ronda += 1
+            T = m.celdas["valor"].to_numpy()
+            dev = (m.X.T @ r.w) / T - 1
+            c = m.celdas.with_columns(pl.Series("dev", dev))
+            cortas = c.filter(pl.col("dev") < -tol)
+            sobran = c.filter(pl.col("dev") > tol).select("objetivo", "clave")
+            reparar = cortas.select(
+                "objetivo",
+                "clave",
+                (2 * (-pl.col("dev")) * pl.col("valor")).alias("falta"),
+            )
+            ub, reg = _ampliar(
+                u, b, ps, obj, todas_b, reparar=reparar, previas=ub, evitar_celdas=sobran
+            )
+            ampl.append(reg.with_columns(pl.lit(f"reparacion {ronda}").alias("motivo")))
+            uni, m, r = _calibrar_unidades(u, ub, obj, fusion, metodo, ccaa)
         if r.desviacion_max > tol:
             raise RuntimeError(
                 f"{b}: la calibración ({metodo}) no converge: {r.desviacion_max:.2e}"
@@ -453,7 +525,7 @@ def calibrar(u: D.Unidades, territorio: str, metodo: str = "logit") -> Calibrado
         unidades=pl.concat(filas),
         diagnosticos=diags,
         ceros=pl.concat(ceros),
-        ampliaciones=pl.concat(ampl, how="vertical_relaxed"),
+        ampliaciones=pl.concat(ampl, how="diagonal_relaxed"),
         fusiones=pl.concat(fusiones),
     )
 
