@@ -219,7 +219,13 @@ def validate(
         typer.echo("Indica --phase N o --run <run_id>.", err=True)
         raise typer.Exit(code=2)
     if run is not None:
-        _pendiente("validate --run", "F4")
+        from sinpop.validate.fase4 import validar_poblacion
+
+        ok = validar_poblacion(run)
+        typer.echo(
+            f"{run}: validación {'superada' if ok else 'fallida'} · reports/{run}/validacion.md"
+        )
+        raise typer.Exit(code=0 if ok else 1)
     ok = run_phase(int(phase))  # type: ignore[arg-type]
     raise typer.Exit(code=0 if ok else 1)
 

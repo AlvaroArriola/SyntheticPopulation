@@ -497,6 +497,87 @@ def informe(res: dict) -> str:
     return texto
 
 
+def validar_poblacion(rid: str) -> bool:
+    """`sinpop validate --run <run_id>`: V-MARG, V-CRUCE, Cramér, reglas, donantes, rareza y
+    minorías de una población; escribe `reports/<run_id>/validacion.md` y actualiza el estado
+    de validación en su `metadata.json`."""
+    from sinpop import POPULATIONS_DIR
+
+    p, lin, meta = V.cargar(rid)
+    terr = meta["territorio"]["codigo"]
+    semilla = meta["semilla"]
+    pp = V.preparar(p)
+    vm = V.v_marg(pp, terr, semilla)
+    vc = V.v_cruce(pp, terr, semilla)
+    cr = V.v_cramer(pp, terr)
+    duras = V.v_reglas_duras(pp)
+    blandas = V.v_reglas_blandas(pp, meta["referencia_reglas_blandas"])
+    don = V.v_donantes(p, lin, terr)
+    rar = V.v_rareza(p)
+    mino = V.v_minorias(p, lin, terr)
+    ok = bool(
+        vm["ok"].all()
+        and vc["ok"].all()
+        and cr["ok"].all()
+        and duras["ok"].all()
+        and rar["ok"].all()
+    )
+    out = REPORTS_DIR / rid
+    out.mkdir(parents=True, exist_ok=True)
+    t = [
+        f"# Validación de {rid}",
+        "",
+        f"**Estado:** {'superada' if ok else 'fallida'} · {meta['tamano_obtenido']} personas · "
+        f"semilla {semilla} · {code_version()}",
+        "",
+        "## V-MARG",
+        "",
+        _tabla(vm.select("nivel", "territorio", "objetivo", "tvd", "umbral", "ok")),
+        "",
+        "## V-CRUCE",
+        "",
+        _tabla(
+            vc.filter((pl.col("nivel") == "espana") | ~pl.col("ok")).select(
+                "nivel", "territorio", "objetivo", "tvd", "umbral", "ok", "ok_propuesta"
+            )
+        ),
+        "",
+        "## V de Cramér",
+        "",
+        _tabla(cr),
+        "",
+        "## Reglas duras",
+        "",
+        _tabla(duras),
+        "",
+        "## Reglas blandas",
+        "",
+        _tabla(blandas, 6),
+        "",
+        "## V-DONANTES",
+        "",
+        _tabla(don, 3),
+        "",
+        "## V-RAREZA",
+        "",
+        _tabla(rar),
+        "",
+        "## Minorías (primera pasada)",
+        "",
+        _tabla(mino.drop("fuente")),
+        "",
+    ]
+    (out / "validacion.md").write_text("\n".join(t) + "\n", encoding="utf-8")
+    meta["validacion"] = {
+        "estado": "superada" if ok else "fallida",
+        "informe": f"reports/{rid}/validacion.md",
+    }
+    (POPULATIONS_DIR / rid / "metadata.json").write_text(
+        json.dumps(meta, ensure_ascii=False, indent=1), "utf-8"
+    )
+    return ok
+
+
 if __name__ == "__main__":
     r = complementos(ejecutar())
     informe(r)
