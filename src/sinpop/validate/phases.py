@@ -414,6 +414,127 @@ def _g2_8_human() -> Check:
     )
 
 
+# --------------------------------------------------------------------------- F3
+
+
+def _fs():
+    from sinpop.targets import checks
+
+    return checks.ficheros()
+
+
+def _lista(malos: list[str], n: int = 3) -> str:
+    return "0" if not malos else f"{len(malos)}: " + "; ".join(malos[:n])
+
+
+def _g3_1_totales() -> Check:
+    from sinpop.targets import checks
+
+    fs = _fs()
+    malos = checks.g31_totales(fs)
+    return Check(
+        "G3.1",
+        "Las marginales suman el total oficial",
+        not malos,
+        f"{len(fs)} territorios; fuera de umbral: {_lista(malos)}",
+        "< 0,1 %",
+    )
+
+
+def _g3_2_coherencia() -> Check:
+    from sinpop.targets import checks
+
+    malos = checks.g32_coherencia(_fs())
+    return Check(
+        "G3.2",
+        "Marginales coherentes entre cruces",
+        not malos,
+        f"incoherencias: {_lista(malos)}",
+        "diferencia relativa < 1e-6 (redondeo)",
+    )
+
+
+def _g3_3_ccaa() -> Check:
+    from sinpop.targets import checks
+
+    malos = checks.g33_ccaa_suman_espana(_fs())
+    return Check(
+        "G3.3",
+        "Las 19 comunidades suman España",
+        not malos,
+        f"celdas distintas: {_lista(malos)}",
+        "|diferencia| < 0,001 personas",
+    )
+
+
+def _g3_4_separacion() -> Check:
+    from sinpop.config import load_config
+
+    try:
+        cfg = load_config("targets.yaml")
+        ok = True
+        valor = f"{len(cfg.calibrar)} calibrados, {len(cfg.reservar)} reservados; ninguno repetido"  # type: ignore[attr-defined]
+    except Exception as e:  # noqa: BLE001
+        ok, valor = False, str(e).splitlines()[0]
+    if os.environ.get(_IN_GATE_ENV):
+        return Check("G3.4", "Ningún objetivo reservado se calibra", ok, valor, "0")
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "-p",
+            "no:cacheprovider",
+            "-q",
+            "tests/unit/test_config.py::test_targets_reject_reserved_in_calibration",
+        ],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        env={**os.environ, _IN_GATE_ENV: "1"},
+    )
+    ok = ok and proc.returncode == 0
+    return Check(
+        "G3.4",
+        "Ningún objetivo reservado se calibra (test automático)",
+        ok,
+        valor + ("; test superado" if proc.returncode == 0 else "; test FALLIDO"),
+        "0",
+    )
+
+
+def _g3_5_metadatos() -> Check:
+    from sinpop.targets import checks
+
+    malos = checks.g35_metadatos(_fs())
+    return Check(
+        "G3.5",
+        "Cada objetivo registra fuente, edición y fecha",
+        not malos,
+        f"filas sin metadatos: {_lista(malos)}",
+        "0",
+    )
+
+
+def _g3_6_electorales() -> Check:
+    from sinpop.targets import checks
+
+    malos, difs = checks.g36_electorales(_fs())
+    peor = max(difs.items(), key=lambda x: abs(x[1])) if difs else ("—", 0.0)
+    es = difs.get("ES", float("nan"))
+    valor = (
+        f"censo de residentes 2023 frente a españoles 18+ 2026: España {100 * es:+.2f} %, "
+        f"máximo {peor[0]} {100 * peor[1]:+.2f} %; incidencias: {_lista(malos)}"
+    )
+    return Check(
+        "G3.6",
+        "Objetivos electorales al 100 % y coherentes con el derecho a voto",
+        not malos,
+        valor,
+        "100 % y diferencia < 5 %",
+    )
+
+
 PHASES: dict[int, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
@@ -433,6 +554,14 @@ PHASES: dict[int, list[Callable[[], Check]]] = {
         _g2_6_electorales,
         _g2_7_cis,
         _g2_8_human,
+    ],
+    3: [
+        _g3_1_totales,
+        _g3_2_coherencia,
+        _g3_3_ccaa,
+        _g3_4_separacion,
+        _g3_5_metadatos,
+        _g3_6_electorales,
     ],
 }
 

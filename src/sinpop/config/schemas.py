@@ -130,13 +130,34 @@ class VariablesConfig(Strict):
 # --------------------------------------------------------------------------- targets.yaml
 
 
+Universo = Literal[
+    "residentes",
+    "viviendas_familiares",
+    "colectivos",
+    "hogares",
+    "censo_electoral_residente",  # electores residentes en España (generales, sin CERA)
+    "censo_electoral",  # electores de la publicación autonómica (puede incluir el CERA)
+]
+
+
 class Objetivo(Strict):
     id: str
     variables: list[str] = Field(min_length=1)
     unidad: Literal["persona", "hogar"] = "persona"
-    fuente: str | None = None  # se rellena en F3
-    edicion: str | None = None
+    universo: Universo = "residentes"
+    # Territorios en los que existe: «provincia» (España, CCAA y provincias), «municipios»
+    # (territorios por lista de municipios) o «todos»
+    ambito: Literal["todos", "provincia", "municipios"] = "todos"
+    descripcion: str | None = None
+    fuente: str | None = None  # la fuente, edición y fecha de cada cifra van en el fichero
+    edicion: str | None = None  # de objetivos (data/processed/targets/), no aquí (D-036)
     fecha_referencia: dt.date | None = None
+
+    @model_validator(mode="after")
+    def _unidad_universo(self) -> Objetivo:
+        if (self.unidad == "hogar") != (self.universo == "hogares"):
+            raise ValueError(f"{self.id}: la unidad hogar va con el universo hogares")
+        return self
 
     @property
     def clave(self) -> tuple[str, ...]:
@@ -145,8 +166,19 @@ class Objetivo(Strict):
 
 class TargetsConfig(Strict):
     fecha_referencia: dt.date
+    # Agrupaciones de edad de las tablas oficiales: límites inferiores de cada grupo (el
+    # primero es la edad mínima del universo de la tabla; por debajo, un grupo «00-(min-1)»)
+    agrupaciones_edad: dict[str, list[int]] = Field(default_factory=dict)
     calibrar: list[Objetivo]
     reservar: list[Objetivo]
+
+    @field_validator("agrupaciones_edad")
+    @classmethod
+    def _cortes(cls, v: dict[str, list[int]]) -> dict[str, list[int]]:
+        for k, c in v.items():
+            if not c or c != sorted(set(c)) or c[0] < 1:
+                raise ValueError(f"{k}: los cortes deben ser crecientes, sin repetir y > 0")
+        return v
 
     @model_validator(mode="after")
     def _separacion(self) -> TargetsConfig:

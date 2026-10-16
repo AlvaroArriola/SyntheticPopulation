@@ -3114,8 +3114,18 @@ variables:
     prioridad: P3-POL
     nivel: politica
     tipo: categorica
-    dominio_pendiente: 'F2: candidaturas y familias de configs/partidos.yaml + blanco, nulo, abstencion, no_tenia_edad,
-      sin_derecho, NS, NC'
+    categorias: &id009
+    - izquierda_estatal
+    - socialdemocrata
+    - centro_derecha_estatal
+    - derecha_radical
+    - nacionalista_regionalista
+    - otros
+    - blanco
+    - nulo
+    - abstencion
+    - no_tenia_edad
+    - sin_derecho_voto
     descripcion: Recuerdo de voto en las generales de 2023
     fuente_principal: cis_electorales
     fuentes:
@@ -3131,7 +3141,7 @@ variables:
     prioridad: P3-POL
     nivel: politica
     tipo: categorica
-    dominio_pendiente: 'F2: según partidos.yaml por comunidad'
+    categorias: *id009
     descripcion: Recuerdo de voto en las últimas autonómicas
     fuente_principal: cis_electorales
   recuerdo_voto_europeas:
@@ -3366,3 +3376,15 @@ variables:
           '06': 'no'
           09: 'no'
         notas: 07 = asalariado del sector público
+  tamano_hogar_4:
+    prioridad: P0
+    nivel: hogar
+    tipo: ordinal
+    descripcion: 'Tamaño del hogar en 4 grupos (el de la ECP: 1, 2, 3, 4 o más)'
+    categorias:
+    - '1'
+    - '2'
+    - '3'
+    - 4+
+    fuente_principal: ecp
+    derivada_de: tamano_hogar

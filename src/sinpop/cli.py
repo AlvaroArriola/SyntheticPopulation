@@ -167,11 +167,23 @@ def harmonize(
 
 @app.command()
 def targets(
-    territory: Annotated[str, typer.Option(help="ES, CCAA:XX, PROV:XX o MUNIS:<yaml>")] = "ES",
+    territory: Annotated[
+        str,
+        typer.Option(help="ES, CCAA:XX, PROV:XX, MUNIS:<yaml> o 'all' (España, CCAA y provincias)"),
+    ] = "ES",
     date: Annotated[str, typer.Option(help="Fecha de referencia AAAA-MM-DD")] = "2026-01-01",
 ) -> None:
     """Construye los objetivos de calibración y los reservados de un territorio (F3)."""
-    _pendiente("targets", "F3")
+    from sinpop.config import load_config
+    from sinpop.targets import run
+
+    fecha = str(load_config("targets.yaml").fecha_referencia)  # type: ignore[attr-defined]
+    if date != fecha:
+        typer.echo(f"Solo hay objetivos para la fecha de targets.yaml ({fecha}).", err=True)
+        raise typer.Exit(code=2)
+    terr = run.territorios_estandar() if territory == "all" else [territory]
+    for t, info in run.ejecutar(terr).items():
+        typer.echo(f"{t}: {info['filas']} filas · sha256 {info['sha256'][:12]}")
 
 
 @app.command()

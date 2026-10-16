@@ -58,13 +58,12 @@ elecciones:
   fecha: '2023-05-28'
   ambito: CCAA:04
   fuente: resultados_autonomicas
-  uso: pendiente
-  url_oficial: https://www.caib.es/eboibfront/pdf/es/2023/83/1139303
+  uso: calibrar
+  url_oficial: https://www.caib.es/eboibfront/pdf/es/2023/78/1138877
   verificar:
-  - 'fuente: BOIB nº 83, 2023 (Junta Electoral de las Illes Balears)'
+  - 'fuente: BOIB nº 78, 13/06/2023 (Junta Electoral de las Illes Balears), actas de proclamación (D-032)'
   - 'nivel: circunscripción insular'
-  - 'voto CERA: solo CERA'
-  - 'SOLO contiene el voto de los residentes en el extranjero: faltan los resultados generales'
+  - 'voto CERA: las actas no lo dicen; el escrutinio CERA está aparte en el BOIB nº 83'
 - id: autonomicas-05-2023
   tipo: autonomicas
   fecha: '2023-05-28'

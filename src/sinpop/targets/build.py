@@ -1,0 +1,562 @@
+"""Objetivos de calibración y de validación por provincia (F3, D-036).
+
+Método común: los efectivos los da la ECP a 01/01/2026 (provincia × sexo × edad simple); la
+estructura de cada variable la dan las tablas oficiales más recientes que la publican, como
+cuotas dentro de la misma celda provincia × sexo × grupo de edad de su tabla. Así todos los
+objetivos de persona suman lo mismo por provincia, sexo y edad (G3.1, G3.2), y las comunidades
+y España se obtienen sumando provincias (G3.3).
+
+Formato de salida (largo): una fila por provincia, objetivo y celda, con la fuente, la edición
+y la fecha de referencia de la cifra (G3.5).
+"""
+
+from __future__ import annotations
+
+import datetime as dt
+
+import polars as pl
+
+from sinpop import INTERIM_DIR
+from sinpop.config import load_config
+from sinpop.harmonize.core import edad_4, edad_5
+from sinpop.targets import fuentes
+from sinpop.targets.edades import agrupar, etiquetas
+
+FECHA = dt.date(2026, 1, 1)
+COLUMNAS = [
+    "provincia",
+    "objetivo",
+    "uso",
+    "unidad",
+    "universo",
+    "clave",
+    "valor",
+    "fuente",
+    "edicion",
+    "fecha_referencia",
+    "metodo",
+]
+
+
+# --------------------------------------------------------------------------- bases
+
+
+def base_edad() -> pl.DataFrame:
+    """Residentes a 01/01/2026 por provincia, sexo y edad simple (ECP 59589; 100 = 100+)."""
+    return pl.read_parquet(INTERIM_DIR / "ecp_total.parquet").rename({"personas": "n"})
+
+
+def base_grupo(cortes: list[int], nombre: str) -> pl.DataFrame:
+    return (
+        base_edad()
+        .with_columns(agrupar(pl.col("edad"), cortes, nombre))
+        .group_by("provincia", "sexo", nombre)
+        .agg(pl.col("n").sum())
+    )
+
+
+def reescalar(estr: pl.DataFrame, base: pl.DataFrame, grupo: str) -> pl.DataFrame:
+    """Reparte `base` (provincia, sexo, grupo, n) con las cuotas de `estr`.
+
+    `estr` trae recuentos (provincia, sexo, grupo, categoria, valor). Si una celda de la tabla
+    está vacía (sin efectivos), se usan las cuotas nacionales de su sexo y grupo.
+    """
+    e = estr.rename({"grupo": grupo})
+    tot = pl.col("valor").sum().over("provincia", "sexo", grupo)
+    cuota = e.with_columns((pl.col("valor") / tot).alias("cuota")).filter(tot > 0)
+    nac = (
+        e.group_by("sexo", grupo, "categoria")
+        .agg(pl.col("valor").sum())
+        .with_columns((pl.col("valor") / pl.col("valor").sum().over("sexo", grupo)).alias("c"))
+    )
+    celdas = base.join(
+        cuota.select("provincia", "sexo", grupo).unique(),
+        on=["provincia", "sexo", grupo],
+        how="anti",
+    )
+    con = base.join(
+        cuota.select("provincia", "sexo", grupo, "categoria", "cuota"),
+        on=["provincia", "sexo", grupo],
+    )
+    sin = celdas.join(
+        nac.select("sexo", grupo, "categoria", pl.col("c").alias("cuota")), on=["sexo", grupo]
+    )
+    return pl.concat([con, sin]).select(
+        "provincia", "sexo", grupo, "categoria", (pl.col("n") * pl.col("cuota")).alias("valor")
+    )
+
+
+def _no_procede(base: pl.DataFrame, grupo: str, inferior: str) -> pl.DataFrame:
+    """Personas por debajo de la edad mínima de la tabla: la variable no procede (NP)."""
+    return base.filter(pl.col(grupo) == inferior).select(
+        "provincia", "sexo", grupo, pl.lit("NP").alias("categoria"), pl.col("n").alias("valor")
+    )
+
+
+def estructura(fn, clave_cortes: str) -> pl.DataFrame:
+    """Objetivo completo (todas las edades) de una variable con tabla de estructura."""
+    cortes = load_config("targets.yaml").agrupaciones_edad[clave_cortes]  # type: ignore[attr-defined]
+    base = base_grupo(cortes, clave_cortes)
+    estr = fn(cortes)
+    out = reescalar(estr, base, clave_cortes)
+    inferior = etiquetas(cortes)[0]
+    if inferior not in set(estr["grupo"].unique().to_list()):
+        out = pl.concat([out, _no_procede(base, clave_cortes, inferior)])
+    return out
+
+
+# --------------------------------------------------------------------------- nacionalidad
+
+
+def nacionalidad_celdas() -> pl.DataFrame:
+    """Residentes 2026 por provincia, sexo, edad_5 y nacionalidad (grupo y top 15).
+
+    Española/extranjera: viviendas familiares de la ECP 2026 (60129) + colectivos 2026 con la
+    proporción de extranjeros de su celda en el Censo Anual exhaustivo 2025. Grupos y
+    nacionalidades dentro de los extranjeros: cuotas del Censo Anual exhaustivo 2025 en la
+    misma celda (si la celda no tenía extranjeros en 2025, las de su provincia y sexo).
+    """
+    fam = pl.read_parquet(INTERIM_DIR / "ecp_viviendas_familiares.parquet")
+    col = pl.read_parquet(INTERIM_DIR / "ecp_colectivos.parquet").select(
+        "provincia", "sexo", "edad_5", pl.col("personas").alias("col")
+    )
+    ex = pl.read_parquet(INTERIM_DIR / "censo_anual_exhaustivo_2025.parquet")
+    k = ["provincia", "sexo", "edad_5"]
+    p_ext = ex.group_by(k).agg(
+        (
+            pl.col("personas").filter(pl.col("nacionalidad_grupo") != "espanola").sum()
+            / pl.col("personas").sum()
+        ).alias("p_ext")
+    )
+    f = fam.pivot(on="nacionalidad_esp_ext", index=k, values="personas").fill_null(0)
+    cel = (
+        f.join(col, on=k, how="full", coalesce=True)
+        .join(p_ext, on=k, how="left")
+        .fill_null(0)
+        .with_columns(
+            (pl.col("extranjera") + pl.col("col") * pl.col("p_ext")).alias("ext"),
+            (pl.col("espanola") + pl.col("col") * (1 - pl.col("p_ext"))).alias("esp"),
+        )
+    )
+    ext = ex.filter(pl.col("nacionalidad_grupo") != "espanola")
+    filas = []
+    for var in ("nacionalidad_grupo", "nacionalidad_top"):
+        c1 = (
+            ext.group_by(*k, var)
+            .agg(pl.col("personas").sum())
+            .with_columns((pl.col("personas") / pl.col("personas").sum().over(k)).alias("q"))
+        )
+        c2 = (
+            ext.group_by("provincia", "sexo", var)
+            .agg(pl.col("personas").sum())
+            .with_columns(
+                (pl.col("personas") / pl.col("personas").sum().over("provincia", "sexo")).alias(
+                    "q2"
+                )
+            )
+        )
+        sin = cel.join(c1.select(k).unique(), on=k, how="anti").filter(pl.col("ext") > 0)
+        a = cel.join(c1.select(*k, var, "q"), on=k).select(
+            *k, pl.col(var).alias("categoria"), (pl.col("ext") * pl.col("q")).alias("valor")
+        )
+        b = sin.join(c2.select("provincia", "sexo", var, "q2"), on=["provincia", "sexo"]).select(
+            *k, pl.col(var).alias("categoria"), (pl.col("ext") * pl.col("q2")).alias("valor")
+        )
+        e = cel.select(*k, pl.lit("espanola").alias("categoria"), pl.col("esp").alias("valor"))
+        filas.append(pl.concat([a, b, e]).with_columns(pl.lit(var).alias("variable")))
+    return pl.concat(filas)
+
+
+def adultos_nacionalidad(nac: pl.DataFrame, clave: str = "provincia") -> pl.DataFrame:
+    """Residentes 2026 por provincia, nacionalidad española/extranjera y mayoría de edad.
+
+    Las celdas de nacionalidad van por edad quinquenal; el grupo 15-19 se parte en 15-17 y
+    18-19 con la proporción de edades simples de la ECP 2026 en su provincia y sexo.
+    """
+    b = base_edad().filter(pl.col("edad").is_between(15, 19))
+    p18 = b.group_by("provincia", "sexo").agg(
+        (pl.col("n").filter(pl.col("edad") >= 18).sum() / pl.col("n").sum()).alias("p18")
+    )
+    n = nac.filter(pl.col("variable") == "nacionalidad_grupo").with_columns(
+        pl.when(pl.col("categoria") == "espanola")
+        .then(pl.lit("espanola"))
+        .otherwise(pl.lit("extranjera"))
+        .alias("nacionalidad_esp_ext")
+    )
+    n = n.join(p18, on=["provincia", "sexo"], how="left")
+    menores = ["00-04", "05-09", "10-14"]
+    adul = (
+        pl.when(pl.col("edad_5").is_in(menores))
+        .then(0.0)
+        .when(pl.col("edad_5") == "15-19")
+        .then(pl.col("p18"))
+        .otherwise(1.0)
+    )
+    return pl.concat(
+        [
+            n.select(
+                clave,
+                "nacionalidad_esp_ext",
+                pl.lit("si").alias("es_adulto"),
+                (pl.col("valor") * adul).alias("valor"),
+            ),
+            n.select(
+                clave,
+                "nacionalidad_esp_ext",
+                pl.lit("no").alias("es_adulto"),
+                (pl.col("valor") * (1 - adul)).alias("valor"),
+            ),
+        ]
+    )
+
+
+# --------------------------------------------------------------------------- hogares
+
+
+def hogares_censo2021() -> pl.DataFrame:
+    """Hogares del Censo 2021 (muestra del 10 %): provincia, tipo, tamaño y edad de la persona
+    de referencia (la de más edad, D-021), con su factor de elevación."""
+    p = pl.read_parquet(
+        INTERIM_DIR / "censo2021_personas.parquet",
+        columns=["provincia", "relacion_persona_ref", "tipo_hogar", "tamano_hogar", "edad", "peso"],
+    ).filter(pl.col("relacion_persona_ref") == "persona_referencia")
+    return p.select(
+        "provincia",
+        "tipo_hogar",
+        pl.col("tamano_hogar").replace({"4": "4+", "5+": "4+"}).alias("tamano_hogar_4"),
+        edad_4(pl.col("edad")),
+        "peso",
+    )
+
+
+def tipo_hogar() -> tuple[pl.DataFrame, pl.DataFrame]:
+    """(tipo × tamaño, tipo × tamaño × edad_4 de la referencia) sobre los hogares ECP 2026.
+
+    Cuotas del Censo 2021 dentro de cada provincia y tamaño (1, 2, 3, 4+), aplicadas a los
+    hogares por tamaño de la ECP 2026: así el número de hogares unipersonales coincide con el de
+    tamaño 1 y el resto de tipos con su tamaño.
+    """
+    h = hogares_censo2021()
+    ecp = pl.read_parquet(INTERIM_DIR / "ecp_hogares.parquet")
+    k = ["provincia", "tamano_hogar_4"]
+    c = (
+        h.group_by(*k, "tipo_hogar", "edad_4")
+        .agg(pl.col("peso").sum())
+        .with_columns((pl.col("peso") / pl.col("peso").sum().over(k)).alias("q"))
+    )
+    det = c.join(ecp, on=k).select(
+        *k, "tipo_hogar", "edad_4", (pl.col("hogares") * pl.col("q")).alias("valor")
+    )
+    tipo = det.group_by(*k, "tipo_hogar").agg(pl.col("valor").sum())
+    return tipo, det
+
+
+# --------------------------------------------------------------------------- municipio
+
+
+def tamano_municipio() -> pl.DataFrame:
+    """Residentes 2026 por tamaño de municipio: cuotas del Padrón 2025 (tabla 29005) dentro de
+    cada provincia aplicadas al total de la ECP 2026."""
+    from sinpop.harmonize.censos import poblacion_municipal
+    from sinpop.harmonize.core import tamano_por_poblacion
+
+    pm = poblacion_municipal()
+    pm = pm.with_columns(
+        pl.Series("tamano_municipio", [tamano_por_poblacion(int(x)) for x in pm["poblacion"]])
+    )
+    c = (
+        pm.group_by(pl.col("CPRO").alias("provincia"), "tamano_municipio")
+        .agg(pl.col("poblacion").sum())
+        .with_columns(
+            (pl.col("poblacion") / pl.col("poblacion").sum().over("provincia")).alias("q")
+        )
+    )
+    tot = base_edad().group_by("provincia").agg(pl.col("n").sum())
+    return c.join(tot, on="provincia").select(
+        "provincia", "tamano_municipio", (pl.col("n") * pl.col("q")).alias("valor")
+    )
+
+
+# --------------------------------------------------------------------------- ensamblado
+
+
+def _largo(
+    df: pl.DataFrame,
+    variables: list[str],
+    objetivo: str,
+    meta: dict[str, str],
+) -> pl.DataFrame:
+    """Suma `valor` por provincia y `variables` y lo pasa al formato largo con su `clave`."""
+    cfg = load_config("targets.yaml")
+    obj = next(o for o in cfg.calibrar + cfg.reservar if o.id == objetivo)  # type: ignore[attr-defined]
+    uso = "calibrar" if obj in cfg.calibrar else "reservar"  # type: ignore[attr-defined]
+    # Orden fijo y redondeo a la millonésima: las sumas en coma flotante en paralelo cambian
+    # en el último bit según el orden, y el fichero debe tener siempre el mismo hash
+    g = (
+        df.sort("provincia", *variables)
+        .group_by("provincia", *variables, maintain_order=True)
+        .agg(pl.col("valor").sum())
+    )
+    clave = pl.concat_str(
+        [pl.concat_str([pl.lit(f"{v}="), pl.col(v).cast(pl.Utf8)]) for v in variables],
+        separator=";",
+    )
+    return g.select(
+        "provincia",
+        pl.lit(objetivo).alias("objetivo"),
+        pl.lit(uso).alias("uso"),
+        pl.lit(obj.unidad).alias("unidad"),
+        pl.lit(obj.universo).alias("universo"),
+        clave.alias("clave"),
+        pl.col("valor").cast(pl.Float64).round(6),
+        pl.lit(meta["fuente"]).alias("fuente"),
+        pl.lit(meta["edicion"]).alias("edicion"),
+        pl.lit(FECHA).alias("fecha_referencia"),
+        pl.lit(meta["metodo"]).alias("metodo"),
+    )
+
+
+def provincias() -> pl.DataFrame:
+    """Todos los objetivos de targets.yaml para las 52 provincias, en formato largo."""
+    out = []
+    base = base_edad().with_columns(edad_5(pl.col("edad")))
+    out.append(
+        _largo(
+            base.rename({"n": "valor"}),
+            ["edad_5", "sexo"],
+            "edad5_sexo",
+            {"fuente": "ecp: tabla 59589", "edicion": "2026-01-01", "metodo": "exacto"},
+        )
+    )
+    fam = pl.read_parquet(INTERIM_DIR / "ecp_viviendas_familiares.parquet").rename(
+        {"personas": "valor"}
+    )
+    out.append(
+        _largo(
+            fam,
+            ["edad_5", "sexo"],
+            "edad5_sexo_familiares",
+            {"fuente": "ecp: tabla 60129", "edicion": "2026-01-01", "metodo": "exacto"},
+        )
+    )
+    col = pl.read_parquet(INTERIM_DIR / "ecp_colectivos.parquet").drop("total", "familiares")
+    out.append(
+        _largo(
+            col.rename({"personas": "valor"}),
+            ["edad_5", "sexo"],
+            "edad5_sexo_colectivos",
+            {
+                "fuente": "ecp: tablas 59589 − 60129",
+                "edicion": "2026-01-01",
+                "metodo": "diferencia de dos tablas exactas (D-021)",
+            },
+        )
+    )
+    nac = nacionalidad_celdas()
+    meta_nac = {
+        "fuente": "ecp: tabla 60129 + censo_anual_micro_demograficas (exhaustivo)",
+        "edicion": "2026-01-01 (española/extranjera); 2025-01-01 (grupos)",
+        "metodo": "extranjeros 2026 repartidos con cuotas de 2025 por provincia × sexo × edad_5",
+    }
+    for var, obj in (
+        ("nacionalidad_grupo", "nacionalidad"),
+        ("nacionalidad_top", "nacionalidad_top"),
+    ):
+        out.append(
+            _largo(
+                nac.filter(pl.col("variable") == var).rename({"categoria": var}),
+                [var],
+                obj,
+                meta_nac,
+            )
+        )
+    out.append(
+        _largo(
+            adultos_nacionalidad(nac),
+            ["nacionalidad_esp_ext", "es_adulto"],
+            "adultos_nacionalidad",
+            meta_nac | {"metodo": meta_nac["metodo"] + "; 15-19 partido en 18 con la ECP 2026"},
+        )
+    )
+    out += electorales_provincia()
+    estructuras = [
+        (
+            fuentes.estudios,
+            "edad_estudios",
+            "estudios_3",
+            "66601",
+            "2024-01-01",
+            [
+                ("estudios_edad", ["estudios_3", "edad_estudios"]),
+                ("estudios_sexo_edad", ["estudios_3", "sexo", "edad_estudios"]),
+            ],
+        ),
+        (
+            fuentes.actividad,
+            "edad_actividad",
+            "relacion_actividad",
+            "67128",
+            "2024-01-01",
+            [
+                ("actividad_sexo", ["relacion_actividad", "sexo"]),
+                ("actividad_edad", ["relacion_actividad", "edad_actividad"]),
+            ],
+        ),
+        (
+            fuentes.estado_civil,
+            "edad_estado_civil",
+            "estado_civil",
+            "76291",
+            "2024-01-01",
+            [("estado_civil_edad", ["estado_civil", "edad_estado_civil"])],
+        ),
+        (
+            fuentes.urbanizacion,
+            "edad_urbanizacion",
+            "grado_urbanizacion",
+            "79341",
+            "2025-01-01",
+            [("urbanizacion", ["grado_urbanizacion"])],
+        ),
+    ]
+    for fn, gk, var, tabla, ed, objetivos in estructuras:
+        e = estructura(fn, gk).rename({"categoria": var})
+        meta = {
+            "fuente": f"censo_anual_tablas: tabla {tabla} (estructura) + ecp: tabla 59589",
+            "edicion": f"{ed} (estructura); 2026-01-01 (efectivos)",
+            "metodo": f"cuotas de {ed[:4]} por provincia × sexo × {gk} sobre la ECP 2026",
+        }
+        for obj, variables in objetivos:
+            out.append(_largo(e, variables, obj, meta))
+    hog = pl.read_parquet(INTERIM_DIR / "ecp_hogares.parquet").rename({"hogares": "valor"})
+    out.append(
+        _largo(
+            hog,
+            ["tamano_hogar_4"],
+            "tamano_hogar",
+            {"fuente": "ecp: tabla 60133", "edicion": "2026-01-01", "metodo": "exacto"},
+        )
+    )
+    tipo, det = tipo_hogar()
+    meta_h = {
+        "fuente": "censo2021_micro_hogares (estructura) + ecp: tabla 60133",
+        "edicion": "2021 (estructura); 2026-01-01 (hogares por tamaño)",
+        "metodo": "cuotas del Censo 2021 por provincia × tamaño sobre los hogares ECP 2026",
+    }
+    out.append(_largo(tipo, ["tipo_hogar", "tamano_hogar_4"], "tipo_hogar", meta_h))
+    out.append(_largo(det, ["tipo_hogar", "edad_4"], "tipo_hogar_edad4_ref", meta_h))
+    out.append(
+        _largo(
+            tamano_municipio(),
+            ["tamano_municipio"],
+            "tamano_municipio",
+            {
+                "fuente": "padron_continuo: tabla 29005 + ecp: tabla 59589",
+                "edicion": "2025-01-01 (municipios); 2026-01-01 (efectivos)",
+                "metodo": "cuotas de 2025 por provincia sobre la ECP 2026",
+            },
+        )
+    )
+    prov = (
+        base.group_by("provincia")
+        .agg(pl.col("n").sum().alias("valor"))
+        .with_columns(pl.col("provincia").alias("p"))
+    )
+    out.append(
+        _largo(
+            prov.select("provincia", pl.col("p").alias("provincia_obj"), "valor").rename(
+                {"provincia_obj": "provincia_x"}
+            ),
+            ["provincia_x"],
+            "provincia_si_calibra_ccaa",
+            {"fuente": "ecp: tabla 59589", "edicion": "2026-01-01", "metodo": "exacto"},
+        ).with_columns(pl.col("clave").str.replace("provincia_x=", "provincia="))
+    )
+    return pl.concat(out).select(COLUMNAS).sort("provincia", "objetivo", "clave")
+
+
+def electorales_provincia() -> list[pl.DataFrame]:
+    """Objetivos electorales por provincia (generales y autonómicas)."""
+    from sinpop.targets import electorales as el
+
+    opc, vot = el.generales_municipios()
+    el.comprobar_generales(opc)
+    meta = {
+        "fuente": "infoelectoral_resultados: hojas municipales del Congreso 2023 (Interior)",
+        "edicion": "2023-07-23 (escrutinio provisional, residentes)",
+        "metodo": "suma de municipios; familias de partidos.yaml (D-030, D-032)",
+    }
+    out = [
+        _largo(
+            opc.rename({"opcion": "recuerdo_voto_generales"}),
+            ["recuerdo_voto_generales"],
+            "voto_generales_2023",
+            meta,
+        ),
+        _largo(
+            opc.rename({"opcion": "recuerdo_voto_generales"}),
+            ["recuerdo_voto_generales", "municipio"],
+            "voto_generales_2023_municipio",
+            meta,
+        ),
+        _largo(
+            vot.rename({"candidatura": "candidatura_generales_2023"}).with_columns(
+                pl.col("votos").cast(pl.Float64).alias("valor")
+            ),
+            ["candidatura_generales_2023"],
+            "voto_generales_2023_candidatura",
+            meta,
+        ),
+    ]
+    aut = el.autonomicas_circunscripciones()
+    out.append(
+        _largo(
+            aut.rename({"opcion": "recuerdo_voto_autonomicas"}),
+            ["recuerdo_voto_autonomicas"],
+            "voto_autonomicas",
+            {
+                "fuente": "resultados_autonomicas: boletines oficiales de cada comunidad",
+                "edicion": "última elección de cada comunidad (2023–2026; elecciones.yaml)",
+                "metodo": "suma de circunscripciones; abstención = electores − válidos − nulos; "
+                "Aragón sin electores publicados (sin abstención); familias D-030",
+            },
+        )
+    )
+    return out
+
+
+# --------------------------------------------------------------------------- territorios
+
+
+def provincias_de(territorio: str) -> list[str]:
+    """Provincias de ES, CCAA:XX o PROV:XX (códigos INE)."""
+    from sinpop.harmonize.core import ccaa_de_provincia
+
+    ccaa = ccaa_de_provincia()
+    if territorio == "ES":
+        return sorted(ccaa)
+    tipo, _, cod = territorio.partition(":")
+    if tipo == "CCAA":
+        out = sorted(p for p, c in ccaa.items() if c == cod)
+    elif tipo == "PROV":
+        out = [cod] if cod in ccaa else []
+    else:
+        raise ValueError(f"territorio no admitido aquí: {territorio}")
+    if not out:
+        raise ValueError(f"territorio sin provincias: {territorio}")
+    return out
+
+
+def agregar(prov: pl.DataFrame, territorio: str) -> pl.DataFrame:
+    """Suma los objetivos de las provincias del territorio (los metadatos son comunes)."""
+    ps = provincias_de(territorio)
+    meta = [c for c in COLUMNAS if c not in ("provincia", "valor")]
+    return (
+        prov.filter(pl.col("provincia").is_in(ps))
+        .sort("objetivo", "clave", "provincia")
+        .group_by(meta, maintain_order=True)
+        .agg(pl.col("valor").sum().round(6))
+        .with_columns(pl.lit(territorio).alias("territorio"))
+        .select("territorio", *meta[:5], "valor", *meta[5:])
+        .sort("objetivo", "clave")
+    )

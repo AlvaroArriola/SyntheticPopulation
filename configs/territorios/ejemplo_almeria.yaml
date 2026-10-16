@@ -1,0 +1,6 @@
+# Ejemplo técnico de territorio definido por lista de municipios (F3, tarea 3).
+# No es una delimitación oficial: combina municipios grandes (identificados en el Censo Anual)
+# y pequeños (que se reparten desde su clase de tamaño) para probar el método.
+nombre: Ejemplo Almería
+descripcion: Almería capital, Roquetas de Mar, El Ejido y Padules
+municipios: ["04013", "04079", "04902", "04071"]

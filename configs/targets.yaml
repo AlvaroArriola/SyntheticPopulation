@@ -1,22 +1,106 @@
-# Objetivos de calibración y objetivos reservados para validar (docs/04_fases.md, F3).
-# Estado F0: propuesta inicial de la documentación. Fuente, edición y fecha de cada
-# objetivo se rellenan en F3. Ningún objetivo reservado puede aparecer en `calibrar`
-# (lo comprueba el esquema y el test G3.4).
+# Objetivos de calibración y objetivos reservados para validar (docs/04_fases.md, F3; D-036).
+# La fuente, la edición y la fecha de referencia de cada cifra se guardan en el fichero de
+# objetivos (data/processed/targets/<territorio>.parquet), celda a celda. Ningún objetivo
+# reservado puede aparecer en `calibrar` (lo comprueban el esquema y el test G3.4).
 fecha_referencia: 2026-01-01
 
+# Agrupaciones de edad de las tablas oficiales de estructura (límites inferiores). Por debajo
+# del primer corte, la variable de la tabla no procede (NP) y la edad va en un grupo propio.
+agrupaciones_edad:
+  edad_estudios: [15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90]  # Censo Anual, tabla 66601
+  edad_actividad: [16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]  # Censo Anual, tabla 67128
+  edad_estado_civil: [16, 35, 55, 75]  # Censo Anual, tabla 76291
+  edad_urbanizacion: [16, 65]  # Censo Anual, tabla 79341
+
 calibrar:
-  - {id: edad5_sexo, variables: [edad_5, sexo]}
-  - {id: nacionalidad, variables: [nacionalidad_grupo]}
-  - {id: estudios_edad4, variables: [estudios_3, edad_4]}
-  - {id: actividad_sexo, variables: [relacion_actividad, sexo]}
-  - {id: urbanizacion, variables: [grado_urbanizacion]}
-  - {id: tipo_hogar, variables: [tipo_hogar], unidad: hogar}
-  - {id: tamano_hogar, variables: [tamano_hogar], unidad: hogar}
+  - id: edad5_sexo
+    variables: [edad_5, sexo]
+    descripcion: Residentes por edad quinquenal y sexo (ECP 59589, 01/01/2026)
+  - id: edad5_sexo_familiares
+    ambito: provincia
+    variables: [edad_5, sexo]
+    universo: viviendas_familiares
+    descripcion: Residentes en viviendas familiares (ECP 60129)
+  - id: edad5_sexo_colectivos
+    ambito: provincia
+    variables: [edad_5, sexo]
+    universo: colectivos
+    descripcion: Residentes en establecimientos colectivos (ECP 59589 − 60129, D-021)
+  - id: nacionalidad
+    variables: [nacionalidad_grupo]
+    descripcion: Española/extranjera de la ECP 2026; grupos del Censo Anual exhaustivo 2025
+  - id: estudios_edad
+    ambito: provincia
+    variables: [estudios_3, edad_estudios]
+    descripcion: Nivel de estudios (Censo Anual 2024, tabla 66601) por edad
+  - id: estudios_sexo_mun
+    variables: [estudios_3, sexo]
+    ambito: municipios
+    descripcion: Nivel de estudios por sexo (tablas municipales del Censo Anual 2024); sustituye
+      a estudios_edad en los territorios por municipios, donde no hay estudios por edad
+  - id: actividad_sexo
+    variables: [relacion_actividad, sexo]
+    descripcion: Relación con la actividad (Censo Anual 2024, tabla 67128) por sexo
+  - id: urbanizacion
+    variables: [grado_urbanizacion]
+    descripcion: Grado de urbanización (Censo Anual 2025, tabla 79341)
+  - id: tamano_hogar
+    ambito: provincia
+    variables: [tamano_hogar_4]
+    unidad: hogar
+    universo: hogares
+    descripcion: Hogares por tamaño (ECP 60133, 01/01/2026)
+  - id: tipo_hogar
+    ambito: provincia
+    variables: [tipo_hogar, tamano_hogar_4]
+    unidad: hogar
+    universo: hogares
+    descripcion: Tipo de hogar dentro de cada tamaño (Censo 2021) sobre los hogares ECP 2026
+  - id: voto_generales_2023
+    variables: [recuerdo_voto_generales]
+    universo: censo_electoral_residente
+    descripcion: Congreso 23/07/2023 por familia, blanco, nulo y abstención sobre el censo de
+      residentes (hojas municipales de Interior, sin CERA; D-029, D-036)
+  - id: voto_autonomicas
+    variables: [recuerdo_voto_autonomicas]
+    universo: censo_electoral
+    ambito: provincia
+    descripcion: Últimas autonómicas por familia, blanco, nulo y abstención sobre el censo de
+      la publicación oficial (por circunscripción; D-023, D-031)
 
 reservar:
-  - {id: estudios_sexo_edad4, variables: [estudios_3, sexo, edad_4]}
-  - {id: actividad_edad4, variables: [relacion_actividad, edad_4]}
-  - {id: tipo_hogar_edad4_ref, variables: [tipo_hogar, edad_4], unidad: hogar}
-  - {id: nacionalidad_top, variables: [nacionalidad_top]}
-  - {id: estado_civil_edad4, variables: [estado_civil, edad_4]}
-  - {id: provincia_si_calibra_ccaa, variables: [provincia]}
+  - id: adultos_nacionalidad
+    variables: [nacionalidad_esp_ext, es_adulto]
+    descripcion: Residentes por nacionalidad española/extranjera y mayoría de edad; los españoles
+      de 18 y más años son la población con derecho a voto en las generales (G3.6)
+  - id: voto_generales_2023_municipio
+    variables: [recuerdo_voto_generales, municipio]
+    universo: censo_electoral_residente
+    ambito: provincia
+    descripcion: Detalle municipal de las generales, reservado para validar (D-022, D-036)
+  - id: voto_generales_2023_candidatura
+    variables: [candidatura_generales_2023]
+    universo: censo_electoral_residente
+    descripcion: Voto por candidatura (siglas de Interior), para el desglose por territorio
+  - id: estudios_sexo_edad
+    ambito: provincia
+    variables: [estudios_3, sexo, edad_estudios]
+  - id: actividad_edad
+    ambito: provincia
+    variables: [relacion_actividad, edad_actividad]
+  - id: tipo_hogar_edad4_ref
+    ambito: provincia
+    variables: [tipo_hogar, edad_4]
+    unidad: hogar
+    universo: hogares
+    descripcion: Tipo de hogar por edad de la persona de referencia (Censo 2021)
+  - id: nacionalidad_top
+    variables: [nacionalidad_top]
+  - id: estado_civil_edad
+    ambito: provincia
+    variables: [estado_civil, edad_estado_civil]
+  - id: tamano_municipio
+    variables: [tamano_municipio]
+  - id: provincia_si_calibra_ccaa
+    ambito: provincia
+    variables: [provincia]

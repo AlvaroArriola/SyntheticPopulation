@@ -332,6 +332,15 @@ TABLAS: dict[str, dict[str, tuple[str, dict[str, str], str, str | None]]] = {
 }
 
 NUEVAS = {
+    "tamano_hogar_4": {
+        "prioridad": "P0",
+        "nivel": "hogar",
+        "tipo": "ordinal",
+        "descripcion": "Tamaño del hogar en 4 grupos (el de la ECP: 1, 2, 3, 4 o más)",
+        "categorias": ["1", "2", "3", "4+"],
+        "fuente_principal": "ecp",
+        "derivada_de": "tamano_hogar",
+    },
     "nacionalidad_esp_ext": {
         "prioridad": "P1",
         "nivel": "persona",
