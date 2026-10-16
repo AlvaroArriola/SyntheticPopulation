@@ -122,3 +122,27 @@ def test_metricas() -> None:
     r2 = M.tvd_ref([0.5, 0.3, 0.2], 100_000, semilla=1)
     assert r2 < r1 and r1 == M.tvd_ref([0.5, 0.3, 0.2], 1000, semilla=1)
     assert np.allclose(M.sd_mas([0.5], 100), 0.05)
+
+
+def test_equilibrado_reduce_discrepancia_y_es_reproducible() -> None:
+    rng = np.random.default_rng(3)
+    n = 3000
+    X = sparse.random(n, 40, density=0.1, random_state=4, data_rvs=lambda k: np.ones(k)).tocsr()
+    m = np.asarray(X.sum(axis=1)).ravel() + 1
+    e = rng.random(n) * 0.6
+    bloque = rng.integers(0, 3, n)
+    c = S.trs(e, 5)
+    E = X.T @ e
+
+    def disc(cc):
+        return float(np.sum((X.T @ cc - E) ** 2 / np.maximum(E, 1)))
+
+    c2, info = S.equilibrar(c, e, m, bloque, X, 9)
+    assert disc(c2) < disc(c)
+    assert info["z_max_final"] <= info["z_max_inicial"]
+    assert np.all(c2 >= 0) and np.all(c2 <= np.ceil(e) + 1)
+    # Solo intercambia dentro de cada bloque: el número de copias por bloque no cambia.
+    for b in range(3):
+        assert c2[bloque == b].sum() == c[bloque == b].sum()
+    c3, _ = S.equilibrar(c, e, m, bloque, X, 9)
+    assert np.array_equal(c2, c3)

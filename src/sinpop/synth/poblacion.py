@@ -155,11 +155,13 @@ def _orden(p: pl.DataFrame) -> pl.DataFrame:
             pl.col(
                 "bloque",
                 "provincia",
+                "grado_urbanizacion",
+                "tamano_municipio",
                 "tipo_residencia",
                 "tipo_hogar",
                 "tamano_hogar",
+                "nacionalidad_top",
                 "edad_5",
-                "nacionalidad_grupo",
                 "w",
                 "unidad",
                 "local",
@@ -169,13 +171,46 @@ def _orden(p: pl.DataFrame) -> pl.DataFrame:
         .sort(
             "bloque",
             "provincia",
+            "grado_urbanizacion",
+            "tamano_municipio",
             "tipo_residencia",
             "tipo_hogar",
             "tamano_hogar",
+            "nacionalidad_top",
             "edad_5",
-            "nacionalidad_grupo",
             "unidad_cal",
         )
+    )
+
+
+def _matriz_equilibrado(p: pl.DataFrame, o: pl.DataFrame, territorio: str):
+    """Unidades (en el orden de `o`) × celdas calibradas por bloque (bloque, objetivo, clave)."""
+    from scipy import sparse
+
+    from sinpop.targets import run
+
+    obj = D.objetivos_calibrables(run.leer(territorio))
+    trozos, base = [], 0
+    for objetivo, unidad_obj, universo in (
+        obj.select("objetivo", "unidad", "universo").unique(maintain_order=True).iter_rows()
+    ):
+        vs = D.variables_de(objetivo)
+        k = (
+            D.en_universo(p, universo, unidad_obj, [*vs, "unidad_cal", "bloque"])
+            .group_by("unidad_cal", "bloque", D.clave(vs).alias("clave"))
+            .agg(pl.len().alias("x"))
+            .with_columns(
+                (pl.struct("bloque", "clave").rank("dense").cast(pl.Int64) - 1 + base).alias("j")
+            )
+            .select("unidad_cal", "j", "x")
+        )
+        base = int(k["j"].max()) + 1
+        trozos.append(k)
+    fila = o.select("unidad_cal").with_row_index("i")
+    t = pl.concat(trozos).join(fila, on="unidad_cal")
+    return sparse.csr_matrix(
+        (t["x"].to_numpy().astype(float), (t["i"].to_numpy(), t["j"].to_numpy())),
+        shape=(o.height, base),
     )
 
 
@@ -225,6 +260,17 @@ def construir(
         e = e * f
     rng = make_rng(semilla)
     copias = S.trs(e, int(rng.integers(0, 2**31)))
+    # Equilibrado: los recuentos de la muestra en las celdas calibradas de cada bloque se
+    # acercan a los esperados sin cambiar el tamaño (D-038).
+    bloques_idx = o["bloque"].rank("dense").cast(pl.Int64).to_numpy()
+    copias, info_eq = S.equilibrar(
+        copias,
+        e,
+        m,
+        bloques_idx,
+        _matriz_equilibrado(p, o, territorio),
+        int(rng.integers(0, 2**31)),
+    )
     o = o.with_columns(pl.Series("copias", copias), pl.Series("peso", 1.0 / f))
     sel = o.filter(pl.col("copias") > 0).select("unidad_cal", "copias", "peso")
     sel = (
@@ -307,9 +353,11 @@ def construir(
                 b: d["proporcion_local"] for b, d in meta_cal["diagnosticos"].items()
             },
         },
-        "integerizacion": "TRS con muestreo sistemático ordenado (bloque, provincia, residencia, "
-        "tipo y tamaño de hogar, edad y nacionalidad de la persona de referencia)",
+        "integerizacion": "TRS con muestreo sistemático ordenado (bloque, provincia, grado de "
+        "urbanización, tamaño de municipio, residencia, tipo y tamaño de hogar, nacionalidad y "
+        "edad de la persona de referencia)",
         "hogares": households.height,
+        "equilibrado": info_eq,
         # Referencia de V-REGLAS-BLANDAS: frecuencias en los donantes con los pesos calibrados.
         "referencia_reglas_blandas": frecuencias_blandas(p, "w"),
         "sha256": hashes,
