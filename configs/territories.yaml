@@ -80,9 +80,23 @@ provincias:
 
 # Ampliación jerárquica de donantes cuando el territorio no tiene suficientes
 # (docs/02, sección 5).
+# Se aplica a las celdas calibradas que no tienen donantes suficientes en el territorio (F4,
+# D-038.5; F5, D-041). `espana` es el último recurso, como en F4.
 jerarquia_donantes:
   - mismo_territorio
   - misma_provincia
   - misma_ccaa_mismo_grado_urbanizacion
   - ccaa_parecidas
+  - espana
+# «Comunidades parecidas»: las `numero` más próximas por la TVD media de sus objetivos de
+# estructura (F3), calculada con los datos, no fijada a mano.
+ccaa_parecidas:
+  numero: 3
+  objetivos: [edad5_sexo, nacionalidad_top, estudios_edad, actividad_sexo, urbanizacion, tipo_hogar]
+# Celda deficitaria: menos de `min_donantes_celda` unidades del territorio, u objetivo mayor que
+# `razon_max` veces la masa inicial de sus donantes (se amplía hasta `razon_objetivo`).
+ampliacion:
+  min_donantes_celda: 5
+  razon_max: 3.5
+  razon_objetivo: 2.5
 donantes_min_kish: 200

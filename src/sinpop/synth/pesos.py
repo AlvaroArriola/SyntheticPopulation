@@ -1,40 +1,49 @@
-"""Calibración de las unidades donantes a los objetivos de un territorio (F4; D-038).
+"""Calibración de las unidades donantes a los objetivos de un territorio (F4 y F5; D-038, D-041).
 
-España se calibra como la unión de sus 19 comunidades: cada comunidad se calibra con sus propios
-objetivos y con los donantes que residen en ella. Así la población nacional reproduce también
-las cifras de cada comunidad (V-COHERENCIA) y el reparto por provincias queda como validación
-(objetivo reservado `provincia_si_calibra_ccaa`). Una comunidad o una provincia se calibra
-directamente con sus objetivos.
+**Bloques.** España se calibra como la unión de sus 19 comunidades: cada comunidad con sus
+objetivos y sus donantes, de modo que la población nacional reproduce también cada comunidad y
+el reparto por provincias queda como validación. Una comunidad, una provincia o una lista de
+municipios es un único bloque.
 
-Ampliación de donantes (docs/02 §5). Una celda calibrada del bloque es deficitaria si:
+**Donantes base del bloque** (`base_bloque`):
 
-- tiene menos de `MIN_DONANTES` unidades locales: se añaden las que faltan, con peso inicial
-  objetivo / `MIN_DONANTES` (con el peso del Censo, un objetivo pequeño exigiría factores
-  fuera del rango de V-PESOS); o
-- su objetivo supera `RAZON_MAX` veces la masa inicial local (Σ personas × peso del Censo), lo
-  que pasa con las nacionalidades que más han crecido desde 2021 (p. ej. Ucrania en Asturias):
-  se añaden unidades, con su peso del Censo, hasta que la razón baje a `RAZON_OBJETIVO`.
+- comunidad o provincia: las unidades (hogares y colectivos) de sus provincias, locales;
+- lista de municipios: los hogares de los municipios de la lista que el Censo 2021 identifica
+  (los de más de 10.000 habitantes), locales; para los no identificados, los hogares sin
+  municipio identificado de su provincia y clase de tamaño, con el peso inicial escalado por la
+  parte de la población de esa clase y provincia que son los municipios de la lista (Padrón
+  2025), no locales (nivel «misma provincia»); y los colectivos de esas provincias, con el peso
+  escalado por la parte de la población de la provincia que es el territorio.
 
-Las unidades añadidas se toman de fuera del bloque (primero de la misma comunidad, si el bloque es
-una provincia, y luego de toda España) entre las que caen en la celda, en un orden
-pseudoaleatorio fijo, prefiriendo las del mismo contexto (grado de urbanización y tamaño de
-municipio más frecuentes en el bloque) y excluyendo las que caen en celdas con objetivo 0 del
-bloque. Se reparten entre las provincias del bloque en proporción al objetivo de la celda en cada
-una, pierden su municipio y se marcan como no locales (V-DONANTES informa la proporción local).
+**Ampliación de celdas deficitarias** (docs/02 §5; `territories.yaml`). Una celda calibrada es
+deficitaria si tiene menos de `min_donantes_celda` unidades base, o si su objetivo supera
+`razon_max` veces su masa inicial (Σ personas × peso). Se añaden unidades de fuera de la base que
+caen en la celda, recorriendo la jerarquía (misma provincia, misma comunidad con el mismo grado de
+urbanización, comunidades parecidas, España), en un orden pseudoaleatorio fijo y excluyendo las
+que caen en celdas con objetivo 0 del bloque. Si faltan unidades, se añaden con peso inicial
+objetivo / `min_donantes_celda`; si falta masa, con su peso hasta que la razón baje a
+`razon_objetivo`. Se reparten entre las provincias del bloque, pierden el municipio y no son
+locales (V-DONANTES informa la proporción local).
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import lru_cache
+from pathlib import Path
 
 import polars as pl
 
 from sinpop.synth import calibracion as C
 from sinpop.synth import donantes as D
 
-MIN_DONANTES = 5
-RAZON_MAX = 3.5
-RAZON_OBJETIVO = 2.5
+MIN_CELDA_NACIONALIDAD = 100
+
+
+def _cfg():
+    from sinpop.config import load_config
+
+    return load_config("territories.yaml")
 
 
 def bloques(territorio: str) -> list[str]:
@@ -45,12 +54,48 @@ def bloques(territorio: str) -> list[str]:
     return [territorio]
 
 
+def provincias_bloque(b: str) -> list[str]:
+    if b.startswith("MUNIS:"):
+        from sinpop.targets import municipios as M
+
+        ms = M.definicion(Path(b.split(":", 1)[1])).municipios
+        return sorted({m[:2] for m in ms})
+    from sinpop.targets.build import provincias_de
+
+    return provincias_de(b)
+
+
+@lru_cache(maxsize=32)
+def ccaa_parecidas(ccaa: str) -> tuple[str, ...]:
+    """Las comunidades más próximas a `ccaa` por la TVD media de sus objetivos de estructura."""
+    from sinpop.harmonize.core import ccaa_de_provincia
+    from sinpop.targets import run
+    from sinpop.validate.metrics import tvd
+
+    cfg = _cfg().ccaa_parecidas  # type: ignore[attr-defined]
+    todas = sorted(set(ccaa_de_provincia().values()))
+
+    def perfil(c: str) -> pl.DataFrame:
+        o = run.leer(f"CCAA:{c}").filter(pl.col("objetivo").is_in(cfg.objetivos))
+        return o.select("objetivo", "clave", "valor")
+
+    ref = perfil(ccaa)
+    dist = []
+    for c in todas:
+        if c == ccaa:
+            continue
+        j = ref.join(perfil(c), on=["objetivo", "clave"], how="full", coalesce=True).fill_null(0)
+        d = [tvd(g["valor_right"], g["valor"]) for _, g in j.group_by("objetivo")]
+        dist.append((sum(d) / len(d), c))
+    return tuple(c for _, c in sorted(dist)[: cfg.numero])
+
+
 @dataclass
 class Calibrado:
-    unidades: pl.DataFrame  # bloque, unidad (global), local, provincia, ccaa, d, w
+    unidades: pl.DataFrame  # bloque, unidad (global), local, nivel, provincia, ccaa, d, w
     diagnosticos: dict[str, dict]
     ceros: pl.DataFrame
-    ampliaciones: pl.DataFrame  # bloque, objetivo, clave, locales, añadidas
+    ampliaciones: pl.DataFrame  # bloque, objetivo, clave, locales, razon_inicial, anadidas
     fusiones: pl.DataFrame  # bloque, objetivo, clave, fusionada_en
 
 
@@ -68,9 +113,6 @@ def _celdas_por_unidad(personas: pl.DataFrame, obj: pl.DataFrame) -> pl.DataFram
         )
         out.append(k.group_by("unidad", "objetivo", "clave").agg(pl.len().alias("x")))
     return pl.concat(out)
-
-
-MIN_CELDA_NACIONALIDAD = 100
 
 
 def fusionar(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict[str, str]]]:
@@ -99,52 +141,153 @@ def fusionar(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict[str, str]]
     ), {"nacionalidad_top": mapa}
 
 
+def _contexto_unidades(u: D.Unidades) -> pl.DataFrame:
+    """Una fila por unidad: municipio, tamaño de municipio y grado de urbanización del donante."""
+    ref = u.personas.filter(pl.col("relacion_persona_ref").is_in(["persona_referencia", "NP"]))
+    return ref.select("unidad", "municipio", "tamano_municipio", "grado_urbanizacion").unique(
+        "unidad", keep="first"
+    )
+
+
+def base_bloque(u: D.Unidades, b: str, ps: list[str]) -> pl.DataFrame:
+    """Donantes base del bloque: unidad, provincia, local, nivel y factor del peso inicial."""
+    uni = u.unidades.filter(pl.col("provincia").is_in(ps)).select(
+        "unidad", "provincia", "tipo_unidad"
+    )
+    if not b.startswith("MUNIS:"):
+        return uni.select(
+            "unidad",
+            "provincia",
+            pl.lit(True).alias("local"),
+            pl.lit("mismo_territorio").alias("nivel"),
+            pl.lit(1.0).alias("factor"),
+        )
+    from sinpop.targets import municipios as M
+
+    lista = M.definicion(Path(b.split(":", 1)[1])).municipios
+    ctx = _contexto_unidades(u)
+    ident = set(ctx["municipio"].drop_nulls().unique().to_list())
+    pad = M.padron()
+    # Clase del Censo 2021 para los no identificados: solo existen «hasta_2000» y
+    # «de_2001_a_10000»; un municipio que ha crecido desde 2021 sigue en la segunda.
+    pad = pad.with_columns(
+        pl.when(pl.col("tamano_municipio") == "hasta_2000")
+        .then(pl.lit("hasta_2000"))
+        .otherwise(pl.lit("de_2001_a_10000"))
+        .alias("clase_censo"),
+        pl.col("municipio").is_in(list(ident)).alias("ident"),
+    )
+    no_id = pad.filter(~pl.col("ident"))
+    escala = (
+        no_id.group_by("provincia", "clase_censo")
+        .agg(
+            pl.col("poblacion").filter(pl.col("municipio").is_in(lista)).sum().alias("lista"),
+            pl.col("poblacion").sum().alias("todos"),
+        )
+        .filter(pl.col("lista") > 0)
+        .select(
+            "provincia",
+            pl.col("clase_censo").alias("tamano_municipio"),
+            (pl.col("lista") / pl.col("todos")).alias("factor"),
+        )
+    )
+    x = uni.join(ctx, on="unidad", how="left")
+    locales = x.filter(
+        (pl.col("tipo_unidad") == "hogar") & pl.col("municipio").is_in(lista)
+    ).select(
+        "unidad",
+        "provincia",
+        pl.lit(True).alias("local"),
+        pl.lit("mismo_territorio").alias("nivel"),
+        pl.lit(1.0).alias("factor"),
+    )
+    clase = (
+        x.filter((pl.col("tipo_unidad") == "hogar") & pl.col("municipio").is_null())
+        .join(escala, on=["provincia", "tamano_municipio"])
+        .select(
+            "unidad",
+            "provincia",
+            pl.lit(False).alias("local"),
+            pl.lit("misma_provincia").alias("nivel"),
+            "factor",
+        )
+    )
+    prov_pob = pad.group_by("provincia").agg(
+        pl.col("poblacion").filter(pl.col("municipio").is_in(lista)).sum().alias("lista"),
+        pl.col("poblacion").sum().alias("todos"),
+    )
+    col = (
+        x.filter(pl.col("tipo_unidad") == "colectivo")
+        .join(prov_pob, on="provincia")
+        .select(
+            "unidad",
+            "provincia",
+            pl.lit(False).alias("local"),
+            pl.lit("misma_provincia").alias("nivel"),
+            (pl.col("lista") / pl.col("todos")).alias("factor"),
+        )
+    )
+    return pl.concat([locales, clase, col]).filter(pl.col("factor") > 0).sort("unidad")
+
+
+def _pesos_provincias(
+    b: str, ps: list[str], objetivo: str, clave_: str, prov_obj: dict
+) -> list[float]:
+    """Reparto de las unidades añadidas entre las provincias del bloque: el objetivo de la celda
+    en cada provincia (comunidades) o su población en la lista (municipios)."""
+    if b.startswith("MUNIS:"):
+        from sinpop.targets import municipios as M
+
+        lista = M.definicion(Path(b.split(":", 1)[1])).municipios
+        pad = M.padron().filter(pl.col("municipio").is_in(lista))
+        return [float(pad.filter(pl.col("provincia") == p)["poblacion"].sum()) for p in ps]
+    return [
+        float(
+            prov_obj[p]
+            .filter((pl.col("objetivo") == objetivo) & (pl.col("clave") == clave_))["valor"]
+            .sum()
+        )
+        for p in ps
+    ]
+
+
 def _ampliar(
     u: D.Unidades, b: str, ps: list[str], obj: pl.DataFrame, todas: pl.DataFrame
 ) -> tuple[pl.DataFrame, pl.DataFrame]:
-    """Unidades del bloque (locales y añadidas, con `d_anadida`) y registro de ampliaciones."""
+    """Unidades del bloque (base y añadidas, con `d_anadida`) y registro de ampliaciones."""
     from sinpop.harmonize.core import ccaa_de_provincia
     from sinpop.targets import run
 
+    cfg = _cfg()
+    amp = cfg.ampliacion  # type: ignore[attr-defined]
     ccaa = ccaa_de_provincia()
-    loc = u.unidades.filter(pl.col("provincia").is_in(ps)).select("unidad", "provincia")
-    loc = loc.with_columns(
-        pl.lit(True).alias("local"), pl.lit(None, dtype=pl.Float64).alias("d_anadida")
-    )
-    cel = todas.join(loc.select("unidad"), on="unidad").join(
+    base = base_bloque(u, b, ps)
+    loc = base.with_columns(pl.lit(None, dtype=pl.Float64).alias("d_anadida"))
+    cel = todas.join(base.select("unidad", "factor"), on="unidad").join(
         u.unidades.select("unidad", "d"), on="unidad"
     )
     n = cel.group_by("objetivo", "clave").agg(
-        pl.len().alias("locales"), (pl.col("x") * pl.col("d")).sum().alias("masa")
+        pl.len().alias("locales"),
+        (pl.col("x") * pl.col("d") * pl.col("factor")).sum().alias("masa"),
     )
     pos = obj.filter(pl.col("valor") > 0).select("objetivo", "clave", "valor")
     def_ = pos.join(n, on=["objetivo", "clave"], how="left").fill_null(0)
     def_ = def_.filter(
-        (pl.col("locales") < MIN_DONANTES) | (pl.col("valor") > RAZON_MAX * pl.col("masa"))
+        (pl.col("locales") < amp.min_donantes_celda)
+        | (pl.col("valor") > amp.razon_max * pl.col("masa"))
     ).sort("objetivo", "clave")
     cols = ["bloque", "objetivo", "clave", "locales", "razon_inicial", "anadidas"]
     if def_.height == 0:
         return loc, pl.DataFrame(schema=dict.fromkeys(cols, pl.Utf8)).cast(
             {"locales": pl.Int64, "razon_inicial": pl.Float64, "anadidas": pl.Int64}
         )
-    # Orden de preferencia: mismo contexto que el más frecuente en el bloque, después el orden
-    # pseudoaleatorio fijo. Se excluyen las unidades que caen en celdas con objetivo 0 del bloque.
-    ctx = (
-        u.personas.filter(pl.col("provincia").is_in(ps))
-        .group_by("grado_urbanizacion", "tamano_municipio")
+    ctx = _contexto_unidades(u)
+    grado = (
+        ctx.join(base.select("unidad"), on="unidad")
+        .group_by("grado_urbanizacion")
         .agg(pl.len())
-        .sort("len", "grado_urbanizacion", "tamano_municipio", descending=True)
-        .row(0)
-    )
-    contexto = (
-        u.personas.filter(pl.col("relacion_persona_ref").is_in(["persona_referencia", "NP"]))
-        .select(
-            "unidad",
-            (
-                (pl.col("grado_urbanizacion") == ctx[0]) & (pl.col("tamano_municipio") == ctx[1])
-            ).alias("_ctx"),
-        )
-        .unique("unidad")
+        .sort("len", "grado_urbanizacion", descending=True)
+        .row(0)[0]
     )
     cero = obj.filter(pl.col("valor") <= 0).select("objetivo", "clave")
     incompatibles = todas.join(cero, on=["objetivo", "clave"]).select("unidad").unique()
@@ -156,12 +299,21 @@ def _ampliar(
             "tipo_unidad",
             D._orden_determinista(pl.col("household_id"), pl.col("norden")).alias("_o"),
         )
-        .filter(~pl.col("provincia").is_in(ps))
-        .join(contexto, on="unidad")
+        .join(base.select("unidad"), on="unidad", how="anti")
         .join(incompatibles, on="unidad", how="anti")
+        .join(ctx.select("unidad", "grado_urbanizacion"), on="unidad", how="left")
+        .with_columns(pl.col("provincia").replace_strict(ccaa).alias("_ccaa"))
     )
-    ccaa_b = {ccaa[p] for p in ps}
-    niveles = [pl.col("provincia").replace_strict(ccaa).is_in(list(ccaa_b)), pl.lit(True)]
+    ccaa_b = sorted({ccaa[p] for p in ps})
+    parecidas = sorted({c for cb in ccaa_b for c in ccaa_parecidas(cb)} - set(ccaa_b))
+    filtros = {
+        "misma_provincia": pl.col("provincia").is_in(ps),
+        "misma_ccaa_mismo_grado_urbanizacion": pl.col("_ccaa").is_in(ccaa_b)
+        & (pl.col("grado_urbanizacion") == grado),
+        "ccaa_parecidas": pl.col("_ccaa").is_in(parecidas),
+        "espana": pl.lit(True),
+    }
+    niveles = [n for n in cfg.jerarquia_donantes if n in filtros]  # type: ignore[attr-defined]
     prov_obj = {p: run.leer(f"PROV:{p}") for p in ps}
     anadidas, registro = [], []
     universo = dict(obj.select("objetivo", "universo").unique().iter_rows())
@@ -175,33 +327,24 @@ def _ampliar(
             todas.filter((pl.col("objetivo") == objetivo) & (pl.col("clave") == clave_))
             .select("unidad", "x")
             .join(orden.filter(pl.col("tipo_unidad") == tipo), on="unidad")
-            .sort(["_ctx", "_o", "unidad"], descending=[True, False, False])
+            .sort("_o", "unidad")
         )
         if anadidas:
             cand = cand.join(pl.concat(anadidas).select("unidad"), on="unidad", how="anti")
         cand = pl.concat(
-            [cand.filter(f).with_columns(pl.lit(i).alias("_nivel")) for i, f in enumerate(niveles)]
-        )
-        cand = cand.unique("unidad", keep="first", maintain_order=True)
-        if locales < MIN_DONANTES:
-            t = cand.head(MIN_DONANTES - locales).with_columns(
-                pl.lit(valor / MIN_DONANTES).alias("d_anadida")
+            [cand.filter(filtros[nv]).with_columns(pl.lit(nv).alias("nivel")) for nv in niveles]
+        ).unique("unidad", keep="first", maintain_order=True)
+        if locales < amp.min_donantes_celda:
+            t = cand.head(amp.min_donantes_celda - locales).with_columns(
+                pl.lit(valor / amp.min_donantes_celda).alias("d_anadida")
             )
         else:
-            falta = valor / RAZON_OBJETIVO - masa
+            falta = valor / amp.razon_objetivo - masa
             acum = (pl.col("x") * pl.col("d")).cum_sum()
             t = cand.filter(acum.shift(1, fill_value=0) < falta).with_columns(
                 pl.col("d").alias("d_anadida")
             )
-        # Reparto entre las provincias del bloque en proporción al objetivo de la celda.
-        cuota = [
-            float(
-                prov_obj[p]
-                .filter((pl.col("objetivo") == objetivo) & (pl.col("clave") == clave_))["valor"]
-                .sum()
-            )
-            for p in ps
-        ]
+        cuota = _pesos_provincias(b, ps, objetivo, clave_, prov_obj)
         tot = sum(cuota) or 1.0
         lims = [sum(cuota[: i + 1]) / tot for i in range(len(ps))]
         k = t.height
@@ -209,7 +352,7 @@ def _ampliar(
             ps[next(i for i, x in enumerate(lims) if (j + 0.5) / k <= x + 1e-12)] for j in range(k)
         ]
         anadidas.append(
-            t.select("unidad", "d_anadida").with_columns(
+            t.select("unidad", "d_anadida", "nivel").with_columns(
                 pl.Series("provincia", destino, dtype=pl.Utf8)
             )
         )
@@ -218,7 +361,7 @@ def _ampliar(
         pl.concat(anadidas)
         .unique("unidad", keep="first", maintain_order=True)
         .sort("unidad")
-        .with_columns(pl.lit(False).alias("local"))
+        .with_columns(pl.lit(False).alias("local"), pl.lit(1.0).alias("factor"))
     )
     reg = pl.DataFrame(registro, schema=cols, orient="row")
     return pl.concat([loc, add.select(loc.columns)]), reg
@@ -227,14 +370,15 @@ def _ampliar(
 def calibrar(u: D.Unidades, territorio: str, metodo: str = "logit") -> Calibrado:
     from sinpop.harmonize.core import ccaa_de_provincia
     from sinpop.targets import run
-    from sinpop.targets.build import provincias_de
 
     ccaa = ccaa_de_provincia()
     filas, diags, ceros, ampl, fusiones = [], {}, [], [], []
     todas = None
     for b in bloques(territorio):
-        ps = provincias_de(b)
-        obj, fusion = fusionar(D.objetivos_calibrables(run.leer(b)))
+        ps = provincias_bloque(b)
+        obj, fusion = fusionar(
+            D.objetivos_calibrables(run.leer(b), municipios=b.startswith("MUNIS:"))
+        )
         if todas is None or set(obj["objetivo"].unique()) != set(todas["objetivo"].unique()):
             todas = _celdas_por_unidad(u.personas, obj)
         todas_b = todas
@@ -267,7 +411,9 @@ def calibrar(u: D.Unidades, territorio: str, metodo: str = "logit") -> Calibrado
         )
         pers = pers.with_columns(pl.col("provincia").replace_strict(ccaa).alias("ccaa"))
         uni = u.unidades.drop("provincia").join(ub, on="unidad").sort("_l")
-        uni = uni.with_columns(pl.coalesce("d_anadida", "d").alias("d")).drop("d_anadida")
+        uni = uni.with_columns(
+            pl.coalesce("d_anadida", pl.col("d") * pl.col("factor")).alias("d")
+        ).drop("d_anadida")
         sub = D.Unidades(
             personas=pers.drop("unidad")
             .rename({"_l": "unidad"})
@@ -278,18 +424,25 @@ def calibrar(u: D.Unidades, territorio: str, metodo: str = "logit") -> Calibrado
         )
         m = D.matriz(sub, obj, fusion)
         r = C.calibrar(m.X, m.d, m.celdas["valor"].to_numpy(), metodo)
-        if not r.convergido:
+        # Se busca 1e-7, pero el criterio de aceptación es el de V-PESOS (desviación relativa
+        # máxima ≤ 0,1 %); la desviación alcanzada queda en el diagnóstico.
+        from sinpop.config import load_config
+
+        tol = load_config("thresholds.yaml").v_pesos.convergencia_max  # type: ignore[attr-defined]
+        if r.desviacion_max > tol:
             raise RuntimeError(
                 f"{b}: la calibración ({metodo}) no converge: {r.desviacion_max:.2e}"
             )
         diags[b] = C.diagnostico(r, m.d)
         diags[b]["proporcion_local"] = float(uni["local"].mean())
+        diags[b]["niveles"] = dict(uni.group_by("nivel").agg(pl.len()).iter_rows())
         ceros.append(m.ceros.with_columns(pl.lit(b).alias("bloque")))
         filas.append(
             uni.select(
                 pl.lit(b).alias("bloque"),
                 "unidad",
                 "local",
+                "nivel",
                 "provincia",
                 pl.col("provincia").replace_strict(ccaa).alias("ccaa"),
                 "d",
@@ -312,7 +465,7 @@ def personas_ponderadas(u: D.Unidades, cal: Calibrado) -> pl.DataFrame:
     return (
         u.personas.drop("provincia", "ccaa")
         .join(
-            un.select("unidad", "unidad_cal", "bloque", "local", "provincia", "ccaa", "w"),
+            un.select("unidad", "unidad_cal", "bloque", "local", "nivel", "provincia", "ccaa", "w"),
             on="unidad",
         )
         .sort("unidad_cal", "norden")

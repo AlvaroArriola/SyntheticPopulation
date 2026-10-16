@@ -34,7 +34,7 @@ def proporciones(p: pl.DataFrame, territorio: str) -> pl.DataFrame:
     """Proporción de cada categoría de las marginales calibradas del territorio."""
     from sinpop.targets import run
 
-    obj = D.objetivos_calibrables(run.leer(territorio))
+    obj = D.objetivos_calibrables(run.leer(territorio), municipios=territorio.startswith("MUNIS:"))
     r = D.recuentos(p, obj, "peso").join(
         obj.select("objetivo", "unidad", "universo").unique(), on="objetivo"
     )
@@ -170,7 +170,7 @@ def g47_sobremuestreo(territorio: str, u: D.Unidades, n: int = 100_000, semilla:
     p = V.preparar(p)
     sm = PB.S.parse_sobremuestreo(SOBREMUESTREO)
     miembros = int(p.filter(sm.condicion(p.schema)).height)  # type: ignore[union-attr]
-    obj = D.objetivos_calibrables(run.leer(territorio))
+    obj = D.objetivos_calibrables(run.leer(territorio), municipios=territorio.startswith("MUNIS:"))
     r = D.recuentos(p, obj, "peso")
     filas = []
     for (o,), g in r.group_by("objetivo", maintain_order=True):

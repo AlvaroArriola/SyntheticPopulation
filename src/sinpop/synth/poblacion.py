@@ -98,7 +98,8 @@ def _entradas_calibracion(territorio: str) -> dict[str, str]:
     ent = {"interim/censo2021_personas.parquet": meta_i["censo2021_personas"]["sha256"]}
     ent |= {f"targets/{i['fichero']}": i["sha256"] for i in meta_t.values()}
     ent |= {
-        f"configs/{c}": sha256_file(CONFIGS_DIR / c) for c in ("targets.yaml", "variables.yaml")
+        f"configs/{c}": sha256_file(CONFIGS_DIR / c)
+        for c in ("targets.yaml", "variables.yaml", "territories.yaml")
     }
     for f in sorted(Path(__file__).parent.glob("*.py")):
         if f.name in ("donantes.py", "pesos.py", "calibracion.py"):
@@ -189,7 +190,7 @@ def _matriz_equilibrado(p: pl.DataFrame, o: pl.DataFrame, territorio: str):
 
     from sinpop.targets import run
 
-    obj = D.objetivos_calibrables(run.leer(territorio))
+    obj = D.objetivos_calibrables(run.leer(territorio), municipios=territorio.startswith("MUNIS:"))
     trozos, base = [], 0
     for objetivo, unidad_obj, universo in (
         obj.select("objetivo", "unidad", "universo").unique(maintain_order=True).iter_rows()
@@ -211,6 +212,83 @@ def _matriz_equilibrado(p: pl.DataFrame, o: pl.DataFrame, territorio: str):
     return sparse.csr_matrix(
         (t["x"].to_numpy().astype(float), (t["i"].to_numpy(), t["j"].to_numpy())),
         shape=(o.height, base),
+    )
+
+
+# Confianza esperada por nivel territorial (docs/02 §5).
+CONFIANZA = {"pais": "alta", "ccaa": "media-alta", "prov": "media", "munis": "baja"}
+
+
+def _resumen_donantes(lineage: pl.DataFrame, territorio: str) -> dict:
+    """F5, tarea 3 (V-DONANTES): proporción de personas de donantes locales, tamaño efectivo de
+    Kish de los hogares donantes usados y confianza esperada del territorio."""
+    from sinpop.config import load_config
+    from sinpop.validate.metrics import kish
+
+    cfg = load_config("territories.yaml")
+    alerta = load_config("thresholds.yaml").v_donantes.locales_alerta  # type: ignore[attr-defined]
+    copias = lineage.group_by("donante_household_id").agg(pl.len())["len"].to_numpy()
+    local = float(lineage["local"].mean())
+    tipo = {"ES": "pais"}.get(territorio, territorio.split(":")[0].lower())
+    return {
+        "proporcion_local": local,
+        "por_nivel": dict(
+            lineage.group_by("nivel_donante").agg(pl.len()).sort("nivel_donante").iter_rows()
+        ),
+        "hogares_donantes": int(len(copias)),
+        "kish_hogares_donantes": kish(copias),
+        "kish_min": cfg.donantes_min_kish,  # type: ignore[attr-defined]
+        "confianza": CONFIANZA[tipo],
+        "confianza_reducida": local < alerta,
+    }
+
+
+def _asignar_municipio(pers: pl.DataFrame, territorio: str, semilla: int) -> pl.DataFrame:
+    """Lista de municipios: cada hogar o colectivo sin municipio de la lista recibe uno de los de
+    su provincia (de su clase de tamaño si la hay), con probabilidad proporcional a la población
+    del Padrón 2025 (`modelada`). El tamaño de municipio pasa a ser el del Padrón 2025 del
+    municipio asignado, el mismo criterio que su objetivo reservado."""
+    from sinpop.targets import municipios as M
+
+    lista = M.definicion(Path(territorio.split(":", 1)[1])).municipios
+    pad = M.padron().filter(pl.col("municipio").is_in(lista))
+    clase_censo = (
+        pl.when(pl.col("tamano_municipio") == "hasta_2000")
+        .then(pl.lit("hasta_2000"))
+        .otherwise(pl.lit("de_2001_a_10000"))
+    )
+    pad = pad.with_columns(clase_censo.alias("clase"))
+    rng = make_rng(semilla)
+    hog = (
+        pers.filter(~pl.col("municipio").is_in(lista) | pl.col("municipio").is_null())
+        .group_by("k")
+        .agg(pl.col("provincia").first(), pl.col("tamano_municipio").first())
+        .sort("k")
+    )
+    asign = []
+    for (prov, tam), g in hog.group_by("provincia", "tamano_municipio", maintain_order=True):
+        cand = pad.filter((pl.col("provincia") == prov) & (pl.col("clase") == tam))
+        if cand.height == 0:
+            cand = pad.filter(pl.col("provincia") == prov)
+        if cand.height == 0:
+            cand = pad
+        pr = (cand["poblacion"] / cand["poblacion"].sum()).to_numpy()
+        elegido = rng.choice(cand["municipio"].to_numpy(), size=g.height, p=pr)
+        asign.append(g.select("k").with_columns(pl.Series("_mun", elegido, dtype=pl.Utf8)))
+    a = pl.concat(asign) if asign else pl.DataFrame(schema={"k": pl.Int64, "_mun": pl.Utf8})
+    clases = dict(pad.select("municipio", "tamano_municipio").iter_rows())
+    out = pers.join(a, on="k", how="left").with_columns(
+        pl.col("_mun").is_not_null().alias("_mun_modelado"),
+        pl.coalesce("_mun", "municipio").alias("municipio"),
+    )
+    return (
+        out.with_columns(
+            pl.col("municipio")
+            .replace_strict(clases, default=pl.col("tamano_municipio"))
+            .alias("tamano_municipio")
+        )
+        .drop("_mun")
+        .sort("k", "norden")
     )
 
 
@@ -238,8 +316,6 @@ def construir(
 ) -> dict:
     if not isinstance(semilla, int) or n <= 0:
         raise ValueError("hacen falta un tamaño positivo y una semilla entera")
-    if territorio.startswith("MUNIS:"):
-        raise NotImplementedError("los territorios por municipios se generan en F5")
     u = u if u is not None else unidades_todas()
     cal, meta_cal = calibracion(u, territorio, metodo)
     p = P.personas_ponderadas(u, cal)
@@ -294,14 +370,17 @@ def construir(
         .then(pl.format("H{}", pl.col("k").cast(pl.Utf8).str.zfill(8)))
         .alias("household_id_nuevo"),
         pl.format("P{}", pl.col("_pi").cast(pl.Utf8).str.zfill(9)).alias("person_id"),
-        # Colectivos y unidades trasladadas: el municipio del donante no es el suyo.
+        # Colectivos y unidades de otro municipio: el municipio del donante no es el suyo.
         pl.when(familiar & pl.col("local")).then(pl.col("municipio")).alias("municipio"),
     )
+    # Base del territorio (sus provincias o, en una lista de municipios, también los hogares de
+    # su provincia y clase de tamaño) frente a unidades añadidas desde fuera (ampliación).
+    en_base = pl.col("nivel").is_in(["mismo_territorio", "misma_provincia"])
     # Unidades trasladadas desde otra provincia (ampliación de donantes): su tamaño de municipio
     # era el de origen y puede no existir en la de destino. Se toma la clase más frecuente entre
     # los donantes locales de la provincia con el mismo grado de urbanización (`modelada`).
     clase = (
-        p.filter(pl.col("local"))
+        p.filter(pl.col("nivel") == "mismo_territorio")
         .group_by("provincia", "grado_urbanizacion", "tamano_municipio")
         .agg(pl.col("w").sum())
         .sort("w", "tamano_municipio", descending=True)
@@ -311,7 +390,7 @@ def construir(
     pers = (
         pers.join(clase, on=["provincia", "grado_urbanizacion"], how="left")
         .with_columns(
-            pl.when(pl.col("local"))
+            pl.when(en_base)
             .then(pl.col("tamano_municipio"))
             .otherwise(pl.coalesce("_tm", "tamano_municipio"))
             .alias("tamano_municipio")
@@ -319,10 +398,16 @@ def construir(
         .drop("_tm")
         .sort("k", "norden")
     )
+    municipio_modelado = pl.lit(False)
+    if territorio.startswith("MUNIS:"):
+        pers = _asignar_municipio(pers, territorio, int(rng.integers(0, 2**31)))
+        municipio_modelado = pl.col("_mun_modelado")
     calidad = []
     for c in COLUMNAS_PERSONA:
-        modelada = (~familiar & pl.lit(c not in OBSERVADAS_COLECTIVO)) | (
-            ~pl.col("local") & pl.lit(c in TERRITORIALES)
+        modelada = (
+            (~familiar & pl.lit(c not in OBSERVADAS_COLECTIVO))
+            | (~en_base & pl.lit(c in TERRITORIALES))
+            | (municipio_modelado & pl.lit(c in ("municipio", "tamano_municipio")))
         )
         calidad.append(
             pl.when(modelada)
@@ -352,6 +437,7 @@ def construir(
         "tipo_unidad",
         "bloque",
         "local",
+        pl.col("nivel").alias("nivel_donante"),
         "colectivo_donante_nivel",
     )
     from sinpop.targets.run import nombre_fichero
@@ -380,6 +466,7 @@ def construir(
         "urbanización, tamaño de municipio, residencia, tipo y tamaño de hogar, nacionalidad y "
         "edad de la persona de referencia)",
         "hogares": households.height,
+        "donantes": _resumen_donantes(lineage, territorio),
         "equilibrado": info_eq,
         # Referencia de V-REGLAS-BLANDAS: frecuencias en los donantes con los pesos calibrados.
         "referencia_reglas_blandas": frecuencias_blandas(p, "w"),

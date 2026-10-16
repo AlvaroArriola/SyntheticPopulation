@@ -207,12 +207,42 @@ class Provincia(Strict):
     ccaa: str = Field(pattern=r"^\d{2}$")
 
 
+NIVELES_DONANTES = (
+    "mismo_territorio",
+    "misma_provincia",
+    "misma_ccaa_mismo_grado_urbanizacion",
+    "ccaa_parecidas",
+    "espana",
+)
+
+
+class CCAAParecidas(Strict):
+    numero: int = Field(gt=0)
+    objetivos: list[str] = Field(min_length=1)
+
+
+class Ampliacion(Strict):
+    min_donantes_celda: int = Field(gt=0)
+    razon_max: float = Field(gt=1)
+    razon_objetivo: float = Field(gt=1)
+
+
 class TerritoriesConfig(Strict):
     fuente_codigos: str
     ccaa: list[CCAA]
     provincias: list[Provincia]
     jerarquia_donantes: list[str] = Field(min_length=1)
+    ccaa_parecidas: CCAAParecidas
+    ampliacion: Ampliacion
     donantes_min_kish: int = Field(gt=0)
+
+    @field_validator("jerarquia_donantes")
+    @classmethod
+    def _niveles(cls, v: list[str]) -> list[str]:
+        malos = [n for n in v if n not in NIVELES_DONANTES]
+        if malos or v[0] != "mismo_territorio":
+            raise ValueError(f"jerarquía de donantes no válida: {v}")
+        return v
 
     @model_validator(mode="after")
     def _coherencia(self) -> TerritoriesConfig:

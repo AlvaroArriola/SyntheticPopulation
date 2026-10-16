@@ -79,7 +79,8 @@ def comparar(
                 (pl.col("uso") == uso) & pl.col("universo").is_in(list(UNIVERSOS))
             )
             if uso == "calibrar":
-                obj = obj.filter(pl.col("objetivo").is_in(D.objetivos_calibrables(obj)["objetivo"]))
+                cal = D.objetivos_calibrables(obj, municipios=t.startswith("MUNIS:"))
+                obj = obj.filter(pl.col("objetivo").is_in(cal["objetivo"].implode()))
             sub = _subconjunto(p, t)
             if sub.height == 0:
                 continue
@@ -157,13 +158,11 @@ def v_marg(p: pl.DataFrame, territorio: str, semilla: int = 0) -> pl.DataFrame:
     calibró por comunidades, cada comunidad)."""
     c = umbrales()["V-MARG"]
     niveles = ["espana", "ccaa"] if territorio == "ES" else ["espana"]
-    df = pl.concat(
-        [
-            comparar(p, territorio, "calibrar", niveles, semilla),
-            _residencia(p, territorio, niveles, semilla),
-        ],
-        how="vertical_relaxed",
-    )
+    partes = [comparar(p, territorio, "calibrar", niveles, semilla)]
+    res = _residencia(p, territorio, niveles, semilla)
+    if res.height:  # los territorios por municipios no tienen objetivos de colectivos
+        partes.append(res)
+    df = pl.concat(partes, how="vertical_relaxed")
     return df.with_columns(
         (c["factor_tvd_ref"] * pl.col("tvd_ref") + c["tolerancia"]).alias("umbral")
     ).with_columns(
