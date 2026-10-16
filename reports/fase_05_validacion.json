@@ -3945,6 +3945,52 @@
     ]
    },
    "v_reglas_duras": 0
+  },
+  {
+   "territorio": "MUNIS:configs/territorios/ejemplo_valencia_urbano.yaml",
+   "run_id": "2026-01-01_MUNIS_ejemplo_valencia_urbano_20000_s1",
+   "n": 20000,
+   "obtenido": 19992,
+   "donantes": {
+    "proporcion_local": 0.9839935974389756,
+    "por_nivel": {
+     "misma_provincia": 320,
+     "mismo_territorio": 19672
+    },
+    "hogares_donantes": 8034,
+    "kish_hogares_donantes": 6123.863328532467,
+    "kish_min": 200,
+    "confianza": "baja",
+    "confianza_reducida": false
+   },
+   "v_marg": {
+    "comprobaciones": 6,
+    "fallos": [],
+    "tvd_media": 0.0025164136283679956
+   },
+   "v_cruce": {
+    "comprobaciones": 2,
+    "fallos": [],
+    "excepciones": 0,
+    "proporcion_fallos": 0.0,
+    "propio": [
+     {
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.007130651460649956,
+      "tvd_ref": 0.007331147620844191,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "tamano_municipio",
+      "tvd": 0.02772298811198965,
+      "tvd_ref": 0.006965762470658883,
+      "umbral": 0.08,
+      "ok": true
+     }
+    ]
+   },
+   "v_reglas_duras": 0
   }
  ]
 }
