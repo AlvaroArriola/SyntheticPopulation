@@ -741,3 +741,31 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - Estudios hasta la obligatoria: 42 % en la población y 34-38 % en las encuestas.
   - Afectan sobre todo al teletrabajo (su NP son los no ocupados) y a la compra en línea.
 - **Aprobada por:** pendiente del informe de F6
+
+## D-046 · Puerta F6: composición censal y límites del emparejamiento (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F6
+- **Estado:** propuesta (decisión humana: afecta a una puerta y a variables P0)
+- **Contexto:**
+  - `reports/fase_06.md`: G6.2, G6.3, G6.5 y G6.6 se superan; G6.1 y G6.4 no.
+  - Además, al revisar el contexto apareció un fallo de síntesis: unidades importadas de otra comunidad iban a provincias sin su grado de urbanización (18 personas de 1.000.000). Ya está corregido en `pesos._ampliar`. Hay que repetir las series F4 y F5, y conviene hacerlo una sola vez, después de esta decisión.
+- **A. G6.1 y la composición de la población.**
+  - Salud, carencias y variables digitales fallan por la composición, no por el emparejamiento. Ajustando la composición de la encuesta pasan al 97-100 % de celdas.
+  - La población tiene menos ocupados (49,6 % frente a 52 %), el doble de «otra inactividad» (19 % frente a 10 %) y más estudios bajos (42 % frente a 34-38 %) que las encuestas de 2025-2026.
+  - **A1:** mantener las cifras censales y evaluar G6.1 sobre la población con la composición de la encuesta. Se informa el resultado bruto y se aceptan como limitación los patrones regionales de tenencia, vehículo, jornada y sector público.
+  - **A2** (**propuesta**): resolver ahora D-038 C con la opción 2.
+    - Calibrar ocupados / parados / inactivos a la EPA del 2T 2026 por comunidad × sexo × edad. Dentro de los inactivos se mantiene el reparto censal (estudiante, jubilado, incapacidad, otra).
+    - Así la población describe el mercado de trabajo de 2026, igual que las encuestas con las que se enriquece.
+    - Los estudios siguen calibrados al Censo Anual: es la fuente oficial exhaustiva y la diferencia con las encuestas es de definición y respuesta.
+    - Hay que rehacer F3 (objetivo `actividad_sexo`), F4, F5 y F6.
+    - Después se evalúa G6.1 tal cual. Si solo quedan los patrones regionales, se presentan como limitación.
+- **B. G6.4 (variable llave reservada).**
+  - Todas las variables quedan mejor que la independencia.
+  - Con |Δ| ≤ 0,05 no basta: el emparejamiento solo recupera en parte la asociación con una variable que no es llave. Es la hipótesis de independencia condicional, común a todo emparejamiento estadístico.
+  - **B1** (**propuesta**): exigir «mejor que la independencia» y la recuperación de al menos la mitad de la asociación. Se informa |Δ| con cada llave reservada (sexo, nacionalidad, actividad y estudios) y se documenta que las relaciones con variables que no son llave salen atenuadas.
+  - **B2:** buscar un emparejamiento basado en modelo, con más variables comunes.
+    - No hay muchas más variables comunes entre la población y las encuestas.
+    - La ganancia esperada es pequeña y el coste, alto.
+- **C. Umbral de G6.6:** máx(2 %, 2 errores típicos) donde se calibra. Hoy: 52 de 52 provincias dentro.
+- **Aprobada por:** pendiente

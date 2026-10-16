@@ -251,6 +251,17 @@ def _pesos_provincias(
     ]
 
 
+def _tiene_grado(prov_obj: dict, p: str, grado: str, b: str) -> bool:
+    """La provincia tiene residentes con ese grado de urbanización (objetivo `urbanizacion`).
+    En las listas de municipios el reparto es por población y no se restringe."""
+    if b.startswith("MUNIS:"):
+        return True
+    o = prov_obj[p].filter(
+        (pl.col("objetivo") == "urbanizacion") & (pl.col("clave") == f"grado_urbanizacion={grado}")
+    )
+    return bool(o.height) and float(o["valor"].sum()) > 0
+
+
 def _ampliar(
     u: D.Unidades,
     b: str,
@@ -386,12 +397,25 @@ def _ampliar(
                 pl.lit(valor / amp.min_donantes_celda).alias("d_anadida")
             )
         cuota = _pesos_provincias(b, ps, objetivo, clave_, prov_obj)
-        tot = sum(cuota) or 1.0
-        lims = [sum(cuota[: i + 1]) / tot for i in range(len(ps))]
-        k = t.height
-        destino = [
-            ps[next(i for i, x in enumerate(lims) if (j + 0.5) / k <= x + 1e-12)] for j in range(k)
-        ]
+        # Cada unidad va a una provincia que tenga su grado de urbanización (p. ej. un hogar de
+        # ciudad no puede ir a una provincia sin ciudades); reparto sistemático por grado.
+        grados = t["grado_urbanizacion"].to_list()
+        destino = [""] * t.height
+        for g in sorted({x for x in grados if x is not None}) + [None]:
+            pos_g = [j for j, x in enumerate(grados) if x == g]
+            if not pos_g:
+                continue
+            c = [
+                q * (1.0 if g is None or _tiene_grado(prov_obj, p, g, b) else 0.0)
+                for q, p in zip(cuota, ps, strict=True)
+            ]
+            if not sum(c):
+                c = cuota
+            tot = sum(c) or 1.0
+            lims = [sum(c[: i + 1]) / tot for i in range(len(ps))]
+            k = len(pos_g)
+            for jj, j in enumerate(pos_g):
+                destino[j] = ps[next(i for i, x in enumerate(lims) if (jj + 0.5) / k <= x + 1e-12)]
         anadidas.append(
             t.select("unidad", "d_anadida", "nivel").with_columns(
                 pl.Series("provincia", destino, dtype=pl.Utf8)

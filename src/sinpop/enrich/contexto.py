@@ -139,11 +139,14 @@ def contexto(personas: pl.DataFrame) -> pl.DataFrame:
         ("ctx_renta_municipio", renta_por_unidad()),
         ("ctx_envejecimiento", envejecimiento_por_unidad()),
     ):
+        # Último recurso: la media de la provincia (clase sin municipios en ella)
+        prov = clase.group_by("provincia").agg(pl.col(var).mean().alias("_p"))
         out = (
             out.join(muni.rename({var: "_m"}), on="municipio", how="left")
             .join(clase.rename({var: "_c"}), on=["provincia", "tamano_municipio"], how="left")
+            .join(prov, on="provincia", how="left")
             .with_columns(
-                pl.coalesce("_m", "_c").alias(var),
+                pl.coalesce("_m", "_c", "_p").alias(var),
                 pl.when(pl.col("_m").is_not_null())
                 .then(
                     pl.when(pl.col("municipio__calidad") == "modelada")
@@ -153,7 +156,7 @@ def contexto(personas: pl.DataFrame) -> pl.DataFrame:
                 .otherwise(pl.lit("modelada"))
                 .alias(f"{var}__calidad"),
             )
-            .drop("_m", "_c")
+            .drop("_m", "_c", "_p")
         )
     return out.sort("_i").select(
         "ctx_renta_municipio",
