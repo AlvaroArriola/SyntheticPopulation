@@ -402,6 +402,12 @@ def construir(path: Path) -> pl.DataFrame:
             emitir(
                 adultos, ["nacionalidad_esp_ext", "es_adulto"], "adultos_nacionalidad", reparto_txt
             )
+            emitir(
+                build.esp_ext(r, var),
+                ["nacionalidad_esp_ext", "edad_5"],
+                "nacionalidad_edad",
+                reparto_txt + "; ajustado (IPF) al total por edad y sexo del municipio",
+            )
         emitir(r, [var], o, reparto_txt + "; ajustado (IPF) al total por edad y sexo del municipio")
     # Grado de urbanización y tamaño de municipio
     tot_m = por_edad.group_by("municipio").agg(pl.col("valor").sum())

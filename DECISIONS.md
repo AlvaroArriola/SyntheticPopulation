@@ -584,7 +584,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-16
 - **Fase:** F5
-- **Estado:** propuesta (revisión humana G5.6)
+- **Estado:** aprobada (el responsable delega la elección de la estrategia)
 - **Contexto:** la serie F5 (19 comunidades, 10 provincias, 2 listas de municipios, España a 1M, semilla 1; `reports/fase_05.md`) supera G5.1, G5.4 y G5.5. G5.2 y G5.3 fallan por tres motivos. Ninguno se corrige sin decisión, porque A cambia los objetivos calibrados y B y C tocan umbrales.
 - **A. Nacionalidad por edad (G5.2, V de Cramér).**
   - **Fallo:** en 7 comunidades (02, 07, 08, 15, 16, 18 y 19), la V de Cramér de `nacionalidad_esp_ext × es_adulto` se aleja de la oficial más de 0,03.
@@ -619,4 +619,9 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Otros resultados que no requieren decisión** (ya corregidos, sin cambiar el método):
   - España se calibra componiendo, un bloque cada vez, las calibraciones de sus comunidades. Es el mismo cálculo, pero de otro modo no cabía en memoria a 1M.
   - En la prueba del territorio reservado, V-MARG del resto excluía mal los objetivos retirados.
-- **Aprobada por:** pendiente
+- **Decisión del responsable (2026-10-16):** «Elige la estrategia que consideres óptima para cada problema… nos interesan los datos de los mayores de 18 años… cíñete a la estrategia de las instrucciones». Elección:
+  - **A: calibrar `nacionalidad_edad`.** El motivo pesa sobre todo en los adultos, no en los menores. En la serie, los extranjeros adultos quedaban entre un 0 % y un 8 % por debajo de la cifra oficial (Ceuta −7,6 %, Melilla −7,1 %, Baleares −5,7 %, Cataluña −3,6 %). Eso infla el universo con derecho a voto (españoles de 18 o más años) y deja corta una minoría adulta (docs/06). La calibración usa celdas oficiales de la ECP 2026, es la estrategia de docs/03 §2.1 (calibrar a objetivos oficiales del territorio, nacionalidad incluida) y el ensayo no pierde tamaño efectivo. Se calibra la edad quinquenal completa, menores incluidos, porque son las celdas oficiales y su coste es nulo. Los menores solo están en la población como miembros de los hogares de los adultos.
+  - **B: margen de muestreo en V-COHERENCIA**, como en D-038 A (`thresholds.yaml`: `factor_tvd_ref` 1,2 y `tolerancia` 0,002; TVD_ref de dos muestras en `metrics.tvd_ref_dos`). Solo cambia el umbral de los colectivos (0,0555); las demás comparaciones siguen con el umbral fijo, porque su TVD_ref es menor que 0,01.
+  - **C: excepción documentada** para Ceuta (`thresholds.yaml`, como Segovia). Se buscó una fuente más reciente en el INE (API Tempus, 16/10/2026): de las 78 tablas de la Estadística Continua de Población, las de hogares solo dan el tamaño (60131-60136); de las 988 del Censo de Población (anual), ninguna es de hogares. La única fuente de tipo de hogar por edad de la persona de referencia sigue siendo el Censo 2021.
+- **Consecuencias:** se rehacen los objetivos de F3 (`sinpop targets --territory all` y las listas de municipios), la serie F4 (que valida también el nuevo objetivo) y la serie F5.
+- **Aprobada por:** humano (2026-10-16), por delegación

@@ -62,6 +62,19 @@ def tvd_ref(
     return float(np.percentile(d, percentil))
 
 
+def tvd_ref_dos(
+    objetivo, n1: float, n2: float, muestras: int = 200, percentil: float = 95, semilla: int = 0
+) -> float:
+    """TVD_ref de dos muestras: percentil de la TVD entre dos muestras aleatorias simples
+    independientes, de tamaños n1 y n2, de la distribución objetivo (V-COHERENCIA, D-042 B)."""
+    q = _prop(objetivo)
+    rng = np.random.default_rng(semilla)
+    n1, n2 = max(1, round(n1)), max(1, round(n2))
+    a = rng.multinomial(n1, q, size=muestras) / n1
+    b = rng.multinomial(n2, q, size=muestras) / n2
+    return float(np.percentile(0.5 * np.abs(a - b).sum(axis=1), percentil))
+
+
 def sd_mas(p, n: int) -> np.ndarray:
     """Desviación típica teórica de una proporción en una muestra aleatoria simple de tamaño N."""
     p = np.asarray(p, dtype=float)

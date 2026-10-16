@@ -37,6 +37,11 @@ calibrar:
     variables: [nacionalidad_top]
     descripcion: Las 15 nacionalidades extranjeras más numerosas, una a una (Censo Anual
       exhaustivo 2025 sobre los extranjeros ECP 2026); pasa de reservado a calibrado (D-038)
+  - id: nacionalidad_edad
+    variables: [nacionalidad_esp_ext, edad_5]
+    descripcion: Española/extranjera por edad quinquenal (ECP 2026, tabla 60129, y colectivos);
+      sin ella, los hogares extranjeros de 2021 llegaban con sus hijos y faltaban adultos
+      extranjeros (D-042 A)
   - id: estudios_edad
     ambito: provincia
     variables: [estudios_3, edad_estudios]
@@ -80,7 +85,8 @@ reservar:
   - id: adultos_nacionalidad
     variables: [nacionalidad_esp_ext, es_adulto]
     descripcion: Residentes por nacionalidad española/extranjera y mayoría de edad; los españoles
-      de 18 y más años son la población con derecho a voto en las generales (G3.6)
+      de 18 y más años son la población con derecho a voto en las generales (G3.6). Desde D-042 A
+      solo el corte 15-17 / 18-19 queda fuera de lo calibrado
   - id: voto_generales_2023_municipio
     variables: [recuerdo_voto_generales, municipio]
     universo: censo_electoral_residente

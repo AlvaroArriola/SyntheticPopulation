@@ -167,6 +167,16 @@ def nacionalidad_celdas() -> pl.DataFrame:
     return pl.concat(filas)
 
 
+def esp_ext(nac: pl.DataFrame, columna: str = "categoria") -> pl.DataFrame:
+    """Añade `nacionalidad_esp_ext` (española / extranjera) a celdas de `nacionalidad_grupo`."""
+    return nac.with_columns(
+        pl.when(pl.col(columna) == "espanola")
+        .then(pl.lit("espanola"))
+        .otherwise(pl.lit("extranjera"))
+        .alias("nacionalidad_esp_ext")
+    )
+
+
 def adultos_nacionalidad(nac: pl.DataFrame, clave: str = "provincia") -> pl.DataFrame:
     """Residentes 2026 por provincia, nacionalidad española/extranjera y mayoría de edad.
 
@@ -177,12 +187,7 @@ def adultos_nacionalidad(nac: pl.DataFrame, clave: str = "provincia") -> pl.Data
     p18 = b.group_by("provincia", "sexo").agg(
         (pl.col("n").filter(pl.col("edad") >= 18).sum() / pl.col("n").sum()).alias("p18")
     )
-    n = nac.filter(pl.col("variable") == "nacionalidad_grupo").with_columns(
-        pl.when(pl.col("categoria") == "espanola")
-        .then(pl.lit("espanola"))
-        .otherwise(pl.lit("extranjera"))
-        .alias("nacionalidad_esp_ext")
-    )
+    n = esp_ext(nac.filter(pl.col("variable") == "nacionalidad_grupo"))
     n = n.join(p18, on=["provincia", "sexo"], how="left")
     menores = ["00-04", "05-09", "10-14"]
     adul = (
@@ -393,6 +398,14 @@ def provincias() -> pl.DataFrame:
             ["nacionalidad_esp_ext", "es_adulto"],
             "adultos_nacionalidad",
             meta_nac | {"metodo": meta_nac["metodo"] + "; 15-19 partido en 18 con la ECP 2026"},
+        )
+    )
+    out.append(
+        _largo(
+            esp_ext(nac.filter(pl.col("variable") == "nacionalidad_grupo")),
+            ["nacionalidad_esp_ext", "edad_5"],
+            "nacionalidad_edad",
+            meta_nac,
         )
     )
     out += electorales_provincia()

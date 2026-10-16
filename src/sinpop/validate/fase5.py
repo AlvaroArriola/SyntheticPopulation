@@ -94,16 +94,19 @@ def _validar(meta: dict) -> dict:
 def coherencia(ccaa: list[dict], nacional: str) -> dict:
     """V-COHERENCIA: las 19 poblaciones autonómicas, cada persona con peso = población oficial de
     su comunidad / tamaño obtenido, frente a la población nacional: TVD de las marginales
-    calibradas ≤ 0,01 y de los cruces reservados ≤ 0,02 (nivel España)."""
+    calibradas ≤ 0,01 y de los cruces reservados ≤ 0,02 (nivel España), con el margen de muestreo
+    de D-042 B: máx(umbral, 1,2 × TVD_ref de dos muestras + 0,002)."""
     from sinpop.targets import run
 
     c = V.umbrales()["V-COHERENCIA"]
+    m = V.umbrales()["V-MARG"]
     partes = []
     for x in ccaa:
         p, _, _ = V.cargar(x["run_id"])
         pob = run.leer(x["territorio"]).filter(pl.col("objetivo") == "edad5_sexo")["valor"].sum()
         partes.append(p.with_columns(pl.lit(pob / p.height).alias("peso")))
     comb = V.preparar(pl.concat(partes, how="vertical_relaxed"))
+    comb = comb.with_columns((pl.col("peso") ** 2).alias("peso2"))
     nac, _, _ = V.cargar(nacional)
     nac = V.preparar(nac)
     obj = run.leer("ES").filter(pl.col("universo").is_in(list(V.UNIVERSOS)))
@@ -114,6 +117,9 @@ def coherencia(ccaa: list[dict], nacional: str) -> dict:
             (pl.col("uso") == uso) & (pl.col("objetivo").is_in(cal) | (uso == "reservar"))
         )
         a = D.recuentos(comb, o, "peso")
+        a2 = D.recuentos(comb, o, "peso2").select(
+            "objetivo", "clave", pl.col("sintetico").alias("w2")
+        )
         b = D.recuentos(nac, o, "peso")
         for (ob,), g in a.group_by("objetivo", maintain_order=True):
             h = b.filter(pl.col("objetivo") == ob).select("clave", pl.col("sintetico").alias("nac"))
@@ -121,7 +127,29 @@ def coherencia(ccaa: list[dict], nacional: str) -> dict:
             if j["nac"].sum() <= 0 or j["sintetico"].sum() <= 0:
                 continue
             d = M.tvd(j["sintetico"], j["nac"])
-            filas.append({"uso": uso, "objetivo": ob, "tvd": d, "umbral": lim, "ok": d <= lim})
+            n1 = j["sintetico"].sum() ** 2 / a2.filter(pl.col("objetivo") == ob)["w2"].sum()
+            ref = M.tvd_ref_dos(
+                g["valor"].to_numpy(),
+                n1,
+                j["nac"].sum(),
+                m["muestras_ref"],
+                m["percentil_ref"],
+                SEMILLA,
+            )
+            um = max(lim, c["factor_tvd_ref"] * ref + c["tolerancia"])
+            filas.append(
+                {
+                    "uso": uso,
+                    "objetivo": ob,
+                    "tvd": d,
+                    "n_comunidades_kish": n1,
+                    "n_nacional": float(j["nac"].sum()),
+                    "tvd_ref": ref,
+                    "umbral_fijo": lim,
+                    "umbral": um,
+                    "ok": d <= um,
+                }
+            )
     return {"nacional": nacional, "comparaciones": filas}
 
 
@@ -292,6 +320,14 @@ def anexo(res: dict | None = None) -> str:
 if __name__ == "__main__":
     import sys
 
+    if "--coherencia" in sys.argv:
+        r = json.loads(RESUMEN.read_text("utf-8"))
+        r["coherencia"] = coherencia(
+            [x for x in r["territorios"] if x["territorio"].startswith("CCAA:")],
+            r["coherencia"]["nacional"],
+        )
+        RESUMEN.write_text(json.dumps(r, ensure_ascii=False, indent=1, default=float), "utf-8")
+        raise SystemExit
     if "--anexo" in sys.argv:
         anexo()
         raise SystemExit

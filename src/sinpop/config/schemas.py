@@ -338,6 +338,8 @@ class VSemillas(_Th):
 class VCoherencia(_Th):
     tvd_marginales: float
     tvd_cruces: float
+    factor_tvd_ref: float
+    tolerancia: float
 
 
 class VDonantes(_Th):
