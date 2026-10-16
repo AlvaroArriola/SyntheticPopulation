@@ -19,7 +19,7 @@ from sinpop import INTERIM_DIR, RAW_DIR
 from sinpop.config.schemas import ESPECIALES
 from sinpop.harmonize.core import comprobar_dominio, variables
 
-NO_VARIABLES = {"peso", "peso_16", "personas", "hogares", "person_id", "household_id", "norden"}
+NO_VARIABLES = {"peso", "peso_16", "peso_hogar", "personas", "hogares", "person_id", "household_id", "norden"}
 UMBRAL_G23 = 1e-4  # 0,01 %
 
 

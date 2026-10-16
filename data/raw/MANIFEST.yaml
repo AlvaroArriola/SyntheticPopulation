@@ -724,10 +724,10 @@ ficheros:
   fichero: atlas_renta/ultimo/tabla_31151_ultimo.json
   tipo: datos
   edicion: ultimo
-  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/31151?tip=A&nult=1
-  fecha_descarga: '2026-10-14'
-  sha256: 0af4b71e7674289458dbe14ffdfe54c9f3652ded65b44e78b24cbd48c0abb944
-  bytes: 1407531
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/31151?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: 2a6d99059945cb162b83c1be7b3088df6699611f349f8e77d23996a14338c85f
+  bytes: 2930158
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
 - fuente: atlas_renta
@@ -744,10 +744,10 @@ ficheros:
   fichero: atlas_renta/ultimo/tabla_31160_ultimo.json
   tipo: datos
   edicion: ultimo
-  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/31160?tip=A&nult=1
-  fecha_descarga: '2026-10-14'
-  sha256: 30f992ea8efd4297d13d6e703e13b03594d72f7c33adb81ed73af61caed86604
-  bytes: 1592903
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/31160?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: ae5696d95e266cea9bf82d936399ded21239abe9ca0207ace45303c11acb2cc6
+  bytes: 3355141
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
 - fuente: atlas_renta

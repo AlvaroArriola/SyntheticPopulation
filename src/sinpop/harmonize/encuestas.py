@@ -133,6 +133,8 @@ def ecv() -> pl.DataFrame:
         pl.col("HB030").cast(pl.Utf8).alias("household_id"),
         pl.col("RB050").alias("peso"),
         pl.col("PB040").alias("peso_16"),
+        # Peso transversal del hogar (DB090): para emparejar hogares en F6 (D-044)
+        pl.col("DB090").cast(pl.Float64).alias("peso_hogar"),
         "edad",
         # Edad a 31/12 del año anterior: define el universo del fichero de adultos (16+)
         pl.col("RB081").cast(pl.Int32).alias("edad_31dic"),
