@@ -1,6 +1,6 @@
 # Fase 04 · Población nacional base
 
-**Estado:** comprobaciones automáticas superadas (G4.1–G4.7); pendiente la revisión humana G4.8. D-036, D-037, D-038 y D-039 aprobadas
+**Estado:** superada (G4.8 aprobada por el responsable el 16/10/2026, D-040)
 **Fecha:** 2026-10-16 · **Versión del código:** ver `fase_04_puerta.md`
 **Comando para reproducir:**
 
@@ -67,7 +67,7 @@ Calibrar solo con marginales nacionales dejaba el reparto por provincias (reserv
 | G4.5 | Variabilidad entre semillas (V-SEMILLAS) | ✅ | 1.030 proporciones, 0 fuera | sd ≤ 1,5 × sd MAS |
 | G4.6 | Reproducibilidad (V-REPRO) | ✅ | mismos hashes | iguales |
 | G4.7 | Sobremuestreo | ✅ | 85+: 9.872 miembros (pedidos 10.000); 10 marginales ponderadas dentro | V-MARG con n efectivo |
-| G4.8 | Revisión humana | ⏸️ | este informe | aprobación |
+| G4.8 | Revisión humana | ✅ | aprobada (D-040) | aprobación |
 
 Detalle automático: [`fase_04_puerta.md`](fase_04_puerta.md). Todas las tablas: [`fase_04_validacion.md`](fase_04_validacion.md).
 
@@ -146,4 +146,4 @@ Con 1 millón de personas, las frecuencias de los casos raros (jubilados menores
 
 ## Qué necesita revisión humana
 
-**G4.8: la aprobación de este informe**, que cierra F4. Ya están decididas D-036 y D-038 (A, B, C y D), así como D-039 (opción 1), y las tres están aplicadas en `thresholds.yaml` y en la puerta.
+Nada: F4 aprobada (D-040).

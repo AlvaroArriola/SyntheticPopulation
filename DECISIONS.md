@@ -552,3 +552,11 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   2. **Tamaño mínimo:** exigir V-CRUCE solo desde el tamaño mínimo recomendado en `fase_04.md` (100.000 personas para España y comunidades, 500.000 para provincias) e informar el resto. Resultado actual: quedaría el fallo nacional de `tipo_hogar_edad4_ref` con N = 100.000.
   3. **Mantener el criterio actual:** G4.2 no se supera mientras se generen poblaciones de 10.000 a 100.000 personas.
 - **Aprobada por:** humano (2026-10-16), opción 1. Se aplica en `thresholds.yaml` (V-CRUCE, `proporcion_fallos_max: 0.05`) y en la puerta G4.2.
+
+## D-040 · Aprobación de F4 (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F4
+- **Estado:** aprobada
+- **Decisión:** el responsable aprueba el informe `reports/fase_04.md` (G4.8), con D-036, D-038 y D-039 aprobadas. F4 queda cerrada y se empieza F5.
+- **Aprobada por:** humano (2026-10-16)
