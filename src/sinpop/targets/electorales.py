@@ -112,3 +112,18 @@ def autonomicas_circunscripciones() -> pl.DataFrame:
     esp = esp.filter(pl.col("valor").is_not_null())
     out = pl.concat([v, esp])
     return out.with_columns(pl.col("circunscripcion").str.slice(0, 2).alias("provincia"))
+
+
+def generales_candidaturas(opciones: pl.DataFrame, votos: pl.DataFrame) -> pl.DataFrame:
+    """Votos por candidatura (siglas de Interior) más blanco, nulo y abstención, por municipio:
+    suma el censo de residentes, como las familias."""
+    esp = opciones.filter(pl.col("opcion").is_in(list(ESPECIALES))).rename(
+        {"opcion": "candidatura_generales_2023"}
+    )
+    cand = votos.select(
+        "municipio",
+        "provincia",
+        pl.col("candidatura").alias("candidatura_generales_2023"),
+        pl.col("votos").cast(pl.Float64).alias("valor"),
+    )
+    return pl.concat([cand, esp.select(cand.columns)])

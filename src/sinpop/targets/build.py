@@ -500,9 +500,7 @@ def electorales_provincia() -> list[pl.DataFrame]:
             meta,
         ),
         _largo(
-            vot.rename({"candidatura": "candidatura_generales_2023"}).with_columns(
-                pl.col("votos").cast(pl.Float64).alias("valor")
-            ),
+            el.generales_candidaturas(opc, vot),
             ["candidatura_generales_2023"],
             "voto_generales_2023_candidatura",
             meta,

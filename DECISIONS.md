@@ -486,3 +486,19 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   8. **Reproducibilidad:** sumas ordenadas y valores redondeados a la millonésima, para que el hash de cada fichero no cambie entre ejecuciones.
 - **Consecuencias:** `sinpop targets --territory all` escribe `data/processed/targets/` (España, 19 comunidades, 52 provincias); `--territory MUNIS:<yaml>` para listas de municipios.
 - **Aprobada por:** pendiente
+
+## D-037 · Familias de las candidaturas autonómicas (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F3
+- **Estado:** propuesta (revisión con F4)
+- **Contexto:** los objetivos de las autonómicas (D-036) necesitan la familia de cada una de las 295 candidaturas (236 nombres) de las 19 publicaciones.
+- **Decisión:** se aplican los criterios aprobados en D-030 y D-032, con las candidaturas de las generales como precedente (`tools/familias_autonomicas.py`; nombres tal como se imprimen). Resultado: 109 nacionalistas y regionalistas, 82 otros, 35 centro-derecha estatal, 28 izquierda estatal, 22 derecha radical, 19 socialdemócratas.
+  - **Diez listas con nombre sin ninguna referencia territorial** pasan a «otros» por la regla de D-032: 100X100 Unidos, Sociedad Unida (Andalucía), Reset-Reinicio Político (Baleares), Hablemos Ahora, Ahora Tú, Movimiento Alternativo Electoral, Contigo Somos Democràcia (Canarias), Aquí Ahora, TÚ patria (Castilla-La Mancha) y Valores (Murcia).
+  - **Clasificadas por su ámbito**, con nota de que el nombre no se ha identificado con certeza: Suma Principado, ETXSBC, Más Canarias, Proyecto Alantre, Coalició Units, Eguzkilore, Izan, Ongi Etorri. Todas, menos ETXSBC, tienen nombre con referencia territorial o en lengua cooficial.
+  - **Coaliciones de Formentera:** «Sa Unió de Formentera (PP-Compromís)» → centro-derecha estatal (encabezada por el PP); «Gent per Formentera + PSIB» → nacionalistas y regionalistas (encabezada por Gent per Formentera).
+  - **Otras asignaciones** basadas en el nombre:
+    - el Partido Comunista del Pueblo Andaluz (organización andaluza del PCPE), Izquierda Anticapitalista Revolucionaria y País con Gestores (se presenta en dos comunidades) → otros;
+    - Verdes Equo Asturias → izquierda estatal (marca de EQUO).
+- **Erratas de los boletines** (se conservan): «PARITDO AUTÓNOMOS», «PODER ANDAlUZ», «CONTIGO SOMOS DEMOCRÁCIA», «PER UN MÓN MES JUST», y «Los Verdes-Ecopacifistas (CENTRO MODERADO)», cuyas siglas no corresponden al nombre.
+- **Aprobada por:** pendiente

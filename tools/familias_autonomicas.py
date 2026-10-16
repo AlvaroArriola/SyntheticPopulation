@@ -38,8 +38,8 @@ FAMILIAS_AUTONOMICAS: dict[tuple[str, str], tuple[str, str | None]] = {
     ("01", "SE ACABÓ LA FIESTA"): ("derecha_radical", None),
     ("01", "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE"): ("otros", None),
     ("01", "100X100 UNIDOS"): (
-        "nacionalista_regionalista",
-        "nombre no identificado con certeza; clasificado por su ámbito (D-030, criterio 3)",
+        "otros",
+        "nombre sin referencia territorial: «otros» por la regla de D-032 (D-037)",
     ),
     ("01", "ANDALUCISTAS PUEBLO ANDALUZ"): ("nacionalista_regionalista", None),
     ("01", "ESCAÑOS EN BLANCO"): ("otros", None),
@@ -69,8 +69,8 @@ FAMILIAS_AUTONOMICAS: dict[tuple[str, str], tuple[str, str | None]] = {
     ("01", "IZQUIERDA POR ALMERIA"): ("nacionalista_regionalista", None),
     ("01", "CONECTA ANDALUCÍA"): ("nacionalista_regionalista", None),
     ("01", "SOCIEDAD UNIDA"): (
-        "nacionalista_regionalista",
-        "nombre no identificado con certeza; clasificado por su ámbito (D-030, criterio 3)",
+        "otros",
+        "nombre sin referencia territorial: «otros» por la regla de D-032 (D-037)",
     ),
     # 02 Aragón
     ("02", "PP"): ("centro_derecha_estatal", None),
@@ -140,8 +140,8 @@ FAMILIAS_AUTONOMICAS: dict[tuple[str, str], tuple[str, str | None]] = {
     ("04", "Coalició per Balears"): ("nacionalista_regionalista", None),
     ("04", "EPIC-El PI"): ("nacionalista_regionalista", "coalición con El PI"),
     ("04", "Reset-Reinicio Político"): (
-        "nacionalista_regionalista",
-        "nombre no identificado con certeza; clasificado por su ámbito (D-030, criterio 3)",
+        "otros",
+        "nombre sin referencia territorial: «otros» por la regla de D-032 (D-037)",
     ),
     ("04", "Per Balears"): ("nacionalista_regionalista", None),
     ("04", "Nuevo Orden Nacional-Nou Ordre Nacional"): ("otros", "nombre no regional (D-032)"),
@@ -165,12 +165,12 @@ FAMILIAS_AUTONOMICAS: dict[tuple[str, str], tuple[str, str | None]] = {
         None,
     ),
     ("05", "HABLEMOS AHORA"): (
-        "nacionalista_regionalista",
-        "nombre no identificado con certeza; clasificado por su ámbito (D-030, criterio 3)",
+        "otros",
+        "nombre sin referencia territorial: «otros» por la regla de D-032 (D-037)",
     ),
     ("05", "AHORA TÚ"): (
-        "nacionalista_regionalista",
-        "nombre no identificado con certeza; clasificado por su ámbito (D-030, criterio 3)",
+        "otros",
+        "nombre sin referencia territorial: «otros» por la regla de D-032 (D-037)",
     ),
     ("05", "MÁS CANARIAS"): (
         "nacionalista_regionalista",
@@ -185,12 +185,12 @@ FAMILIAS_AUTONOMICAS: dict[tuple[str, str], tuple[str, str | None]] = {
     ),
     ("05", "ASAMBLEA HERREÑA"): ("nacionalista_regionalista", None),
     ("05", "MOVIMIENTO ALTERNATIVO ELECTORAL"): (
-        "nacionalista_regionalista",
-        "nombre no identificado con certeza; clasificado por su ámbito (D-030, criterio 3)",
+        "otros",
+        "nombre sin referencia territorial: «otros» por la regla de D-032 (D-037)",
     ),
     ("05", "CONTIGO SOMOS DEMOCRÁCIA"): (
-        "nacionalista_regionalista",
-        "nombre no identificado con certeza; clasificado por su ámbito (D-030, criterio 3)",
+        "otros",
+        "nombre sin referencia territorial: «otros» por la regla de D-032 (D-037)",
     ),
     ("05", "UNIÓN DEMOCRÁTICA DE CANARIAS"): ("nacionalista_regionalista", None),
     # 06 Cantabria
@@ -266,12 +266,12 @@ FAMILIAS_AUTONOMICAS: dict[tuple[str, str], tuple[str, str | None]] = {
     ("08", "PCAS-TC-RC"): ("nacionalista_regionalista", None),
     ("08", "P.C.P.E."): ("otros", None),
     ("08", "AQUÍ AHORA"): (
-        "nacionalista_regionalista",
-        "nombre no identificado con certeza; clasificado por su ámbito (D-030, criterio 3)",
+        "otros",
+        "nombre sin referencia territorial: «otros» por la regla de D-032 (D-037)",
     ),
     ("08", "TÚ patria"): (
-        "nacionalista_regionalista",
-        "nombre no identificado con certeza; clasificado por su ámbito (D-030, criterio 3)",
+        "otros",
+        "nombre sin referencia territorial: «otros» por la regla de D-032 (D-037)",
     ),
     ("08", "FE de las J.O.N.S."): ("otros", None),
     # 09 Cataluña
@@ -403,8 +403,8 @@ FAMILIAS_AUTONOMICAS: dict[tuple[str, str], tuple[str, str | None]] = {
     ("14", "TERCERA EDAD EN ACCIÓN"): ("otros", None),
     ("14", "MURCIA LIBRE"): ("nacionalista_regionalista", None),
     ("14", "VALORES"): (
-        "nacionalista_regionalista",
-        "nombre no identificado con certeza; clasificado por su ámbito (D-030, criterio 3)",
+        "otros",
+        "nombre sin referencia territorial: «otros» por la regla de D-032 (D-037)",
     ),
     ("14", "PARTIDO COMUNISTA DE LOS PUEBLOS DE ESPAÑA"): ("otros", None),
     ("14", "FALANGE ESPAÑOLA DE LAS J.O.N.S."): ("otros", None),

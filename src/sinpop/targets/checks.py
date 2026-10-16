@@ -124,6 +124,10 @@ def g36_electorales(fs: dict[str, pl.DataFrame]) -> tuple[list[str], dict[str, f
             censo = totales_oficiales(t)["censo_electoral_residente"]
             if abs(vg - censo) > 1e-3:
                 malos.append(f"{t}: las opciones suman {vg:,.0f} y el censo es {censo:,.0f}")
+            va = df.filter(pl.col("objetivo") == "voto_autonomicas")["valor"].sum()
+            ea = electores_autonomicas(t)
+            if abs(va - ea) > 1e-3:
+                malos.append(f"{t}: autonómicas suman {va:,.0f} y los electores {ea:,.0f}")
         if ad:
             difs[t] = vg / ad - 1
             if abs(difs[t]) >= UMBRAL_DERECHO_VOTO:
@@ -132,3 +136,17 @@ def g36_electorales(fs: dict[str, pl.DataFrame]) -> tuple[list[str], dict[str, f
                     f"2026 {ad:,.0f} ({100 * difs[t]:+.1f} %)"
                 )
     return malos, difs
+
+
+def electores_autonomicas(territorio: str) -> float:
+    """Electores publicados de las circunscripciones autonómicas del territorio (votantes donde
+    no se publican electores: Aragón), sin la lista autonómica de Canarias."""
+    from sinpop import INTERIM_DIR
+    from sinpop.targets.build import provincias_de
+
+    c = pl.read_parquet(INTERIM_DIR / "elecciones_autonomicas_circunscripciones.parquet")
+    c = c.filter(
+        (pl.col("circunscripcion") != "05-AUT")
+        & pl.col("circunscripcion").str.slice(0, 2).is_in(provincias_de(territorio))
+    )
+    return float(c.select(pl.coalesce("electores", "votantes")).sum().item())

@@ -425,6 +425,13 @@ def construir(path: Path) -> pl.DataFrame:
         ("actividad", "relacion_actividad", "actividad_sexo", 16),
     ):
         tab = _tablas_municipales(tipo)
+        con_tabla = set(tab["municipio"].str.slice(0, 2).unique().to_list())
+        faltan = sorted(set(provs) - con_tabla)
+        if faltan:
+            raise FileNotFoundError(
+                f"falta la tabla municipal de {tipo} del Censo Anual de las provincias {faltan}"
+                " (sinpop ingest --source censo_anual_tablas --ine-table <id> --metadata)"
+            )
         pob = por_edad.with_columns((pl.col("edad") >= minimo).alias("dentro"))
         np_ = pob.filter(~pl.col("dentro")).group_by("municipio", "sexo").agg(pl.col("valor").sum())
         dentro = (
@@ -487,9 +494,7 @@ def construir(path: Path) -> pl.DataFrame:
         "suma de los municipios de la lista",
     )
     emitir(
-        vot.rename({"candidatura": "candidatura_generales_2023"}).with_columns(
-            pl.col("votos").cast(pl.Float64).alias("valor")
-        ),
+        el.generales_candidaturas(opc, vot),
         ["candidatura_generales_2023"],
         "voto_generales_2023_candidatura",
         "suma de los municipios de la lista",

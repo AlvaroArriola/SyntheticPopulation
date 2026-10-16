@@ -2311,6 +2311,16 @@ ficheros:
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
 - fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66717_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/66717
+  fecha_descarga: '2026-10-16'
+  sha256: c338c1fa9373cb70347c70f7ad84325aac705067a0739642587f112b01d327d2
+  bytes: 174
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
   fichero: censo_anual_tablas/ultimo/tabla_66717_ultimo.json
   tipo: datos
   edicion: ultimo
@@ -2318,6 +2328,226 @@ ficheros:
   fecha_descarga: '2026-10-16'
   sha256: 9ef8f2913b2bd62c0aa78cb634f0c96641956183809e39ba9ae1441059479855
   bytes: 9850136
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66719_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/66719
+  fecha_descarga: '2026-10-16'
+  sha256: 4b56428a9844609812c869692d1e140753d195d788347ffa001d4bea903bdabb
+  bytes: 171
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66719_ultimo.json
+  tipo: datos
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/66719?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: 80ee7c1a04f214fb7838ca298fd49468f0a545b272bc9b69a73877eff8ffda97
+  bytes: 11358211
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66721_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/66721
+  fecha_descarga: '2026-10-16'
+  sha256: 16434f91ec953c0eb6e7239c02e8a4221649e935217dd7e135ca7350f075e1a9
+  bytes: 174
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66721_ultimo.json
+  tipo: datos
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/66721?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: 014ee622e1312ef614f6f70e426d9e84a184c65753611b8663b7c98e7546bb64
+  bytes: 11116283
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66723_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/66723
+  fecha_descarga: '2026-10-16'
+  sha256: b75fed2ab7da24f62d1d4657dd08836a0bc16191170622a587a3e36f17fc921a
+  bytes: 171
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66723_ultimo.json
+  tipo: datos
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/66723?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: 287ecc83dd36c663e894b4764e0079df1872bc83185000394b3134b2395a901c
+  bytes: 12819021
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66725_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/66725
+  fecha_descarga: '2026-10-16'
+  sha256: f18a1b2259f825ea4adc281bda0bf0beab5882edb610218b0d518fbba45fca85
+  bytes: 174
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66725_ultimo.json
+  tipo: datos
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/66725?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: 960eb698a485048ac905d7987a9cc5eccdefe91eaea1c8fcb180572db3d89dd1
+  bytes: 7758055
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66727_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/66727
+  fecha_descarga: '2026-10-16'
+  sha256: 6df69d0a007075ddb50c3549720773edf49d73509775aadc06e3eb8ebbe34840
+  bytes: 171
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66727_ultimo.json
+  tipo: datos
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/66727?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: caa7e4718d3512cde4ca6354f5a8a6e35e0eeb5a057e1aa84c993134114986d6
+  bytes: 9661575
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66729_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/66729
+  fecha_descarga: '2026-10-16'
+  sha256: 72d7987b3be57c5c39605855e8d39752e4bd021fbab9394a833e8f6b07142df1
+  bytes: 174
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66729_ultimo.json
+  tipo: datos
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/66729?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: 1603e0a154d4770391761937ae1aa4873e5b1cfb5496ea295f1200b4bdd8e983
+  bytes: 5924365
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66731_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/66731
+  fecha_descarga: '2026-10-16'
+  sha256: 192359baf48e475076257cf18240a3a69059be7a9e59c2041253f768df4606f9
+  bytes: 171
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66731_ultimo.json
+  tipo: datos
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/66731?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: 3890882a6a92495f2c46a91ef3fd5f6f4de6c41c558169e0a026085c7387528c
+  bytes: 6833648
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66733_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/66733
+  fecha_descarga: '2026-10-16'
+  sha256: 2cc645d2c801aa49910f9a188ddf72926083b92b6e6a1501f8af63cf344e5266
+  bytes: 174
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66733_ultimo.json
+  tipo: datos
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/66733?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: 261d0f5d5bc85a3149acddccaad5abaf373245a393d5b9e76fed14ad19678483
+  bytes: 6254008
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66735_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/66735
+  fecha_descarga: '2026-10-16'
+  sha256: 03c0ceeca2ec3497a04e03e564f59e1d0f7f699775b96782fbd8d2bdff989164
+  bytes: 171
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66735_ultimo.json
+  tipo: datos
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/66735?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: 721e364f2a5bba022b3a48d1580281caed183daaeb1be01c201e1eb0180b7bf1
+  bytes: 7245928
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66737_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/66737
+  fecha_descarga: '2026-10-16'
+  sha256: 347777b4ab65b9b2cdca38ca0e42c58d1b630d6cad3ef14abe5187c6756775a4
+  bytes: 174
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66737_ultimo.json
+  tipo: datos
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/66737?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: 8f06916808ef64acfab3ea26470961ad23dc115e04a2e1b37c306c5af8ecac89
+  bytes: 7893562
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66739_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/66739
+  fecha_descarga: '2026-10-16'
+  sha256: 593515887daf43d3dc8c74bad00378b33806b7b424bfd979e984c67911bc3082
+  bytes: 171
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: censo_anual_tablas
+  fichero: censo_anual_tablas/ultimo/tabla_66739_ultimo.json
+  tipo: datos
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/66739?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: b47bc91ed079a9ea9e1ec948061ef1d491341fa4b1406ee601b43c78966c4b64
+  bytes: 9103635
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
 - fuente: censo_anual_tablas
