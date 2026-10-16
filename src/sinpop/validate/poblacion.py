@@ -434,3 +434,79 @@ def v_minorias(p: pl.DataFrame, lineage: pl.DataFrame, territorio: str) -> pl.Da
             }
         )
     return pl.DataFrame(filas)
+
+
+# --- V-DONANTES y V-RAREZA -------------------------------------------------------------------
+
+P0_PERSONA = [
+    "edad",
+    "sexo",
+    "nacionalidad_grupo",
+    "estudios_3",
+    "relacion_actividad",
+    "estado_civil",
+]
+P0_HOGAR = ["relacion_persona_ref", "tipo_hogar", "tamano_hogar"]
+
+
+def v_donantes(p: pl.DataFrame, lineage: pl.DataFrame, territorio: str) -> pl.DataFrame:
+    """V-DONANTES: tamaño efectivo de Kish de los hogares donantes usados (copias por hogar
+    donante) ≥ 200 y porcentaje de personas de donantes locales, por territorio y comunidad."""
+    c = umbrales()["V-DONANTES"]
+    x = p.select("person_id", "ccaa").join(
+        lineage.select("person_id", "donante_household_id", "local"), on="person_id"
+    )
+    filas = []
+    grupos = [("ES" if territorio == "ES" else territorio, x)]
+    if territorio == "ES":
+        grupos += [(f"CCAA:{k}", g) for (k,), g in x.group_by("ccaa", maintain_order=True)]
+    for t, g in sorted(grupos, key=lambda z: z[0]):
+        copias = g.group_by("donante_household_id").agg(pl.len().alias("c"))["c"].to_numpy()
+        k = M.kish(copias)
+        loc = float(g["local"].mean())
+        filas.append(
+            {
+                "territorio": t,
+                "personas": g.height,
+                "hogares_donantes": len(copias),
+                "kish": k,
+                "proporcion_local": loc,
+                "ok": k >= c["kish_min"],
+                "confianza_reducida": loc < c["locales_alerta"],
+            }
+        )
+    return pl.DataFrame(filas)
+
+
+def v_rareza(p: pl.DataFrame) -> pl.DataFrame:
+    """V-RAREZA: combinaciones de atributos P0 de la población que no existen en ningún donante
+    (0 con el método base). Los atributos de persona se comprueban en todos; los del hogar, en
+    las viviendas familiares (en los colectivos no proceden)."""
+    don = pl.scan_parquet(D.PERSONAS).select(*P0_PERSONA, *P0_HOGAR).collect()
+    don = don.with_columns(  # D-038: actividad NP por debajo de 16 años, como en la población
+        pl.when(pl.col("edad") < D.EDAD_MIN_ACTIVIDAD)
+        .then(pl.lit("NP"))
+        .otherwise(pl.col("relacion_actividad"))
+        .alias("relacion_actividad")
+    )
+    filas = []
+    for nombre, cols, sub in (
+        ("persona", P0_PERSONA, p),
+        (
+            "persona_y_hogar",
+            [*P0_PERSONA, *P0_HOGAR],
+            p.filter(pl.col("tipo_residencia") == "vivienda_familiar"),
+        ),
+    ):
+        combos = sub.select(cols).unique()
+        nuevas = combos.join(don.select(cols).unique(), on=cols, how="anti")
+        filas.append(
+            {
+                "nivel": nombre,
+                "combinaciones": combos.height,
+                "sin_donante": nuevas.height,
+                "personas_afectadas": sub.join(nuevas, on=cols).height,
+                "ok": nuevas.height == 0,
+            }
+        )
+    return pl.DataFrame(filas)
