@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import datetime as dt
 import gc
-import hashlib
 import json
 from pathlib import Path
 
@@ -138,8 +137,9 @@ def calibracion(
             return cal, meta
     bs = P.bloques(territorio)
     if len(bs) > 1:
-        return _componer(u, territorio, bs, metodo, forzar, excluir, ent)
-    cal = P.calibrar(u, territorio, metodo, excluir)
+        cal = _componer(u, bs, metodo, forzar, excluir)
+    else:
+        cal = P.calibrar(u, territorio, metodo, excluir)
     cal.unidades.write_parquet(base.with_suffix(".parquet"), compression="zstd", statistics=False)
     meta = {
         "territorio": territorio,
@@ -158,37 +158,20 @@ def calibracion(
 
 
 def _componer(
-    u: D.Unidades,
-    territorio: str,
-    bs: list[str],
-    metodo: str,
-    forzar: bool,
-    excluir: tuple[str, ...],
-    ent: dict,
-) -> tuple[P.Calibrado, dict]:
+    u: D.Unidades, bs: list[str], metodo: str, forzar: bool, excluir: tuple[str, ...]
+) -> P.Calibrado:
     """Territorio de varios bloques (España, D-038.3): cada bloque se calibra solo (con su caché)
     y se unen. Es el mismo cálculo que el bucle de `pesos.calibrar`, pero un bloque cada vez en
     memoria; y España es, por construcción, la unión de las calibraciones de sus comunidades."""
-    partes = [calibracion(u, b, metodo, forzar, excluir) for b in bs]
+    partes = [calibracion(u, b, metodo, forzar, excluir)[0] for b in bs]
     gc.collect()
-    cal = P.Calibrado(
-        unidades=pl.concat([c.unidades for c, _ in partes]),
-        diagnosticos={k: v for c, _ in partes for k, v in c.diagnosticos.items()},
-        ceros=pl.concat([c.ceros for c, _ in partes], how="diagonal_relaxed"),
-        ampliaciones=pl.concat([c.ampliaciones for c, _ in partes], how="diagonal_relaxed"),
-        fusiones=pl.concat([c.fusiones for c, _ in partes], how="diagonal_relaxed"),
+    return P.Calibrado(
+        unidades=pl.concat([c.unidades for c in partes]),
+        diagnosticos={k: v for c in partes for k, v in c.diagnosticos.items()},
+        ceros=pl.concat([c.ceros for c in partes], how="diagonal_relaxed"),
+        ampliaciones=pl.concat([c.ampliaciones for c in partes], how="diagonal_relaxed"),
+        fusiones=pl.concat([c.fusiones for c in partes], how="diagonal_relaxed"),
     )
-    meta = {
-        "territorio": territorio,
-        "metodo": metodo,
-        "entradas": ent,
-        "bloques": {b: m["sha256"] for b, (_, m) in zip(bs, partes, strict=True)},
-        "sha256": hashlib.sha256("".join(m["sha256"] for _, m in partes).encode()).hexdigest(),
-        "diagnosticos": cal.diagnosticos,
-        "version_codigo": code_version(),
-        "fecha": dt.date.today().isoformat(),
-    }
-    return cal, meta
 
 
 def _orden(p: pl.DataFrame) -> pl.DataFrame:

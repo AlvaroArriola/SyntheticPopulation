@@ -24,6 +24,7 @@ from sinpop.validate import metrics as M
 from sinpop.validate import poblacion as V
 
 TAMANOS = [10_000, 50_000, 100_000, 500_000, 1_000_000]
+GRANDE = 500_000
 SEMILLAS = [1, 2, 3, 4, 5]
 SOBREMUESTREO = "edad>=85:10000"  # unas 2,6 veces lo esperado en 100.000 personas
 RESUMEN = REPORTS_DIR / "fase_04_validacion.json"
@@ -205,6 +206,11 @@ def ejecutar(territorio: str = "ES", tamanos=TAMANOS, semillas=SEMILLAS) -> dict
     u = PB.unidades_todas()
     pobs = []
     for n in tamanos:
+        if n >= GRANDE and u is not None:
+            # Con 500.000 personas o más no caben los donantes y la población a la vez:
+            # `construir` los carga y los suelta tras ponderar; se recargan al final.
+            u = None
+            gc.collect()
         for s in semillas:
             meta = PB.construir(territorio, n, s, u=u)
             completa = n == max(tamanos) and s == semillas[0]
@@ -214,6 +220,7 @@ def ejecutar(territorio: str = "ES", tamanos=TAMANOS, semillas=SEMILLAS) -> dict
                 f"V-CRUCE {len(pobs[-1]['v_cruce']['fallos'])} fallos",
                 flush=True,
             )
+    u = u if u is not None else PB.unidades_todas()
     cal = json.loads((PB.CALIBRACION_DIR / f"{territorio}_{PB.METODO}.json").read_text("utf-8"))
     thr = V.umbrales()
     res = {
