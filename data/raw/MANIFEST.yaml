@@ -6435,6 +6435,26 @@ ficheros:
   bytes: 14584704
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
+- fuente: padron_continuo
+  fichero: padron_continuo/ultimo/tabla_36778_dimensiones.json
+  tipo: metodologia
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/GRUPOS_TABLA/36778
+  fecha_descarga: '2026-10-16'
+  sha256: 8c46ad6390e69b5a78ffb4044e0d9c6f581c1db44cde9629896a85683604f6df
+  bytes: 212
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: padron_continuo
+  fichero: padron_continuo/ultimo/tabla_36778_ultimo.json
+  tipo: datos
+  edicion: ultimo
+  url_oficial: https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/36778?tip=AM&nult=1
+  fecha_descarga: '2026-10-16'
+  sha256: f385949851a83504b8f2b380af7ba66851e93e913d7fd1d42ab7b41df4c603d3
+  bytes: 5750065
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
 - fuente: resultados_autonomicas
   fichero: resultados_autonomicas/ccaa01-2026/autonomicas_ccaa01_2026-05-17.pdf
   tipo: datos
