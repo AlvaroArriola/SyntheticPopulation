@@ -624,4 +624,9 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - **B: margen de muestreo en V-COHERENCIA**, como en D-038 A (`thresholds.yaml`: `factor_tvd_ref` 1,2 y `tolerancia` 0,002; TVD_ref de dos muestras en `metrics.tvd_ref_dos`). Solo cambia el umbral de los colectivos (0,0555); las demás comparaciones siguen con el umbral fijo, porque su TVD_ref es menor que 0,01.
   - **C: excepción documentada** para Ceuta (`thresholds.yaml`, como Segovia). Se buscó una fuente más reciente en el INE (API Tempus, 16/10/2026): de las 78 tablas de la Estadística Continua de Población, las de hogares solo dan el tamaño (60131-60136); de las 988 del Censo de Población (anual), ninguna es de hogares. La única fuente de tipo de hogar por edad de la persona de referencia sigue siendo el Censo 2021.
 - **Consecuencias:** se rehacen los objetivos de F3 (`sinpop targets --territory all` y las listas de municipios), la serie F4 (que valida también el nuevo objetivo) y la serie F5.
+- **Resultado** (serie F5 repetida, `reports/fase_05.md`): G5.1-G5.5 superadas.
+  - Extranjeros adultos a ±0,8 % de la cifra oficial en las 19 comunidades (antes, entre 0 % y −8 %).
+  - V de Cramér de nacionalidad × mayoría de edad a ±0,006 de la oficial.
+  - V-COHERENCIA de los colectivos: 0,0086.
+  - Puerta F4 repetida: superada.
 - **Aprobada por:** humano (2026-10-16), por delegación
