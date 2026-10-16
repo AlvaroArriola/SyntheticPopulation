@@ -3991,6 +3991,45 @@
     ]
    },
    "v_reglas_duras": 0
+  },
+  {
+   "territorio": "MUNIS:configs/territorios/ejemplo_teruel_rural.yaml",
+   "run_id": "2026-01-01_MUNIS_ejemplo_teruel_rural_20000_s1",
+   "n": 20000,
+   "obtenido": 19998,
+   "donantes": {
+    "proporcion_local": 0.0,
+    "por_nivel": {
+     "misma_ccaa_mismo_grado_urbanizacion": 157,
+     "misma_provincia": 19841
+    },
+    "hogares_donantes": 2356,
+    "kish_hogares_donantes": 1291.7312790697674,
+    "kish_min": 200,
+    "confianza": "baja",
+    "confianza_reducida": true
+   },
+   "v_marg": {
+    "comprobaciones": 5,
+    "fallos": [],
+    "tvd_media": 0.0021110249496286686
+   },
+   "v_cruce": {
+    "comprobaciones": 1,
+    "fallos": [],
+    "excepciones": 0,
+    "proporcion_fallos": 0.0,
+    "propio": [
+     {
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.013067212210006143,
+      "tvd_ref": 0.006569857644016179,
+      "umbral": 0.08,
+      "ok": true
+     }
+    ]
+   },
+   "v_reglas_duras": 0
   }
  ]
 }

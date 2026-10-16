@@ -1,0 +1,6 @@
+nivel,territorio,objetivo,celdas,n,tvd,hellinger,tvd_ref,fuera_dominio,umbral,ok
+espana,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,actividad_sexo,14,19998.0,0.002265612590568322,0.0021801083066895956,0.012553134618541125,0.0,0.01706376154224935,true
+espana,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,edad5_sexo,38,19998.0,0.0028171821019481813,0.002665431439882647,0.02052924429923172,0.0,0.026635093159078062,true
+espana,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,estudios_sexo_mun,8,19998.0,0.0013411129276477106,0.0011453989034135624,0.010861177979091672,0.0,0.015033413574910006,true
+espana,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,nacionalidad,7,19998.0,0.00029725960721997636,0.0009501957215417909,0.005038143909190096,0.0,0.008045772691028115,true
+espana,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,nacionalidad_top,17,19998.0,0.0038339575207591535,0.037141357143118454,0.006271901873357924,0.0,0.009526282248029509,true
