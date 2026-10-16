@@ -20,7 +20,7 @@ DESCONOCIDOS = ("NC", "NS")
 @dataclass
 class Asignacion:
     donante: np.ndarray  # fila del donante (índice en `donantes`) para cada receptor
-    nivel: np.ndarray  # número de llaves no fijas usadas en la celda de cada receptor
+    nivel: np.ndarray  # índice del nivel de colapso usado por cada receptor
 
 
 def _clave(cols: list[str]) -> pl.Expr:
@@ -29,28 +29,52 @@ def _clave(cols: list[str]) -> pl.Expr:
     return pl.concat_str([pl.col(c).cast(pl.Utf8) for c in cols], separator="|")
 
 
+def niveles_colapso(llaves: list[str], geografia: list[str | None]) -> list[list[str]]:
+    """Secuencia de celdas: con todas las llaves, primero en la geografía más fina y luego en
+    las más amplias (`None` = España); después se quita la última llave y se repite."""
+    out = []
+    for nk in range(len(llaves), -1, -1):
+        for g in geografia:
+            out.append([*([g] if g else []), *llaves[:nk]])
+    return out
+
+
+def niveles_nucleo(llaves: list[str], geografia: list[str | None], nucleo: int) -> list[list[str]]:
+    """Secuencia de celdas que conserva la geografía fina mientras queden las `nucleo` llaves
+    más importantes: primero se quitan las llaves secundarias en la comunidad, después se amplía
+    la geografía (con todas las llaves y quitando las secundarias), y solo al final se quitan
+    llaves del núcleo."""
+    out: list[list[str]] = []
+    for g in geografia:
+        for nk in range(len(llaves), nucleo - 1, -1):
+            out.append([*([g] if g else []), *llaves[:nk]])
+    for nk in range(nucleo - 1, -1, -1):
+        for g in geografia:
+            out.append([*([g] if g else []), *llaves[:nk]])
+    return out
+
+
 def celdas(
     receptores: pl.DataFrame,
     donantes: pl.DataFrame,
-    llaves: list[str],
+    niveles: list[list[str]],
     fijas: list[str],
     k_min: int,
 ) -> tuple[np.ndarray, np.ndarray, pl.DataFrame]:
-    """Celda de cada receptor: (id de celda, nivel) y la tabla de donantes con su celda.
-
-    Devuelve los donantes repetidos por celda (`_celda`, `_d` = fila original); los receptores
-    y los donantes comparten los ids de celda."""
-    r = receptores.select([*fijas, *llaves]).with_row_index("_r")
-    d = donantes.select([*fijas, *llaves]).with_row_index("_d")
+    """Celda de cada receptor: (id de celda, índice del nivel usado) y la tabla de donantes con
+    su celda (`_c`, `_d` = fila original); receptores y donantes comparten los ids de celda.
+    `niveles`: listas de llaves de la más fina a la más gruesa; las `fijas` se añaden siempre."""
+    todas = list(dict.fromkeys(c for n in niveles for c in n))
+    r = receptores.select([*fijas, *todas]).with_row_index("_r")
+    d = donantes.select([*fijas, *todas]).with_row_index("_d")
     celda_r = np.full(r.height, -1, dtype=np.int64)
     nivel_r = np.full(r.height, -1, dtype=np.int64)
     trozos = []
     base = 0
     pendientes = r
-    for nivel in range(len(llaves), -1, -1):
+    for nivel, usadas in enumerate(niveles):
         if pendientes.is_empty():
             break
-        usadas = llaves[:nivel]
         # Patrones de llaves desconocidas en el receptor: esas llaves no se usan para él
         desc = [
             pl.col(c).cast(pl.Utf8).is_in(DESCONOCIDOS).alias(f"_x{i}")
@@ -125,13 +149,13 @@ def muestrear(
 def emparejar(
     receptores: pl.DataFrame,
     donantes: pl.DataFrame,
-    llaves: list[str],
+    niveles: list[list[str]],
     peso: str,
     rng: np.random.Generator,
     fijas: list[str] | None = None,
     k_min: int = 10,
 ) -> Asignacion:
     fijas = fijas or []
-    celda_r, nivel, tabla = celdas(receptores, donantes, llaves, fijas, k_min)
+    celda_r, nivel, tabla = celdas(receptores, donantes, niveles, fijas, k_min)
     dn = muestrear(celda_r, tabla, donantes[peso].to_numpy(), rng)
     return Asignacion(donante=dn, nivel=nivel)

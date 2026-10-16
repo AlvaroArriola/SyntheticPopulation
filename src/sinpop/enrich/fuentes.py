@@ -53,6 +53,34 @@ def grupo_edad(edad: pl.Expr, cortes: list[int], nombre: str) -> pl.Expr:
     return pl.when(edad < cortes[0]).then(pl.lit("NP")).otherwise(e).alias(nombre)
 
 
+# NUTS-1 (Eurostat/INE): agrupación oficial de comunidades para colapsar la geografía
+NUTS1 = {
+    "12": "ES1", "03": "ES1", "06": "ES1",
+    "16": "ES2", "15": "ES2", "17": "ES2", "02": "ES2",
+    "13": "ES3",
+    "07": "ES4", "08": "ES4", "11": "ES4",
+    "09": "ES5", "10": "ES5", "04": "ES5",
+    "01": "ES6", "14": "ES6", "18": "ES6", "19": "ES6",
+    "05": "ES7",
+}  # fmt: skip
+
+
+def nuts1() -> pl.Expr:
+    return pl.col("ccaa").replace_strict(NUTS1, default="NC").alias("nuts1")
+
+
+def quintil(col: str = "renta_hogar_decil") -> pl.Expr:
+    """Quintil a partir del decil (D01-D02 → Q1, …); NP y NC se conservan."""
+    n = pl.col(col).str.slice(1).cast(pl.Int32, strict=False)
+    return (
+        pl.when(n.is_not_null())
+        .then(pl.format("Q{}", ((n + 1) // 2).cast(pl.Utf8)))
+        .otherwise(pl.col(col))
+        .alias("renta_quintil")
+    )
+
+
+EDAD_10 = [16, 25, 35, 45, 55, 65, 75]
 EDAD_PERSONA = [16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85]
 EDAD_EPA = [16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65]  # grupos de EDAD1 (65 = 65 y más)
 

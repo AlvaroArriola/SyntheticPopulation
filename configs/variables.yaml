@@ -2528,6 +2528,20 @@ variables:
           '3': alquiler_mercado
           '4': alquiler_inferior
           '5': cesion_gratuita
+  renta_equivalente:
+    prioridad: P1
+    nivel: hogar
+    tipo: numerica
+    rango:
+    - -1000000
+    - 10000000
+    descripcion: Renta disponible equivalente del hogar (euros del año anterior a la encuesta,
+      escala OCDE modificada); base de los deciles y de la inclinación al Atlas (D-044.5)
+    fuente_principal: ecv
+    fuentes:
+      ecv:
+        variable_original: vhRentaa / HX240
+        verificado_contra: disreg_ecv25 (INE)
   renta_hogar_decil:
     prioridad: P1
     nivel: hogar
@@ -2572,7 +2586,7 @@ variables:
         verificado_contra: disreg_ecv25 (INE)
   privacion_material:
     prioridad: P1
-    nivel: hogar
+    nivel: persona
     tipo: categorica
     descripcion: Indicador oficial de privación material
     fuente_principal: ecv
@@ -2590,7 +2604,7 @@ variables:
     - 'no'
   privacion_material_n:
     prioridad: P1
-    nivel: hogar
+    nivel: persona
     tipo: numerica
     rango:
     - 0

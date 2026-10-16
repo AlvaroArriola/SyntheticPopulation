@@ -345,8 +345,10 @@ def construir(
     u: D.Unidades | None = None,
     destino: Path = POPULATIONS_DIR,
     excluir: tuple[str, ...] = (),
+    enriquecer: bool = True,
 ) -> dict:
-    """`excluir`: objetivos calibrables que no se usan (prueba del territorio reservado, F5)."""
+    """`excluir`: objetivos calibrables que no se usan (prueba del territorio reservado, F5).
+    `enriquecer`: etapa 5 (F6, D-044); sin ella, solo las variables de los donantes censales."""
     if not isinstance(semilla, int) or n <= 0:
         raise ValueError("hacen falta un tamaño positivo y una semilla entera")
     propias = u is None
@@ -482,6 +484,14 @@ def construir(
     rid = run_id(territorio, n, semilla, sobremuestreo) + (
         "_sin_" + "_".join(sorted(excluir)) if excluir else ""
     )
+    info_enr: dict = {"aplicado": False}
+    if enriquecer:
+        from sinpop.enrich.run import enriquecer as enriquecer_poblacion
+
+        persons, households, info_enr = enriquecer_poblacion(
+            persons, households, territorio, semilla
+        )
+        info_enr = {"aplicado": True, **info_enr}
     out = destino / rid
     out.mkdir(parents=True, exist_ok=True)
     hashes = {}
@@ -509,6 +519,7 @@ def construir(
         "equilibrado": info_eq,
         # Referencia de V-REGLAS-BLANDAS: frecuencias en los donantes con los pesos calibrados.
         "referencia_reglas_blandas": frecuencias_blandas(p, "w"),
+        "enriquecimiento": info_enr,
         "sha256": hashes,
     }
     (out / "metadata.json").write_text(json.dumps(meta, ensure_ascii=False, indent=1), "utf-8")
