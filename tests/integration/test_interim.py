@@ -96,3 +96,14 @@ def test_mayores_65_coherente(c21: pl.DataFrame) -> None:
         (pl.col("edad") >= 65).sum().alias("calc"), pl.col("n_mayores_65_hogar").first()
     )
     assert (n["calc"] == n["n_mayores_65_hogar"]).all()
+
+
+def test_carencias_reproducen_indicador_oficial() -> None:
+    """D-044: con 7 o más de los 13 conceptos, la persona está en carencia material y social
+    severa (vrMATSOCDEP), sin excepción en el fichero de adultos."""
+    e = pl.read_parquet(
+        INTERIM_DIR / "ecv.parquet", columns=["privacion_material", "privacion_material_n"]
+    ).filter(pl.col("privacion_material_n").is_not_null())
+    assert e.height > 50_000
+    assert e["privacion_material_n"].is_between(0, 13).all()
+    assert ((e["privacion_material_n"] >= 7) == (e["privacion_material"] == "si")).all()

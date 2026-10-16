@@ -56,6 +56,11 @@ NULOS_DOCUMENTADOS: dict[tuple[str, str], tuple[pl.Expr, str]] = {
         "PB040 solo existe para quien tenía 16 años o más a 31/12 del año anterior (RB081): "
         "fichero de adultos",
     ),
+    ("ecv", "privacion_material_n"): (
+        pl.col("peso_16").is_null() | (pl.col("privacion_material") == "NC"),
+        "solo se reconstruye para el fichero de adultos (16+ a 31/12) y cuando hay indicador "
+        "oficial vrMATSOCDEP (D-044)",
+    ),
     ("epa", "edad_4"): (
         pl.col("edad_grupo_epa") == "16",
         "la EPA agrupa 16–19 años y no permite separar a los de 18 y 19",

@@ -2505,6 +2505,29 @@ variables:
           '4': alquiler_inferior_cesion
           '5': alquiler_inferior_cesion
         notas: 5 = cesión gratuita
+  tenencia_ecv:
+    prioridad: P1
+    nivel: hogar
+    tipo: categorica
+    descripcion: Régimen de tenencia con el detalle de la ECV; llave de compatibilidad con
+      tenencia_censo en el enriquecimiento (D-044.3)
+    categorias:
+    - propiedad_sin_hipoteca
+    - propiedad_con_hipoteca
+    - alquiler_mercado
+    - alquiler_inferior
+    - cesion_gratuita
+    fuente_principal: ecv
+    fuentes:
+      ecv:
+        variable_original: HH021
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_Th_2025.json, tabla TH021H (INE)
+        recodificacion:
+          '1': propiedad_sin_hipoteca
+          '2': propiedad_con_hipoteca
+          '3': alquiler_mercado
+          '4': alquiler_inferior
+          '5': cesion_gratuita
   renta_hogar_decil:
     prioridad: P1
     nivel: hogar
@@ -2572,13 +2595,18 @@ variables:
     rango:
     - 0
     - 13
-    descripcion: Número de carencias (verificar el máximo con la ECV)
+    descripcion: Número de carencias materiales y sociales (0-13, definición UE)
     fuente_principal: ecv
     fuentes:
       ecv:
-        variable_original: HD080, HS040–HS090, PD020–PD070…
-        verificado_contra: disreg_ecv25 (INE)
-        notas: se reconstruye en F2
+        variable_original: HS011, HS021, HS031, HH050, HS040, HS050, HS060, HS110, HD080 (hogar);
+          PD020, PD030, PD050, PD060, PD070, PD080 (persona)
+        verificado_contra: disreg_ecv25 / dr_ECV_SM_T*_2025.json (INE)
+        notas: 'los 13 conceptos de la carencia material y social de la UE (D-044): 7 del hogar
+          (retrasos en hipoteca o alquiler, facturas o compras aplazadas; temperatura; vacaciones;
+          comida de carne o pescado; gastos imprevistos; coche y muebles «no puede permitírselo»)
+          y 6 personales («no puede permitírselo»). Solo 16+ (fichero de adultos); con 7 o más
+          reproduce vrMATSOCDEP en el 100 % de los adultos con indicador; vrMATSOCDEP vacío → NC'
   dificultad_fin_mes:
     prioridad: P2
     nivel: hogar

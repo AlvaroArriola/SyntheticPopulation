@@ -55,6 +55,23 @@ def con_deciles(df: pl.DataFrame, valor: str, nombre: str, por: str | None = Non
 # --------------------------------------------------------------------------- ECV
 
 
+# Los 13 conceptos de la carencia material y social de la UE (D-044; códigos en disreg_ecv25)
+ATRASOS = ["HS011", "HS021", "HS031"]  # 1, 2 = sí (una vez, dos o más); 3 = no
+NO_PUEDE = ["HH050", "HS040", "HS050", "HS060"]  # 2 = no
+NO_PUEDE_PERMITIR = ["HS110", "HD080"]  # 2 = no puede permitírselo
+ITEMS_HOGAR = [*ATRASOS, *NO_PUEDE, *NO_PUEDE_PERMITIR]
+ITEMS_PERSONA = ["PD020", "PD030", "PD050", "PD060", "PD070", "PD080"]  # 2 = no puede
+
+
+def carencias(df: pl.DataFrame) -> pl.Expr:
+    """Número de carencias (0-13) de una persona del fichero de adultos."""
+    c = {x: pl.col(x).cast(pl.Utf8) for x in [*ITEMS_HOGAR, *ITEMS_PERSONA]}
+    atrasos = pl.any_horizontal([c[x].is_in(["1", "2"]) for x in ATRASOS]).cast(pl.Int32)
+    hogar = [(c[x] == "2").cast(pl.Int32) for x in [*NO_PUEDE, *NO_PUEDE_PERMITIR]]
+    persona = [(c[x] == "2").cast(pl.Int32) for x in ITEMS_PERSONA]
+    return atrasos + pl.sum_horizontal([*hogar, *persona])
+
+
 def ecv() -> pl.DataFrame:
     tr = pl.read_parquet(
         ECV / "ECV_Tr_2025/md_ECV_Tr_2025.parquet",
@@ -73,6 +90,7 @@ def ecv() -> pl.DataFrame:
             "PL032_F",
             "PH010_F",
             "PH030_F",
+            *ITEMS_PERSONA,
         ],
     )
     th = pl.read_parquet(
@@ -88,6 +106,7 @@ def ecv() -> pl.DataFrame:
             "HH021_F",
             "HS120_F",
             "HS110_F",
+            *(x for x in ITEMS_HOGAR if x != "HS110"),
         ],
     )
     td = pl.read_parquet(
@@ -153,6 +172,20 @@ def ecv() -> pl.DataFrame:
             nc_si=pl.col("HS110_F") == "-1",
         ),
         recode(df, "vrMATSOCDEP", "privacion_material", s, nc_si=pl.lit(True)),
+        # Solo 16+ (fichero de adultos); sin indicador oficial → nulo (NC en privacion_material)
+        df.select(
+            pl.when(~fuera_tp & (pl.col("vrMATSOCDEP").cast(pl.Utf8).fill_null("") != ""))
+            .then(carencias(df))
+            .alias("privacion_material_n")
+        ).to_series(),
+        recode(
+            df,
+            "HH021",
+            "tenencia_ecv",
+            s,
+            np_si=pl.col("HH021_F") == "-2",
+            nc_si=pl.col("HH021_F") == "-1",
+        ),
         recode(df, "DB100", "grado_urbanizacion", s),
     )
     out = out.with_columns(_act3())
