@@ -872,6 +872,130 @@ def _g5_6_human() -> Check:
     )
 
 
+def _f6() -> dict | None:
+    import json
+
+    from sinpop.validate.fase6 import RESUMEN
+
+    return json.loads(RESUMEN.read_text(encoding="utf-8")) if RESUMEN.exists() else None
+
+
+def _sin_f6(id_: str, desc: str, um: str) -> Check:
+    return Check(
+        id_,
+        desc,
+        False,
+        "falta reports/fase_06_validacion.json (python -m sinpop.validate.fase6)",
+        um,
+    )
+
+
+def _g6_1() -> Check:
+    d, desc = _f6(), "Distribuciones por CCAA × edad_4 frente a la encuesta (V-ENRIQ-MARG)"
+    um = "≥ 90 % de las celdas de cada variable en el IC 95 % (bootstrap); TVD nacional ≤ 0,02"
+    if d is None:
+        return _sin_f6("G6.1", desc, um)
+    m, t = d["v_enriq_marg"], d["tvd_nacional"]
+    bajas = [x["variable"] for x in m["por_variable"] if x["proporcion"] < m["umbral"]]
+    tvd = [x["variable"] for x in t["por_variable"] if x["tvd"] > t["umbral"]]
+    peor = min(m["por_variable"], key=lambda x: x["proporcion"])
+    return Check(
+        "G6.1",
+        desc,
+        not bajas and not tvd,
+        f"{len(m['por_variable'])} variables; en IC global {100 * m['global']:.1f} %; por debajo "
+        f"del 90 %: {bajas or 0} (mínimo {peor['variable']} {100 * peor['proporcion']:.1f} %); "
+        f"TVD > 0,02: {tvd or 0}",
+        um,
+    )
+
+
+def _g6_2() -> Check:
+    d, desc = _f6(), "Asociación con las variables llave (V-ENRIQ-ASOC)"
+    um = "|Δ V de Cramér| ≤ 0,05"
+    if d is None:
+        return _sin_f6("G6.2", desc, um)
+    a = d["v_enriq_asoc"]
+    fuera = [(x["variable"], x["llave"]) for x in a["fuera"]]
+    return Check(
+        "G6.2",
+        desc,
+        not fuera,
+        f"{a['comprobaciones']} pares; fuera: {fuera or 0}; Δ máx. {a['dif_max']:.3f}",
+        um,
+    )
+
+
+def _g6_3() -> Check:
+    d, desc = _f6(), "Relaciones internas de cada bloque (V-ENRIQ-BLOQUE)"
+    um = "|Δ| máx. ≤ 0,05 y medio ≤ 0,02"
+    if d is None:
+        return _sin_f6("G6.3", desc, um)
+    b = d["v_enriq_bloque"]
+    ok = b["dif_max"] <= b["umbral_max"] and b["dif_media"] <= b["umbral_media"]
+    return Check(
+        "G6.3",
+        desc,
+        ok,
+        f"{len(b['pares'])} pares; Δ máx. {b['dif_max']:.3f}, medio {b['dif_media']:.3f}",
+        um,
+    )
+
+
+def _g6_4() -> Check:
+    d, desc = _f6(), "Emparejar sin una llave y recuperar su asociación (V-ENRIQ-HOLDOUT)"
+    um = "|Δ V de Cramér| ≤ 0,05 y menor que la de la independencia"
+    if d is None:
+        return _sin_f6("G6.4", desc, um)
+    h = d["v_enriq_holdout"]
+    malos = [
+        x["variable"]
+        for x in h["filas"]
+        if x["dif"] > h["umbral"]
+        or (x["dif_independencia"] > 0.01 and x["dif"] >= x["dif_independencia"])
+    ]
+    mx = max(h["filas"], key=lambda x: x["dif"])
+    return Check(
+        "G6.4",
+        desc,
+        not malos,
+        f"llave reservada {h['llave']}; {len(h['filas'])} variables; fuera: {malos or 0}; "
+        f"Δ máx. {mx['dif']:.3f} ({mx['variable']})",
+        um,
+    )
+
+
+def _g6_5() -> Check:
+    d, desc = _f6(), "El enriquecimiento no altera las variables de los donantes (igualdad)"
+    um = "columnas idénticas con y sin enriquecimiento"
+    if d is None:
+        return _sin_f6("G6.5", desc, um)
+    g = d["g65"]
+    txt = "; ".join(
+        f"{f}: {'idénticas' if x['identicas'] else 'DISTINTAS'} ({x['columnas_base']} columnas)"
+        for f, x in g["ficheros"].items()
+    )
+    return Check("G6.5", desc, g["ok"], txt, um)
+
+
+def _g6_6() -> Check:
+    d, desc = _f6(), "Renta media por territorio frente al Atlas de renta"
+    um = "|error relativo| ≤ máx(2 %, 2 errores típicos) donde se calibra (D-044.5, por confirmar)"
+    if d is None:
+        return _sin_f6("G6.6", desc, um)
+    g = d["g66"]
+    mu = g["municipios"]
+    return Check(
+        "G6.6",
+        desc,
+        not g["fuera"],
+        f"{len(g['provincias'])} provincias; fuera: {g['fuera'] or 0}; error máx. "
+        f"{100 * g['error_max']:.2f} %; municipios identificados (no calibrados): {mu['n']}, "
+        f"correlación de la renta relativa con el Atlas {mu['correlacion_relativa']:.2f}",
+        um,
+    )
+
+
 PHASES: dict[int, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
@@ -893,6 +1017,7 @@ PHASES: dict[int, list[Callable[[], Check]]] = {
         _g2_8_human,
     ],
     5: [_g5_1, _g5_2, _g5_3, _g5_4, _g5_5, _g5_6_human],
+    6: [_g6_1, _g6_2, _g6_3, _g6_4, _g6_5, _g6_6],
     4: [
         _g4_1_marg,
         _g4_2_cruce,

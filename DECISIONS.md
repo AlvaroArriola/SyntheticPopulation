@@ -701,3 +701,43 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - Vecino más próximo por distancia: tiende a concentrar donantes y a reducir la varianza.
   - Reescalar la renta al Atlas: mezcla definiciones distintas.
 - **Aprobada por:** pendiente del informe de F6 (el umbral de G6.6 necesita confirmación humana)
+
+## D-045 · Enriquecimiento: estrategia de colapso, tenencia de los hogares extranjeros y llaves estructurales (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F6
+- **Estado:** en vigor (se revisa con el informe de F6)
+- **Contexto:** con el diseño inicial de D-044 (llaves en orden fijo, la comunidad como primera llave, mínimo de 10 donantes por celda), muchas celdas no tenían donantes suficientes y se quitaban llaves importantes. Ejemplo, en Galicia: V de Cramér de renta × nacionalidad 0,29 en la ECV y 0,08 en la población. Se compararon estrategias sobre la población nacional de 1.000.000 de personas (semilla 1), con las métricas de docs/05 §5:
+
+  | Estrategia (1M) | Celdas en IC 95 % (global) | V-ENRIQ-ASOC fuera de 0,05 | V-ENRIQ-BLOQUE máx. / medio | TVD de la tenencia |
+  | --- | ---: | ---: | --- | ---: |
+  | Llaves primero, k = 5, tenencia del Censo fija | 88,7 % | 1 de 81 | 0,020 / 0,008 | 0,035 |
+  | Igual, sin tenencia del Censo | 90,2 % | 0 | 0,019 / 0,008 | 0,005 |
+  | Núcleo de 2 llaves, k = 5, sin tenencia | 92,5 % | 2 | 0,016 / 0,007 | 0,007 |
+  | **Elegida:** núcleo de 2 llaves, k = 5, tenencia fija salvo en hogares con extranjeros, situación profesional fija | 91,8 % | 0 | 0,020 / 0,007 | 0,012 |
+
+- **Decisiones:**
+  1. **Llaves ordenadas por su importancia medida en la propia encuesta.** Se usa la V de Cramér máxima con las variables del bloque. Resultado:
+     - **Hogar:** ocupados, estudios más altos, adulto extranjero, 65+, menores, tamaño y grado de urbanización.
+     - **Persona ECV:** edad por decenios, relación con la actividad, estudios, quintil de renta, nacionalidad y sexo.
+     - **Empleo:** ocupación, nacionalidad, sexo, edad y estudios.
+     - **Digital:** edad, relación con la actividad, estudios, nacionalidad y sexo.
+  2. **Colapso con núcleo** (`hotdeck.niveles_nucleo`), en este orden:
+     1. Se quitan las llaves secundarias manteniendo la comunidad.
+     2. Se amplía la geografía, con la zona NUTS-1 (agrupación oficial de Eurostat) y después España.
+     3. Solo al final se quitan las 2 llaves del núcleo.
+     4. El mínimo es de 5 donantes por celda.
+  3. **Tenencia de los hogares con algún adulto extranjero: la decide la ECV 2025, sin la tenencia del Censo como llave.**
+     - Los extranjeros de la población son residentes de 2021 reponderados a 2026, y los llegados después de 2021 viven sobre todo de alquiler. Por eso, en la población (Censo 2021) el 47 % de los adultos extranjeros vive en propiedad y el 41 % de alquiler. En la ECV 2025 son el 34 % y el 62 % (con alquiler inferior al de mercado). Entre los españoles, las dos fuentes coinciden: propiedad 81,1 % y 81,5 %.
+     - Con la tenencia fija, V de Cramér de tenencia × nacionalidad: 0,31 frente a 0,43 de la ECV (falla). Con la regla elegida: 0,39 (pasa).
+     - Los hogares sin extranjeros conservan el régimen de su hogar donante. El 91 % de los hogares tiene una tenencia de la ECV compatible con la del Censo; los demás son hogares con extranjeros.
+  4. **Llaves estructurales fijas, que no se quitan nunca:**
+     - situación profesional en el empleo: un autónomo o un empresario no puede ser del sector público (con la situación como llave secundaria aparecían autónomos públicos);
+     - ser ocupado en el bloque digital: el teletrabajo solo procede para ocupados;
+     - tenencia compatible en los hogares sin extranjeros.
+     La nacionalidad va en segundo lugar en el empleo, porque el empleo público exige en general la nacionalidad española (V de Cramér de sector público × nacionalidad: 0,09 → 0,13, frente a 0,17).
+- **Lo que queda por debajo de los umbrales**, sin solución dentro del enriquecimiento: diferencias de composición entre la población, calibrada a las cifras censales, y las encuestas. Ver `reports/fase_06.md`:
+  - Entre los adultos, «otra inactividad»: 19 % en la población y 10 % en las encuestas; ocupados: 49,6 % y 52 %.
+  - Estudios hasta la obligatoria: 42 % en la población y 34-38 % en las encuestas.
+  - Afectan sobre todo al teletrabajo (su NP son los no ocupados) y a la compra en línea.
+- **Aprobada por:** pendiente del informe de F6
