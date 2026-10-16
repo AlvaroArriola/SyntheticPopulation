@@ -278,3 +278,52 @@ def v_bloque(personas: pl.DataFrame) -> pl.DataFrame:
                 }
             )
     return pl.DataFrame(filas)
+
+
+def v_marg_ajustada(personas: pl.DataFrame, replicas: int = 200, semilla: int = 0) -> pl.DataFrame:
+    """Diagnóstico (no es puerta): V-ENRIQ-MARG con la población reponderada, dentro de cada
+    comunidad × edad_4, a la composición de la encuesta por relación con la actividad y estudios.
+    Separa lo que se debe al emparejamiento de lo que se debe a la composición censal."""
+    filas = []
+    for b in BLOQUES:
+        e = _encuesta(b)
+        s = _universo(personas, b, sintetica=True)
+        llaves = (
+            ["estudios_3", "sexo"] if b.nombre == "empleo" else ["relacion_actividad", "estudios_3"]
+        )
+        por = ["ccaa", "edad_4", *llaves]
+        qe = (
+            e.group_by(por)
+            .agg(pl.col(b.peso).sum().alias("we"))
+            .with_columns((pl.col("we") / pl.col("we").sum().over(["ccaa", "edad_4"])).alias("qe"))
+        )
+        qs = (
+            s.group_by(por)
+            .agg(pl.col("peso").sum().alias("ws"))
+            .with_columns((pl.col("ws") / pl.col("ws").sum().over(["ccaa", "edad_4"])).alias("qs"))
+        )
+        f = qe.join(qs, on=por).select(*por, (pl.col("qe") / pl.col("qs")).alias("_f"))
+        sa = s.join(f, on=por, how="left").with_columns(
+            (pl.col("peso") * pl.col("_f").fill_null(0.0)).alias("peso")
+        )
+        for v in b.variables:
+            ic = bootstrap_ic(e, v, b.peso, ["ccaa", "edad_4"], b.conglomerado, replicas, semilla)
+            ps = _props(sa, v, "peso", ["ccaa", "edad_4"]).with_columns(pl.col(v).cast(pl.Utf8))
+            j = ic.join(
+                ps.select("ccaa", "edad_4", v, pl.col("p").alias("p_sintetica")),
+                on=["ccaa", "edad_4", v],
+                how="left",
+            ).with_columns(pl.col("p_sintetica").fill_null(0.0))
+            filas.append(
+                {
+                    "bloque": b.nombre,
+                    "variable": v,
+                    "proporcion": float(
+                        (
+                            (j["p_sintetica"] >= j["lo"] - 1e-12)
+                            & (j["p_sintetica"] <= j["hi"] + 1e-12)
+                        ).mean()
+                    ),
+                }
+            )
+    return pl.DataFrame(filas)
