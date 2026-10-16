@@ -161,16 +161,28 @@ def territorio_reservado(u: D.Unidades) -> dict:
     }
 
 
-def ejecutar() -> dict:
-    u = PB.unidades_todas()
+def ejecutar(reanudar: bool = False) -> dict:
+    """Serie completa. Con `reanudar`, conserva los territorios ya validados en el resumen (las
+    poblaciones son deterministas con la semilla) y sigue por el resto: permite partir la serie en
+    varios procesos, porque España a 1M no cabe en memoria detrás de las 31 poblaciones."""
     res = {
         "fecha": dt.date.today().isoformat(),
         "version_codigo": code_version(),
-        "comando": "python -m sinpop.validate.fase5",
+        "comando": "python -m sinpop.validate.fase5 [--reanudar]",
         "semilla": SEMILLA,
         "territorios": [],
     }
+    if reanudar and RESUMEN.exists():
+        previo = json.loads(RESUMEN.read_text("utf-8"))
+        res["territorios"] = previo["territorios"]
+        res["versiones_previas"] = sorted(
+            {previo["version_codigo"], *previo.get("versiones_previas", [])}
+        )
+    hechos = {x["territorio"] for x in res["territorios"]}
+    u = PB.unidades_todas()
     for t, n in territorios():
+        if t in hechos:
+            continue
         meta = PB.construir(t, n, SEMILLA, u=u)
         x = _validar(meta)
         res["territorios"].append(x)
@@ -181,16 +193,22 @@ def ejecutar() -> dict:
             flush=True,
         )
         RESUMEN.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=float), "utf-8")
+        del meta
+        gc.collect()
     nac = PB.construir("ES", N_ES, SEMILLA, u=u)
+    print(f"ES {N_ES}: {nac['run_id']}", flush=True)
     res["coherencia"] = coherencia(
         [x for x in res["territorios"] if x["territorio"].startswith("CCAA:")], nac["run_id"]
     )
+    RESUMEN.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=float), "utf-8")
     res["territorio_reservado"] = territorio_reservado(u)
     RESUMEN.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=float), "utf-8")
     return res
 
 
 if __name__ == "__main__":
-    r = ejecutar()
+    import sys
+
+    r = ejecutar(reanudar="--reanudar" in sys.argv)
     print(json.dumps(r["coherencia"], indent=1)[:3000])
     print(json.dumps(r["territorio_reservado"], indent=1))
