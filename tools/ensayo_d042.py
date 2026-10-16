@@ -39,7 +39,7 @@ _celdas = (
         pl.col("provincia").replace_strict(ccaa_de_provincia()).alias("ccaa"),
     )
 )
-_leer, _variables_de = run.leer, D.variables_de
+_leer, _variables_de, _calibrables = run.leer, D.variables_de, D.objetivos_calibrables
 
 
 def _filas(territorio: str) -> pl.DataFrame:
@@ -83,8 +83,15 @@ def variables_de(objetivo: str) -> list[str]:
     return list(VARIABLES) if objetivo == OBJETIVO else _variables_de(objetivo)
 
 
+def objetivos_calibrables(obj: pl.DataFrame, municipios: bool = False) -> pl.DataFrame:
+    o = _calibrables(obj, municipios)
+    extra = obj.filter(pl.col("objetivo") == OBJETIVO)
+    return pl.concat([o, extra.select(o.columns)]).sort("objetivo", "clave")
+
+
 def main(ts: list[str]) -> None:
     run.leer, D.variables_de = leer, variables_de
+    D.objetivos_calibrables = objetivos_calibrables
     resumen = json.loads(fase5.RESUMEN.read_text("utf-8"))
     serie = {x["territorio"]: x for x in resumen["territorios"]}
     u = PB.unidades_todas()
