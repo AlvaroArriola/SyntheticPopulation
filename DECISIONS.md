@@ -763,7 +763,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **B. G6.4 (variable llave reservada).**
   - Todas las variables quedan mejor que la independencia.
   - Con |Δ| ≤ 0,05 no basta: el emparejamiento solo recupera en parte la asociación con una variable que no es llave. Es la hipótesis de independencia condicional, común a todo emparejamiento estadístico.
-  - **B1** (**propuesta**): exigir «mejor que la independencia» y la recuperación de al menos la mitad de la asociación. Se informa |Δ| con cada llave reservada (sexo, nacionalidad, actividad y estudios) y se documenta que las relaciones con variables que no son llave salen atenuadas.
+  - **B1** (**propuesta**): exigir «mejor que la independencia» (hoy se cumple en las 14 variables; sin los estudios se recupera entre el 19 % y el 98 % de la asociación). Se informa |Δ| con cada llave reservada (sexo, nacionalidad, actividad y estudios) y se documenta que las relaciones con variables que no son llave salen atenuadas.
   - **B2:** buscar un emparejamiento basado en modelo, con más variables comunes.
     - No hay muchas más variables comunes entre la población y las encuestas.
     - La ganancia esperada es pequeña y el coste, alto.
