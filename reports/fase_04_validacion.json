@@ -654,210 +654,96 @@
       "territorio": "CCAA:05",
       "objetivo": "tamano_municipio",
       "tvd": 0.07987074834157724,
-      "umbral": 0.052139388634835374
-     },
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:06",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.11843848843877007,
-      "umbral": 0.11345806791505822
-     },
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:07",
-      "objetivo": "provincia_si_calibra_ccaa",
-      "tvd": 0.07990971385580897,
-      "umbral": 0.07308857430113473
+      "umbral": 0.052139388634835374,
+      "excepcion": false
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:08",
       "objetivo": "tamano_municipio",
       "tvd": 0.07565904177533496,
-      "umbral": 0.060651897837356944
-     },
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:15",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.09990831504527259,
-      "umbral": 0.09404551193487236
+      "umbral": 0.060651897837356944,
+      "excepcion": false
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:16",
       "objetivo": "tamano_municipio",
       "tvd": 0.08023596518696638,
-      "umbral": 0.05900397120443113
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:01",
-      "objetivo": "actividad_edad",
-      "tvd": 0.30774764700333646,
-      "umbral": 0.28965541026306385
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:01",
-      "objetivo": "nacionalidad_top_sexo_edad",
-      "tvd": 0.286675612190753,
-      "umbral": 0.2625680555870493
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:02",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.11005603557821252,
-      "umbral": 0.10747130711004348
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:02",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.15588695588360502,
-      "umbral": 0.1319987137874709
+      "umbral": 0.05900397120443113,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:04",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.12278172527738904,
-      "umbral": 0.0999168768915407
+      "umbral": 0.0999168768915407,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:09",
       "objetivo": "tamano_municipio",
       "tvd": 0.13577697336403954,
-      "umbral": 0.10818725746920681
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:12",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.12797920059308546,
-      "umbral": 0.11064220183832701
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:15",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.09142247397485707,
-      "umbral": 0.08
+      "umbral": 0.10818725746920681,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:17",
       "objetivo": "tamano_municipio",
       "tvd": 0.13284320441951228,
-      "umbral": 0.0863011122613121
+      "umbral": 0.0863011122613121,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:19",
       "objetivo": "tamano_municipio",
       "tvd": 0.24852657766628,
-      "umbral": 0.14708994709052411
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:20",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.11378300055096005,
-      "umbral": 0.09913923133013124
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:22",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.20696595232641926,
-      "umbral": 0.1877708897788439
+      "umbral": 0.14708994709052411,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:23",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.11430476131761952,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:24",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.08421718116877859,
-      "umbral": 0.08090566535671848
+      "umbral": 0.08,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:27",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.12668671568101286,
-      "umbral": 0.0935445276363215
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:31",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.09990831504527259,
-      "umbral": 0.09404551193487236
+      "umbral": 0.0935445276363215,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:38",
       "objetivo": "tamano_municipio",
       "tvd": 0.13023390188651968,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:39",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.11843848843877007,
-      "umbral": 0.11345806791505822
+      "umbral": 0.08,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.29424611483814167,
-      "umbral": 0.24017508332648763
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:41",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.10006003103519255,
-      "umbral": 0.09846882988517058
+      "umbral": 0.24017508332648763,
+      "excepcion": true
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:42",
       "objetivo": "tamano_municipio",
       "tvd": 0.281711993261693,
-      "umbral": 0.22737851284001823
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:44",
-      "objetivo": "tipo_hogar_edad4_ref",
-      "tvd": 0.6021955882251001,
-      "umbral": 0.5837122145167329
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:45",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.08208132236076521,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:47",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.09649505090597413,
-      "umbral": 0.09457990561060806
+      "umbral": 0.22737851284001823,
+      "excepcion": false
      }
     ],
     "espana": [
@@ -919,90 +805,216 @@
      }
     ],
     "tvd_media_espana": 0.019895492425278927,
-    "fallos_propuesta": [
+    "fallos_estricto": [
      {
       "nivel": "ccaa",
       "territorio": "CCAA:05",
       "objetivo": "tamano_municipio",
       "tvd": 0.07987074834157724,
-      "umbral": 0.052139388634835374
+      "umbral_estricto": 0.052139388634835374
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:06",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.11843848843877007,
+      "umbral_estricto": 0.11345806791505822
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:07",
+      "objetivo": "provincia_si_calibra_ccaa",
+      "tvd": 0.07990971385580897,
+      "umbral_estricto": 0.07308857430113473
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:08",
       "objetivo": "tamano_municipio",
       "tvd": 0.07565904177533496,
-      "umbral": 0.060651897837356944
+      "umbral_estricto": 0.060651897837356944
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:15",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.09990831504527259,
+      "umbral_estricto": 0.09404551193487236
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:16",
       "objetivo": "tamano_municipio",
       "tvd": 0.08023596518696638,
-      "umbral": 0.05900397120443113
+      "umbral_estricto": 0.05900397120443113
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:01",
+      "objetivo": "actividad_edad",
+      "tvd": 0.30774764700333646,
+      "umbral_estricto": 0.28965541026306385
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:01",
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.286675612190753,
+      "umbral_estricto": 0.2625680555870493
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:02",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.11005603557821252,
+      "umbral_estricto": 0.10747130711004348
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:02",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.15588695588360502,
+      "umbral_estricto": 0.1319987137874709
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:04",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.12278172527738904,
-      "umbral": 0.0999168768915407
+      "umbral_estricto": 0.0999168768915407
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:09",
       "objetivo": "tamano_municipio",
       "tvd": 0.13577697336403954,
-      "umbral": 0.10818725746920681
+      "umbral_estricto": 0.10818725746920681
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:12",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.12797920059308546,
+      "umbral_estricto": 0.11064220183832701
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:15",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.09142247397485707,
+      "umbral_estricto": 0.08
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:17",
       "objetivo": "tamano_municipio",
       "tvd": 0.13284320441951228,
-      "umbral": 0.0863011122613121
+      "umbral_estricto": 0.0863011122613121
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:19",
       "objetivo": "tamano_municipio",
       "tvd": 0.24852657766628,
-      "umbral": 0.14708994709052411
+      "umbral_estricto": 0.14708994709052411
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:20",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.11378300055096005,
+      "umbral_estricto": 0.09913923133013124
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:22",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.20696595232641926,
+      "umbral_estricto": 0.1877708897788439
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:23",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.11430476131761952,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:24",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.08421718116877859,
+      "umbral_estricto": 0.08090566535671848
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:27",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.12668671568101286,
-      "umbral": 0.0935445276363215
+      "umbral_estricto": 0.0935445276363215
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:31",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.09990831504527259,
+      "umbral_estricto": 0.09404551193487236
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:38",
       "objetivo": "tamano_municipio",
       "tvd": 0.13023390188651968,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:39",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.11843848843877007,
+      "umbral_estricto": 0.11345806791505822
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.29424611483814167,
-      "umbral": 0.24017508332648763
+      "umbral_estricto": 0.24017508332648763
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:41",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.10006003103519255,
+      "umbral_estricto": 0.09846882988517058
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:42",
       "objetivo": "tamano_municipio",
       "tvd": 0.281711993261693,
-      "umbral": 0.22737851284001823
+      "umbral_estricto": 0.22737851284001823
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:44",
+      "objetivo": "tipo_hogar_edad4_ref",
+      "tvd": 0.6021955882251001,
+      "umbral_estricto": 0.5837122145167329
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:45",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.08208132236076521,
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:47",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.09649505090597413,
+      "umbral_estricto": 0.09457990561060806
      }
     ]
    },
@@ -1139,210 +1151,104 @@
       "territorio": "ES",
       "objetivo": "tipo_hogar_edad4_ref",
       "tvd": 0.04397150883943437,
-      "umbral": 0.034888572329617076
+      "umbral": 0.034888572329617076,
+      "excepcion": false
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:02",
       "objetivo": "provincia_si_calibra_ccaa",
       "tvd": 0.10700500045013442,
-      "umbral": 0.0509870159436701
+      "umbral": 0.0509870159436701,
+      "excepcion": false
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:05",
       "objetivo": "tamano_municipio",
       "tvd": 0.0721022180557756,
-      "umbral": 0.055706583141276945
-     },
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:07",
-      "objetivo": "provincia_si_calibra_ccaa",
-      "tvd": 0.08743303833584387,
-      "umbral": 0.07494953312153431
+      "umbral": 0.055706583141276945,
+      "excepcion": false
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:11",
       "objetivo": "provincia_si_calibra_ccaa",
       "tvd": 0.10074523350199766,
-      "umbral": 0.06513154374918714
-     },
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:16",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.06284208003549896,
-      "umbral": 0.05797786829557504
+      "umbral": 0.06513154374918714,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:01",
       "objetivo": "tamano_municipio",
       "tvd": 0.13052975581998597,
-      "umbral": 0.104431345367662
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:03",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.10800786288484136,
-      "umbral": 0.10179389856779285
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:09",
-      "objetivo": "actividad_edad",
-      "tvd": 0.30100214632252575,
-      "umbral": 0.29201783227247796
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:10",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.11660217683713722,
-      "umbral": 0.11389297225492491
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:13",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.09677444606713267,
-      "umbral": 0.08318527626136048
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:17",
-      "objetivo": "actividad_edad",
-      "tvd": 0.21708799188665232,
-      "umbral": 0.2155064532175375
+      "umbral": 0.104431345367662,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:17",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.1322188802702418,
-      "umbral": 0.08110531879384472
+      "umbral": 0.08110531879384472,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:17",
       "objetivo": "estado_civil_edad",
       "tvd": 0.18021206654046662,
-      "umbral": 0.1482589207251477
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:17",
-      "objetivo": "nacionalidad_top_sexo_edad",
-      "tvd": 0.2530765226231929,
-      "umbral": 0.23704561730546495
+      "umbral": 0.1482589207251477,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:22",
       "objetivo": "tamano_municipio",
       "tvd": 0.3756175062650682,
-      "umbral": 0.27456524600326415
+      "umbral": 0.27456524600326415,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:23",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.12073698175628432,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:23",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.15329768017175124,
-      "umbral": 0.15179891775111562
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:29",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.10942536818351704,
-      "umbral": 0.10652791026609003
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:32",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.0998451150883237,
-      "umbral": 0.08956566750618764
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:37",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.23184821556391752,
-      "umbral": 0.22152478399708708
+      "umbral": 0.08,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:38",
       "objetivo": "tamano_municipio",
       "tvd": 0.099963397501806,
-      "umbral": 0.08023772437361291
+      "umbral": 0.08023772437361291,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.24401463999367046,
-      "umbral": 0.1619792389739717
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:47",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.14126235541814045,
-      "umbral": 0.11716596987597175
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:48",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.09215113452499622,
-      "umbral": 0.08
+      "umbral": 0.1619792389739717,
+      "excepcion": true
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:49",
       "objetivo": "actividad_edad",
       "tvd": 0.5989729729716937,
-      "umbral": 0.49714358419258636
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:49",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.17508192405827916,
-      "umbral": 0.16441789432068038
+      "umbral": 0.49714358419258636,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:49",
       "objetivo": "nacionalidad_top_sexo_edad",
       "tvd": 0.5072987819469653,
-      "umbral": 0.3849800012777932
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:49",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.21527151716722645,
-      "umbral": 0.21335955226278785
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:49",
-      "objetivo": "tipo_hogar_edad4_ref",
-      "tvd": 0.6032719918152722,
-      "umbral": 0.5698751532135332
+      "umbral": 0.3849800012777932,
+      "excepcion": false
      }
     ],
     "espana": [
@@ -1404,97 +1310,216 @@
      }
     ],
     "tvd_media_espana": 0.02189268084787211,
-    "fallos_propuesta": [
+    "fallos_estricto": [
      {
       "nivel": "espana",
       "territorio": "ES",
       "objetivo": "tipo_hogar_edad4_ref",
       "tvd": 0.04397150883943437,
-      "umbral": 0.034888572329617076
+      "umbral_estricto": 0.034888572329617076
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:02",
       "objetivo": "provincia_si_calibra_ccaa",
       "tvd": 0.10700500045013442,
-      "umbral": 0.0509870159436701
+      "umbral_estricto": 0.0509870159436701
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:05",
       "objetivo": "tamano_municipio",
       "tvd": 0.0721022180557756,
-      "umbral": 0.055706583141276945
+      "umbral_estricto": 0.055706583141276945
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:07",
+      "objetivo": "provincia_si_calibra_ccaa",
+      "tvd": 0.08743303833584387,
+      "umbral_estricto": 0.07494953312153431
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:11",
       "objetivo": "provincia_si_calibra_ccaa",
       "tvd": 0.10074523350199766,
-      "umbral": 0.06513154374918714
+      "umbral_estricto": 0.06513154374918714
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:16",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.06284208003549896,
+      "umbral_estricto": 0.05797786829557504
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:01",
       "objetivo": "tamano_municipio",
       "tvd": 0.13052975581998597,
-      "umbral": 0.104431345367662
+      "umbral_estricto": 0.104431345367662
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:03",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.10800786288484136,
+      "umbral_estricto": 0.10179389856779285
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:09",
+      "objetivo": "actividad_edad",
+      "tvd": 0.30100214632252575,
+      "umbral_estricto": 0.29201783227247796
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:10",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.11660217683713722,
+      "umbral_estricto": 0.11389297225492491
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:13",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.09677444606713267,
+      "umbral_estricto": 0.08318527626136048
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:17",
+      "objetivo": "actividad_edad",
+      "tvd": 0.21708799188665232,
+      "umbral_estricto": 0.2155064532175375
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:17",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.1322188802702418,
-      "umbral": 0.08110531879384472
+      "umbral_estricto": 0.08110531879384472
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:17",
       "objetivo": "estado_civil_edad",
       "tvd": 0.18021206654046662,
-      "umbral": 0.1482589207251477
+      "umbral_estricto": 0.1482589207251477
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:17",
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.2530765226231929,
+      "umbral_estricto": 0.23704561730546495
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:22",
       "objetivo": "tamano_municipio",
       "tvd": 0.3756175062650682,
-      "umbral": 0.27456524600326415
+      "umbral_estricto": 0.27456524600326415
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:23",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.12073698175628432,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:23",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.15329768017175124,
+      "umbral_estricto": 0.15179891775111562
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:29",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.10942536818351704,
+      "umbral_estricto": 0.10652791026609003
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:32",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.0998451150883237,
+      "umbral_estricto": 0.08956566750618764
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:37",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.23184821556391752,
+      "umbral_estricto": 0.22152478399708708
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:38",
       "objetivo": "tamano_municipio",
       "tvd": 0.099963397501806,
-      "umbral": 0.08023772437361291
+      "umbral_estricto": 0.08023772437361291
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.24401463999367046,
-      "umbral": 0.1619792389739717
+      "umbral_estricto": 0.1619792389739717
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:47",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.14126235541814045,
+      "umbral_estricto": 0.11716596987597175
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:48",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.09215113452499622,
+      "umbral_estricto": 0.08
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:49",
       "objetivo": "actividad_edad",
       "tvd": 0.5989729729716937,
-      "umbral": 0.49714358419258636
+      "umbral_estricto": 0.49714358419258636
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:49",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.17508192405827916,
+      "umbral_estricto": 0.16441789432068038
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:49",
       "objetivo": "nacionalidad_top_sexo_edad",
       "tvd": 0.5072987819469653,
-      "umbral": 0.3849800012777932
+      "umbral_estricto": 0.3849800012777932
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:49",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.21527151716722645,
+      "umbral_estricto": 0.21335955226278785
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:49",
+      "objetivo": "tipo_hogar_edad4_ref",
+      "tvd": 0.6032719918152722,
+      "umbral_estricto": 0.5698751532135332
      }
     ]
    },
@@ -1628,234 +1653,75 @@
     "fallos": [
      {
       "nivel": "ccaa",
-      "territorio": "CCAA:02",
-      "objetivo": "provincia_si_calibra_ccaa",
-      "tvd": 0.057678168914088605,
-      "umbral": 0.05331431944520403
-     },
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:03",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.1039730320186175,
-      "umbral": 0.08808830603007733
-     },
-     {
-      "nivel": "ccaa",
       "territorio": "CCAA:05",
       "objetivo": "tamano_municipio",
       "tvd": 0.07341663807296782,
-      "umbral": 0.05546555060138215
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:01",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.23290005637334696,
-      "umbral": 0.2299760039237408
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:02",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.11859862016270248,
-      "umbral": 0.11308135715835312
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:04",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.16512222079789815,
-      "umbral": 0.16104758431988683
+      "umbral": 0.05546555060138215,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:05",
       "objetivo": "tamano_municipio",
       "tvd": 0.211715512455415,
-      "umbral": 0.16039802674353373
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:12",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.08510727498123218,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:13",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.12877197136105295,
-      "umbral": 0.11888640830659748
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:14",
-      "objetivo": "actividad_edad",
-      "tvd": 0.23746050283465578,
-      "umbral": 0.22770683754640358
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:16",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.14130709298703364,
-      "umbral": 0.1394301204195728
+      "umbral": 0.16039802674353373,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:16",
       "objetivo": "estado_civil_edad",
       "tvd": 0.4705451733352857,
-      "umbral": 0.328438251786125
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:19",
-      "objetivo": "actividad_edad",
-      "tvd": 0.3508787252159779,
-      "umbral": 0.3208434441800243
+      "umbral": 0.328438251786125,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:19",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.19619246977581195,
-      "umbral": 0.10202912749928454
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:19",
-      "objetivo": "nacionalidad_top_sexo_edad",
-      "tvd": 0.3346764902638934,
-      "umbral": 0.31383208516138705
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:19",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.16002907820987639,
-      "umbral": 0.14322017407658633
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:20",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.09580034177671345,
-      "umbral": 0.08539730637299095
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:21",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.10491847226949005,
-      "umbral": 0.10072537574868688
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:23",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.12340310295886796,
-      "umbral": 0.10319476557759477
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:29",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.11233754493413978,
-      "umbral": 0.10058740740464003
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:32",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.14681984932634667,
-      "umbral": 0.13889443638793902
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:33",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.1039730320186175,
-      "umbral": 0.08808830603007733
+      "umbral": 0.10202912749928454,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:35",
       "objetivo": "tamano_municipio",
       "tvd": 0.10749196128635856,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:36",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.15452713813909508,
-      "umbral": 0.14133100586522096
+      "umbral": 0.08,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:37",
       "objetivo": "tamano_municipio",
       "tvd": 0.26429555959324214,
-      "umbral": 0.1678964360265914
+      "umbral": 0.1678964360265914,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.21045188748298255,
-      "umbral": 0.15066246686907336
+      "umbral": 0.15066246686907336,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.32454914514117195,
-      "umbral": 0.20718437291350458
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:42",
-      "objetivo": "nacionalidad_top_sexo_edad",
-      "tvd": 0.4784700339800057,
-      "umbral": 0.4351199216280582
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:43",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.0897414227615609,
-      "umbral": 0.08342188739265032
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:45",
-      "objetivo": "actividad_edad",
-      "tvd": 0.2500750353501013,
-      "umbral": 0.22983629088576668
+      "umbral": 0.20718437291350458,
+      "excepcion": true
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:45",
       "objetivo": "estado_civil_edad",
       "tvd": 0.1922961118247796,
-      "umbral": 0.15811437366644016
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:47",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.12502656623109007,
-      "umbral": 0.10433123193404756
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:49",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.388556627539424,
-      "umbral": 0.345770388675844
+      "umbral": 0.15811437366644016,
+      "excepcion": false
      }
     ],
     "espana": [
@@ -1917,69 +1783,237 @@
      }
     ],
     "tvd_media_espana": 0.01969948875710487,
-    "fallos_propuesta": [
+    "fallos_estricto": [
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:02",
+      "objetivo": "provincia_si_calibra_ccaa",
+      "tvd": 0.057678168914088605,
+      "umbral_estricto": 0.05331431944520403
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:03",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.1039730320186175,
+      "umbral_estricto": 0.08808830603007733
+     },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:05",
       "objetivo": "tamano_municipio",
       "tvd": 0.07341663807296782,
-      "umbral": 0.05546555060138215
+      "umbral_estricto": 0.05546555060138215
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:01",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.23290005637334696,
+      "umbral_estricto": 0.2299760039237408
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:02",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.11859862016270248,
+      "umbral_estricto": 0.11308135715835312
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:04",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.16512222079789815,
+      "umbral_estricto": 0.16104758431988683
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:05",
       "objetivo": "tamano_municipio",
       "tvd": 0.211715512455415,
-      "umbral": 0.16039802674353373
+      "umbral_estricto": 0.16039802674353373
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:12",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.08510727498123218,
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:13",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.12877197136105295,
+      "umbral_estricto": 0.11888640830659748
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:14",
+      "objetivo": "actividad_edad",
+      "tvd": 0.23746050283465578,
+      "umbral_estricto": 0.22770683754640358
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:16",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.14130709298703364,
+      "umbral_estricto": 0.1394301204195728
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:16",
       "objetivo": "estado_civil_edad",
       "tvd": 0.4705451733352857,
-      "umbral": 0.328438251786125
+      "umbral_estricto": 0.328438251786125
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:19",
+      "objetivo": "actividad_edad",
+      "tvd": 0.3508787252159779,
+      "umbral_estricto": 0.3208434441800243
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:19",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.19619246977581195,
-      "umbral": 0.10202912749928454
+      "umbral_estricto": 0.10202912749928454
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:19",
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.3346764902638934,
+      "umbral_estricto": 0.31383208516138705
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:19",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.16002907820987639,
+      "umbral_estricto": 0.14322017407658633
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:20",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.09580034177671345,
+      "umbral_estricto": 0.08539730637299095
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:21",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.10491847226949005,
+      "umbral_estricto": 0.10072537574868688
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:23",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.12340310295886796,
+      "umbral_estricto": 0.10319476557759477
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:29",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.11233754493413978,
+      "umbral_estricto": 0.10058740740464003
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:32",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.14681984932634667,
+      "umbral_estricto": 0.13889443638793902
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:33",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.1039730320186175,
+      "umbral_estricto": 0.08808830603007733
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:35",
       "objetivo": "tamano_municipio",
       "tvd": 0.10749196128635856,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:36",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.15452713813909508,
+      "umbral_estricto": 0.14133100586522096
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:37",
       "objetivo": "tamano_municipio",
       "tvd": 0.26429555959324214,
-      "umbral": 0.1678964360265914
+      "umbral_estricto": 0.1678964360265914
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.21045188748298255,
-      "umbral": 0.15066246686907336
+      "umbral_estricto": 0.15066246686907336
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.32454914514117195,
-      "umbral": 0.20718437291350458
+      "umbral_estricto": 0.20718437291350458
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:42",
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.4784700339800057,
+      "umbral_estricto": 0.4351199216280582
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:43",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.0897414227615609,
+      "umbral_estricto": 0.08342188739265032
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:45",
+      "objetivo": "actividad_edad",
+      "tvd": 0.2500750353501013,
+      "umbral_estricto": 0.22983629088576668
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:45",
       "objetivo": "estado_civil_edad",
       "tvd": 0.1922961118247796,
-      "umbral": 0.15811437366644016
+      "umbral_estricto": 0.15811437366644016
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:47",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.12502656623109007,
+      "umbral_estricto": 0.10433123193404756
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:49",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.388556627539424,
+      "umbral_estricto": 0.345770388675844
      }
     ]
    },
@@ -2113,185 +2147,67 @@
     "fallos": [
      {
       "nivel": "ccaa",
-      "territorio": "CCAA:03",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.09464236020791687,
-      "umbral": 0.08137198827420852
-     },
-     {
-      "nivel": "ccaa",
       "territorio": "CCAA:05",
       "objetivo": "estado_civil_edad",
       "tvd": 0.1067749634192692,
-      "umbral": 0.08702821309220364
-     },
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:08",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.07565904177533496,
-      "umbral": 0.0653755843944755
+      "umbral": 0.08702821309220364,
+      "excepcion": false
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:15",
       "objetivo": "tamano_municipio",
       "tvd": 0.17091991600562972,
-      "umbral": 0.10250064890282104
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:04",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.10906377128661658,
-      "umbral": 0.09504677257406331
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:09",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.22377600763955802,
-      "umbral": 0.22377382720410136
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:10",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.09647479533508607,
-      "umbral": 0.0833004855637903
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:12",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.11857907929551295,
-      "umbral": 0.11061033479318316
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:14",
-      "objetivo": "actividad_edad",
-      "tvd": 0.23580135234739644,
-      "umbral": 0.22687510242314293
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:16",
-      "objetivo": "tipo_hogar_edad4_ref",
-      "tvd": 0.5238290497694268,
-      "umbral": 0.4924748944858174
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:17",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.17865927464379994,
-      "umbral": 0.16551609080468788
+      "umbral": 0.10250064890282104,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:17",
       "objetivo": "tamano_municipio",
       "tvd": 0.13344334592090368,
-      "umbral": 0.09872112369868147
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:21",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.18397544958486706,
-      "umbral": 0.17518145464720214
+      "umbral": 0.09872112369868147,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:22",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.2343728602120081,
-      "umbral": 0.1545585633659499
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:25",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.12900962310956143,
-      "umbral": 0.11859335329969303
+      "umbral": 0.1545585633659499,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:27",
       "objetivo": "tamano_municipio",
       "tvd": 0.17926972402079516,
-      "umbral": 0.14184328300145607
+      "umbral": 0.14184328300145607,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:31",
       "objetivo": "tamano_municipio",
       "tvd": 0.17091991600562972,
-      "umbral": 0.10250064890282104
+      "umbral": 0.10250064890282104,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:32",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.13035610508584428,
-      "umbral": 0.0867020814839403
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:32",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.15926298025820707,
-      "umbral": 0.14539631010187348
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:33",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.09464236020791687,
-      "umbral": 0.08137198827420852
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:38",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.13285932343922766,
-      "umbral": 0.12822029221318898
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:40",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.4743537704645389,
-      "umbral": 0.4541125441929634
+      "umbral": 0.0867020814839403,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:42",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.2534064303047653,
-      "umbral": 0.18985804045920313
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:42",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.42459985221526475,
-      "umbral": 0.3863036001731107
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:43",
-      "objetivo": "actividad_edad",
-      "tvd": 0.22336192540724137,
-      "umbral": 0.21892087820772202
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:45",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.09869448359583224,
-      "umbral": 0.09569356580581384
+      "umbral": 0.18985804045920313,
+      "excepcion": false
      }
     ],
     "espana": [
@@ -2353,62 +2269,188 @@
      }
     ],
     "tvd_media_espana": 0.019786748438953908,
-    "fallos_propuesta": [
+    "fallos_estricto": [
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:03",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.09464236020791687,
+      "umbral_estricto": 0.08137198827420852
+     },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:05",
       "objetivo": "estado_civil_edad",
       "tvd": 0.1067749634192692,
-      "umbral": 0.08702821309220364
+      "umbral_estricto": 0.08702821309220364
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:08",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.07565904177533496,
+      "umbral_estricto": 0.0653755843944755
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:15",
       "objetivo": "tamano_municipio",
       "tvd": 0.17091991600562972,
-      "umbral": 0.10250064890282104
+      "umbral_estricto": 0.10250064890282104
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:04",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.10906377128661658,
+      "umbral_estricto": 0.09504677257406331
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:09",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.22377600763955802,
+      "umbral_estricto": 0.22377382720410136
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:10",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.09647479533508607,
+      "umbral_estricto": 0.0833004855637903
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:12",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.11857907929551295,
+      "umbral_estricto": 0.11061033479318316
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:14",
+      "objetivo": "actividad_edad",
+      "tvd": 0.23580135234739644,
+      "umbral_estricto": 0.22687510242314293
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:16",
+      "objetivo": "tipo_hogar_edad4_ref",
+      "tvd": 0.5238290497694268,
+      "umbral_estricto": 0.4924748944858174
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:17",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.17865927464379994,
+      "umbral_estricto": 0.16551609080468788
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:17",
       "objetivo": "tamano_municipio",
       "tvd": 0.13344334592090368,
-      "umbral": 0.09872112369868147
+      "umbral_estricto": 0.09872112369868147
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:21",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.18397544958486706,
+      "umbral_estricto": 0.17518145464720214
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:22",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.2343728602120081,
-      "umbral": 0.1545585633659499
+      "umbral_estricto": 0.1545585633659499
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:25",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.12900962310956143,
+      "umbral_estricto": 0.11859335329969303
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:27",
       "objetivo": "tamano_municipio",
       "tvd": 0.17926972402079516,
-      "umbral": 0.14184328300145607
+      "umbral_estricto": 0.14184328300145607
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:31",
       "objetivo": "tamano_municipio",
       "tvd": 0.17091991600562972,
-      "umbral": 0.10250064890282104
+      "umbral_estricto": 0.10250064890282104
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:32",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.13035610508584428,
-      "umbral": 0.0867020814839403
+      "umbral_estricto": 0.0867020814839403
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:32",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.15926298025820707,
+      "umbral_estricto": 0.14539631010187348
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:33",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.09464236020791687,
+      "umbral_estricto": 0.08137198827420852
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:38",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.13285932343922766,
+      "umbral_estricto": 0.12822029221318898
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:40",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.4743537704645389,
+      "umbral_estricto": 0.4541125441929634
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:42",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.2534064303047653,
-      "umbral": 0.18985804045920313
+      "umbral_estricto": 0.18985804045920313
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:42",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.42459985221526475,
+      "umbral_estricto": 0.3863036001731107
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:43",
+      "objetivo": "actividad_edad",
+      "tvd": 0.22336192540724137,
+      "umbral_estricto": 0.21892087820772202
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:45",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.09869448359583224,
+      "umbral_estricto": 0.09569356580581384
      }
     ]
    },
@@ -2541,130 +2583,36 @@
     "comprobaciones": 511,
     "fallos": [
      {
-      "nivel": "espana",
-      "territorio": "ES",
-      "objetivo": "tipo_hogar_edad4_ref",
-      "tvd": 0.03612491957112714,
-      "umbral": 0.03611769844312449
-     },
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:09",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.05251026559454095,
-      "umbral": 0.05
-     },
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:12",
-      "objetivo": "provincia_si_calibra_ccaa",
-      "tvd": 0.05574528973773227,
-      "umbral": 0.051778876335636055
-     },
-     {
       "nivel": "provincia",
       "territorio": "PROV:06",
       "objetivo": "tamano_municipio",
       "tvd": 0.16819077974239094,
-      "umbral": 0.10968394031482256
+      "umbral": 0.10968394031482256,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:10",
       "objetivo": "tamano_municipio",
       "tvd": 0.1848773328204328,
-      "umbral": 0.13745617187100675
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:11",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.11870850542110548,
-      "umbral": 0.11498531688436145
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:12",
-      "objetivo": "actividad_edad",
-      "tvd": 0.2743624134935564,
-      "umbral": 0.2691145636757107
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:17",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.13751040201628986,
-      "umbral": 0.1346006610770812
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:17",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.08759307571826042,
-      "umbral": 0.08
+      "umbral": 0.13745617187100675,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:18",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.09095349637747202,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:23",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.12523039431916352,
-      "umbral": 0.1186908525252238
+      "umbral": 0.08,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:27",
       "objetivo": "tamano_municipio",
       "tvd": 0.23039064745165244,
-      "umbral": 0.17550375253813194
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:41",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.10088014432154901,
-      "umbral": 0.09385399467780957
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:42",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.23089445152394222,
-      "umbral": 0.22494575975744874
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:44",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.3595729925424648,
-      "umbral": 0.34390222753727495
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:44",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.2225862584732301,
-      "umbral": 0.19755420694141118
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:47",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.10819949115671856,
-      "umbral": 0.10589158761141271
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:49",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.24514860374244835,
-      "umbral": 0.20493624994193285
+      "umbral": 0.17550375253813194,
+      "excepcion": false
      }
     ],
     "espana": [
@@ -2726,34 +2674,132 @@
      }
     ],
     "tvd_media_espana": 0.019200398955074565,
-    "fallos_propuesta": [
+    "fallos_estricto": [
+     {
+      "nivel": "espana",
+      "territorio": "ES",
+      "objetivo": "tipo_hogar_edad4_ref",
+      "tvd": 0.03612491957112714,
+      "umbral_estricto": 0.03611769844312449
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:09",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.05251026559454095,
+      "umbral_estricto": 0.05
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:12",
+      "objetivo": "provincia_si_calibra_ccaa",
+      "tvd": 0.05574528973773227,
+      "umbral_estricto": 0.051778876335636055
+     },
      {
       "nivel": "provincia",
       "territorio": "PROV:06",
       "objetivo": "tamano_municipio",
       "tvd": 0.16819077974239094,
-      "umbral": 0.10968394031482256
+      "umbral_estricto": 0.10968394031482256
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:10",
       "objetivo": "tamano_municipio",
       "tvd": 0.1848773328204328,
-      "umbral": 0.13745617187100675
+      "umbral_estricto": 0.13745617187100675
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:11",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.11870850542110548,
+      "umbral_estricto": 0.11498531688436145
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:12",
+      "objetivo": "actividad_edad",
+      "tvd": 0.2743624134935564,
+      "umbral_estricto": 0.2691145636757107
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:17",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.13751040201628986,
+      "umbral_estricto": 0.1346006610770812
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:17",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.08759307571826042,
+      "umbral_estricto": 0.08
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:18",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.09095349637747202,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:23",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.12523039431916352,
+      "umbral_estricto": 0.1186908525252238
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:27",
       "objetivo": "tamano_municipio",
       "tvd": 0.23039064745165244,
-      "umbral": 0.17550375253813194
+      "umbral_estricto": 0.17550375253813194
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:41",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.10088014432154901,
+      "umbral_estricto": 0.09385399467780957
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:42",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.23089445152394222,
+      "umbral_estricto": 0.22494575975744874
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:44",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.3595729925424648,
+      "umbral_estricto": 0.34390222753727495
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:44",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.2225862584732301,
+      "umbral_estricto": 0.19755420694141118
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:47",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.10819949115671856,
+      "umbral_estricto": 0.10589158761141271
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:49",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.24514860374244835,
+      "umbral_estricto": 0.20493624994193285
      }
     ]
    },
@@ -2886,109 +2932,36 @@
     "comprobaciones": 511,
     "fallos": [
      {
-      "nivel": "ccaa",
-      "territorio": "CCAA:04",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.06684374043795281,
-      "umbral": 0.05457750710499318
-     },
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:06",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.08003197905545466,
-      "umbral": 0.07588160175873325
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:01",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.12436024239570632,
-      "umbral": 0.10469401959962475
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:04",
-      "objetivo": "actividad_edad",
-      "tvd": 0.10390739271359653,
-      "umbral": 0.10363195435642755
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:04",
-      "objetivo": "estudios_sexo_edad",
-      "tvd": 0.12497158243651776,
-      "umbral": 0.11758512264211354
-     },
-     {
       "nivel": "provincia",
       "territorio": "PROV:09",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.08259030957237368,
-      "umbral": 0.08
+      "umbral": 0.08,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:16",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.08755983219420804,
-      "umbral": 0.08
+      "umbral": 0.08,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:22",
       "objetivo": "tamano_municipio",
       "tvd": 0.09967504521126977,
-      "umbral": 0.08075210247643405
+      "umbral": 0.08075210247643405,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:23",
       "objetivo": "estado_civil_edad",
       "tvd": 0.10171541332446532,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:39",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.08003197905545466,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:42",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.09776751653942205,
-      "umbral": 0.08855606466697928
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:42",
-      "objetivo": "nacionalidad_top_sexo_edad",
-      "tvd": 0.26909988454423395,
-      "umbral": 0.2594592677328932
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:44",
-      "objetivo": "actividad_edad",
-      "tvd": 0.25231551600439917,
-      "umbral": 0.23377239921487522
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:44",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.08830253222784423,
-      "umbral": 0.08066894444158468
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:45",
-      "objetivo": "nacionalidad_top_sexo_edad",
-      "tvd": 0.11319387423988231,
-      "umbral": 0.11245361208963066
+      "umbral": 0.08,
+      "excepcion": false
      }
     ],
     "espana": [
@@ -3050,34 +3023,111 @@
      }
     ],
     "tvd_media_espana": 0.015007340637149336,
-    "fallos_propuesta": [
+    "fallos_estricto": [
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:04",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.06684374043795281,
+      "umbral_estricto": 0.05457750710499318
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:06",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.08003197905545466,
+      "umbral_estricto": 0.07588160175873325
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:01",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.12436024239570632,
+      "umbral_estricto": 0.10469401959962475
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:04",
+      "objetivo": "actividad_edad",
+      "tvd": 0.10390739271359653,
+      "umbral_estricto": 0.10363195435642755
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:04",
+      "objetivo": "estudios_sexo_edad",
+      "tvd": 0.12497158243651776,
+      "umbral_estricto": 0.11758512264211354
+     },
      {
       "nivel": "provincia",
       "territorio": "PROV:09",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.08259030957237368,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:16",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.08755983219420804,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:22",
       "objetivo": "tamano_municipio",
       "tvd": 0.09967504521126977,
-      "umbral": 0.08075210247643405
+      "umbral_estricto": 0.08075210247643405
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:23",
       "objetivo": "estado_civil_edad",
       "tvd": 0.10171541332446532,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:39",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.08003197905545466,
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:42",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.09776751653942205,
+      "umbral_estricto": 0.08855606466697928
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:42",
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.26909988454423395,
+      "umbral_estricto": 0.2594592677328932
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:44",
+      "objetivo": "actividad_edad",
+      "tvd": 0.25231551600439917,
+      "umbral_estricto": 0.23377239921487522
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:44",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.08830253222784423,
+      "umbral_estricto": 0.08066894444158468
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:45",
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.11319387423988231,
+      "umbral_estricto": 0.11245361208963066
      }
     ]
    },
@@ -3210,81 +3260,28 @@
     "comprobaciones": 511,
     "fallos": [
      {
-      "nivel": "ccaa",
-      "territorio": "CCAA:05",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.0514593037123658,
-      "umbral": 0.05
-     },
-     {
       "nivel": "provincia",
       "territorio": "PROV:01",
       "objetivo": "estado_civil_edad",
       "tvd": 0.1378954794009849,
-      "umbral": 0.10088765132520869
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:13",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.08950214984881766,
-      "umbral": 0.08673829691479636
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:17",
-      "objetivo": "actividad_edad",
-      "tvd": 0.09942055022225918,
-      "umbral": 0.09725840201895819
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:36",
-      "objetivo": "actividad_edad",
-      "tvd": 0.10777020559386251,
-      "umbral": 0.09298039578634269
+      "umbral": 0.10088765132520869,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.11937432952984695,
-      "umbral": 0.08663082918161537
+      "umbral": 0.08663082918161537,
+      "excepcion": true
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:42",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.12665703589024546,
-      "umbral": 0.08945425104494978
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:42",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.13230528162638494,
-      "umbral": 0.11056615119160229
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:44",
-      "objetivo": "actividad_edad",
-      "tvd": 0.24185808231123776,
-      "umbral": 0.22910092923368244
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:44",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.17941850455266267,
-      "umbral": 0.16223530051667437
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:44",
-      "objetivo": "estudios_sexo_edad",
-      "tvd": 0.31516577643555904,
-      "umbral": 0.2850358310653624
+      "umbral": 0.08945425104494978,
+      "excepcion": false
      }
     ],
     "espana": [
@@ -3346,27 +3343,83 @@
      }
     ],
     "tvd_media_espana": 0.01527764607079805,
-    "fallos_propuesta": [
+    "fallos_estricto": [
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:05",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.0514593037123658,
+      "umbral_estricto": 0.05
+     },
      {
       "nivel": "provincia",
       "territorio": "PROV:01",
       "objetivo": "estado_civil_edad",
       "tvd": 0.1378954794009849,
-      "umbral": 0.10088765132520869
+      "umbral_estricto": 0.10088765132520869
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:13",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.08950214984881766,
+      "umbral_estricto": 0.08673829691479636
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:17",
+      "objetivo": "actividad_edad",
+      "tvd": 0.09942055022225918,
+      "umbral_estricto": 0.09725840201895819
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:36",
+      "objetivo": "actividad_edad",
+      "tvd": 0.10777020559386251,
+      "umbral_estricto": 0.09298039578634269
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.11937432952984695,
-      "umbral": 0.08663082918161537
+      "umbral_estricto": 0.08663082918161537
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:42",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.12665703589024546,
-      "umbral": 0.08945425104494978
+      "umbral_estricto": 0.08945425104494978
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:42",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.13230528162638494,
+      "umbral_estricto": 0.11056615119160229
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:44",
+      "objetivo": "actividad_edad",
+      "tvd": 0.24185808231123776,
+      "umbral_estricto": 0.22910092923368244
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:44",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.17941850455266267,
+      "umbral_estricto": 0.16223530051667437
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:44",
+      "objetivo": "estudios_sexo_edad",
+      "tvd": 0.31516577643555904,
+      "umbral_estricto": 0.2850358310653624
      }
     ]
    },
@@ -3500,45 +3553,19 @@
     "fallos": [
      {
       "nivel": "provincia",
-      "territorio": "PROV:01",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.09819434882517518,
-      "umbral": 0.09655711105895658
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:04",
-      "objetivo": "nacionalidad_top_sexo_edad",
-      "tvd": 0.12211925764785315,
-      "umbral": 0.11541635004834484
-     },
-     {
-      "nivel": "provincia",
       "territorio": "PROV:16",
       "objetivo": "tamano_municipio",
       "tvd": 0.13748002743113397,
-      "umbral": 0.09101760674502658
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:17",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.08508126547307002,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:42",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.09036295204389573,
-      "umbral": 0.08501661909036196
+      "umbral": 0.09101760674502658,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:44",
       "objetivo": "tamano_municipio",
       "tvd": 0.1165897136541223,
-      "umbral": 0.09429841728216308
+      "umbral": 0.09429841728216308,
+      "excepcion": false
      }
     ],
     "espana": [
@@ -3600,20 +3627,48 @@
      }
     ],
     "tvd_media_espana": 0.014660355606280512,
-    "fallos_propuesta": [
+    "fallos_estricto": [
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:01",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.09819434882517518,
+      "umbral_estricto": 0.09655711105895658
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:04",
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.12211925764785315,
+      "umbral_estricto": 0.11541635004834484
+     },
      {
       "nivel": "provincia",
       "territorio": "PROV:16",
       "objetivo": "tamano_municipio",
       "tvd": 0.13748002743113397,
-      "umbral": 0.09101760674502658
+      "umbral_estricto": 0.09101760674502658
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:17",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.08508126547307002,
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:42",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.09036295204389573,
+      "umbral_estricto": 0.08501661909036196
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:44",
       "objetivo": "tamano_municipio",
       "tvd": 0.1165897136541223,
-      "umbral": 0.09429841728216308
+      "umbral_estricto": 0.09429841728216308
      }
     ]
    },
@@ -3750,56 +3805,8 @@
       "territorio": "ES",
       "objetivo": "tipo_hogar_edad4_ref",
       "tvd": 0.030175757134372455,
-      "umbral": 0.03
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:01",
-      "objetivo": "actividad_edad",
-      "tvd": 0.14823420725343536,
-      "umbral": 0.14688148830194828
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:17",
-      "objetivo": "estudios_sexo_edad",
-      "tvd": 0.11489157020120724,
-      "umbral": 0.11312410655572257
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:27",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.10498240047972487,
-      "umbral": 0.1013706189562022
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:34",
-      "objetivo": "actividad_edad",
-      "tvd": 0.22992076966423552,
-      "umbral": 0.22440102142477072
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:40",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.08594595862922753,
-      "umbral": 0.08072070803743908
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:40",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.17085508131048882,
-      "umbral": 0.16162551247656315
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:40",
-      "objetivo": "nacionalidad_top_sexo_edad",
-      "tvd": 0.24922138814392003,
-      "umbral": 0.23212239606044902
+      "umbral": 0.03,
+      "excepcion": false
      }
     ],
     "espana": [
@@ -3861,13 +3868,62 @@
      }
     ],
     "tvd_media_espana": 0.014865418144630708,
-    "fallos_propuesta": [
+    "fallos_estricto": [
      {
       "nivel": "espana",
       "territorio": "ES",
       "objetivo": "tipo_hogar_edad4_ref",
       "tvd": 0.030175757134372455,
-      "umbral": 0.03
+      "umbral_estricto": 0.03
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:01",
+      "objetivo": "actividad_edad",
+      "tvd": 0.14823420725343536,
+      "umbral_estricto": 0.14688148830194828
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:17",
+      "objetivo": "estudios_sexo_edad",
+      "tvd": 0.11489157020120724,
+      "umbral_estricto": 0.11312410655572257
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:27",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.10498240047972487,
+      "umbral_estricto": 0.1013706189562022
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:34",
+      "objetivo": "actividad_edad",
+      "tvd": 0.22992076966423552,
+      "umbral_estricto": 0.22440102142477072
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:40",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.08594595862922753,
+      "umbral_estricto": 0.08072070803743908
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:40",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.17085508131048882,
+      "umbral_estricto": 0.16162551247656315
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:40",
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.24922138814392003,
+      "umbral_estricto": 0.23212239606044902
      }
     ]
    },
@@ -4004,49 +4060,32 @@
       "territorio": "ES",
       "objetivo": "tipo_hogar_edad4_ref",
       "tvd": 0.03347711450001536,
-      "umbral": 0.03
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:22",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.08450213481170155,
-      "umbral": 0.08236044714697993
+      "umbral": 0.03,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:27",
       "objetivo": "tamano_municipio",
       "tvd": 0.08120284480824322,
-      "umbral": 0.08
+      "umbral": 0.08,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.1432873730081078,
-      "umbral": 0.08846059191246576
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:42",
-      "objetivo": "adultos_nacionalidad",
-      "tvd": 0.09776751653942208,
-      "umbral": 0.08740733212546724
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:42",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.19311385093174582,
-      "umbral": 0.17810565167314443
+      "umbral": 0.08846059191246576,
+      "excepcion": true
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:44",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.11588029541381133,
-      "umbral": 0.08
+      "umbral": 0.08,
+      "excepcion": false
      }
     ],
     "espana": [
@@ -4108,34 +4147,55 @@
      }
     ],
     "tvd_media_espana": 0.016081195424212276,
-    "fallos_propuesta": [
+    "fallos_estricto": [
      {
       "nivel": "espana",
       "territorio": "ES",
       "objetivo": "tipo_hogar_edad4_ref",
       "tvd": 0.03347711450001536,
-      "umbral": 0.03
+      "umbral_estricto": 0.03
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:22",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.08450213481170155,
+      "umbral_estricto": 0.08236044714697993
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:27",
       "objetivo": "tamano_municipio",
       "tvd": 0.08120284480824322,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.1432873730081078,
-      "umbral": 0.08846059191246576
+      "umbral_estricto": 0.08846059191246576
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:42",
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.09776751653942208,
+      "umbral_estricto": 0.08740733212546724
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:42",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.19311385093174582,
+      "umbral_estricto": 0.17810565167314443
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:44",
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.11588029541381133,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
      }
     ]
    },
@@ -4272,28 +4332,24 @@
       "territorio": "ES",
       "objetivo": "tipo_hogar_edad4_ref",
       "tvd": 0.03053351469170741,
-      "umbral": 0.03
+      "umbral": 0.03,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:22",
       "objetivo": "tamano_municipio",
       "tvd": 0.08065061263109818,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:25",
-      "objetivo": "nacionalidad_top_sexo_edad",
-      "tvd": 0.11024226833687782,
-      "umbral": 0.10565754979916356
+      "umbral": 0.08,
+      "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:27",
       "objetivo": "estado_civil_edad",
       "tvd": 0.09667331787954425,
-      "umbral": 0.08
+      "umbral": 0.08,
+      "excepcion": false
      }
     ],
     "espana": [
@@ -4355,27 +4411,34 @@
      }
     ],
     "tvd_media_espana": 0.014771584188846333,
-    "fallos_propuesta": [
+    "fallos_estricto": [
      {
       "nivel": "espana",
       "territorio": "ES",
       "objetivo": "tipo_hogar_edad4_ref",
       "tvd": 0.03053351469170741,
-      "umbral": 0.03
+      "umbral_estricto": 0.03
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:22",
       "objetivo": "tamano_municipio",
       "tvd": 0.08065061263109818,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:25",
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.11024226833687782,
+      "umbral_estricto": 0.10565754979916356
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:27",
       "objetivo": "estado_civil_edad",
       "tvd": 0.09667331787954425,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
      }
     ]
    },
@@ -4506,15 +4569,7 @@
    },
    "v_cruce": {
     "comprobaciones": 511,
-    "fallos": [
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:40",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.11542063826545308,
-      "umbral": 0.10596447525460165
-     }
-    ],
+    "fallos": [],
     "espana": [
      {
       "objetivo": "actividad_edad",
@@ -4574,7 +4629,15 @@
      }
     ],
     "tvd_media_espana": 0.013755361835901122,
-    "fallos_propuesta": []
+    "fallos_estricto": [
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:40",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.11542063826545308,
+      "umbral_estricto": 0.10596447525460165
+     }
+    ]
    },
    "v_reglas_duras": [
     {
@@ -4703,15 +4766,7 @@
    },
    "v_cruce": {
     "comprobaciones": 511,
-    "fallos": [
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:23",
-      "objetivo": "actividad_edad",
-      "tvd": 0.08372416993998333,
-      "umbral": 0.08
-     }
-    ],
+    "fallos": [],
     "espana": [
      {
       "objetivo": "actividad_edad",
@@ -4771,7 +4826,15 @@
      }
     ],
     "tvd_media_espana": 0.013709516170035652,
-    "fallos_propuesta": []
+    "fallos_estricto": [
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:23",
+      "objetivo": "actividad_edad",
+      "tvd": 0.08372416993998333,
+      "umbral_estricto": 0.08
+     }
+    ]
    },
    "v_reglas_duras": [
     {
@@ -4903,45 +4966,11 @@
     "fallos": [
      {
       "nivel": "provincia",
-      "territorio": "PROV:09",
-      "objetivo": "estudios_sexo_edad",
-      "tvd": 0.12475061663837098,
-      "umbral": 0.12137412757104415
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:16",
-      "objetivo": "actividad_edad",
-      "tvd": 0.13695982884186864,
-      "umbral": 0.13447467058134385
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:25",
-      "objetivo": "nacionalidad_top_sexo_edad",
-      "tvd": 0.11260513491263992,
-      "umbral": 0.10487526496337385
-     },
-     {
-      "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.08592585697312238,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:42",
-      "objetivo": "actividad_edad",
-      "tvd": 0.20513330433296476,
-      "umbral": 0.18668620728555957
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:42",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.14294614761259866,
-      "umbral": 0.13762387012936636
+      "umbral": 0.08,
+      "excepcion": true
      }
     ],
     "espana": [
@@ -5003,13 +5032,48 @@
      }
     ],
     "tvd_media_espana": 0.01415134896354209,
-    "fallos_propuesta": [
+    "fallos_estricto": [
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:09",
+      "objetivo": "estudios_sexo_edad",
+      "tvd": 0.12475061663837098,
+      "umbral_estricto": 0.12137412757104415
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:16",
+      "objetivo": "actividad_edad",
+      "tvd": 0.13695982884186864,
+      "umbral_estricto": 0.13447467058134385
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:25",
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.11260513491263992,
+      "umbral_estricto": 0.10487526496337385
+     },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.08592585697312238,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:42",
+      "objetivo": "actividad_edad",
+      "tvd": 0.20513330433296476,
+      "umbral_estricto": 0.18668620728555957
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:42",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.14294614761259866,
+      "umbral_estricto": 0.13762387012936636
      }
     ]
    },
@@ -5146,28 +5210,8 @@
       "territorio": "CCAA:04",
       "objetivo": "estado_civil_edad",
       "tvd": 0.05013117281209068,
-      "umbral": 0.05
-     },
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:05",
-      "objetivo": "tipo_hogar_edad4_ref",
-      "tvd": 0.0597978453914506,
-      "umbral": 0.0541669592080696
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:32",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.09130255839771989,
-      "umbral": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:37",
-      "objetivo": "estado_civil_edad",
-      "tvd": 0.08470255893285346,
-      "umbral": 0.08
+      "umbral": 0.05,
+      "excepcion": false
      }
     ],
     "espana": [
@@ -5229,13 +5273,34 @@
      }
     ],
     "tvd_media_espana": 0.014588463447439137,
-    "fallos_propuesta": [
+    "fallos_estricto": [
      {
       "nivel": "ccaa",
       "territorio": "CCAA:04",
       "objetivo": "estado_civil_edad",
       "tvd": 0.05013117281209068,
-      "umbral": 0.05
+      "umbral_estricto": 0.05
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:05",
+      "objetivo": "tipo_hogar_edad4_ref",
+      "tvd": 0.0597978453914506,
+      "umbral_estricto": 0.0541669592080696
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:32",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.09130255839771989,
+      "umbral_estricto": 0.08
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:37",
+      "objetivo": "estado_civil_edad",
+      "tvd": 0.08470255893285346,
+      "umbral_estricto": 0.08
      }
     ]
    },
@@ -5426,7 +5491,7 @@
      }
     ],
     "tvd_media_espana": 0.013540710323308624,
-    "fallos_propuesta": []
+    "fallos_estricto": []
    },
    "v_reglas_duras": [
     {
@@ -5555,15 +5620,7 @@
    },
    "v_cruce": {
     "comprobaciones": 511,
-    "fallos": [
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:40",
-      "objetivo": "estudios_sexo_edad",
-      "tvd": 0.08691031829670072,
-      "umbral": 0.08423372824778766
-     }
-    ],
+    "fallos": [],
     "espana": [
      {
       "objetivo": "actividad_edad",
@@ -5623,7 +5680,15 @@
      }
     ],
     "tvd_media_espana": 0.013494602720969867,
-    "fallos_propuesta": []
+    "fallos_estricto": [
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:40",
+      "objetivo": "estudios_sexo_edad",
+      "tvd": 0.08691031829670072,
+      "umbral_estricto": 0.08423372824778766
+     }
+    ]
    },
    "v_reglas_duras": [
     {
@@ -5812,7 +5877,7 @@
      }
     ],
     "tvd_media_espana": 0.013915323148566762,
-    "fallos_propuesta": []
+    "fallos_estricto": []
    },
    "v_reglas_duras": [
     {
@@ -5947,7 +6012,8 @@
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.0878780162829616,
-      "umbral": 0.08
+      "umbral": 0.08,
+      "excepcion": true
      }
     ],
     "espana": [
@@ -6009,13 +6075,13 @@
      }
     ],
     "tvd_media_espana": 0.013547208866819416,
-    "fallos_propuesta": [
+    "fallos_estricto": [
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.0878780162829616,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
      }
     ]
    },
@@ -6152,7 +6218,8 @@
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.09530229838124213,
-      "umbral": 0.08
+      "umbral": 0.08,
+      "excepcion": true
      }
     ],
     "espana": [
@@ -6214,13 +6281,13 @@
      }
     ],
     "tvd_media_espana": 0.013630718731806865,
-    "fallos_propuesta": [
+    "fallos_estricto": [
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.09530229838124213,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
      }
     ]
    },
@@ -6357,7 +6424,8 @@
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.08901545621761744,
-      "umbral": 0.08
+      "umbral": 0.08,
+      "excepcion": true
      }
     ],
     "espana": [
@@ -6419,13 +6487,13 @@
      }
     ],
     "tvd_media_espana": 0.013595301665740994,
-    "fallos_propuesta": [
+    "fallos_estricto": [
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.08901545621761744,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
      }
     ]
    },
@@ -6899,7 +6967,8 @@
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.08871827939740945,
-      "umbral": 0.08
+      "umbral": 0.08,
+      "excepcion": true
      }
     ],
     "espana": [
@@ -6961,13 +7030,13 @@
      }
     ],
     "tvd_media_espana": 0.01366115088616924,
-    "fallos_propuesta": [
+    "fallos_estricto": [
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.08871827939740945,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
      }
     ]
    },
@@ -7158,7 +7227,7 @@
      }
     ],
     "tvd_media_espana": 0.013500065370633028,
-    "fallos_propuesta": []
+    "fallos_estricto": []
    },
    "v_reglas_duras": [
     {
@@ -7293,7 +7362,8 @@
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.08595474016511773,
-      "umbral": 0.08
+      "umbral": 0.08,
+      "excepcion": true
      }
     ],
     "espana": [
@@ -7355,13 +7425,13 @@
      }
     ],
     "tvd_media_espana": 0.013643447512922888,
-    "fallos_propuesta": [
+    "fallos_estricto": [
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.08595474016511773,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
      }
     ]
    },
@@ -7498,7 +7568,8 @@
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.08455567297823029,
-      "umbral": 0.08
+      "umbral": 0.08,
+      "excepcion": true
      }
     ],
     "espana": [
@@ -7560,13 +7631,13 @@
      }
     ],
     "tvd_media_espana": 0.013335981118409761,
-    "fallos_propuesta": [
+    "fallos_estricto": [
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
       "tvd": 0.08455567297823029,
-      "umbral": 0.08
+      "umbral_estricto": 0.08
      }
     ]
    },

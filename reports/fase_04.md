@@ -1,6 +1,6 @@
 # Fase 04 · Población nacional base
 
-**Estado:** pendiente de revisión humana (G4.8)
+**Estado:** pendiente de una decisión humana (D-039) para cerrar G4.2; D-036 y D-038 aprobadas
 **Fecha:** 2026-10-16 · **Versión del código:** ver `fase_04_puerta.md`
 **Comando para reproducir:**
 
@@ -55,7 +55,7 @@ Calibrar solo con marginales nacionales dejaba el reparto por provincias (reserv
 | ID | Comprobación | Resultado | Valor | Umbral |
 | --- | --- | --- | --- | --- |
 | G4.1 | Marginales calibradas (V-MARG) | ✅ | 25 poblaciones, 5.481 comprobaciones, 0 fallos | TVD ≤ 1,2 × TVD_ref(N) + 0,002 |
-| G4.2 | Cruces reservados (V-CRUCE) | ❌ | 207 fallos de 12.775 (71 con el margen propuesto); V de Cramér: 0 fallos, Δ máx. 0,019 | máx(TVD_ref, 0,03 / 0,05 / 0,08); Δ Cramér ≤ 0,03 |
+| G4.2 | Cruces reservados (V-CRUCE) | ❌ | con el criterio aprobado (D-038 A): 59 fallos de 12.775, ninguno con N ≥ 500.000; 12 excepciones de Segovia aceptadas (D-038 B); 207 con el criterio original; V de Cramér: 0 fallos, Δ máx. 0,019 | máx(1,2 × TVD_ref + 0,002, 0,03 / 0,05 / 0,08); Δ Cramér ≤ 0,03 |
 | G4.3 | Reglas duras (V-REGLAS) | ✅ | 0 violaciones | 0 |
 | G4.4 | Diagnóstico de pesos (V-PESOS) | ✅ | 19 comunidades; 100 % en rango; Kish/n ≥ 0,838 | ≥ 99 %; Kish/n ≥ 0,30 |
 | G4.5 | Variabilidad entre semillas (V-SEMILLAS) | ✅ | 1.030 proporciones, 0 fuera | sd ≤ 1,5 × sd MAS |
@@ -140,10 +140,4 @@ Con 1 millón de personas, las frecuencias de los casos raros (jubilados menores
 
 ## Qué necesita revisión humana
 
-1. **D-036**, objetivos de F3: aún propuesta.
-2. **D-038**, en especial:
-   - **A.** El criterio de V-CRUCE con poblaciones pequeñas, de lo que depende superar G4.2.
-   - **B.** Aceptar Segovia como limitación.
-   - **C.** La fuente de la relación con la actividad, Censo Anual o EPA.
-   - **D.** El mínimo del sobremuestreo.
-3. **Este informe** (G4.8).
+El responsable aprobó D-036 y D-038 (A, B, C y D) el 16/10/2026. A y B están ya en `thresholds.yaml` y en la puerta. Falta **D-039**: cómo tratar los 59 fallos de V-CRUCE que quedan con poblaciones de 10.000 a 100.000 personas. Son variación de muestreo: ninguno se repite en las cinco semillas y no superan el 2,3 % de las comprobaciones de ninguna población. De esa decisión depende cerrar G4.2 y, con ella, la fase.

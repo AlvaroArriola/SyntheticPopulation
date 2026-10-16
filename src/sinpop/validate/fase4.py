@@ -71,15 +71,16 @@ def _validar(rid: str, territorio: str, semilla: int, completa: bool) -> dict:
         },
         "v_cruce": {
             "comprobaciones": vc.height,
+            # Criterio aprobado (D-038 A); `excepcion`: limitación aceptada (D-038 B).
             "fallos": vc.filter(~pl.col("ok"))
-            .select("nivel", "territorio", "objetivo", "tvd", "umbral")
+            .select("nivel", "territorio", "objetivo", "tvd", "umbral", "excepcion")
             .to_dicts(),
             "espana": vc.filter(pl.col("nivel") == "espana")
             .select("objetivo", "tvd", "tvd_ref", "umbral", "ok")
             .to_dicts(),
             "tvd_media_espana": float(vc.filter(pl.col("nivel") == "espana")["tvd"].mean()),
-            "fallos_propuesta": vc.filter(~pl.col("ok_propuesta"))
-            .select("nivel", "territorio", "objetivo", "tvd", "umbral")
+            "fallos_estricto": vc.filter(~pl.col("ok_estricto"))
+            .select("nivel", "territorio", "objetivo", "tvd", "umbral_estricto")
             .to_dicts(),
         },
         "v_reglas_duras": duras.to_dicts(),
@@ -404,8 +405,11 @@ def informe(res: dict) -> str:
                         "N": x["n"],
                         "semilla": x["semilla"],
                         "v_marg": len(x["v_marg"]["fallos"]),
-                        "v_cruce": len(x["v_cruce"]["fallos"]),
-                        "v_cruce_propuesta": len(x["v_cruce"].get("fallos_propuesta", [])),
+                        "v_cruce": sum(not y.get("excepcion") for y in x["v_cruce"]["fallos"]),
+                        "v_cruce_excepciones": sum(
+                            bool(y.get("excepcion")) for y in x["v_cruce"]["fallos"]
+                        ),
+                        "v_cruce_estricto": len(x["v_cruce"].get("fallos_estricto", [])),
                         "comprobaciones_cruce": x["v_cruce"]["comprobaciones"],
                     }
                     for x in pobs
@@ -538,7 +542,7 @@ def validar_poblacion(rid: str) -> bool:
         "",
         _tabla(
             vc.filter((pl.col("nivel") == "espana") | ~pl.col("ok")).select(
-                "nivel", "territorio", "objetivo", "tvd", "umbral", "ok", "ok_propuesta"
+                "nivel", "territorio", "objetivo", "tvd", "umbral", "ok", "excepcion"
             )
         ),
         "",

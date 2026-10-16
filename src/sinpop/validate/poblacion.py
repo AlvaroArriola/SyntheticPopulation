@@ -172,28 +172,28 @@ def v_marg(p: pl.DataFrame, territorio: str, semilla: int = 0) -> pl.DataFrame:
 
 
 def v_cruce(p: pl.DataFrame, territorio: str, semilla: int = 0) -> pl.DataFrame:
-    """V-CRUCE: TVD de los objetivos reservados ≤ máx(TVD_ref(N), umbral del nivel)."""
+    """V-CRUCE: TVD de los objetivos reservados ≤ máx(1,2 · TVD_ref(N) + 0,002, umbral del nivel)
+    (D-038 A, aprobada). `ok_estricto` es el criterio original, máx(TVD_ref, umbral del nivel).
+    `excepcion` marca los fallos aceptados como limitación de los datos (D-038 B)."""
     c = umbrales()["V-CRUCE"]
     lim = {"espana": c["espana"], "ccaa": c["ccaa"], "provincia": c["provincia"]}
+    exc = {(e["territorio"], e["objetivo"]) for e in c.get("excepciones", [])}
     niveles = {"ES": ["espana", "ccaa", "provincia"]}.get(
         territorio, ["espana", "provincia"] if territorio.startswith("CCAA:") else ["espana"]
     )
     df = comparar(p, territorio, "reservar", niveles, semilla)
+    nivel = pl.col("nivel").replace_strict(lim, return_dtype=pl.Float64)
     return df.with_columns(
         pl.max_horizontal(
-            pl.col("tvd_ref"), pl.col("nivel").replace_strict(lim, return_dtype=pl.Float64)
-        ).alias("umbral")
+            c.get("factor_tvd_ref", 1.0) * pl.col("tvd_ref") + c.get("tolerancia", 0.0), nivel
+        ).alias("umbral"),
+        pl.max_horizontal(pl.col("tvd_ref"), nivel).alias("umbral_estricto"),
+        pl.struct("territorio", "objetivo")
+        .map_elements(lambda r: (r["territorio"], r["objetivo"]) in exc, return_dtype=pl.Boolean)
+        .alias("excepcion"),
     ).with_columns(
         (pl.col("tvd") <= pl.col("umbral")).alias("ok"),
-        # Informativo (D-038, pendiente de decisión): el margen de V-MARG cuando domina el error
-        # de muestreo. El umbral oficial no cambia.
-        (
-            pl.col("tvd")
-            <= pl.max_horizontal(
-                1.2 * pl.col("tvd_ref") + 0.002,
-                pl.col("nivel").replace_strict(lim, return_dtype=pl.Float64),
-            )
-        ).alias("ok_propuesta"),
+        (pl.col("tvd") <= pl.col("umbral_estricto")).alias("ok_estricto"),
     )
 
 

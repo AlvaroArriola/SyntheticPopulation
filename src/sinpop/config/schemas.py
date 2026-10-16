@@ -266,11 +266,24 @@ class VMarg(_Th):
     percentil_ref: float = Field(gt=0, lt=100)
 
 
+class ExcepcionCruce(Strict):
+    """Cruce reservado cuyo fallo se acepta como limitación documentada de los datos."""
+
+    territorio: str
+    objetivo: str
+    decision: str
+    motivo: str
+
+
 class VCruce(_Th):
     espana: float
     ccaa: float
     provincia: float
     cramer_v_max_dif: float
+    # D-038 A: cuando domina el error de muestreo, el margen de V-MARG sobre TVD_ref.
+    factor_tvd_ref: float = 1.0
+    tolerancia: float = 0.0
+    excepciones: list[ExcepcionCruce] = []
 
 
 class VReglasBlandas(_Th):

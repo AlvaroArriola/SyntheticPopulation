@@ -472,7 +472,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-16
 - **Fase:** F3
-- **Estado:** propuesta (F3 no tiene revisión humana; se revisará con F4)
+- **Estado:** aprobada
 - **Contexto:** F3 pide, para cualquier territorio, las cifras que la población debe reproducir, separadas en calibradas y reservadas, coherentes entre sí y con fuente, edición y fecha. Las fuentes tienen fechas distintas: ECP a 01/01/2026, Censo Anual 2025 (exhaustivo) y 2024 (estudios, actividad, estado civil), Censo 2021 (tipo de hogar).
 - **Decisiones:**
   1. **Fecha y efectivos:** 01/01/2026 (D-015). Los efectivos por provincia × sexo × edad simple son los de la ECP (tabla 59589). Cada variable de estructura se toma de la tabla oficial más reciente que la publica, **como cuotas dentro de la misma celda provincia × sexo × grupo de edad de esa tabla**, aplicadas a los efectivos de 2026. Así todos los objetivos de persona suman lo mismo por provincia, sexo y edad (G3.1, G3.2), y las comunidades y España son sumas de provincias (G3.3). Celdas sin efectivos en la tabla: cuotas nacionales de su sexo y grupo.
@@ -485,7 +485,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   7. **Electorales:** generales 2023 por familia, blanco, nulo y abstención sobre el censo electoral de residentes (hojas municipales de Interior, sin CERA), que es el universo de la población. Se calibra por provincia (y territorios superiores) y se **reserva el detalle municipal para validar** (propuesta de D-022, aplicada). Autonómicas por circunscripción, con abstención = electores − válidos − nulos y, en Aragón (sin electores publicados), solo sobre votantes. Las familias de las candidaturas autonómicas se asignan con los criterios de D-030 y D-032 (`tools/familias_autonomicas.py`).
   8. **Reproducibilidad:** sumas ordenadas y valores redondeados a la millonésima, para que el hash de cada fichero no cambie entre ejecuciones.
 - **Consecuencias:** `sinpop targets --territory all` escribe `data/processed/targets/` (España, 19 comunidades, 52 provincias); `--territory MUNIS:<yaml>` para listas de municipios.
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-16)
 
 ## D-037 · Familias de las candidaturas autonómicas (2026-10-16)
 
@@ -507,7 +507,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-16
 - **Fase:** F4
-- **Estado:** propuesta (revisión humana G4.8)
+- **Estado:** aprobada
 - **Contexto:** F4 pide comparar al menos dos métodos de calibración, elegir uno con evidencia, integerizar a tamaño N con semilla y validar. Durante el trabajo aparecieron varios problemas de datos que exigen decisiones.
 - **Decisiones:**
   1. **Universo de la actividad (16+).** Los microdatos del Censo 2021 y del Censo Anual dan la relación con la actividad desde los 15 años; las tablas oficiales (67128) y la EPA la dan desde los 16, y V-REGLAS prohíbe ocupados menores de 16 (el Censo 2021 tiene 5). En la población, actividad, ocupación, sector y situación profesional son NP por debajo de 16. Se corrige la nota del diccionario («en blanco = menores de 15», comprobado en los ficheros).
@@ -530,7 +530,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
       - V-REGLAS-BLANDAS: la referencia son los donantes con los pesos calibrados. Se informa el resultado estricto (exceso ≤ 10 %) y con margen de muestreo (+ 2 errores típicos de una muestra aleatoria simple de tamaño N), porque con N pequeño un caso muy raro (p. ej. jubilados menores de 50, frecuencia 1,2 por 100.000) supera el 10 % por azar. Las reglas blandas no son puerta en docs/04 (G4.3 solo exige las duras).
   11. **Integerización sin mezclar hogares y colectivos.** El equilibrado solo intercambia unidades del mismo tipo: al permitir cambiar colectivos por hogares, su total se erosionaba (331 frente a 389 esperados con 50.000 personas). V-MARG incluye desde entonces el reparto viviendas familiares / colectivos, implícito en los objetivos.
   12. **Tamaño de municipio de los hogares trasladados** (ampliación de donantes): la clase más frecuente entre los donantes locales de la provincia con el mismo grado de urbanización (`modelada`), en lugar de la del municipio de origen.
-- **Decisiones que necesitan al responsable (G4.8):**
+- **Decisiones del responsable (G4.8, 2026-10-16): aprobadas A, B, C y D tal como se proponen.** A y B se aplican en `thresholds.yaml` (V-CRUCE: `factor_tvd_ref`, `tolerancia` y `excepciones`):
   - **A. Criterio de V-CRUCE con poblaciones pequeñas.** Cuando TVD_ref(N) supera el umbral fijo del nivel, el umbral es el propio TVD_ref, que es el percentil 95 de muestras aleatorias simples: una muestra aleatoria perfecta lo supera el 5 % de las veces, y el muestreo por hogares (conglomerados) algo más. Así, la puerta no se puede superar al pie de la letra con 25 poblaciones × 511 comprobaciones. Resultado: 207 fallos de 12.775 (137 con N = 10.000, casi todos en provincias de unos cientos de personas; 7 con N ≥ 500.000). **Propuesta:** el mismo margen que V-MARG, máx(1,2 × TVD_ref + 0,002, umbral del nivel) → 71 fallos, y con N ≥ 500.000 solo uno sistemático (B). Alternativa: mantener el umbral y exigirlo solo a partir de un tamaño mínimo por nivel.
   - **B. Tamaño de municipio en Segovia** (único fallo que persiste con N grande: TVD 0,085-0,095 frente a 0,08). Según el Padrón 2025, el 6,6 % de la provincia vive ya en un municipio de 10.001-50.000 habitantes que en 2021 tenía menos de 10.000; los microdatos del Censo no identifican los municipios pequeños, así que no se puede actualizar la clase de esos donantes. Propuesta: aceptarlo como limitación documentada (el tamaño de municipio no se calibra).
   - **C. Fuente de la relación con la actividad.** La población reproduce el objetivo calibrado (Censo Anual a 01/01/2024), pero frente a la EPA del 2T 2026 tiene menos ocupados (47,7 % frente a 52,3 % de los 16+, media de comunidades; Baleares 46,7 % frente a 63,0 %). Causas: fecha (dos años y medio de crecimiento del empleo), estacionalidad (1 de enero frente a segundo trimestre, muy marcada en Baleares) y definición (declarada frente a OIT). Opciones: (1) mantener el Censo Anual, coherente con las definiciones censales y con los demás objetivos de estructura, y documentarlo; (2) calibrar la actividad a la EPA (media anual de 2025 o los cuatro trimestres más recientes), más reciente pero con otra definición y solo para viviendas familiares. Propuesta: (1) en F4 y revisar con el enriquecimiento de F6, que usará la EPA.
@@ -539,4 +539,16 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - El objetivo reservado `tipo_hogar_edad4_ref` usa la estructura de edad de la persona de referencia de 2021; la población, calibrada a la estructura de edad de 2026, tiene personas de referencia mayores (la proporción de adultos de 35-49 años bajó del 28,5 % al 25,4 %). Su TVD nacional (≈ 0,029-0,030) roza el umbral de 0,03 por esa diferencia de fechas.
   - Los inmigrantes llegados después de 2021 se representan con residentes de su misma nacionalidad en 2021 (el perfil de sexo y edad por nacionalidad se valida con `nacionalidad_top_sexo_edad`).
 - **Evidencia:** `reports/fase_04.md` y `reports/fase_04_validacion.json`.
+- **Aprobada por:** humano (2026-10-16)
+
+## D-039 · V-CRUCE con poblaciones pequeñas: fallos que quedan tras D-038 (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F4
+- **Estado:** propuesta (necesita decisión humana para cerrar G4.2)
+- **Contexto:** con el criterio aprobado en D-038 A y la excepción de Segovia (D-038 B), quedan 59 fallos de V-CRUCE en 12.775 comprobaciones (0,46 %): 43 con N = 10.000, 12 con N = 50.000, 4 con N = 100.000 y ninguno con N ≥ 500.000. Casi todos son provincias y comunidades pequeñas de poblaciones pequeñas que superan por poco el umbral fijo del nivel (0,08 o 0,05), en variables compartidas por todo el hogar (tamaño de municipio, estado civil, nacionalidad); uno es nacional, `tipo_hogar_edad4_ref` con N = 100.000 (0,0305 frente a 0,03), el desfase de fecha del objetivo de 2021 ya documentado. Ningún fallo se repite en las cinco semillas de un mismo tamaño salvo Segovia: son variación de muestreo, no sesgo.
+- **Opciones:**
+  1. **Separar ruido de sesgo** (propuesta): la puerta exige (a) que ningún cruce falle en las cinco semillas de un mismo tamaño (sesgo sistemático) y (b) que en cada población la proporción de fallos no supere el 5 % de las comprobaciones (lo que cabe esperar por azar con un umbral de percentil 95). Resultado actual: (a) 0 fuera de las excepciones; (b) máximo 2,3 % (N = 10.000).
+  2. **Tamaño mínimo:** exigir V-CRUCE solo desde el tamaño mínimo recomendado en `fase_04.md` (100.000 personas para España y comunidades, 500.000 para provincias) e informar el resto. Resultado actual: quedaría el fallo nacional de `tipo_hogar_edad4_ref` con N = 100.000.
+  3. **Mantener el criterio actual:** G4.2 no se supera mientras se generen poblaciones de 10.000 a 100.000 personas.
 - **Aprobada por:** pendiente

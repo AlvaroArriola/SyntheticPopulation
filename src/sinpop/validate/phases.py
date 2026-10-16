@@ -581,11 +581,17 @@ def _g4_1_marg() -> Check:
 
 def _g4_2_cruce() -> Check:
     d, desc = _f4(), "Cruces reservados dentro de umbral (V-CRUCE)"
-    um = "TVD ≤ máx(TVD_ref, 0,03 / 0,05 / 0,08); |Δ V de Cramér| ≤ 0,03 (España)"
+    um = (
+        "TVD ≤ máx(1,2 × TVD_ref + 0,002, 0,03 / 0,05 / 0,08) (D-038 A); "
+        "|Δ V de Cramér| ≤ 0,03 (España)"
+    )
     if d is None:
         return _sin_resumen("G4.2", desc, um)
     n = sum(x["v_cruce"]["comprobaciones"] for x in d["poblaciones"])
-    f = [(x["run_id"], y) for x in d["poblaciones"] for y in x["v_cruce"]["fallos"]]
+    todos = [(x["run_id"], y) for x in d["poblaciones"] for y in x["v_cruce"]["fallos"]]
+    f = [(r, y) for r, y in todos if not y.get("excepcion")]
+    exc = len(todos) - len(f)
+    estricto = sum(len(x["v_cruce"].get("fallos_estricto", [])) for x in d["poblaciones"])
     cr = [c for x in d["poblaciones"] for c in x.get("v_cramer", []) if not c["ok"]]
     ej = "; ".join(
         f"{r} {y['territorio']} {y['objetivo']} {y['tvd']:.4f}>{y['umbral']:.4f}" for r, y in f[:3]
@@ -595,10 +601,9 @@ def _g4_2_cruce() -> Check:
         "G4.2",
         desc,
         not f and not cr,
-        f"{n} comprobaciones; fallos TVD: {len(f)}"
-        f"{' (' + ej + ')' if f else ''}; con el margen propuesto en D-038: "
-        f"{sum(len(x['v_cruce'].get('fallos_propuesta', [])) for x in d['poblaciones'])}"
-        f"; fallos Cramér: {len(cr)}{' (' + ejc + ')' if cr else ''}",
+        f"{n} comprobaciones; fallos: {len(f)}{' (' + ej + ')' if f else ''}; "
+        f"excepciones aceptadas (D-038 B): {exc}; con el criterio original: {estricto}; "
+        f"fallos Cramér: {len(cr)}{' (' + ejc + ')' if cr else ''}",
         um,
     )
 
