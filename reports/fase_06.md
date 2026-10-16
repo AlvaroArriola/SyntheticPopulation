@@ -1,14 +1,16 @@
 # Fase 06 · Enriquecimiento
 
-**Estado:** puerta fallida (G6.1 y G6.4); pendiente de decisión humana (D-046). La fase no tiene puerta de revisión humana, pero los criterios que fallan no se pueden arreglar dentro del enriquecimiento sin decidir antes sobre las variables censales (CLAUDE.md, regla 1).
+**Estado:** G6.2-G6.6 superadas; G6.1 con cuatro variables por debajo del umbral por patrones regionales y una por la fecha de las encuestas (decisión D-048).
 **Fecha:** 2026-10-16 · **Versión del código:** ver `fase_06_puerta.md`
-**Comando para reproducir:**
+**Comando para reproducir** (cadena completa tras D-046, ≈ 5 h):
 
 ```bash
-sinpop harmonize --source ecv                # ECV con carencias (13 conceptos) y tenencia detallada
-python -m sinpop.validate.fase6              # España 1M enriquecida, V-ENRIQ-*, G6.5, G6.6 (≈ 40 min)
-sinpop validate --phase 6                    # reports/fase_06_puerta.md
-sinpop build --territory CCAA:12 --size 100000 --seed 1   # cualquier población sale enriquecida
+sinpop harmonize --source ecv                # ECV con carencias (13 conceptos UE) y tenencia detallada
+sinpop targets --territory all               # objetivos con la actividad de la EPA 2T 2026 (D-046 A2)
+for m in configs/territorios/*.yaml; do sinpop targets --territory "MUNIS:$m"; done
+python -m sinpop.validate.fase4 && sinpop validate --phase 4
+python -m sinpop.validate.fase5 && sinpop validate --phase 5
+python -m sinpop.validate.fase6 && sinpop validate --phase 6
 ```
 
 ## Resumen
@@ -23,76 +25,75 @@ El enriquecimiento es la etapa 5 de `sinpop build`: cada población sale con 14 
 | Digital | TIC-H 2025 | 16+ | uso de internet, compra en línea, teletrabajo |
 | Contexto | Atlas de renta 2023, Censo Anual 2025 | todos | renta media del municipio, proporción de 65+ |
 
-El método es un **hot-deck aleatorio ponderado por celdas** (D-044, D-045): cada persona u hogar hereda el bloque completo de un donante real de la encuesta, sorteado con su peso oficial entre los de su celda de llaves (las variables comunes con la población). Si la celda tiene menos de 5 donantes, se quitan primero las llaves secundarias manteniendo la comunidad, después se amplía la geografía (zona NUTS-1, España) y por último se quitan las llaves principales. La renta de cada provincia se lleva a la del Atlas inclinando el sorteo, sin reescalar ningún valor. Los residentes en colectivos, fuera del universo de las encuestas, reciben los bloques personales por extrapolación (`extrapolada`) y las variables del hogar como NP.
+**Método** (D-044, D-045): hot-deck aleatorio ponderado por celdas.
+
+- Cada persona u hogar hereda el bloque completo de un donante real de la encuesta, sorteado con su peso oficial entre los de su celda de llaves.
+- Las llaves van ordenadas por su importancia en la propia encuesta. Algunas son estructurales y no se quitan nunca, por ejemplo la situación profesional en el empleo.
+- Si la celda tiene menos de 5 donantes, primero se quitan las llaves secundarias manteniendo la comunidad, después se amplía la geografía (zona NUTS-1, España) y por último se quitan las principales.
+- Los hogares con algún adulto extranjero toman la tenencia de la ECV 2025.
+- La renta de cada provincia se lleva a la del Atlas inclinando el sorteo, sin reescalar valores.
+- Los residentes en colectivos, fuera del universo de las encuestas, reciben los bloques personales por extrapolación (`extrapolada`).
+
+**Cambio de composición (D-046 A2):** ocupados, parados e inactivos están calibrados a la EPA del 2T 2026, la última foto oficial del mercado de trabajo antes del corte de junio de 2026; dentro de los inactivos se mantiene el reparto del Censo Anual. Las puertas F3, F4 y F5 se repitieron (F4: un fallo por azar en V-SEMILLAS, D-047; F5: superada).
 
 | Puerta | Criterio | Resultado | |
 | --- | --- | --- | --- |
-| G6.1 | V-ENRIQ-MARG: ≥ 90 % de las celdas CCAA × edad_4 en el IC 95 % de la encuesta; TVD nacional ≤ 0,02 | 92,1 % de las celdas en global; 5 variables por debajo del 90 % y 3 con TVD > 0,02 | ❌ |
-| G6.2 | V-ENRIQ-ASOC: \|Δ V de Cramér\| ≤ 0,05 con cada llave | 0 de 81 pares fuera; máx. 0,049 | ✅ |
-| G6.3 | V-ENRIQ-BLOQUE: máx. ≤ 0,05, media ≤ 0,02 | máx. 0,020, media 0,007 | ✅ |
-| G6.4 | V-ENRIQ-HOLDOUT: emparejar sin los estudios, \|Δ\| ≤ 0,05 y mejor que la independencia | todas mejor que la independencia; 9 de 14 con \|Δ\| > 0,05 | ❌ |
+| G6.1 | V-ENRIQ-MARG: ≥ 90 % de las celdas CCAA × edad_4 en el IC 95 % de la encuesta; TVD nacional ≤ 0,02 | 92,6 % de las celdas en global; 5 variables por debajo del 90 %; 2 con TVD > 0,02 | ❌ (D-048) |
+| G6.2 | V-ENRIQ-ASOC: \|Δ V de Cramér\| ≤ 0,05 con cada llave | 0 de 81 pares fuera; máx. 0.049 | ✅ |
+| G6.3 | V-ENRIQ-BLOQUE: máx. ≤ 0,05, media ≤ 0,02 | máx. 0.022, media 0.007 | ✅ |
+| G6.4 | V-ENRIQ-HOLDOUT: mejor que la independencia (D-046 B1) | 54 pares con 4 llaves reservadas; 0 peor que la independencia | ✅ |
 | G6.5 | El enriquecimiento no cambia las variables de los donantes | personas, hogares y trazabilidad idénticos | ✅ |
-| G6.6 | Renta media por provincia frente al Atlas | 52 de 52 dentro (error máx. 2,8 %, dentro de 2 errores típicos) | ✅ (umbral por confirmar) |
+| G6.6 | Renta media por provincia frente al Atlas: máx(2 %, 2 errores típicos) (D-046 C) | 52 de 52 dentro (error máx. 3,26 %) | ✅ |
 
-## G6.1: qué falla y por qué
+## G6.1
 
-| Bloque | Variable | Celdas en IC 95 % | Con la composición de la encuesta | TVD nacional |
-| --- | --- | ---: | ---: | ---: |
-| digital | `compra_online` | 96,1 % | 100,0 % | 0,0207 ❌ |
-| digital | `teletrabajo` | 92,8 % | 100,0 % | 0,0228 ❌ |
-| digital | `uso_internet` | 89,6 % ❌ | 97,3 % | 0,0141 |
-| empleo | `sector_publico` | 86,8 % ❌ | 86,8 % | 0,0006 |
-| empleo | `tipo_jornada` | 84,8 % ❌ | 84,8 % | 0,0002 |
-| hogar | `dificultad_fin_mes` | 94,3 % | 94,9 % | 0,0040 |
-| hogar | `renta_hogar_decil` | 94,5 % | 94,6 % | 0,0123 |
-| hogar | `renta_hogar_decil_ccaa` | 95,3 % | 95,4 % | 0,0151 |
-| hogar | `tenencia_vivienda` | 69,1 % ❌ | 67,8 % | 0,0120 |
-| hogar | `vehiculo_hogar` | 78,8 % ❌ | 81,2 % | 0,0217 ❌ |
-| persona_ecv | `carencias` | 96,9 % | 99,1 % | 0,0106 |
-| persona_ecv | `discapacidad_limitacion` | 93,4 % | 98,7 % | 0,0024 |
-| persona_ecv | `privacion_material` | 95,1 % | 98,2 % | 0,0008 |
-| persona_ecv | `salud_autopercibida` | 95,1 % | 98,2 % | 0,0061 |
+| Bloque | Variable | Celdas en IC 95 % | TVD nacional | Celdas en IC, composición de la encuesta | TVD, composición de la encuesta |
+| --- | --- | ---: | ---: | ---: | ---: |
+| digital | `compra_online` | 98,7 % | 0,0150 | 100,0 % | 0,0065 |
+| digital | `teletrabajo` | 89,4 % ❌ | 0,0325 ❌ | 100,0 % | 0,0016 |
+| digital | `uso_internet` | 93,1 % | 0,0112 | 97,3 % | 0,0017 |
+| empleo | `sector_publico` | 85,5 % ❌ | 0,0041 | 89,5 % ❌ | 0,0025 |
+| empleo | `tipo_jornada` | 86,8 % ❌ | 0,0036 | 84,1 % ❌ | 0,0030 |
+| hogar | `dificultad_fin_mes` | 95,6 % | 0,0024 | 94,9 % | 0,0042 |
+| hogar | `renta_hogar_decil` | 95,3 % | 0,0044 | 95,9 % | 0,0076 |
+| hogar | `renta_hogar_decil_ccaa` | 95,5 % | 0,0084 | 96,0 % | 0,0085 |
+| hogar | `tenencia_vivienda` | 65,1 % ❌ | 0,0200 ❌ | 64,1 % ❌ | 0,0190 |
+| hogar | `vehiculo_hogar` | 81,2 % ❌ | 0,0148 | 82,4 % ❌ | 0,0106 |
+| persona_ecv | `carencias` | 97,5 % | 0,0090 | 99,1 % | 0,0068 |
+| persona_ecv | `discapacidad_limitacion` | 94,4 % | 0,0031 | 97,0 % | 0,0014 |
+| persona_ecv | `privacion_material` | 96,0 % | 0,0024 | 98,2 % | 0,0035 |
+| persona_ecv | `salud_autopercibida` | 96,0 % | 0,0084 | 98,2 % | 0,0041 |
 
+Las dos últimas columnas reponderan la población, dentro de cada comunidad × edad_4, a la composición de la encuesta por relación con la actividad y estudios. Es un diagnóstico, no la puerta (`v_marg_ajustada`).
 
-La columna «con la composición de la encuesta» repondera la población, dentro de cada comunidad × edad_4, a la composición de la encuesta por relación con la actividad y estudios (diagnóstico, `v_marg_ajustada`). Con ella, salud, carencias y las variables digitales pasan del 90-96 % al 97-100 %: **su desajuste no es del emparejamiento, sino de la composición de la población**, que está calibrada a cifras censales que no coinciden con las encuestas:
+- **Teletrabajo** (TVD 0.033): la diferencia es de fecha. La población tiene los ocupados de la EPA del 2T 2026 (54,7 % de los adultos en viviendas familiares) y la TIC-H es de 2025 (52,1 %), así que su categoría «no procede» (no ocupados) es menor. Con la composición de la TIC-H, la TVD es 0.002 y el 100 % de las celdas entra en el IC.
+- **Tenencia** (TVD 0.020, 65 % de celdas), **vehículo** (81 %), **jornada** (87 %) y **sector público** (86 %): siguen por debajo con la composición ajustada. Son **patrones regionales** que las llaves no recogen del todo:
+  - La tenencia de los hogares sin extranjeros es la del Censo 2021 (D-045.3), que por comunidad no coincide con la muestra de la ECV 2025.
+  - La EPA, con su muestra grande, da intervalos muy estrechos por comunidad.
+  - La diferencia nacional es pequeña en todas: TVD ajustada ≤ 0.019.
 
-| Adultos 18+ en viviendas familiares (España, 100.000 personas) | Población (Censo Anual 2024) | ECV 2025 / TIC-H 2025 |
-| --- | ---: | ---: |
-| Ocupados | 49,6 % | 52,0 % / 52,1 % |
-| Otra inactividad | 19,0 % | 9,9 % / 10,2 % |
-| Estudiantes | 4,0 % | 6,8 % / 6,4 % |
-| Estudios hasta la obligatoria | 42,3 % | 38,5 % / 33,8 % |
+## G6.4
 
-Es la diferencia que D-038 C dejó para revisar en F6 (Censo Anual a 01/01/2024, declarada, frente a la EPA del 2T 2026, definición OIT). Lo que queda tras ajustar la composición (tenencia, vehículo, jornada, sector público) son **patrones regionales** que las llaves no recogen del todo: la tenencia por comunidad conserva además el régimen del Censo 2021 en los hogares sin extranjeros (D-045.3), y la EPA, con su muestra grande, tiene intervalos muy estrechos por comunidad.
+| Llave reservada | Pares | Peor que la independencia | \|Δ\| > 0,05 | Asociación recuperada (mín. - máx.) |
+| --- | ---: | ---: | ---: | --- |
+| `sexo` | 14 | 0 | 1 | 19 % - 109 % |
+| `nacionalidad_esp_ext` | 14 | 0 | 1 | 48 % - 116 % |
+| `relacion_actividad` | 12 | 0 | 4 | 41 % - 120 % |
+| `estudios_3` | 14 | 0 | 9 | 18 % - 99 % |
 
-## G6.4: qué falla y por qué
+Ninguna asociación queda peor que la independencia. La que tiene una variable enriquecida con una variable que no es llave solo se recupera en parte, por la hipótesis de independencia condicional de todo emparejamiento estadístico. Por eso las llaves incluyen las variables que más importan para cada bloque.
 
-Se repitió el emparejamiento quitando cada llave por turno y se comparó su asociación con las variables enriquecidas:
+## G6.6
 
-
-| Llave reservada | Variables fuera de 0,05 | Peores |
-| --- | ---: | --- |
-| `sexo` | 1 de 14 | `tipo_jornada` 0,148 |
-| `nacionalidad_esp_ext` | 1 de 14 | `sector_publico` 0,089 |
-| `relacion_actividad` | 4 de 12 | `discapacidad_limitacion` 0,111, `privacion_material` 0,074, `salud_autopercibida` 0,066, `carencias` 0,058 |
-| `estudios_3` | 9 de 14 | `compra_online` 0,211, `renta_hogar_decil_ccaa` 0,135, `renta_hogar_decil` 0,126, `carencias` 0,113 |
-
-
-Ninguna variable queda peor que la independencia, pero la asociación con una variable que no es llave solo se recupera en parte, a través de las llaves que se le parecen. Es la hipótesis de independencia condicional de todo emparejamiento estadístico: **las relaciones entre una variable enriquecida y una variable de la población que no es llave salen atenuadas**. Con los estudios (la llave más informativa y la menos explicada por las demás) la pérdida es mayor: por ejemplo, compra en línea × estudios 0,409 en la TIC-H y 0,197 sin la llave.
-
-## G6.6: renta y Atlas
-
-- Objetivo de cada provincia: media de la renta equivalente de la ECV en su comunidad × (Atlas de la provincia / Atlas de la comunidad), con la media de la renta por unidad de consumo del Atlas 2023 (no se mezclan los niveles de las dos fuentes, solo la geografía relativa).
-- 52 provincias dentro de máx(2 %, 2 errores típicos); error máximo 2,8 % (Gipuzkoa, tolerancia 3,0 %).
-- No calibrado (se informa): en los 334 municipios identificados con 200 hogares o más, la renta relativa a su provincia se correlaciona 0,58 con la del Atlas (error medio 7,9 %).
+- 52 provincias dentro de máx(2 %, 2 errores típicos); error máximo 3,26 %.
+- No calibrado (se informa): en los 326 municipios identificados con 200 hogares o más, la renta relativa a su provincia se correlaciona 0,63 con la del Atlas (error medio 7,6 %).
 
 ## Otros resultados
 
-- **Calidad:** salud autopercibida: 856.220 emparejadas, 7.326 extrapoladas (colectivos) y 136.415 NP observados (menores de 16).
-- **Contexto:** `ctx_renta_municipio` y `ctx_envejecimiento` son del municipio en el 79 % de las personas y de su provincia y clase de tamaño (`modelada`) en el 21 %. Había 18 personas sin valor: hogares importados de otra comunidad a provincias sin ciudades (Ávila, Segovia, Soria) que conservaban el grado «ciudad». Corregido en la síntesis (las unidades importadas solo van a provincias con su grado de urbanización) y con un último recurso provincial en el contexto.
-- **Triangulación con la ESdE 2023** (informativa): TVD de 0,03 a 0,10 por edad en salud y limitación, por diferencias de cuestionario y fecha entre la ECV y la ESdE.
-- **Huecos declarados (P2):** competencias digitales (la TIC-H no trae el indicador; hay que construir el DSI de Eurostat), consumo (EPF, sin variable en el diccionario) y precio de la vivienda (sin fuente oficial descargada).
-
-## Decisiones pendientes (D-046)
-
-Ver `DECISIONS.md`.
+- **Calidad** de la salud autopercibida: 856.203 emparejadas, 7.347 extrapoladas (colectivos) y 136.480 NP observados (menores de 16).
+- **Contexto:** renta media del municipio y proporción de 65+, del municipio (`observada`) o de su provincia y clase de tamaño (`modelada`). Sin valores vacíos tras la corrección de las unidades importadas (`pesos._tiene_grado`).
+- **Triangulación con la ESdE 2023** (informativa, en `fase_06_validacion.json`): diferencias por cuestionario y fecha entre la ECV y la ESdE.
+- **Huecos declarados (P2):**
+  - competencias digitales: la TIC-H no trae el indicador; hay que construir el DSI de Eurostat;
+  - consumo: la EPF no tiene variable en el diccionario;
+  - precio de la vivienda: sin fuente oficial descargada.

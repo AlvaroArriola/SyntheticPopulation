@@ -3,17 +3,17 @@
   {
    "bloque": "hogar",
    "variable": "renta_hogar_decil",
-   "proporcion": 0.945910290237467
+   "proporcion": 0.9591029023746702
   },
   {
    "bloque": "hogar",
    "variable": "renta_hogar_decil_ccaa",
-   "proporcion": 0.9538866930171278
+   "proporcion": 0.9604743083003953
   },
   {
    "bloque": "hogar",
    "variable": "tenencia_vivienda",
-   "proporcion": 0.6776315789473685
+   "proporcion": 0.6414473684210527
   },
   {
    "bloque": "hogar",
@@ -23,7 +23,7 @@
   {
    "bloque": "hogar",
    "variable": "vehiculo_hogar",
-   "proporcion": 0.8117647058823529
+   "proporcion": 0.8235294117647058
   },
   {
    "bloque": "persona_ecv",
@@ -33,7 +33,7 @@
   {
    "bloque": "persona_ecv",
    "variable": "discapacidad_limitacion",
-   "proporcion": 0.9867986798679867
+   "proporcion": 0.9702970297029703
   },
   {
    "bloque": "persona_ecv",
@@ -48,12 +48,12 @@
   {
    "bloque": "empleo",
    "variable": "tipo_jornada",
-   "proporcion": 0.847682119205298
+   "proporcion": 0.8410596026490066
   },
   {
    "bloque": "empleo",
    "variable": "sector_publico",
-   "proporcion": 0.868421052631579
+   "proporcion": 0.8947368421052632
   },
   {
    "bloque": "digital",
@@ -71,338 +71,62 @@
    "proporcion": 1.0
   }
  ],
- "holdout": {
-  "sexo": [
-   {
-    "variable": "renta_hogar_decil",
-    "v_encuesta": 0.037460377187426445,
-    "v_sintetica": 0.010877572499199075,
-    "dif": 0.026582804688227372
-   },
-   {
-    "variable": "renta_hogar_decil_ccaa",
-    "v_encuesta": 0.03978981600101196,
-    "v_sintetica": 0.013359542550834293,
-    "dif": 0.026430273450177667
-   },
-   {
-    "variable": "tenencia_vivienda",
-    "v_encuesta": 0.020809506244461096,
-    "v_sintetica": 0.021217699257396846,
-    "dif": 0.00040819301293575083
-   },
-   {
-    "variable": "dificultad_fin_mes",
-    "v_encuesta": 0.015650407899766138,
-    "v_sintetica": 0.008132362409269723,
-    "dif": 0.007518045490496415
-   },
-   {
-    "variable": "vehiculo_hogar",
-    "v_encuesta": 0.07412508118344244,
-    "v_sintetica": 0.028408484444458745,
-    "dif": 0.04571659673898369
-   },
-   {
-    "variable": "salud_autopercibida",
-    "v_encuesta": 0.06835274012815461,
-    "v_sintetica": 0.030293227188974113,
-    "dif": 0.038059512939180494
-   },
-   {
-    "variable": "discapacidad_limitacion",
-    "v_encuesta": 0.05134396496309455,
-    "v_sintetica": 0.029130728975894568,
-    "dif": 0.02221323598719998
-   },
-   {
-    "variable": "privacion_material",
-    "v_encuesta": 0.014178023195008566,
-    "v_sintetica": 0.004104114530075472,
-    "dif": 0.010073908664933094
-   },
-   {
-    "variable": "carencias",
-    "v_encuesta": 0.0288516711017127,
-    "v_sintetica": 0.0069944404314392465,
-    "dif": 0.021857230670273453
-   },
-   {
-    "variable": "tipo_jornada",
-    "v_encuesta": 0.20228372242981602,
-    "v_sintetica": 0.053818778498441175,
-    "dif": 0.14846494393137483
-   },
-   {
-    "variable": "sector_publico",
-    "v_encuesta": 0.1021121871666791,
-    "v_sintetica": 0.08553731758373775,
-    "dif": 0.01657486958294134
-   },
-   {
-    "variable": "uso_internet",
-    "v_encuesta": 0.05330827707922384,
-    "v_sintetica": 0.056653591201358745,
-    "dif": 0.0033453141221349084
-   },
-   {
-    "variable": "compra_online",
-    "v_encuesta": 0.01454755944667418,
-    "v_sintetica": 0.02932800727050633,
-    "dif": 0.014780447823832149
-   },
-   {
-    "variable": "teletrabajo",
-    "v_encuesta": 0.09553003533917154,
-    "v_sintetica": 0.08568982816966034,
-    "dif": 0.0098402071695112
-   }
-  ],
-  "nacionalidad_esp_ext": [
-   {
-    "variable": "renta_hogar_decil",
-    "v_encuesta": 0.2723739336322166,
-    "v_sintetica": 0.2658387227340581,
-    "dif": 0.0065352108981585055
-   },
-   {
-    "variable": "renta_hogar_decil_ccaa",
-    "v_encuesta": 0.2896141755566699,
-    "v_sintetica": 0.28178329439884253,
-    "dif": 0.007830881157827374
-   },
-   {
-    "variable": "tenencia_vivienda",
-    "v_encuesta": 0.43197932354992813,
-    "v_sintetica": 0.3851437461360155,
-    "dif": 0.046835577413912644
-   },
-   {
-    "variable": "dificultad_fin_mes",
-    "v_encuesta": 0.10694016347216422,
-    "v_sintetica": 0.12930998966139756,
-    "dif": 0.022369826189233347
-   },
-   {
-    "variable": "vehiculo_hogar",
-    "v_encuesta": 0.14094094378691846,
-    "v_sintetica": 0.14208407866065165,
-    "dif": 0.001143134873733187
-   },
-   {
-    "variable": "salud_autopercibida",
-    "v_encuesta": 0.0727407930655126,
-    "v_sintetica": 0.04966651716031029,
-    "dif": 0.0230742759052023
-   },
-   {
-    "variable": "discapacidad_limitacion",
-    "v_encuesta": 0.07722904258306054,
-    "v_sintetica": 0.054208984002132754,
-    "dif": 0.023020058580927788
-   },
-   {
-    "variable": "privacion_material",
-    "v_encuesta": 0.11832147520694597,
-    "v_sintetica": 0.076924738362911,
-    "dif": 0.04139673684403497
-   },
-   {
-    "variable": "carencias",
-    "v_encuesta": 0.17925510884249374,
-    "v_sintetica": 0.13572234805442654,
-    "dif": 0.0435327607880672
-   },
-   {
-    "variable": "tipo_jornada",
-    "v_encuesta": 0.062047355448853495,
-    "v_sintetica": 0.0361623234300603,
-    "dif": 0.02588503201879319
-   },
-   {
-    "variable": "sector_publico",
-    "v_encuesta": 0.16826506940042577,
-    "v_sintetica": 0.0796936591217697,
-    "dif": 0.08857141027865606
-   },
-   {
-    "variable": "uso_internet",
-    "v_encuesta": 0.10850524369614564,
-    "v_sintetica": 0.08281642475939129,
-    "dif": 0.025688818936754357
-   },
-   {
-    "variable": "compra_online",
-    "v_encuesta": 0.0016797704746760803,
-    "v_sintetica": 0.04713694954620073,
-    "dif": 0.04545717907152465
-   },
-   {
-    "variable": "teletrabajo",
-    "v_encuesta": 0.04968395432658863,
-    "v_sintetica": 0.05974159618399127,
-    "dif": 0.010057641857402641
-   }
-  ],
-  "relacion_actividad": [
-   {
-    "variable": "renta_hogar_decil",
-    "v_encuesta": 0.12746782453449962,
-    "v_sintetica": 0.11102448816332992,
-    "dif": 0.016443336371169695
-   },
-   {
-    "variable": "renta_hogar_decil_ccaa",
-    "v_encuesta": 0.12111406305188248,
-    "v_sintetica": 0.10714897095988855,
-    "dif": 0.013965092091993925
-   },
-   {
-    "variable": "tenencia_vivienda",
-    "v_encuesta": 0.21578354854637602,
-    "v_sintetica": 0.18577158088731197,
-    "dif": 0.030011967659064054
-   },
-   {
-    "variable": "dificultad_fin_mes",
-    "v_encuesta": 0.09490395190555709,
-    "v_sintetica": 0.06566089684215048,
-    "dif": 0.029243055063406603
-   },
-   {
-    "variable": "vehiculo_hogar",
-    "v_encuesta": 0.13618128416432732,
-    "v_sintetica": 0.1636099808010098,
-    "dif": 0.027428696636682487
-   },
-   {
-    "variable": "salud_autopercibida",
-    "v_encuesta": 0.20344993628901958,
-    "v_sintetica": 0.13753378441803987,
-    "dif": 0.06591615187097971
-   },
-   {
-    "variable": "discapacidad_limitacion",
-    "v_encuesta": 0.2486895113452722,
-    "v_sintetica": 0.13731113337547537,
-    "dif": 0.11137837796979683
-   },
-   {
-    "variable": "privacion_material",
-    "v_encuesta": 0.12883915612591465,
-    "v_sintetica": 0.05525382121514429,
-    "dif": 0.07358533491077035
-   },
-   {
-    "variable": "carencias",
-    "v_encuesta": 0.11791822113196308,
-    "v_sintetica": 0.05956688053580637,
-    "dif": 0.058351340596156716
-   },
-   {
-    "variable": "uso_internet",
-    "v_encuesta": 0.2717080598254331,
-    "v_sintetica": 0.2541914497947798,
-    "dif": 0.0175166100306533
-   },
-   {
-    "variable": "compra_online",
-    "v_encuesta": 0.4120718572407475,
-    "v_sintetica": 0.39351572254061484,
-    "dif": 0.018556134700132676
-   },
-   {
-    "variable": "teletrabajo",
-    "v_encuesta": 0.5773502691896257,
-    "v_sintetica": 0.5773502691896257,
-    "dif": 0.0
-   }
-  ],
-  "estudios_3": [
-   {
-    "variable": "renta_hogar_decil",
-    "v_encuesta": 0.21493927631796939,
-    "v_sintetica": 0.0890718570509383,
-    "dif": 0.1258674192670311
-   },
-   {
-    "variable": "renta_hogar_decil_ccaa",
-    "v_encuesta": 0.2026859304675485,
-    "v_sintetica": 0.06733647946075588,
-    "dif": 0.1353494510067926
-   },
-   {
-    "variable": "tenencia_vivienda",
-    "v_encuesta": 0.09149069230775644,
-    "v_sintetica": 0.08923093449392318,
-    "dif": 0.002259757813833266
-   },
-   {
-    "variable": "dificultad_fin_mes",
-    "v_encuesta": 0.1293625265693423,
-    "v_sintetica": 0.03107591005794301,
-    "dif": 0.09828661651139929
-   },
-   {
-    "variable": "vehiculo_hogar",
-    "v_encuesta": 0.10085084190511054,
-    "v_sintetica": 0.0640869102839545,
-    "dif": 0.03676393162115604
-   },
-   {
-    "variable": "salud_autopercibida",
-    "v_encuesta": 0.1839408127749135,
-    "v_sintetica": 0.11850579428331764,
-    "dif": 0.06543501849159586
-   },
-   {
-    "variable": "discapacidad_limitacion",
-    "v_encuesta": 0.12528903928842253,
-    "v_sintetica": 0.10062024018287408,
-    "dif": 0.02466879910554845
-   },
-   {
-    "variable": "privacion_material",
-    "v_encuesta": 0.0966349092822164,
-    "v_sintetica": 0.01760297853175005,
-    "dif": 0.07903193075046634
-   },
-   {
-    "variable": "carencias",
-    "v_encuesta": 0.1513231482875784,
-    "v_sintetica": 0.038590074161300426,
-    "dif": 0.11273307412627798
-   },
-   {
-    "variable": "tipo_jornada",
-    "v_encuesta": 0.07803411155023288,
-    "v_sintetica": 0.044401091453293566,
-    "dif": 0.03363302009693931
-   },
-   {
-    "variable": "sector_publico",
-    "v_encuesta": 0.24951146344516142,
-    "v_sintetica": 0.17849304940845423,
-    "dif": 0.0710184140367072
-   },
-   {
-    "variable": "uso_internet",
-    "v_encuesta": 0.21879524019236768,
-    "v_sintetica": 0.1500240275104862,
-    "dif": 0.06877121268188147
-   },
-   {
-    "variable": "compra_online",
-    "v_encuesta": 0.40863405024162264,
-    "v_sintetica": 0.19728887985720403,
-    "dif": 0.2113451703844186
-   },
-   {
-    "variable": "teletrabajo",
-    "v_encuesta": 0.22079728521995345,
-    "v_sintetica": 0.2131022285588803,
-    "dif": 0.007695056661073146
-   }
-  ]
- }
+ "tvd_ajustada": [
+  {
+   "variable": "renta_hogar_decil",
+   "tvd_ajustada": 0.007594988167696139
+  },
+  {
+   "variable": "renta_hogar_decil_ccaa",
+   "tvd_ajustada": 0.008470330558948524
+  },
+  {
+   "variable": "tenencia_vivienda",
+   "tvd_ajustada": 0.01896557031146487
+  },
+  {
+   "variable": "dificultad_fin_mes",
+   "tvd_ajustada": 0.00423695118608259
+  },
+  {
+   "variable": "vehiculo_hogar",
+   "tvd_ajustada": 0.010564761445219447
+  },
+  {
+   "variable": "salud_autopercibida",
+   "tvd_ajustada": 0.004081349545026805
+  },
+  {
+   "variable": "discapacidad_limitacion",
+   "tvd_ajustada": 0.0014134980711021494
+  },
+  {
+   "variable": "privacion_material",
+   "tvd_ajustada": 0.0034674870648856815
+  },
+  {
+   "variable": "carencias",
+   "tvd_ajustada": 0.006777243085339433
+  },
+  {
+   "variable": "tipo_jornada",
+   "tvd_ajustada": 0.0030457094725230838
+  },
+  {
+   "variable": "sector_publico",
+   "tvd_ajustada": 0.002532143127547834
+  },
+  {
+   "variable": "uso_internet",
+   "tvd_ajustada": 0.001655596209295217
+  },
+  {
+   "variable": "compra_online",
+   "tvd_ajustada": 0.006479055680252616
+  },
+  {
+   "variable": "teletrabajo",
+   "tvd_ajustada": 0.001632716009207169
+  }
+ ]
 }

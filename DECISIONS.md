@@ -783,3 +783,26 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Propuesta** (como D-039 para V-CRUCE): una proporción solo falla V-SEMILLAS si supera 1,5 en dos o más tamaños de población (sesgo sistemático). El resultado estricto se informa siempre.
 - **Alternativa:** más semillas (por ejemplo, 10) solo en N = 10.000. Así baja la probabilidad de falso fallo, pero cuesta otra serie.
 - **Aprobada por:** pendiente
+
+## D-048 · G6.1 tras calibrar la actividad a la EPA: lo que queda (2026-10-16)
+
+- **Fecha:** 2026-10-16
+- **Fase:** F6
+- **Estado:** propuesta (lectura de un umbral; necesita aprobación humana)
+- **Contexto:** tras D-046 A2 y la cadena F3-F6 repetida, G6.1 queda así (`reports/fase_06.md`):
+  - 92,6 % de las celdas dentro del IC.
+  - Por debajo del 90 %: tenencia (65 %), vehículo (81 %), sector público (86 %), jornada (87 %) y teletrabajo (89 %).
+  - TVD nacional > 0,02: teletrabajo (0,033) y tenencia (0,020).
+  - Con la población reponderada a la composición de cada encuesta (diagnóstico), todas las TVD quedan ≤ 0,019, y el teletrabajo, la salud, las carencias y las variables digitales entran en el IC en el 97-100 % de las celdas.
+- **Lectura:**
+  1. **Teletrabajo:** es una diferencia de fecha. La población tiene los ocupados del 2T 2026 (54,7 % de los adultos); la TIC-H es de 2025 (52,1 %). La categoría «no procede» de los no ocupados es menor en la población porque la población es más reciente que la encuesta.
+  2. **Tenencia, vehículo, jornada y sector público:** son patrones regionales.
+     - La tenencia de los hogares sin extranjeros es la del Censo 2021 (exhaustivo) y por comunidad no coincide con la muestra de la ECV 2025.
+     - Las otras tres dependen de la comunidad más de lo que recogen las llaves, y la EPA, con su muestra grande, da intervalos estrechos.
+     - Es lo que D-046 A2 preveía presentar como limitación.
+- **Propuesta:**
+  - G6.1 se supera cuando cada variable cumple el umbral, o cuando, con la composición de la encuesta, tiene TVD nacional ≤ 0,02 y su desviación regional está documentada como limitación.
+  - Se informan siempre las dos lecturas.
+  - Limitaciones declaradas: tenencia, vehículo, jornada y sector público por comunidad; el informe de cada población lo indica.
+- **Alternativa:** añadir la comunidad como llave fija en esos bloques. Se perderían asociaciones con las llaves: con la comunidad primero, V-ENRIQ-ASOC tenía entre 6 y 11 fallos (D-045).
+- **Aprobada por:** pendiente
