@@ -51,9 +51,27 @@ calibrar:
     ambito: municipios
     descripcion: Nivel de estudios por sexo (tablas municipales del Censo Anual 2024); sustituye
       a estudios_edad en los territorios por municipios, donde no hay estudios por edad
-  - id: actividad_sexo
+  - id: actividad_sexo_mun
     variables: [relacion_actividad, sexo]
-    descripcion: Relación con la actividad (Censo Anual 2024, tabla 67128) por sexo
+    ambito: municipios
+    descripcion: Relación con la actividad por sexo (tablas municipales del Censo Anual 2024
+      llevadas a la EPA 2T 2026 con el cociente provincial; D-049); sustituye a actividad_edad
+      en los territorios por municipios
+  - id: actividad_edad
+    ambito: provincia
+    variables: [relacion_actividad, edad_actividad]
+    descripcion: Relación con la actividad por edad (EPA 2T 2026, inactivos por su situación
+      autopercibida; reparto del Censo Anual 2024 dentro de cada tramo; D-046 A2, D-049). Pasa de
+      reservado a calibrado y actividad_sexo, a reservado (D-049)
+  - id: sin_estudios_edad
+    ambito: provincia
+    variables: [sin_estudios, edad_estudios]
+    descripcion: Sin estudios (analfabetos y primaria incompleta) por edad (Censo Anual 2024,
+      tabla 66601; D-049)
+  - id: nacimiento_nacionalidad
+    variables: [nacido_fuera, nacionalidad_esp_ext]
+    descripcion: Nacidos fuera de España por nacionalidad española/extranjera (Censo Anual
+      exhaustivo 2025 sobre la ECP 2026; D-049)
   - id: urbanizacion
     variables: [grado_urbanizacion]
     descripcion: Grado de urbanización (Censo Anual 2025, tabla 79341)
@@ -99,9 +117,10 @@ reservar:
   - id: estudios_sexo_edad
     ambito: provincia
     variables: [estudios_3, sexo, edad_estudios]
-  - id: actividad_edad
-    ambito: provincia
-    variables: [relacion_actividad, edad_actividad]
+  - id: actividad_sexo
+    variables: [relacion_actividad, sexo]
+    descripcion: Relación con la actividad por sexo (misma fuente que actividad_edad; reservado
+      desde D-049)
   - id: tipo_hogar_edad4_ref
     ambito: provincia
     variables: [tipo_hogar, edad_4]

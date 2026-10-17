@@ -107,10 +107,10 @@ def estructura(fn, clave_cortes: str) -> pl.DataFrame:
 
 # --------------------------------------------------------------------------- actividad (EPA)
 
-# D-046 A2: ocupados, parados e inactivos de la EPA del 2T 2026 por comunidad × sexo × tramo de
-# edad; dentro de cada estado, el reparto del Censo Anual a 01/01/2024 (tabla 67128).
+# D-046 A2 y D-049: relación con la actividad (las 6 categorías) de la EPA del 2T 2026 por
+# comunidad × sexo × tramo de edad (inactivos por su situación autopercibida, SIDI1); el reparto
+# entre provincias y grupos quinquenales dentro de cada tramo es el del Censo Anual a 01/01/2024.
 TRAMOS_EPA = [16, 25, 35, 45, 55, 65]
-ESTADO = {"ocupado": "ocupado", "parado": "parado"}  # el resto de categorías: inactivo
 PESO_PREVIO = 200.0  # personas de la muestra que equivalen a la estimación previa
 
 
@@ -122,65 +122,77 @@ def _tramo(lo: pl.Expr) -> pl.Expr:
 
 
 def tasas_epa() -> pl.DataFrame:
-    """Proporción de ocupados, parados e inactivos (16+) por comunidad × sexo × tramo en la EPA
-    del 2T 2026 (pesos FACTOREL), con su muestra (n) para la contracción."""
-    e = pl.read_parquet(INTERIM_DIR / "epa.parquet").filter(pl.col("edad_grupo_epa") >= "16")
-    e = e.with_columns(
-        _tramo(pl.col("edad_grupo_epa").cast(pl.Int32)),
-        pl.col("relacion_actividad_3").replace({"inactivo": "inactivo"}).alias("estado"),
+    """Proporción de cada relación con la actividad (16+, sin NC) por comunidad × sexo × tramo
+    en la EPA del 2T 2026 (pesos FACTOREL), con su muestra (n) para la contracción."""
+    e = pl.read_parquet(INTERIM_DIR / "epa.parquet").filter(
+        (pl.col("edad_grupo_epa") >= "16") & ~pl.col("relacion_actividad").is_in(["NC", "NP"])
     )
-    if not set(e["estado"].unique()) <= {"ocupado", "parado", "inactivo"}:
-        raise ValueError(f"EPA: estados no previstos {sorted(set(e['estado'].unique()))}")
+    e = e.with_columns(_tramo(pl.col("edad_grupo_epa").cast(pl.Int32)))
     k = ["ccaa", "sexo", "tramo"]
     return (
-        e.group_by([*k, "estado"])
-        .agg(pl.col("peso").sum().alias("w"), pl.len().alias("m"))
+        e.group_by([*k, "relacion_actividad"])
+        .agg(pl.col("peso").sum().alias("w"))
         .with_columns(
             (pl.col("w") / pl.col("w").sum().over(k)).alias("e"),
-            pl.col("m").sum().over(k).alias("n"),
         )
+        .join(e.group_by(k).agg(pl.len().alias("n")), on=k)
+        .rename({"relacion_actividad": "categoria"})
     )
 
 
 def actividad_epa(cortes: list[int]) -> pl.DataFrame:
-    """Estructura de la relación con la actividad del Censo Anual ajustada a la EPA (D-046 A2).
+    """Estructura del Censo Anual reajustada a la EPA (D-046 A2, D-049).
 
-    En cada comunidad × sexo × tramo, cada estado (ocupado, parado, inactivo) se multiplica por
-    el cociente entre su proporción objetivo y la del Censo; el reparto dentro de los inactivos
-    y entre provincias y grupos quinquenales sigue siendo el del Censo. La proporción objetivo es
-    la de la EPA contraída hacia una previa con `PESO_PREVIO` personas: el Censo de la celda
-    corregido con el cociente EPA / Censo nacional de su sexo y tramo (las celdas pequeñas de la
-    EPA, como Ceuta o Melilla, no se toman al pie de la letra)."""
+    En cada comunidad × sexo × tramo, cada categoría se multiplica por el cociente entre su
+    proporción objetivo y la del Censo, de modo que la estructura de la celda es la de la EPA y
+    el reparto entre provincias y edades quinquenales dentro del tramo, el del Censo. El
+    objetivo es la proporción de la EPA contraída hacia una previa con `PESO_PREVIO` personas:
+    el Censo de la celda corregido con el cociente EPA / Censo nacional de su sexo y tramo (las
+    celdas pequeñas de la EPA, como Ceuta o Melilla, no se toman al pie de la letra)."""
     from sinpop.harmonize.core import ccaa_de_provincia
 
     c = fuentes.actividad(cortes).with_columns(
         pl.col("provincia").replace_strict(ccaa_de_provincia()).alias("ccaa"),
         _tramo(pl.col("grupo").str.slice(0, 2).cast(pl.Int32)),
-        pl.col("categoria").replace_strict(ESTADO, default="inactivo").alias("estado"),
     )
     k = ["ccaa", "sexo", "tramo"]
+    cen = c.group_by([*k, "categoria"]).agg(pl.col("valor").sum().alias("cv"))
+    celdas = cen.select(k).unique().join(cen.select("categoria").unique(), how="cross")
     cen = (
-        c.group_by([*k, "estado"])
-        .agg(pl.col("valor").sum().alias("cv"))
+        celdas.join(cen, on=[*k, "categoria"], how="left")
+        .fill_null(0.0)
         .with_columns((pl.col("cv") / pl.col("cv").sum().over(k)).alias("c"))
     )
     nac_c = (
-        cen.group_by("sexo", "tramo", "estado")
+        cen.group_by("sexo", "tramo", "categoria")
         .agg(pl.col("cv").sum())
         .with_columns((pl.col("cv") / pl.col("cv").sum().over("sexo", "tramo")).alias("cn"))
     )
     epa = tasas_epa()
     nac_e = (
-        epa.group_by("sexo", "tramo", "estado")
+        epa.group_by("sexo", "tramo", "categoria")
         .agg(pl.col("w").sum())
         .with_columns((pl.col("w") / pl.col("w").sum().over("sexo", "tramo")).alias("en"))
     )
     t = (
-        cen.join(epa.select(*k, "estado", "e", "n"), on=[*k, "estado"], how="left")
-        .join(nac_c.select("sexo", "tramo", "estado", "cn"), on=["sexo", "tramo", "estado"])
-        .join(nac_e.select("sexo", "tramo", "estado", "en"), on=["sexo", "tramo", "estado"])
-        .with_columns(pl.col("e").fill_null(0.0), pl.col("n").fill_null(0).max().over(k))
-        .with_columns((pl.col("c") * pl.col("en") / pl.col("cn")).alias("previa"))
+        cen.join(epa.select(*k, "categoria", "e", "n"), on=[*k, "categoria"], how="left")
+        .join(nac_c.select("sexo", "tramo", "categoria", "cn"), on=["sexo", "tramo", "categoria"])
+        .join(
+            nac_e.select("sexo", "tramo", "categoria", "en"),
+            on=["sexo", "tramo", "categoria"],
+            how="left",
+        )
+        .with_columns(
+            pl.col("e").fill_null(0.0),
+            pl.col("en").fill_null(0.0),
+            pl.col("n").max().over(k).fill_null(0),
+        )
+        .with_columns(
+            pl.when(pl.col("cn") > 0)
+            .then(pl.col("c") * pl.col("en") / pl.col("cn"))
+            .otherwise(pl.col("en"))
+            .alias("previa")
+        )
         .with_columns((pl.col("previa") / pl.col("previa").sum().over(k)).alias("previa"))
         .with_columns(
             (
@@ -188,17 +200,74 @@ def actividad_epa(cortes: list[int]) -> pl.DataFrame:
                 / (pl.col("n") + PESO_PREVIO)
             ).alias("objetivo")
         )
-        .with_columns(
-            pl.when(pl.col("c") > 0)
-            .then(pl.col("objetivo") / pl.col("c"))
-            .otherwise(1.0)
-            .alias("f")
-        )
     )
+    # Reparto dentro de la celda: cuotas del Censo por provincia × grupo quinquenal; si el Censo
+    # no tiene a nadie de esa categoría en la celda, las de la propia celda en conjunto.
+    dentro = c.with_columns(
+        (pl.col("valor") / pl.col("valor").sum().over([*k, "categoria"])).alias("r"),
+        (
+            pl.col("valor").sum().over(["provincia", "sexo", "grupo"])
+            / pl.col("valor").sum().over(k)
+        ).alias("peso_celda"),
+    )
+    out = dentro.join(t.select(*k, "categoria", "objetivo"), on=[*k, "categoria"]).with_columns(
+        pl.when(pl.col("r").is_not_nan() & pl.col("r").is_not_null())
+        .then(pl.col("r"))
+        .otherwise(pl.col("peso_celda"))
+        .alias("r")
+    )
+    total = c.group_by(k).agg(pl.col("valor").sum().alias("tot"))
     return (
-        c.join(t.select(*k, "estado", "f"), on=[*k, "estado"], how="left")
-        .with_columns((pl.col("valor") * pl.col("f").fill_null(1.0)).alias("valor"))
+        out.join(total, on=k)
+        .with_columns((pl.col("tot") * pl.col("objetivo") * pl.col("r")).alias("valor"))
         .select("provincia", "sexo", "grupo", "categoria", "valor")
+    )
+
+
+def sin_estudios(cortes: list[int]) -> pl.DataFrame:
+    """«Sin estudios» de la tabla 66601 (Censo Anual a 01/01/2024) frente al resto (D-049)."""
+    t, n = fuentes._leer("tabla_66601_ultimo.json")
+    mapa = {k: ("si" if k == "Sin estudios" else "no") for k in fuentes.ESTUDIOS}
+    e = fuentes.tabla_estructura(t, n, "Nivel de formación alcanzado", mapa, cortes)
+    return e.group_by("provincia", "sexo", "grupo", "categoria").agg(pl.col("valor").sum())
+
+
+def nacimiento_nacionalidad() -> pl.DataFrame:
+    """Residentes 2026 por provincia, nacionalidad española/extranjera y nacimiento fuera de
+    España (D-049): las celdas provincia × sexo × edad_5 × nacionalidad de la ECP 2026, con la
+    proporción de nacidos fuera de su celda en el Censo Anual exhaustivo a 01/01/2025 (si la
+    celda está vacía, la de su provincia y nacionalidad)."""
+    nac = esp_ext(nacionalidad_celdas().filter(pl.col("variable") == "nacionalidad_grupo"))
+    k = ["provincia", "sexo", "edad_5", "nacionalidad_esp_ext"]
+    cel = nac.group_by(k).agg(pl.col("valor").sum())
+    ex = pl.read_parquet(INTERIM_DIR / "censo_anual_exhaustivo_2025.parquet")
+    ex = esp_ext(ex, "nacionalidad_grupo").with_columns(
+        (pl.col("pais_nacimiento_grupo") != "espana").alias("_fuera")
+    )
+    q1 = ex.group_by(k).agg(
+        (pl.col("personas").filter(pl.col("_fuera")).sum() / pl.col("personas").sum()).alias("q1")
+    )
+    q2 = ex.group_by("provincia", "nacionalidad_esp_ext").agg(
+        (pl.col("personas").filter(pl.col("_fuera")).sum() / pl.col("personas").sum()).alias("q2")
+    )
+    c = (
+        cel.join(q1, on=k, how="left")
+        .join(q2, on=["provincia", "nacionalidad_esp_ext"], how="left")
+        .with_columns(pl.coalesce("q1", "q2").fill_null(0.0).alias("q"))
+    )
+    return pl.concat(
+        [
+            c.select(
+                *k,
+                pl.lit("si").alias("nacido_fuera"),
+                (pl.col("valor") * pl.col("q")).alias("valor"),
+            ),
+            c.select(
+                *k,
+                pl.lit("no").alias("nacido_fuera"),
+                (pl.col("valor") * (1 - pl.col("q"))).alias("valor"),
+            ),
+        ]
     )
 
 
@@ -505,6 +574,20 @@ def provincias() -> pl.DataFrame:
             meta_nac,
         )
     )
+    out.append(
+        _largo(
+            nacimiento_nacionalidad(),
+            ["nacido_fuera", "nacionalidad_esp_ext"],
+            "nacimiento_nacionalidad",
+            {
+                "fuente": "ecp: tabla 60129 + colectivos + censo_anual_micro_demograficas "
+                "(exhaustivo)",
+                "edicion": "2026-01-01 (nacionalidad); 2025-01-01 (nacidos fuera)",
+                "metodo": "proporción de nacidos fuera de 2025 por provincia × sexo × edad_5 × "
+                "nacionalidad sobre las celdas de la ECP 2026 (D-049)",
+            },
+        )
+    )
     out += electorales_provincia()
     estructuras = [
         (
@@ -528,6 +611,14 @@ def provincias() -> pl.DataFrame:
                 ("actividad_sexo", ["relacion_actividad", "sexo"]),
                 ("actividad_edad", ["relacion_actividad", "edad_actividad"]),
             ],
+        ),
+        (
+            sin_estudios,
+            "edad_estudios",
+            "sin_estudios",
+            "66601",
+            "2024-01-01",
+            [("sin_estudios_edad", ["sin_estudios", "edad_estudios"])],
         ),
         (
             fuentes.estado_civil,

@@ -428,7 +428,7 @@ def construir(path: Path) -> pl.DataFrame:
     # Estudios (15+) y actividad (16+) por sexo: tablas municipales 2024
     for tipo, var, o, minimo in (
         ("estudios", "estudios_3", None, 15),
-        ("actividad", "relacion_actividad", "actividad_sexo", 16),
+        ("actividad", "relacion_actividad", "actividad_sexo_mun", 16),
     ):
         tab = _tablas_municipales(tipo)
         con_tabla = set(tab["municipio"].str.slice(0, 2).unique().to_list())
@@ -465,7 +465,7 @@ def construir(path: Path) -> pl.DataFrame:
             (pl.col("n") * pl.col("q")).alias("valor")
         )
         if tipo == "actividad":
-            v = _separar_pensionistas(v, prov)
+            v = _ajuste_epa(_separar_pensionistas(v, prov), prov)
         v = pl.concat(
             [
                 v.select("municipio", "sexo", pl.col("categoria").alias(var), "valor"),
@@ -507,6 +507,57 @@ def construir(path: Path) -> pl.DataFrame:
     )
     res = pl.concat(out).sort("objetivo", "clave")
     return res
+
+
+def _ajuste_epa(v: pl.DataFrame, prov: pl.DataFrame) -> pl.DataFrame:
+    """D-049: lleva la estructura municipal del Censo Anual 2024 a la de la EPA del 2T 2026 con
+    el cociente, por provincia × sexo × categoría, entre el objetivo provincial (EPA, reservado
+    `actividad_sexo`) y la tabla provincial del Censo Anual; conserva el total de cada municipio
+    y sexo."""
+    from sinpop.targets import build
+
+    cen = (
+        build.fuentes.actividad([16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70])
+        .group_by("provincia", "sexo", "categoria")
+        .agg(pl.col("valor").sum())
+        .with_columns(
+            (pl.col("valor") / pl.col("valor").sum().over("provincia", "sexo")).alias("c")
+        )
+    )
+    obj = (
+        prov.filter(
+            (pl.col("objetivo") == "actividad_sexo")
+            & ~pl.col("clave").str.contains("relacion_actividad=NP")
+        )
+        .with_columns(
+            pl.col("clave").str.extract(r"relacion_actividad=(\w+)").alias("categoria"),
+            pl.col("clave").str.extract(r"sexo=(\w+)").alias("sexo"),
+        )
+        .group_by("provincia", "sexo", "categoria")
+        .agg(pl.col("valor").sum())
+        .with_columns(
+            (pl.col("valor") / pl.col("valor").sum().over("provincia", "sexo")).alias("e")
+        )
+    )
+    f = cen.join(
+        obj.select("provincia", "sexo", "categoria", "e"), on=["provincia", "sexo", "categoria"]
+    )
+    f = f.select(
+        "provincia",
+        "sexo",
+        "categoria",
+        pl.when(pl.col("c") > 0).then(pl.col("e") / pl.col("c")).otherwise(1.0).alias("f"),
+    )
+    w = v.join(f, on=["provincia", "sexo", "categoria"], how="left").with_columns(
+        (pl.col("valor") * pl.col("f").fill_null(1.0)).alias("_v")
+    )
+    return w.with_columns(
+        (
+            pl.col("_v")
+            * pl.col("valor").sum().over("municipio", "sexo")
+            / pl.col("_v").sum().over("municipio", "sexo")
+        ).alias("valor")
+    ).drop("_v", "f")
 
 
 def _separar_pensionistas(v: pl.DataFrame, prov: pl.DataFrame) -> pl.DataFrame:

@@ -33,7 +33,7 @@ MUNIS = [
 ]
 # Prueba del territorio reservado: Galicia sin sus objetivos socioeconómicos.
 RESERVADO = "CCAA:12"
-SOCIOECONOMICOS = ("actividad_sexo", "estudios_edad")
+SOCIOECONOMICOS = ("actividad_edad", "estudios_edad")
 RESUMEN = REPORTS_DIR / "fase_05_validacion.json"
 DETALLE = REPORTS_DIR / "fase_05"
 

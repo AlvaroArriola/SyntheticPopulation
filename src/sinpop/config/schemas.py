@@ -262,10 +262,14 @@ class TerritoriesConfig(Strict):
 class Grupo(Strict):
     id: str = Field(pattern=r"^[a-z0-9_]+$")
     nombre: str
+    # Expresiones SQL de Polars sobre las variables de la población (pl.sql_expr)
     definicion: str
+    universo: str = "TRUE"
+    unidad: Literal["persona", "hogar"] = "persona"
     referencia: str
     recuento_minimo: int | None = Field(default=None, gt=0)
     capa: Literal["base", "enriquecimiento", "opinion", "politica"] = "base"
+    medible: bool = True
     motivo: str | None = None
 
 

@@ -1704,8 +1704,22 @@ variables:
           '7': NC
         notas: 6 = labores del hogar → otra_inactividad (D-018); 7 = sin cuestionario → NC
       epa:
-        variable_original: AOI
-        verificado_contra: dr_EPA_2026.xlsx (INE)
+        variable_original: AOI (ocupados 03-04, parados 05-06) y SIDI1 (inactivos 07-09)
+        verificado_contra: dr_EPA_2026.json (INE)
+        recodificacion:
+          '01': estudiante
+          '02': jubilado_pensionista
+          '03': otra_inactividad
+          '04': incapacidad_permanente
+          '05': jubilado_pensionista
+          '06': otra_inactividad
+          '07': otra_inactividad
+          '00': NC
+        notas: 'la tabla es la de SIDI1 (situación de inactividad autopercibida), que solo se aplica a
+          los inactivos según AOI; 03 = labores del hogar y 06 = trabajos sociales sin remunerar →
+          otra_inactividad, como en la ECV y la TIC-H; 05 = pensión distinta de la de jubilación →
+          jubilado_pensionista (el Censo y la TIC-H agrupan jubilados y pensionistas); inactivo
+          con SIDI1 vacío → NC (D-049)'
       tic_h:
         variable_original: SIT_LAB
         verificado_contra: dr_TICHcuestionario_2025.json (INE)
@@ -3311,6 +3325,27 @@ variables:
     - 10
     descripcion: Rasgo latente
     fuente_principal: cis_barometros / ess
+  sin_estudios:
+    prioridad: P1
+    nivel: persona
+    tipo: categorica
+    descripcion: 'Sin estudios: analfabetos o primaria incompleta (CNED-A nivel 0; «Sin estudios»
+      de la tabla 66601 del Censo Anual); calibrada por edad (D-049)'
+    categorias:
+    - si
+    - 'no'
+    derivada_de: nivel_estudios
+    fuente_principal: censo_anual_tablas
+  nacido_fuera:
+    prioridad: P1
+    nivel: persona
+    tipo: categorica
+    descripcion: Nacido fuera de España (calibrada con la nacionalidad, D-049)
+    categorias:
+    - si
+    - 'no'
+    derivada_de: pais_nacimiento_grupo
+    fuente_principal: censo_anual_micro_demograficas
   tenencia_censo:
     prioridad: P1
     nivel: hogar

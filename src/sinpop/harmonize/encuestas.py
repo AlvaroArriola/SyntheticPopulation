@@ -210,8 +210,36 @@ COLS_EPA = [
     "PARCO1",
     "OCUP1",
     "DUCON1",
+    "SIDI1",
     "FACTOREL",
 ]
+
+
+def _actividad_epa(df: pl.DataFrame, menor16: pl.Expr) -> pl.Series:
+    inactivo = recode(
+        df,
+        "SIDI1",
+        "relacion_actividad",
+        "epa",
+        nc_si=pl.col("AOI").is_in(["07", "08", "09"]),
+        # SIDI1 solo se pregunta a los inactivos: en el resto, vacío = no procede
+        np_si=menor16 | pl.col("AOI").is_in(["03", "04", "05", "06"]),
+    )
+    aoi = df["AOI"]
+    return (
+        pl.DataFrame({"aoi": aoi, "ina": inactivo})
+        .select(
+            pl.when(pl.col("aoi").is_in(["03", "04"]))
+            .then(pl.lit("ocupado"))
+            .when(pl.col("aoi").is_in(["05", "06"]))
+            .then(pl.lit("parado"))
+            .when(pl.col("aoi").is_in(["07", "08", "09"]))
+            .then(pl.col("ina"))
+            .otherwise(pl.lit("NP"))
+            .alias("relacion_actividad")
+        )
+        .to_series()
+    )
 
 
 def epa() -> pl.DataFrame:
@@ -246,6 +274,8 @@ def epa() -> pl.DataFrame:
         recode(df, "NAC1", "nacionalidad_esp_ext", s),
         recode(df, "NFORMA", "estudios_3", s, np_si=menor16),
         recode(df, "AOI", "relacion_actividad_3", s, np_si=menor16),
+        # D-049: ocupados y parados por AOI; inactivos por su situación autopercibida (SIDI1)
+        _actividad_epa(df, menor16),
         recode(df, "SITU", "situacion_profesional", s, np_si=no_ocup),
         recode(df, "SITU", "sector_publico", s, np_si=no_ocup),
         recode(df, "PARCO1", "tipo_jornada", s, np_si=no_ocup),

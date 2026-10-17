@@ -806,3 +806,37 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - Limitaciones declaradas: tenencia, vehículo, jornada y sector público por comunidad; el informe de cada población lo indica.
 - **Alternativa:** añadir la comunidad como llave fija en esos bloques. Se perderían asociaciones con las llaves: con la comunidad primero, V-ENRIQ-ASOC tenía entre 6 y 11 fallos (D-045).
 - **Aprobada por:** humano (2026-10-17). Aplicada en `thresholds.yaml` y en la puerta.
+
+## D-049 · Correcciones de entrada que destapa la auditoría de F7 (2026-10-17)
+
+- **Fecha:** 2026-10-17
+- **Fase:** F7 (corrige F2-F3)
+- **Estado:** en vigor. Son medidas correctoras de docs/06 §4: primero revisar los datos de entrada y, si hay cifra oficial, calibrar el grupo. Se presentan en la revisión humana G7.7.
+- **Contexto:** la primera auditoría de la población nacional (1.000.000, semilla 1) da tres grupos con representación fuera de rango y perfiles de actividad desviados.
+  - Jóvenes de 18 a 24 que ni estudian ni trabajan: 26 % frente al 13 % de la ECV 2025.
+  - Personas sin estudios: ratio 1,16 frente al Censo Anual 2024.
+  - Nacidos fuera con nacionalidad española: ratio 0,81 frente al Censo Anual 2025.
+- **Causas, en los datos de entrada:**
+  1. **Inactivos del Censo Anual.**
+     - La relación con la actividad del Censo Anual 2024 (registros administrativos) clasifica al 23 % de los jóvenes de 20-24 años en «otra situación de inactividad». La ECV y la TIC-H, con situación declarada, los clasifican como estudiantes: el 49-53 % frente al 28 %. «Otra inactividad» es solo el 3 %.
+     - El Censo no identifica bien a los estudiantes y su «otra inactividad» (19 % de los adultos) no coincide con ninguna encuesta (10 %).
+  2. **Sin estudios:** no se calibraba; solo `estudios_3`. Los donantes de 2021 tienen más personas sin estudios que el Censo Anual 2024: 4,3 % frente a 3,7 %.
+  3. **Nacidos fuera:** no se calibraba el país de nacimiento. Desde 2021 ha crecido mucho la adquisición de la nacionalidad española, así que los donantes de 2021 se quedan cortos.
+- **Decisiones:**
+  1. **La relación con la actividad, entera, de la EPA del 2T 2026.** Ocupados y parados según AOI (OIT). Los inactivos, según su situación autopercibida (SIDI1, comprobada en `dr_EPA_2026.json`):
+     - 01 → estudiante;
+     - 02 y 05 → jubilado_pensionista;
+     - 04 → incapacidad_permanente;
+     - 03, 06 y 07 → otra_inactividad;
+     - 00 y vacío → NC (0,6 %).
+
+     El reparto entre provincias y edades quinquenales dentro de cada comunidad × sexo × tramo sigue siendo el del Censo Anual, con la misma contracción de D-046.
+
+     Es la definición declarada de la ECV, la TIC-H y el CIS, de modo que las capas de enriquecimiento, opinión y política comparan lo mismo.
+
+     `actividad_edad` pasa a calibrarse, para que el perfil de edad de los parados y estudiantes sea el de la EPA, y `actividad_sexo` pasa a reservado.
+
+     En las listas de municipios, las tablas municipales del Censo Anual se llevan a la EPA con el cociente provincial (`actividad_sexo_mun`).
+  2. **Nuevo objetivo calibrado `sin_estudios_edad`:** «Sin estudios» (CNED-A nivel 0: analfabetos y primaria incompleta) por edad, de la tabla 66601. Va con la variable derivada `sin_estudios`.
+  3. **Nuevo objetivo calibrado `nacimiento_nacionalidad`:** nacido fuera × nacionalidad española/extranjera. Usa la proporción de nacidos fuera de cada provincia × sexo × edad × nacionalidad en el Censo Anual exhaustivo 2025, sobre las celdas de la ECP 2026 (3,07 millones de españoles nacidos fuera, 6,2 %). Va con la variable derivada `nacido_fuera`.
+- **Consecuencias:** se rehacen F3-F6 y la auditoría. La prueba del territorio reservado de F5 retira ahora `actividad_edad` y `estudios_edad`.

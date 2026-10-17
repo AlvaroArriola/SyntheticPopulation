@@ -1,99 +1,111 @@
-# Grupos vigilados (docs/06_sesgos_y_minorias.md, sección 2). Ampliable.
-# Las expresiones usan los nombres y categorías de configs/variables.yaml.
-# Las 15 nacionalidades principales se añaden una a una en F2, cuando
-# `nacionalidad_top` tenga su dominio fijado con el Padrón vigente.
+# Grupos vigilados (docs/06_sesgos_y_minorias.md, sección 2; F7).
+# `definicion` y `universo` son expresiones SQL de Polars (pl.sql_expr) sobre las variables de
+# la población, con los nombres y categorías de configs/variables.yaml. La proporción del grupo
+# se mide dentro de su universo y se compara con la de la fuente de `referencia`, con el mismo
+# universo (src/sinpop/audit/referencias.py). Las 15 nacionalidades principales se añaden una a
+# una desde el objetivo `nacionalidad_top` de F3 (grupos `nacionalidad_<código>`).
 grupos:
   - id: mayores_85
     nombre: Personas de 85 años o más
     definicion: "edad >= 85"
-    referencia: padron_continuo
+    referencia: ecp
     recuento_minimo: 500
     motivo: Pocos donantes; alta presencia en residencias
   - id: mayores_solos
     nombre: Personas de 65+ que viven solas
-    definicion: "edad >= 65 and tipo_hogar == 'unipersonal'"
+    definicion: "edad >= 65 AND tipo_hogar = 'unipersonal'"
+    universo: "tipo_residencia = 'vivienda_familiar'"
     referencia: censo2021_tablas
     recuento_minimo: 500
     motivo: Soledad; grupo clave en vivienda y cuidados
   - id: nacidos_fuera_espanoles
     nombre: Nacidos fuera de España con nacionalidad española
-    definicion: "pais_nacimiento_grupo != 'espana' and nacionalidad_grupo in ['espanola', 'espanola_doble']"
-    referencia: censo_anual_tablas
+    definicion: "pais_nacimiento_grupo <> 'espana' AND nacionalidad_grupo = 'espanola'"
+    referencia: censo_anual_micro_demograficas
     motivo: Grupo creciente, a menudo invisible
   - id: ceuta_melilla
     nombre: Residentes en Ceuta y Melilla
-    definicion: "ccaa in ['18', '19']"
-    referencia: padron_continuo
+    definicion: "ccaa IN ('18', '19')"
+    referencia: ecp
     motivo: Territorios muy pequeños y con perfil propio
   - id: municipios_menos_2000
     nombre: Residentes en municipios de menos de 2.000 habitantes
-    definicion: "tamano_municipio == 'hasta_2000'"
+    definicion: "tamano_municipio = 'hasta_2000'"
     referencia: padron_continuo
     motivo: Ruralidad extrema; pocos donantes en algunas zonas
   - id: islas_no_capitalinas
     nombre: Residentes en islas no capitalinas
-    definicion: "municipio in islas_no_capitalinas"
+    definicion: "FALSE"
     referencia: padron_continuo
-    motivo: Insularidad (solo si se dispone de municipio; lista de municipios a fijar en F3)
+    medible: false
+    motivo: Insularidad. No medible en la población base, porque los microdatos del Censo no identifican los municipios de menos de 10.000 habitantes; se puede construir como territorio por lista de municipios (F5)
   - id: monoparentales
-    nombre: Personas en hogares monoparentales
-    definicion: "tipo_hogar == 'monoparental'"
+    nombre: Hogares monoparentales
+    definicion: "tipo_hogar = 'monoparental'"
+    universo: "tipo_residencia = 'vivienda_familiar'"
+    unidad: hogar
     referencia: censo2021_tablas
     motivo: Vulnerabilidad económica
   - id: limitacion_grave
-    nombre: Personas con limitación grave
-    definicion: "discapacidad_limitacion == 'limitacion_grave'"
+    nombre: Personas de 16+ con limitación grave (GALI)
+    definicion: "discapacidad_limitacion = 'limitacion_grave'"
+    universo: "edad >= 16 AND tipo_residencia = 'vivienda_familiar'"
     referencia: ecv
     capa: enriquecimiento
     motivo: Grupo frecuentemente invisible
   - id: jovenes_ni_ni
     nombre: Jóvenes de 18 a 24 que ni estudian ni trabajan
-    definicion: "edad >= 18 and edad <= 24 and relacion_actividad not in ['ocupado', 'estudiante']"
-    referencia: epa
-    motivo: Situación vital específica
+    definicion: "relacion_actividad NOT IN ('ocupado', 'estudiante')"
+    universo: "edad >= 18 AND edad <= 24 AND tipo_residencia = 'vivienda_familiar'"
+    referencia: ecv
+    motivo: Situación vital específica (la EPA armonizada no separa a los estudiantes inactivos)
   - id: parados
-    nombre: Personas en paro
-    definicion: "relacion_actividad == 'parado'"
+    nombre: Personas en paro (16+)
+    definicion: "relacion_actividad = 'parado'"
+    universo: "edad >= 16"
     referencia: epa
     motivo: Situación económica
   - id: sin_estudios
-    nombre: Personas sin estudios o con primaria incompleta
-    definicion: "nivel_estudios <= 'primaria_incompleta'"
+    nombre: Personas de 15+ sin estudios (analfabetas o con primaria incompleta)
+    definicion: "nivel_estudios IN ('analfabetos', 'primaria_incompleta')"
+    universo: "edad >= 15"
     referencia: censo_anual_tablas
-    motivo: Brecha educativa y digital (categoría exacta a fijar en F2 con el dominio CNED-A)
+    motivo: Brecha educativa y digital («Sin estudios» de la tabla 66601, CNED-A nivel 0)
   - id: privacion_severa
-    nombre: Hogares con privación material severa
-    definicion: "privacion_material_severa == True"
+    nombre: Personas de 16+ en carencia material y social severa
+    definicion: "privacion_material = 'si'"
+    universo: "edad >= 16 AND tipo_residencia = 'vivienda_familiar'"
     referencia: ecv
     capa: enriquecimiento
-    motivo: Pobreza (indicador oficial ECV a verificar en F2)
+    motivo: Pobreza (indicador oficial de la UE, vrMATSOCDEP)
   - id: nunca_internet
-    nombre: Personas que nunca usan internet
-    definicion: "uso_internet == 'nunca'"
+    nombre: Personas de 16+ que nunca usan internet
+    definicion: "uso_internet = 'nunca'"
+    universo: "edad >= 16 AND tipo_residencia = 'vivienda_familiar'"
     referencia: tic_h
     capa: enriquecimiento
     motivo: Brecha digital
   - id: abstencion_generales
     nombre: Abstencionistas en las generales de 2023
-    definicion: "recuerdo_voto_generales == 'abstencion'"
+    definicion: "recuerdo_voto_generales = 'abstencion'"
     referencia: infoelectoral_resultados
     capa: politica
-    motivo: Suelen faltar en las encuestas
+    motivo: Suelen faltar en las encuestas (se audita en F8B)
   - id: partidos_pequenos_regionalistas
     nombre: Votantes de partidos pequeños y regionalistas
-    definicion: "recuerdo_voto_generales_familia in ['nacionalista_regionalista', 'otros']"
+    definicion: "recuerdo_voto_generales_familia IN ('nacionalista_regionalista', 'otros')"
     referencia: infoelectoral_resultados
     capa: politica
-    motivo: Pocos casos en el CIS
+    motivo: Pocos casos en el CIS (se audita en F8B)
   - id: sin_derecho_voto_generales
     nombre: Residentes sin derecho a voto en generales
-    definicion: "derecho_voto_generales == False"
+    definicion: "derecho_voto_generales = 'no'"
     referencia: censo_electoral
     capa: politica
-    motivo: No deben recibir recuerdo de voto; sí tienen opiniones políticas
+    motivo: No deben recibir recuerdo de voto; sí tienen opiniones políticas (se audita en F8B)
   - id: sin_ubicacion_ideologica
     nombre: Personas sin ubicación ideológica
-    definicion: "ideologia_autoubicacion in ['NS', 'NC']"
+    definicion: "ideologia_autoubicacion IN ('NS', 'NC')"
     referencia: cis_barometros
     capa: politica
-    motivo: Grupo amplio que tiende a desaparecer si se imputa siempre un valor
+    motivo: Grupo amplio que tiende a desaparecer si se imputa siempre un valor (se audita en F8B)
