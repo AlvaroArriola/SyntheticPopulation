@@ -229,6 +229,7 @@ def ejecutar() -> dict:
     ho = holdout(p, h, base_cols)
     ho.write_csv(DETALLE / "v_enriq_holdout.csv")
     g66 = g66_renta(meta, h)
+    diag = diagnostico_composicion(p)
     calidad = {
         c.removesuffix("__calidad"): dict(p[c].value_counts().iter_rows())
         for c in p.columns
@@ -269,6 +270,8 @@ def ejecutar() -> dict:
             "umbral": thr["V-ENRIQ-HOLDOUT"]["max_abs_dif"],
             "filas": ho.to_dicts(),
         },
+        "marg_ajustada": diag["marg_ajustada"],
+        "tvd_ajustada": diag["tvd_ajustada"],
         "g65": g65,
         "g66": g66,
         "triangulacion_esde": triangulacion_salud(p),
@@ -284,6 +287,13 @@ def ejecutar() -> dict:
     }
     RESUMEN.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=float), "utf-8")
     return res
+
+
+def diagnostico_composicion(p: pl.DataFrame) -> dict:
+    """D-048: V-ENRIQ-MARG y TVD nacional con la población reponderada, dentro de cada
+    comunidad × edad_4, a la composición de cada encuesta (actividad y estudios)."""
+    aj = VE.v_marg_ajustada(p, 200, SEMILLA)
+    return {"marg_ajustada": aj.to_dicts(), "tvd_ajustada": VE.tvd_ajustada(p).to_dicts()}
 
 
 def VE_columnas(p: pl.DataFrame) -> list[str]:
@@ -302,6 +312,13 @@ def VE_columnas(p: pl.DataFrame) -> list[str]:
 
 
 if __name__ == "__main__":
+    import sys
+
+    if "--diagnostico" in sys.argv:  # recalcula solo el diagnóstico de composición
+        r = json.loads(RESUMEN.read_text("utf-8"))
+        r |= diagnostico_composicion(V.cargar(r["run_id"])[0])
+        RESUMEN.write_text(json.dumps(r, ensure_ascii=False, indent=1, default=float), "utf-8")
+        raise SystemExit
     r = ejecutar()
     print(
         json.dumps({k: r[k] for k in ("v_enriq_marg", "v_enriq_asoc", "g65")}, default=float)[:3000]

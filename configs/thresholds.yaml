@@ -43,6 +43,9 @@ V-PESOS:
 V-SEMILLAS:
   n_semillas: 5
   factor_sd: 1.5
+  # D-047: con 5 semillas, una proporción supera 1,5 por azar el 6 % de las veces; solo es
+  # fallo (sesgo) si la misma proporción lo supera en dos o más tamaños de población.
+  tamanos_fallo_min: 2
 V-COHERENCIA:
   tvd_marginales: 0.01
   tvd_cruces: 0.02
@@ -58,6 +61,15 @@ V-DONANTES:
 V-ENRIQ-MARG:
   proporcion_celdas_ic95: 0.90
   tvd_nacional: 0.02
+  # D-048: una variable que no cumple se acepta si, con la población reponderada a la
+  # composición de la encuesta (actividad y estudios), su TVD nacional es ≤ tvd_nacional y su
+  # desviación está declarada aquí (patrón regional o fecha de la encuesta).
+  limitaciones:
+    tenencia_vivienda: regional (régimen del Censo 2021 en hogares sin extranjeros)
+    vehiculo_hogar: regional
+    tipo_jornada: regional
+    sector_publico: regional
+    teletrabajo: fecha (ocupados del 2T 2026 frente a la TIC-H 2025)
 V-ENRIQ-ASOC:
   max_abs_dif: 0.05
 V-ENRIQ-BLOQUE:

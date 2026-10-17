@@ -52,6 +52,10 @@ En F5 se añadió el objetivo calibrado `nacionalidad_edad`, española/extranjer
 
 Las cifras de las secciones siguientes son las de la serie original.
 
+## Repetición con la actividad de la EPA (D-046, 17/10/2026)
+
+Con ocupados, parados e inactivos calibrados a la EPA del 2T 2026 y la corrección del grado de urbanización de las unidades importadas, la serie de 25 poblaciones (ya enriquecidas) supera de nuevo la puerta (`fase_04_puerta.md`). V-SEMILLAS tiene un fallo estricto por azar (mujeres de 35-39 en colectivos con N = 10.000) que no se repite en ningún otro tamaño (D-047).
+
 ## Cómo se construye la población
 
 1. **Donantes.** Los 1.853.662 hogares de la muestra del Censo 2021 (4.707.186 personas), completos, más un módulo de **colectivos** (D-021): 386.003 residentes en establecimientos colectivos a 01/01/2026, representados por personas donantes de su misma provincia, sexo y edad quinquenal (atributos distintos de edad, sexo y territorio marcados `modelada`; sin `household_id`). La actividad, la ocupación, el sector y la situación profesional son NP por debajo de 16 años, como en las tablas oficiales (D-038.1).

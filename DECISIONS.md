@@ -643,7 +643,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-16
 - **Fase:** F6
-- **Estado:** en vigor (F6 no tiene puerta de revisión humana; se presenta en `reports/fase_06.md` y se revisa en F7)
+- **Estado:** aprobada
 - **Contexto:** F6 añade las variables P1 y P2 que no están en los donantes censales, sin tocar las P0 (G6.5). Inventario de fuentes armonizadas (D-028):
   - ECV 2025: 29.369 hogares y 60.825 personas de 16 o más años; renta del año anterior.
   - EPA del 2T 2026: ocupados.
@@ -700,13 +700,13 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - *Predictive mean matching*: necesita un modelo por variable y rompe los bloques si se aplica variable a variable.
   - Vecino más próximo por distancia: tiende a concentrar donantes y a reducir la varianza.
   - Reescalar la renta al Atlas: mezcla definiciones distintas.
-- **Aprobada por:** pendiente del informe de F6 (el umbral de G6.6 necesita confirmación humana)
+- **Aprobada por:** humano (2026-10-17), con el informe de F6 y D-046 a D-048 (umbral de G6.6 en D-046 C)
 
 ## D-045 · Enriquecimiento: estrategia de colapso, tenencia de los hogares extranjeros y llaves estructurales (2026-10-16)
 
 - **Fecha:** 2026-10-16
 - **Fase:** F6
-- **Estado:** en vigor (se revisa con el informe de F6)
+- **Estado:** aprobada
 - **Contexto:** con el diseño inicial de D-044 (llaves en orden fijo, la comunidad como primera llave, mínimo de 10 donantes por celda), muchas celdas no tenían donantes suficientes y se quitaban llaves importantes. Ejemplo, en Galicia: V de Cramér de renta × nacionalidad 0,29 en la ECV y 0,08 en la población. Se compararon estrategias sobre la población nacional de 1.000.000 de personas (semilla 1), con las métricas de docs/05 §5:
 
   | Estrategia (1M) | Celdas en IC 95 % (global) | V-ENRIQ-ASOC fuera de 0,05 | V-ENRIQ-BLOQUE máx. / medio | TVD de la tenencia |
@@ -740,7 +740,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - Entre los adultos, «otra inactividad»: 19 % en la población y 10 % en las encuestas; ocupados: 49,6 % y 52 %.
   - Estudios hasta la obligatoria: 42 % en la población y 34-38 % en las encuestas.
   - Afectan sobre todo al teletrabajo (su NP son los no ocupados) y a la compra en línea.
-- **Aprobada por:** pendiente del informe de F6
+- **Aprobada por:** humano (2026-10-17), con el informe de F6
 
 ## D-046 · Puerta F6: composición censal y límites del emparejamiento (2026-10-16)
 
@@ -774,7 +774,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-16
 - **Fase:** F4 (serie repetida con D-046)
-- **Estado:** propuesta (cambia la lectura de un umbral; necesita aprobación humana)
+- **Estado:** aprobada
 - **Contexto:** al repetir la serie F4, G4.5 falla en 1 de 1.220 proporciones.
   - Es la proporción de mujeres de 35-39 años entre los residentes en colectivos, con N = 10.000 (unos 80 residentes en colectivos por población).
   - Su desviación típica entre las 5 semillas es 1,59 veces la de una muestra aleatoria simple; el umbral es 1,5.
@@ -782,13 +782,13 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Por qué es azar:** con 5 semillas, la desviación típica se estima con 4 grados de libertad. Para una proporción con la variabilidad de una muestra aleatoria simple, P(s > 1,5 σ) = P(χ²₄ > 9) = 6,1 %. En los colectivos, que se muestrean casi como personas sueltas (el equilibrado apenas reduce su varianza), es esperable que alguna de las 38 celdas supere 1,5 por azar.
 - **Propuesta** (como D-039 para V-CRUCE): una proporción solo falla V-SEMILLAS si supera 1,5 en dos o más tamaños de población (sesgo sistemático). El resultado estricto se informa siempre.
 - **Alternativa:** más semillas (por ejemplo, 10) solo en N = 10.000. Así baja la probabilidad de falso fallo, pero cuesta otra serie.
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-17). Aplicada en `thresholds.yaml` y en la puerta.
 
 ## D-048 · G6.1 tras calibrar la actividad a la EPA: lo que queda (2026-10-16)
 
 - **Fecha:** 2026-10-16
 - **Fase:** F6
-- **Estado:** propuesta (lectura de un umbral; necesita aprobación humana)
+- **Estado:** aprobada
 - **Contexto:** tras D-046 A2 y la cadena F3-F6 repetida, G6.1 queda así (`reports/fase_06.md`):
   - 92,6 % de las celdas dentro del IC.
   - Por debajo del 90 %: tenencia (65 %), vehículo (81 %), sector público (86 %), jornada (87 %) y teletrabajo (89 %).
@@ -805,4 +805,4 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - Se informan siempre las dos lecturas.
   - Limitaciones declaradas: tenencia, vehículo, jornada y sector público por comunidad; el informe de cada población lo indica.
 - **Alternativa:** añadir la comunidad como llave fija en esos bloques. Se perderían asociaciones con las llaves: con la comunidad primero, V-ENRIQ-ASOC tenía entre 6 y 11 fallos (D-045).
-- **Aprobada por:** pendiente
+- **Aprobada por:** humano (2026-10-17). Aplicada en `thresholds.yaml` y en la puerta.

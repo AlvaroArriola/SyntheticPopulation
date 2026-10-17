@@ -1,6 +1,6 @@
 # Fase 06 · Enriquecimiento
 
-**Estado:** G6.2-G6.6 superadas; G6.1 con cuatro variables por debajo del umbral por patrones regionales y una por la fecha de las encuestas (decisión D-048).
+**Estado:** superada (G6.1-G6.6). En G6.1, cinco variables se aceptan como limitación declarada (D-048, aprobada el 17/10/2026): cuatro por patrones regionales y una por la fecha de la encuesta.
 **Fecha:** 2026-10-16 · **Versión del código:** ver `fase_06_puerta.md`
 **Comando para reproducir** (cadena completa tras D-046, ≈ 5 h):
 
@@ -38,7 +38,7 @@ El enriquecimiento es la etapa 5 de `sinpop build`: cada población sale con 14 
 
 | Puerta | Criterio | Resultado | |
 | --- | --- | --- | --- |
-| G6.1 | V-ENRIQ-MARG: ≥ 90 % de las celdas CCAA × edad_4 en el IC 95 % de la encuesta; TVD nacional ≤ 0,02 | 92,6 % de las celdas en global; 5 variables por debajo del 90 %; 2 con TVD > 0,02 | ❌ (D-048) |
+| G6.1 | V-ENRIQ-MARG: ≥ 90 % de las celdas CCAA × edad_4 en el IC 95 % de la encuesta; TVD nacional ≤ 0,02 | 92,6 % de las celdas en global; 5 variables por debajo del 90 %; 2 con TVD > 0,02 | ✅ con limitaciones (D-048) |
 | G6.2 | V-ENRIQ-ASOC: \|Δ V de Cramér\| ≤ 0,05 con cada llave | 0 de 81 pares fuera; máx. 0.049 | ✅ |
 | G6.3 | V-ENRIQ-BLOQUE: máx. ≤ 0,05, media ≤ 0,02 | máx. 0.022, media 0.007 | ✅ |
 | G6.4 | V-ENRIQ-HOLDOUT: mejor que la independencia (D-046 B1) | 54 pares con 4 llaves reservadas; 0 peor que la independencia | ✅ |

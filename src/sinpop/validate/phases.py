@@ -661,21 +661,32 @@ def _g4_4_pesos() -> Check:
 
 
 def _g4_5_semillas() -> Check:
+    from collections import Counter
+
+    from sinpop.config import load_config
+
+    cfg = load_config("thresholds.yaml").v_semillas  # type: ignore[attr-defined]
     d, desc, um = (
         _f4(),
         "Variabilidad entre semillas dentro de lo esperado (V-SEMILLAS)",
-        ("sd entre 5 semillas ≤ 1,5 × sd de muestra aleatoria simple"),
+        f"sd entre 5 semillas ≤ {cfg.factor_sd} × sd de muestra aleatoria simple; fallo si la "
+        f"misma proporción lo supera en ≥ {cfg.tamanos_fallo_min} tamaños (D-047)",
     )
     if d is None:
         return _sin_resumen("G4.5", desc, um)
     fuera = sum(x["fuera"] for x in d["v_semillas"])
     tot = sum(x["proporciones"] for x in d["v_semillas"])
     rm = max(x["razon_media"] for x in d["v_semillas"])
+    veces = Counter((p["objetivo"], p["clave"]) for x in d["v_semillas"] for p in x["peores"])
+    sistematicos = [k for k, n in veces.items() if n >= cfg.tamanos_fallo_min]
+    # «peores» guarda hasta 10 por tamaño: con más fuera, no se puede descartar la repetición
+    incompleto = any(x["fuera"] > len(x["peores"]) for x in d["v_semillas"])
     return Check(
         "G4.5",
         desc,
-        fuera == 0,
-        f"{tot} proporciones; fuera: {fuera}; razón media sd/sd_MAS máx {rm:.2f}",
+        not sistematicos and not incompleto,
+        f"{tot} proporciones; fuera (estricto): {fuera}; repetidos en ≥ {cfg.tamanos_fallo_min} "
+        f"tamaños: {sistematicos or 0}; razón media sd/sd_MAS máx {rm:.2f}",
         um,
     )
 
@@ -891,21 +902,32 @@ def _sin_f6(id_: str, desc: str, um: str) -> Check:
 
 
 def _g6_1() -> Check:
+    from sinpop.config import load_config
+
+    lim = load_config("thresholds.yaml").v_enriq_marg.limitaciones  # type: ignore[attr-defined]
     d, desc = _f6(), "Distribuciones por CCAA × edad_4 frente a la encuesta (V-ENRIQ-MARG)"
-    um = "≥ 90 % de las celdas de cada variable en el IC 95 % (bootstrap); TVD nacional ≤ 0,02"
+    um = (
+        "≥ 90 % de las celdas de cada variable en el IC 95 % y TVD nacional ≤ 0,02; o, con la "
+        "composición de la encuesta, TVD ≤ 0,02 y limitación declarada (D-048)"
+    )
     if d is None:
         return _sin_f6("G6.1", desc, um)
     m, t = d["v_enriq_marg"], d["tvd_nacional"]
-    bajas = [x["variable"] for x in m["por_variable"] if x["proporcion"] < m["umbral"]]
-    tvd = [x["variable"] for x in t["por_variable"] if x["tvd"] > t["umbral"]]
-    peor = min(m["por_variable"], key=lambda x: x["proporcion"])
+    aj = {x["variable"]: x["tvd"] for x in d.get("tvd_ajustada", [])}
+    tvd = {x["variable"]: x["tvd"] for x in t["por_variable"]}
+    estrictas = [
+        x["variable"]
+        for x in m["por_variable"]
+        if x["proporcion"] < m["umbral"] or tvd[x["variable"]] > t["umbral"]
+    ]
+    malas = [v for v in estrictas if not (v in lim and aj.get(v, 1.0) <= t["umbral"])]
     return Check(
         "G6.1",
         desc,
-        not bajas and not tvd,
-        f"{len(m['por_variable'])} variables; en IC global {100 * m['global']:.1f} %; por debajo "
-        f"del 90 %: {bajas or 0} (mínimo {peor['variable']} {100 * peor['proporcion']:.1f} %); "
-        f"TVD > 0,02: {tvd or 0}",
+        not malas,
+        f"{len(m['por_variable'])} variables; en IC global {100 * m['global']:.1f} %; fuera del "
+        f"umbral estricto: {estrictas or 0}; aceptadas como limitación (D-048): "
+        f"{[v for v in estrictas if v not in malas] or 0}; fuera: {malas or 0}",
         um,
     )
 

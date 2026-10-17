@@ -327,3 +327,41 @@ def v_marg_ajustada(personas: pl.DataFrame, replicas: int = 200, semilla: int = 
                 }
             )
     return pl.DataFrame(filas)
+
+
+def _reponderar(s: pl.DataFrame, e: pl.DataFrame, b: Bloque) -> pl.DataFrame:
+    llaves = (
+        ["estudios_3", "sexo"] if b.nombre == "empleo" else ["relacion_actividad", "estudios_3"]
+    )
+    por = ["ccaa", "edad_4", *llaves]
+    qe = (
+        e.group_by(por)
+        .agg(pl.col(b.peso).sum().alias("we"))
+        .with_columns((pl.col("we") / pl.col("we").sum().over(["ccaa", "edad_4"])).alias("qe"))
+    )
+    qs = (
+        s.group_by(por)
+        .agg(pl.col("peso").sum().alias("ws"))
+        .with_columns((pl.col("ws") / pl.col("ws").sum().over(["ccaa", "edad_4"])).alias("qs"))
+    )
+    f = qe.join(qs, on=por).select(*por, (pl.col("qe") / pl.col("qs")).alias("_f"))
+    return s.join(f, on=por, how="left").with_columns(
+        (pl.col("peso") * pl.col("_f").fill_null(0.0)).alias("peso")
+    )
+
+
+def tvd_ajustada(personas: pl.DataFrame) -> pl.DataFrame:
+    """TVD nacional con la población reponderada a la composición de la encuesta (D-048)."""
+    filas = []
+    for b in BLOQUES:
+        e = _encuesta(b)
+        s = _universo(personas, b, sintetica=True)
+        e = e.filter(pl.col("ccaa").is_in(s["ccaa"].unique()))
+        sa = _reponderar(s, e, b).with_columns(pl.lit(1).alias("_t"))
+        et = e.with_columns(pl.lit(1).alias("_t"))
+        for v in b.variables:
+            a = _props(et, v, b.peso, ["_t"]).select(v, pl.col("p").alias("a"))
+            c = _props(sa, v, "peso", ["_t"]).select(v, pl.col("p").alias("b"))
+            j = a.join(c, on=v, how="full", coalesce=True).fill_null(0.0)
+            filas.append({"bloque": b.nombre, "variable": v, "tvd": M.tvd(j["b"], j["a"])})
+    return pl.DataFrame(filas)

@@ -333,6 +333,7 @@ class VPesos(_Th):
 class VSemillas(_Th):
     n_semillas: int
     factor_sd: float
+    tamanos_fallo_min: int = 1
 
 
 class VCoherencia(_Th):
@@ -350,6 +351,7 @@ class VDonantes(_Th):
 class VEnriqMarg(_Th):
     proporcion_celdas_ic95: float
     tvd_nacional: float
+    limitaciones: dict[str, str] = {}
 
 
 class VDelta(_Th):
