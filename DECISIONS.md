@@ -882,6 +882,11 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
        - **Exceso de cobertura.** Si una categoría de inactividad tiene en los donantes del bloque, por el factor mínimo (0,2) y con el mismo margen, más de lo que pide el objetivo, todas las categorías de inactividad del cruce se calibran como un total. Ejemplo: varones de 35-44 en «otra inactividad» en el País Vasco.
        - **Objetivo 0 con donantes.** Las categorías no ocupadas en ese caso. Ejemplo: paradas de 65 y más en Ceuta.
        - **Por qué el margen:** otras restricciones tiran de las mismas unidades.
+   2 ter. **Exceso de cobertura en estado civil y en nacionalidad × edad.** Si los donantes del bloque cubren de más una celda (su proporción por 0,2, con margen de 1,25, supera la del objetivo), esa celda se calibra junto con la categoría más numerosa de su cruce.
+     - **Cruce:** el tramo de edad en el estado civil; la nacionalidad en nacionalidad × edad.
+     - **Ejemplo:** estado civil «no consta» de 35-54 años en Ceuta, mucho más frecuente en los donantes de 2021.
+     - **Último recurso:** si un bloque sigue sin converger y hay celdas de nacionalidad × edad fuera de tolerancia, esas nacionalidades se calibran en el bloque solo por su total y se repite, con 5 intentos como máximo (`MAX_SIN_EDAD`). Le ocurre a los marroquíes de Ceuta: los hogares de 2021 traen juntos niños y adultos con una estructura de edad que no casa con la de 2025.
+     - Todo queda en las fusiones de la calibración.
    2 bis. **Nacionalidades pequeñas sin edad.** Una nacionalidad con menos de 2.000 personas en el bloque (`MIN_NACIONALIDAD_EDAD`) se calibra solo por su total: todas sus edades van a una celda. Con tan pocos donantes, el total y la edad no se pueden cumplir a la vez dentro de las cotas; ejemplo: ecuatorianos en La Rioja (1.090).
   4. **Atributo nuevo `cursa_formacion`.** Indica si la persona ha cursado estudios reglados o formación no reglada en las cuatro últimas semanas. Sale de CURSR y CURSNR de la EPA 2T 2026 (tabla TCURSR, comprobada en `dr_EPA_2026.json`).
      - Se enriquece en un bloque nuevo, «formación» (F6): EPA, 16+ no ocupados, con la relación con la actividad como llave fija; los ocupados quedan NP.
