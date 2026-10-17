@@ -1704,7 +1704,7 @@ variables:
           '7': NC
         notas: 6 = labores del hogar → otra_inactividad (D-018); 7 = sin cuestionario → NC
       epa:
-        variable_original: AOI (ocupados 03-04, parados 05-06) y SIDI1 (inactivos 07-09)
+        variable_original: AOI (ocupados 03-04, parados 05-06) y SIDI1-SIDI3 con CURSR (inactivos 07-09)
         verificado_contra: dr_EPA_2026.json (INE)
         recodificacion:
           '01': estudiante
@@ -1720,7 +1720,9 @@ variables:
           otra_inactividad, como en la ECV y la TIC-H; 05 = pensión distinta de la de jubilación
           (viudedad, orfandad) → otra_inactividad, porque la categoría 5 del Censo 2021 es solo
           «Pensionista de jubilación, prejubilación» (RELA) y la ECV no tiene jubilados jóvenes;
-          inactivo con SIDI1 vacío → NC (D-049)'
+          inactivo con SIDI1 vacío → NC (D-049). SIDI1-SIDI3 son hasta tres respuestas ordenadas
+          por código; se elige una con prioridad 02 > 04 > 01 con estudios reglados (CURSR 1-2) >
+          la primera de 03, 05, 06, 07; 01 sin estudios reglados → otra_inactividad (D-049)'
       tic_h:
         variable_original: SIT_LAB
         verificado_contra: dr_TICHcuestionario_2025.json (INE)

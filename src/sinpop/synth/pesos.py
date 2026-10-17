@@ -115,6 +115,9 @@ def _celdas_por_unidad(personas: pl.DataFrame, obj: pl.DataFrame) -> pl.DataFram
     return pl.concat(out)
 
 
+MIN_INACTIVIDAD = 0.02
+
+
 def fusionar(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict[str, str]]]:
     """Funde con «otras_extranjeras» las nacionalidades cuyo objetivo en el bloque es menor que
     `MIN_CELDA_NACIONALIDAD` personas (p. ej. 7,6 ecuatorianos en Melilla): con tan pocos casos,
@@ -143,25 +146,50 @@ def fusionar(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict[str, str]]
 
 
 def _fusionar_actividad(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict[str, str]]]:
-    """Funde con «otra_inactividad» del mismo cruce las categorías de inactividad con objetivo 0
-    (D-049; p. ej. jubilados de 16-24 años: la EPA no tiene ninguno y el Censo, de registros
-    administrativos, sí). Solo afecta a la calibración: la persona conserva su categoría."""
+    """Funde con «otra_inactividad» del mismo tramo las categorías de inactividad que pesan menos
+    de `MIN_INACTIVIDAD` de los inactivos del tramo (D-049; p. ej. jubilados de 16-44 años o
+    estudiantes de 65 y más): la EPA tiene algunos y los donantes del Censo (registros
+    administrativos) casi ninguno, y la calibración acotada no tiene solución. Solo afecta a la
+    calibración: la persona conserva su categoría y el total de inactivos del tramo se calibra."""
     otra = "relacion_actividad=otra_inactividad"
+    inactivas = ["estudiante", "jubilado_pensionista", "incapacidad_permanente"]
     fusion, partes = {}, []
     for o in ("actividad_tramo",):
-        a = obj.filter(pl.col("objetivo") == o)
-        cero = a.filter((pl.col("valor") <= 0) & ~pl.col("clave").str.starts_with(otra + ";"))
-        if a.is_empty() or cero.is_empty():
+        a = obj.filter(pl.col("objetivo") == o).with_columns(
+            pl.col("clave").str.extract(r"^relacion_actividad=([^;]+)").alias("_c"),
+            pl.col("clave").str.extract(r"^relacion_actividad=[^;]+(;.*)$").alias("_resto"),
+        )
+        if a.is_empty():
             continue
-        mapa = {
-            c: otra + c[c.index(";") :]
-            for c in cero["clave"]
-            if otra + c[c.index(";") :] in set(a["clave"])
-        }
+        a = a.with_columns(
+            pl.when(pl.col("_c").is_in([*inactivas, "otra_inactividad"]))
+            .then(pl.col("valor"))
+            .otherwise(0.0)
+            .sum()
+            .over("_resto")
+            .alias("_ina")
+        )
+        peq = a.filter(
+            pl.col("_c").is_in(inactivas) & (pl.col("valor") < MIN_INACTIVIDAD * pl.col("_ina"))
+        )
+        destino = set(a.filter(pl.col("_c") == "otra_inactividad")["clave"])
+        pares = peq.select("clave", "_resto").iter_rows()
+        mapa = {c: otra + r for c, r in pares if otra + r in destino}
         if not mapa:
             continue
         fusion[o] = mapa
-        partes.append(a.filter(~pl.col("clave").is_in(list(mapa))).select(obj.columns))
+        extra = (
+            a.filter(pl.col("clave").is_in(list(mapa)))
+            .with_columns(pl.col("clave").replace(mapa))
+            .group_by("clave")
+            .agg(pl.col("valor").sum().alias("_extra"))
+        )
+        partes.append(
+            a.filter(~pl.col("clave").is_in(list(mapa)))
+            .join(extra, on="clave", how="left")
+            .with_columns(pl.col("valor") + pl.col("_extra").fill_null(0.0))
+            .select(obj.columns)
+        )
     if not fusion:
         return obj, {}
     return pl.concat([obj.filter(~pl.col("objetivo").is_in(list(fusion))), *partes]).sort(

@@ -823,12 +823,18 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   2. **Sin estudios:** no se calibraba; solo `estudios_3`. Los donantes de 2021 tienen más personas sin estudios que el Censo Anual 2024: 4,3 % frente a 3,7 %.
   3. **Nacidos fuera:** no se calibraba el país de nacimiento. Desde 2021 ha crecido mucho la adquisición de la nacionalidad española, así que los donantes de 2021 se quedan cortos.
 - **Decisiones:**
-  1. **La relación con la actividad, entera, de la EPA del 2T 2026.** Ocupados y parados según AOI (OIT). Los inactivos, según su situación autopercibida (SIDI1, comprobada en `dr_EPA_2026.json`):
-     - 01 → estudiante;
-     - 02 → jubilado_pensionista;
-     - 04 → incapacidad_permanente;
-     - 03, 05, 06 y 07 → otra_inactividad (05 no entra en jubilado: la categoría 5 del Censo es solo «pensionista de jubilación, prejubilación»);
-     - 00 y vacío → NC (0,6 %).
+  1. **La relación con la actividad, entera, de la EPA del 2T 2026.** Ocupados y parados según AOI (OIT). Los inactivos, según su situación autopercibida, con códigos comprobados en `dr_EPA_2026.json`.
+     - **Una sola situación por persona.** SIDI1, SIDI2 y SIDI3 son hasta tres respuestas ordenadas por código, no por importancia: en todos los registros SIDI1 es menor que SIDI2. Una primera versión tomaba solo SIDI1 y, por eso, clasificaba como estudiante a todo jubilado que además hace un curso: un 3 % de estudiantes de 65 y más años, frente al 0,07 % del Censo. Se corrige con esta prioridad, la de los registros administrativos del Censo:
+       - pensión de jubilación o prejubilación (02) → jubilado_pensionista;
+       - incapacidad permanente (04) → incapacidad_permanente;
+       - estudiante (01) que cursa enseñanza reglada (CURSR 1 o 2) → estudiante, como el Censo, que cuenta la matrícula en enseñanza reglada;
+       - la primera de 03 (labores del hogar), 05 (pensión distinta de la de jubilación: la categoría 5 del Censo es solo «pensionista de jubilación, prejubilación»), 06 y 07 → otra_inactividad;
+       - estudiante sin enseñanza reglada → otra_inactividad;
+       - 00 y vacío → NC.
+     - **Contraste por tramos**, en proporción sobre los inactivos:
+       - Entre 35 y 65+ años, la EPA queda cerca del Censo.
+       - En los jóvenes, corrige su sesgo: con 16-24 años, «otra inactividad» es el 12,7 % (Censo 26 %, ECV 4 %); con 25-34, estudiante es el 25 % (Censo 12 %, ECV 54 %).
+       - Las alternativas comparadas fueron solo SIDI1, otros órdenes de prioridad y sin CURSR. Dan entre 3 y 8 veces más estudiantes de 35-64 años que el Censo, la ECV y la TIC-H.
 
      El reparto entre provincias y edades quinquenales dentro de cada comunidad × sexo × tramo sigue siendo el del Censo Anual, con la misma contracción de D-046.
 
@@ -839,7 +845,12 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
      En las listas de municipios, las tablas municipales del Censo Anual se llevan a la EPA con el cociente provincial (`actividad_sexo_mun`).
   2. **Nuevo objetivo calibrado `sin_estudios_edad`:** «Sin estudios» (CNED-A nivel 0: analfabetos y primaria incompleta) por edad, de la tabla 66601. Va con la variable derivada `sin_estudios`.
   3. **Nuevo objetivo calibrado `nacimiento_nacionalidad`:** nacido fuera × nacionalidad española/extranjera. Usa la proporción de nacidos fuera de cada provincia × sexo × edad × nacionalidad en el Censo Anual exhaustivo 2025, sobre las celdas de la ECP 2026 (3,07 millones de españoles nacidos fuera, 6,2 %). Va con la variable derivada `nacido_fuera`.
-  4. **Celdas diminutas sin donantes.** Algunas celdas con objetivo positivo no tienen ningún donante posible ni tras ampliar los donantes. Ejemplo: jubilados de 25-34 años en Ceuta, que salen de la contracción hacia la EPA.
+  4. **Categorías de inactividad casi vacías en un tramo.** En la calibración, la categoría de inactividad que pesa menos del 2 % de los inactivos de su tramo (`MIN_INACTIVIDAD`) se funde con «otra inactividad» del mismo tramo.
+     - Ejemplos: jubilados de 16-44 años y estudiantes de 65 y más. La EPA tiene algunos y los donantes del Censo casi ninguno, así que la calibración acotada no tiene solución.
+     - La persona conserva su categoría, y el total de inactivos del tramo se sigue calibrando.
+     - Es el mismo mecanismo que las nacionalidades pequeñas (D-041).
+     - Las fusiones quedan en los metadatos de la población (`fusiones`).
+  5. **Celdas diminutas sin donantes.** Algunas celdas con objetivo positivo no tienen ningún donante posible ni tras ampliar los donantes. Ejemplo: jubilados de 25-34 años en Ceuta, que salen de la contracción hacia la EPA.
      - Si la celda pesa ≤ 0,1 % de su objetivo (`MAX_SIN_DONANTES`), sale de la calibración.
      - Su valor se reparte, en proporción, entre las demás categorías del mismo cruce (mismo tramo), así que los totales se conservan.
      - Queda registrada en los metadatos de la población (`ceros`, motivo `sin_donantes`).

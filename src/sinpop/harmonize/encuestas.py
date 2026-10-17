@@ -211,19 +211,55 @@ COLS_EPA = [
     "OCUP1",
     "DUCON1",
     "SIDI1",
+    "SIDI2",
+    "SIDI3",
+    "CURSR",
     "FACTOREL",
 ]
 
 
+def _situacion_inactividad(df: pl.DataFrame) -> pl.DataFrame:
+    """Una sola situación de inactividad por persona (D-049).
+
+    SIDI1-SIDI3 son hasta tres respuestas ordenadas por código, no por importancia (SIDI1 es
+    siempre menor que SIDI2), así que SIDI1 no es la situación principal. Prioridad, como en el
+    Censo (registros administrativos): pensión de jubilación o prejubilación (02), incapacidad
+    permanente (04), estudiante (01) si cursa enseñanza reglada (CURSR 1 o 2) y, si no, la
+    primera de las demás. Un «estudiante» sin estudios reglados es «01NR»."""
+    sid = [pl.col(c).str.strip_chars() for c in ("SIDI1", "SIDI2", "SIDI3")]
+
+    def tiene(c: str) -> pl.Expr:
+        return pl.any_horizontal([x == c for x in sid])
+
+    reglados = pl.col("CURSR").str.strip_chars().is_in(["1", "2"])
+    resto = pl.coalesce([pl.when(x.is_in(["03", "05", "06", "07"])).then(x) for x in sid])
+    return df.with_columns(
+        pl.when(tiene("02"))
+        .then(pl.lit("02"))
+        .when(tiene("04"))
+        .then(pl.lit("04"))
+        .when(tiene("01") & reglados)
+        .then(pl.lit("01"))
+        .when(resto.is_not_null())
+        .then(resto)
+        .when(tiene("01"))
+        .then(pl.lit("01NR"))
+        .otherwise(pl.col("SIDI1").str.strip_chars())
+        .alias("SIDI")
+    )
+
+
 def _actividad_epa(df: pl.DataFrame, menor16: pl.Expr) -> pl.Series:
+    df = _situacion_inactividad(df)
     inactivo = recode(
         df,
-        "SIDI1",
+        "SIDI",
         "relacion_actividad",
         "epa",
         nc_si=pl.col("AOI").is_in(["07", "08", "09"]),
         # SIDI1 solo se pregunta a los inactivos: en el resto, vacío = no procede
         np_si=menor16 | pl.col("AOI").is_in(["03", "04", "05", "06"]),
+        otros={"01NR": "otra_inactividad"},
     )
     aoi = df["AOI"]
     return (
@@ -274,7 +310,7 @@ def epa() -> pl.DataFrame:
         recode(df, "NAC1", "nacionalidad_esp_ext", s),
         recode(df, "NFORMA", "estudios_3", s, np_si=menor16),
         recode(df, "AOI", "relacion_actividad_3", s, np_si=menor16),
-        # D-049: ocupados y parados por AOI; inactivos por su situación autopercibida (SIDI1)
+        # D-049: ocupados y parados por AOI; inactivos por su situación autopercibida (SIDI1-3)
         _actividad_epa(df, menor16),
         recode(df, "SITU", "situacion_profesional", s, np_si=no_ocup),
         recode(df, "SITU", "sector_publico", s, np_si=no_ocup),
