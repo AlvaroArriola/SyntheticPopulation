@@ -179,7 +179,8 @@ def _componer(
 
 def _orden(p: pl.DataFrame) -> pl.DataFrame:
     """Una fila por unidad calibrada con sus claves de estratificación implícita."""
-    ref = p.filter(pl.col("relacion_persona_ref").is_in(["persona_referencia", "NP"]))
+    # En diferido: solo se leen las columnas usadas (memoria con España).
+    ref = p.lazy().filter(pl.col("relacion_persona_ref").is_in(["persona_referencia", "NP"]))
     return (
         ref.group_by("unidad_cal")
         .agg(
@@ -198,7 +199,7 @@ def _orden(p: pl.DataFrame) -> pl.DataFrame:
                 "local",
             ).first()
         )
-        .join(p.group_by("unidad_cal").agg(pl.len().alias("m")), on="unidad_cal")
+        .join(p.lazy().group_by("unidad_cal").agg(pl.len().alias("m")), on="unidad_cal")
         .sort(
             "bloque",
             "provincia",
@@ -211,6 +212,7 @@ def _orden(p: pl.DataFrame) -> pl.DataFrame:
             "edad_5",
             "unidad_cal",
         )
+        .collect()
     )
 
 
@@ -422,12 +424,14 @@ def construir(
     # era el de origen y puede no existir en la de destino. Se toma la clase más frecuente entre
     # los donantes locales de la provincia con el mismo grado de urbanización (`modelada`).
     clase = (
-        p.filter(pl.col("nivel") == "mismo_territorio")
+        p.lazy()  # en diferido: solo se leen las columnas usadas (memoria con España)
+        .filter(pl.col("nivel") == "mismo_territorio")
         .group_by("provincia", "grado_urbanizacion", "tamano_municipio")
         .agg(pl.col("w").sum())
         .sort("w", "tamano_municipio", descending=True)
-        .unique(["provincia", "grado_urbanizacion"], keep="first")
+        .unique(["provincia", "grado_urbanizacion"], keep="first", maintain_order=True)
         .select("provincia", "grado_urbanizacion", pl.col("tamano_municipio").alias("_tm"))
+        .collect()
     )
     pers = (
         pers.join(clase, on=["provincia", "grado_urbanizacion"], how="left")

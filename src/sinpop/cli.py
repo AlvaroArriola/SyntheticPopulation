@@ -235,10 +235,13 @@ def audit(run: Annotated[str, typer.Option(help="run_id de la población")]) -> 
     """Auditoría de sesgos y minorías de una población (F7)."""
     import json
 
-    from sinpop import REPORTS_DIR
+    from sinpop import POPULATIONS_DIR, REPORTS_DIR
     from sinpop.audit import auditoria as A
     from sinpop.validate import poblacion as V
 
+    if not (POPULATIONS_DIR / run / "persons.parquet").exists():
+        typer.echo(f"No existe la población {run}", err=True)
+        raise typer.Exit(code=1)
     p, lin, meta = V.cargar(run)
     a = A.auditar(p, lin, meta["territorio"]["codigo"])
     out = REPORTS_DIR / run

@@ -325,7 +325,11 @@ def v_reglas_duras(p: pl.DataFrame) -> pl.DataFrame:
 
 def frecuencias_blandas(p: pl.DataFrame, peso: str) -> dict[str, float]:
     tot = float(p[peso].sum())
-    return {k: float(p.filter(e)[peso].sum()) / tot for k, e in REGLAS_BLANDAS.items()}
+    # Sin filtrar la tabla entera (copia de todas las columnas): solo la suma del peso.
+    return {
+        k: float(p.select(pl.col(peso).filter(e).sum()).item()) / tot
+        for k, e in REGLAS_BLANDAS.items()
+    }
 
 
 def v_reglas_blandas(p: pl.DataFrame, referencia: dict[str, float]) -> pl.DataFrame:

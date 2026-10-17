@@ -26,8 +26,13 @@ def test_pending_commands_exit_with_code_2() -> None:
         app, ["build", "--territory", "MUNIS:configs/territorios/ejemplo_almeria.yaml"]
     )
     assert r.exit_code == 2
-    r = CliRunner().invoke(app, ["audit", "--run", "x"])
+    r = CliRunner().invoke(app, ["opinion", "--run", "x"])
     assert r.exit_code == 2
+
+
+def test_audit_sin_poblacion_falla_con_mensaje() -> None:
+    r = CliRunner().invoke(app, ["audit", "--run", "no_existe"])
+    assert r.exit_code == 1
 
 
 def test_gate_f0_checks_pass_without_recursion(monkeypatch) -> None:
