@@ -60,8 +60,8 @@ calibrar:
       en los territorios por municipios
   - id: actividad_tramo
     ambito: provincia
-    variables: [relacion_actividad, edad_tramo_epa]
-    descripcion: Relación con la actividad por tramo de edad (EPA 2T 2026, inactivos por su
+    variables: [relacion_actividad, sexo, edad_tramo_epa]
+    descripcion: Relación con la actividad por sexo y tramo de edad (EPA 2T 2026, inactivos por su
       situación autopercibida; D-046 A2, D-049); actividad_sexo y actividad_edad quedan reservados
   - id: sin_estudios_edad
     ambito: provincia

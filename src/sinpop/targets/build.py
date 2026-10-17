@@ -672,7 +672,10 @@ def provincias() -> pl.DataFrame:
             # que es coherente con actividad_edad y actividad_sexo (G3.2)
             out.append(
                 _largo(
-                    a_tramos(e), ["relacion_actividad", "edad_tramo_epa"], "actividad_tramo", meta
+                    a_tramos(e),
+                    ["relacion_actividad", "sexo", "edad_tramo_epa"],
+                    "actividad_tramo",
+                    meta,
                 )
             )
     hog = pl.read_parquet(INTERIM_DIR / "ecp_hogares.parquet").rename({"hogares": "valor"})

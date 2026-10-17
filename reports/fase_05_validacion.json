@@ -4442,5 +4442,252 @@
    "comprobaciones": 12,
    "fallos": 0
   }
+ },
+ "coherencia": {
+  "nacional": "2026-01-01_ES_1000000_s1",
+  "comparaciones": [
+   {
+    "uso": "calibrar",
+    "objetivo": "actividad_tramo",
+    "tvd": 0.0005521779525049719,
+    "n_comunidades_kish": 934480.8362782183,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.0032782939111640824,
+    "umbral_fijo": 0.01,
+    "umbral": 0.01,
+    "ok": true
+   },
+   {
+    "uso": "calibrar",
+    "objetivo": "edad5_sexo",
+    "tvd": 0.0007509504598028128,
+    "n_comunidades_kish": 934480.8362782187,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.004005735071960797,
+    "umbral_fijo": 0.01,
+    "umbral": 0.01,
+    "ok": true
+   },
+   {
+    "uso": "calibrar",
+    "objetivo": "edad5_sexo_colectivos",
+    "tvd": 0.008960911417659081,
+    "n_comunidades_kish": 7323.494448439306,
+    "n_nacional": 7790.0,
+    "tvd_ref": 0.0457818202343821,
+    "umbral_fijo": 0.01,
+    "umbral": 0.05693818428125852,
+    "ok": true
+   },
+   {
+    "uso": "calibrar",
+    "objetivo": "edad5_sexo_familiares",
+    "tvd": 0.0007606585090068696,
+    "n_comunidades_kish": 927157.5519857024,
+    "n_nacional": 992077.0,
+    "tvd_ref": 0.003975222808016006,
+    "umbral_fijo": 0.01,
+    "umbral": 0.01,
+    "ok": true
+   },
+   {
+    "uso": "calibrar",
+    "objetivo": "estudios_edad",
+    "tvd": 0.0010512089404159856,
+    "n_comunidades_kish": 934480.8362782184,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.0036466121793197167,
+    "umbral_fijo": 0.01,
+    "umbral": 0.01,
+    "ok": true
+   },
+   {
+    "uso": "calibrar",
+    "objetivo": "nacimiento_nacionalidad",
+    "tvd": 0.0002571533261833325,
+    "n_comunidades_kish": 934480.8362782183,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.00123054411397612,
+    "umbral_fijo": 0.01,
+    "umbral": 0.01,
+    "ok": true
+   },
+   {
+    "uso": "calibrar",
+    "objetivo": "nacionalidad",
+    "tvd": 0.00019535160956171357,
+    "n_comunidades_kish": 934480.8362782181,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.0010909473004231435,
+    "umbral_fijo": 0.01,
+    "umbral": 0.01,
+    "ok": true
+   },
+   {
+    "uso": "calibrar",
+    "objetivo": "nacionalidad_edad",
+    "tvd": 0.0006201001376320019,
+    "n_comunidades_kish": 934480.8362782176,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.0038198433204032775,
+    "umbral_fijo": 0.01,
+    "umbral": 0.01,
+    "ok": true
+   },
+   {
+    "uso": "calibrar",
+    "objetivo": "nacionalidad_top",
+    "tvd": 0.00032611079656222754,
+    "n_comunidades_kish": 934480.836278218,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.0014339120990265097,
+    "umbral_fijo": 0.01,
+    "umbral": 0.01,
+    "ok": true
+   },
+   {
+    "uso": "calibrar",
+    "objetivo": "sin_estudios_edad",
+    "tvd": 0.00023189214549727128,
+    "n_comunidades_kish": 934480.8362782177,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.0027463395298359824,
+    "umbral_fijo": 0.01,
+    "umbral": 0.01,
+    "ok": true
+   },
+   {
+    "uso": "calibrar",
+    "objetivo": "tamano_hogar",
+    "tvd": 6.207042920892969e-05,
+    "n_comunidades_kish": 376597.16751018446,
+    "n_nacional": 398451.0,
+    "tvd_ref": 0.002613859480548814,
+    "umbral_fijo": 0.01,
+    "umbral": 0.01,
+    "ok": true
+   },
+   {
+    "uso": "calibrar",
+    "objetivo": "tipo_hogar",
+    "tvd": 0.00042990599233318693,
+    "n_comunidades_kish": 376597.1675101844,
+    "n_nacional": 398451.0,
+    "tvd_ref": 0.003711299324829645,
+    "umbral_fijo": 0.01,
+    "umbral": 0.01,
+    "ok": true
+   },
+   {
+    "uso": "calibrar",
+    "objetivo": "urbanizacion",
+    "tvd": 0.0001834086966332471,
+    "n_comunidades_kish": 934480.8362782183,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.0014579908398995522,
+    "umbral_fijo": 0.01,
+    "umbral": 0.01,
+    "ok": true
+   },
+   {
+    "uso": "reservar",
+    "objetivo": "actividad_edad",
+    "tvd": 0.0012263999949496277,
+    "n_comunidades_kish": 934480.8362782177,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.004057282449613203,
+    "umbral_fijo": 0.02,
+    "umbral": 0.02,
+    "ok": true
+   },
+   {
+    "uso": "reservar",
+    "objetivo": "actividad_sexo",
+    "tvd": 0.0005767613515072459,
+    "n_comunidades_kish": 934480.8362782181,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.0024641960861250655,
+    "umbral_fijo": 0.02,
+    "umbral": 0.02,
+    "ok": true
+   },
+   {
+    "uso": "reservar",
+    "objetivo": "adultos_nacionalidad",
+    "tvd": 0.00013401675332109543,
+    "n_comunidades_kish": 934480.8362782181,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.0013494069496391202,
+    "umbral_fijo": 0.02,
+    "umbral": 0.02,
+    "ok": true
+   },
+   {
+    "uso": "reservar",
+    "objetivo": "estado_civil_edad",
+    "tvd": 0.001267217476971957,
+    "n_comunidades_kish": 934480.8362782183,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.0028090403729085444,
+    "umbral_fijo": 0.02,
+    "umbral": 0.02,
+    "ok": true
+   },
+   {
+    "uso": "reservar",
+    "objetivo": "estudios_sexo_edad",
+    "tvd": 0.0019604973613956173,
+    "n_comunidades_kish": 934480.8362782177,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.004933743674920264,
+    "umbral_fijo": 0.02,
+    "umbral": 0.02,
+    "ok": true
+   },
+   {
+    "uso": "reservar",
+    "objetivo": "nacionalidad_top_sexo_edad",
+    "tvd": 0.001975586364068704,
+    "n_comunidades_kish": 934480.836278218,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.004642336363009914,
+    "umbral_fijo": 0.02,
+    "umbral": 0.02,
+    "ok": true
+   },
+   {
+    "uso": "reservar",
+    "objetivo": "provincia_si_calibra_ccaa",
+    "tvd": 0.0008734588704878831,
+    "n_comunidades_kish": 934480.8362782181,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.004219498053273542,
+    "umbral_fijo": 0.02,
+    "umbral": 0.02,
+    "ok": true
+   },
+   {
+    "uso": "reservar",
+    "objetivo": "tamano_municipio",
+    "tvd": 0.0002323861919881695,
+    "n_comunidades_kish": 934480.8362782185,
+    "n_nacional": 999867.0,
+    "tvd_ref": 0.0019945006279434114,
+    "umbral_fijo": 0.02,
+    "umbral": 0.02,
+    "ok": true
+   },
+   {
+    "uso": "reservar",
+    "objetivo": "tipo_hogar_edad4_ref",
+    "tvd": 0.0012793632973425522,
+    "n_comunidades_kish": 376597.16751018446,
+    "n_nacional": 398451.0,
+    "tvd_ref": 0.005227586135866433,
+    "umbral_fijo": 0.02,
+    "umbral": 0.02,
+    "ok": true
+   }
+  ]
  }
 }

@@ -71,11 +71,15 @@ def _objetivos(territorio: str) -> pl.DataFrame:
 
 def _prop_objetivo(
     o: pl.DataFrame, objetivo: str, patron: str, excluir: str | None = None
-) -> float:
+) -> float | None:
+    """Proporción de las celdas `patron` en el objetivo; None si el territorio no lo tiene."""
     g = o.filter(pl.col("objetivo") == objetivo)
     if excluir:
         g = g.filter(~pl.col("clave").str.contains(excluir))
-    return float(g.filter(pl.col("clave").str.contains(patron))["valor"].sum() / g["valor"].sum())
+    den = float(g["valor"].sum())
+    if not den:
+        return None
+    return float(g.filter(pl.col("clave").str.contains(patron))["valor"].sum()) / den
 
 
 def _perfil_objetivo(o: pl.DataFrame, objetivo: str, filtro: str, var: str) -> pl.DataFrame:
@@ -186,7 +190,13 @@ def _ref_encuesta(
 
 
 def referencia(grupo: str, territorio: str) -> Referencia | None:
-    """Referencia oficial del grupo en el territorio, o None si no existe."""
+    """Referencia oficial del grupo en el territorio, o None si no existe (también si el
+    territorio no tiene el objetivo del que sale, p. ej. una lista de municipios)."""
+    r = _referencia(grupo, territorio)
+    return None if r is None or r.proporcion is None else r
+
+
+def _referencia(grupo: str, territorio: str) -> Referencia | None:
     o = _objetivos(territorio)
     if grupo == "mayores_85":
         return Referencia(
