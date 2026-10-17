@@ -85,6 +85,7 @@ Generado por `sinpop harmonize --check` (D-033). Porcentajes ponderados. NP = no
 | `ecp_colectivos` | `sexo` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
 | `ecp_colectivos` | `edad_5` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
 | `ecp_hogares` | `provincia` | hogares | 0.00 | 0.00 | 0.00 | 0.00 |  |
+| `ecp_hogares` | `tamano_hogar_4` | hogares | 0.00 | 0.00 | 0.00 | 0.00 |  |
 | `ecp_total` | `provincia` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
 | `ecp_total` | `sexo` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
 | `ecp_viviendas_familiares` | `provincia` | personas | 0.00 | 0.00 | 0.00 | 0.00 |  |
@@ -103,6 +104,7 @@ Generado por `sinpop harmonize --check` (D-033). Porcentajes ponderados. NP = no
 | `ecv` | `dificultad_fin_mes` | peso | 0.00 | 0.00 | 0.15 | 0.00 |  |
 | `ecv` | `vehiculo_hogar` | peso | 0.00 | 0.00 | 0.04 | 0.00 |  |
 | `ecv` | `privacion_material` | peso | 0.00 | 0.00 | 1.55 | 0.00 |  |
+| `ecv` | `tenencia_ecv` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
 | `ecv` | `grado_urbanizacion` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
 | `ecv` | `relacion_actividad_3` | peso | 14.02 | 0.00 | 0.40 | 0.00 |  |
 | `ecv` | `renta_hogar_decil` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
@@ -128,6 +130,7 @@ Generado por `sinpop harmonize --check` (D-033). Porcentajes ponderados. NP = no
 | `epa` | `nacionalidad_esp_ext` | peso | 0.00 | 0.00 | 0.00 | 0.00 |  |
 | `epa` | `estudios_3` | peso | 13.62 | 0.00 | 0.00 | 0.00 |  |
 | `epa` | `relacion_actividad_3` | peso | 13.62 | 0.00 | 0.00 | 0.00 |  |
+| `epa` | `relacion_actividad` | peso | 13.62 | 0.00 | 0.57 | 0.00 |  |
 | `epa` | `situacion_profesional` | peso | 53.84 | 0.00 | 0.00 | 0.00 |  |
 | `epa` | `sector_publico` | peso | 53.84 | 0.00 | 0.00 | 0.00 |  |
 | `epa` | `tipo_jornada` | peso | 53.84 | 0.00 | 0.00 | 0.00 |  |
