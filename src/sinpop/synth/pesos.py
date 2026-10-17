@@ -421,7 +421,7 @@ def _ampliar(
                 pl.Series("provincia", destino, dtype=pl.Utf8)
             )
         )
-        registro.append((b, objetivo, clave_, locales, valor / masa if masa else None, k))
+        registro.append((b, objetivo, clave_, locales, valor / masa if masa else None, t.height))
     add = (
         pl.concat(anadidas)
         .unique("unidad", keep="first", maintain_order=True)
