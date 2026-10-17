@@ -1,3 +1,3 @@
 nivel,territorio,objetivo,celdas,n,tvd,hellinger,tvd_ref,fuera_dominio,umbral,umbral_estricto,excepcion,ok,ok_estricto
-provincia,MUNIS:configs/territorios/ejemplo_valencia_urbano.yaml,adultos_nacionalidad,4,19978.0,0.0010290629928471889,0.0021474243040983205,0.007268671280797095,0.0,0.08,0.08,false,true,true
-provincia,MUNIS:configs/territorios/ejemplo_valencia_urbano.yaml,tamano_municipio,4,19978.0,0.023404091667637593,0.057763578643218016,0.006884202750646734,0.0,0.08,0.08,false,true,true
+provincia,MUNIS:configs/territorios/ejemplo_valencia_urbano.yaml,adultos_nacionalidad,4,19990.0,0.0008267110236775781,0.0010697789927946147,0.007301982019205944,0.0,0.08,0.08,false,true,true
+provincia,MUNIS:configs/territorios/ejemplo_valencia_urbano.yaml,tamano_municipio,4,19990.0,0.024390729745911884,0.059931829488403254,0.006835859783853023,0.0,0.08,0.08,false,true,true
