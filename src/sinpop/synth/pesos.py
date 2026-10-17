@@ -116,7 +116,10 @@ def _celdas_por_unidad(personas: pl.DataFrame, obj: pl.DataFrame) -> pl.DataFram
 
 
 MIN_INACTIVIDAD = 0.02
-FACTOR_MAX = 5.0  # cota superior de los factores de la calibración logit
+FACTOR_MAX = 5.0  # cotas de los factores de la calibración logit
+FACTOR_MIN = 0.2
+MARGEN = 1.25  # margen sobre las cotas: otras restricciones también tiran de las mismas unidades
+MIN_NACIONALIDAD_EDAD = 2000  # por debajo, la nacionalidad se calibra sin la edad (D-050)
 
 
 def fusionar(
@@ -153,16 +156,26 @@ def fusionar(
         nac = pl.col("clave").str.extract(r"^(nacionalidad_top=[^;]+)")
         resto = pl.col("clave").str.extract(r"^nacionalidad_top=[^;]+(;.*)$")
         te = te.with_columns(nac.alias("_n"), resto.alias("_r"))
+        te = te.with_columns(pl.col("valor").sum().over("_n").alias("_tn"))
+        propia = ~pl.col("_n").is_in([otras, "nacionalidad_top=espanola"])
+        # Nacionalidad pequeña en el bloque: sin edad (todas sus edades en una celda, igual a
+        # su total de nacionalidad_top), porque con pocos donantes no se pueden cumplir a la vez
+        # el total y la edad dentro de las cotas
+        entera = te.filter(propia & ~pl.col("_n").is_in(list(mapa)))
+        entera = entera.filter(pl.col("_tn") < MIN_NACIONALIDAD_EDAD)
+        pares_e = entera.select("clave", "_n").iter_rows()
+        mapa_e = {c: n + ";edad_nacionalidad=todas" for c, n in pares_e}
         fundir = te.filter(
-            ~pl.col("_n").is_in([otras, "nacionalidad_top=espanola"])
+            propia
+            & ~pl.col("clave").is_in(list(mapa_e))
             & (pl.col("_n").is_in(list(mapa)) | (pl.col("valor") < MIN_CELDA_NACIONALIDAD))
         )
-        mapa_e = {c: otras + r for c, r in fundir.select("clave", "_r").iter_rows()}
+        mapa_e |= {c: otras + r for c, r in fundir.select("clave", "_r").iter_rows()}
         if mapa_e:
             nuevo = (
                 te.with_columns(pl.col("clave").replace(mapa_e))
                 .group_by("clave", maintain_order=True)
-                .agg(pl.all().exclude("valor", "_n", "_r").first(), pl.col("valor").sum())
+                .agg(pl.all().exclude("valor", "_n", "_r", "_tn").first(), pl.col("valor").sum())
                 .select(obj.columns)
             )
             obj = pl.concat(
@@ -172,38 +185,54 @@ def fusionar(
     return obj, fusion
 
 
-def cobertura_actividad(u: D.Unidades) -> pl.DataFrame:
-    """Proporción de cada clave de `actividad_tramo` en todos los donantes (peso inicial) dentro
-    de su cruce (sexo × tramo): la cobertura que los donantes pueden dar a cada celda."""
+def cobertura_actividad(u: D.Unidades, provincias: list[str] | None = None) -> pl.DataFrame:
+    """Proporción de cada clave de `actividad_tramo` en los donantes (peso inicial) dentro de su
+    cruce (sexo × tramo): en todos (`cuota_donantes`) y, con `provincias`, en los del bloque
+    (`cuota_local`). Es la cobertura que los donantes pueden dar a cada celda."""
     vs = D.variables_de("actividad_tramo")
-    return (
-        u.personas.lazy()
-        .filter(~pl.col("relacion_actividad").is_in(["NP"]))
-        .group_by(D.clave(vs).alias("clave"))
-        .agg(pl.col("peso_inicial").sum().alias("w"))
-        .with_columns(pl.col("clave").str.extract(r"^relacion_actividad=[^;]+(;.*)$").alias("_r"))
-        .with_columns((pl.col("w") / pl.col("w").sum().over("_r")).alias("cuota_donantes"))
-        .select("clave", "cuota_donantes")
-        .collect()
-    )
+
+    def cuota(lf: pl.LazyFrame, nombre: str) -> pl.LazyFrame:
+        return (
+            lf.filter(~pl.col("relacion_actividad").is_in(["NP"]))
+            .group_by(D.clave(vs).alias("clave"))
+            .agg(pl.col("peso_inicial").sum().alias("w"))
+            .with_columns(
+                pl.col("clave").str.extract(r"^relacion_actividad=[^;]+(;.*)$").alias("_r")
+            )
+            .with_columns((pl.col("w") / pl.col("w").sum().over("_r")).alias(nombre))
+            .select("clave", nombre)
+        )
+
+    lf = u.personas.lazy()
+    out = cuota(lf, "cuota_donantes")
+    if provincias is not None:
+        loc = cuota(lf.filter(pl.col("provincia").is_in(provincias)), "cuota_local")
+        out = out.join(loc, on="clave", how="left")
+    return out.collect()
 
 
 def _fusionar_actividad(
     obj: pl.DataFrame, cobertura: pl.DataFrame | None = None
 ) -> tuple[pl.DataFrame, dict[str, dict[str, str]]]:
-    """Funde con «otra_inactividad» del mismo cruce (D-049, D-050):
+    """Funde con «otra_inactividad» del mismo cruce (sexo × tramo) (D-049, D-050):
 
     - las categorías de inactividad que pesan menos de `MIN_INACTIVIDAD` de los inactivos del
       cruce (p. ej. jubilados de 16-44 años o estudiantes de 65 y más);
-    - con `cobertura`, las categorías no ocupadas cuya proporción en todos los donantes es menor
-      que la del objetivo dividida por el factor máximo de la calibración (5): ni con ese factor
-      se alcanzaría el objetivo (p. ej. incapacitados de 65 y más, que el Censo, de registros
-      administrativos, cuenta como jubilados, y la EPA, por lo que declaran, no).
+    - las categorías no ocupadas con objetivo 0 (p. ej. paradas de 65 y más en Ceuta);
+    - con `cobertura`, las categorías no ocupadas cuya proporción en todos los donantes,
+      multiplicada por el factor máximo de la calibración (5), no llega a la del objetivo con
+      un margen de `MARGEN` (p. ej. incapacitados de 65 y más, que el Censo, de registros
+      administrativos, cuenta como jubilados, y la EPA, por lo que declaran, no);
+    - con `cobertura`, si una categoría de inactividad tiene en los donantes del bloque, por
+      el factor mínimo (0,2), más de lo que pide el objetivo (con el mismo margen), todas las
+      categorías de inactividad del cruce: se calibra su total (p. ej. varones de 35-44 en
+      «otra inactividad» en el País Vasco).
 
     Solo afecta a la calibración: la persona conserva su categoría y el total del cruce se
     calibra."""
     otra = "relacion_actividad=otra_inactividad"
     inactivas = ["estudiante", "jubilado_pensionista", "incapacidad_permanente"]
+    no_ocupadas = ["parado", *inactivas]
     fusion, partes = {}, []
     for o in ("actividad_tramo",):
         a = obj.filter(pl.col("objetivo") == o).with_columns(
@@ -221,18 +250,25 @@ def _fusionar_actividad(
             .alias("_ina")
         )
         a = a.with_columns((pl.col("valor") / pl.col("valor").sum().over("_resto")).alias("_cuota"))
-        sin_cobertura = pl.lit(False)
+        pequena = pl.col("valor") < MIN_INACTIVIDAD * pl.col("_ina")
+        fundir = (pl.col("_c").is_in(inactivas) & pequena) | (
+            pl.col("_c").is_in(no_ocupadas) & (pl.col("valor") <= 0)
+        )
         if cobertura is not None:
             a = a.join(cobertura, on="clave", how="left").with_columns(
                 pl.col("cuota_donantes").fill_null(0.0)
             )
-            sin_cobertura = ~pl.col("_c").is_in(["ocupado", "otra_inactividad"]) & (
-                pl.col("cuota_donantes") * FACTOR_MAX < pl.col("_cuota")
+            fundir = fundir | (
+                pl.col("_c").is_in(no_ocupadas)
+                & (pl.col("cuota_donantes") * FACTOR_MAX < MARGEN * pl.col("_cuota"))
             )
-        peq = a.filter(
-            (pl.col("_c").is_in(inactivas) & (pl.col("valor") < MIN_INACTIVIDAD * pl.col("_ina")))
-            | sin_cobertura
-        )
+            if "cuota_local" in a.columns:
+                sobra = pl.col("_c").is_in([*inactivas, "otra_inactividad"]) & (
+                    pl.col("cuota_local").fill_null(0.0) * FACTOR_MIN * MARGEN > pl.col("_cuota")
+                )
+                cruce = a.filter(sobra)["_resto"].unique().implode()
+                fundir = fundir | (pl.col("_c").is_in(inactivas) & pl.col("_resto").is_in(cruce))
+        peq = a.filter(fundir)
         destino = set(a.filter(pl.col("_c") == "otra_inactividad")["clave"])
         pares = peq.select("clave", "_resto").iter_rows()
         mapa = {c: otra + r for c, r in pares if otra + r in destino}
@@ -586,11 +622,10 @@ def calibrar(
 
     ccaa = ccaa_de_provincia()
     filas, diags, ceros, ampl, fusiones = [], {}, [], [], []
-    todas = cob = None
+    todas = None
     for b in bloques(territorio):
         ps = provincias_bloque(b)
-        if cob is None:
-            cob = cobertura_actividad(u)
+        cob = cobertura_actividad(u, ps)
         obj, fusion = fusionar(
             D.objetivos_calibrables(run.leer(b), municipios=b.startswith("MUNIS:")).filter(
                 ~pl.col("objetivo").is_in(list(excluir))
