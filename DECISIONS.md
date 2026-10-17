@@ -896,6 +896,10 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   5. **Perfiles de actividad en tres categorías** (ocupado, parado, inactivo) cuando la referencia es una encuesta (ECV, TIC-H, EPA).
      - **Por qué:** las subcategorías de inactividad de la ECV y la TIC-H (situación principal declarada) no se definen como las de la EPA, de la que sale la población.
      - **TVD con 3 categorías:** limitación grave 0,027, privación severa 0,080 y nunca usa internet 0,008. Con 6 categorías eran 0,107, 0,112 y 0,162.
+- **Correcciones de código:**
+  - **Peso inicial de los donantes importados.** Con pocos donantes locales, cada unidad añadida recibía el objetivo de la celda dividido entre el número mínimo de donantes, sin contar cuántas personas de la celda trae. Ejemplo: 8 hogares chinos de unas 4 personas para 123 chinos en Teruel daban unas 790 personas, y ni con el factor mínimo se bajaba al objetivo. Ahora se divide entre las personas de la celda que traen.
+  - **V-MARG.** Una celda fundida en la calibración con objetivo 0 puede tener personas, porque estas conservan su categoría: no cuenta como fuera de dominio, aunque su desviación sigue en la TVD. Ejemplo: paradas de 65 y más en Melilla, que la EPA no tiene por tamaño de muestra.
+  - **Exceso de cobertura en `nacionalidad_top`.** La nacionalidad sobrecubierta se funde con otras_extranjeras, como las pequeñas (D-041).
 - **Otros cambios sin decisión de método:**
   - La auditoría da «sin referencia» si el territorio no tiene el objetivo del que sale la cifra (listas de municipios); antes se detenía.
   - Ajustes de memoria en la construcción de España, sin efecto en los resultados.

@@ -129,6 +129,7 @@ def fusionar(
     obj: pl.DataFrame,
     cobertura: pl.DataFrame | None = None,
     sin_edad: frozenset[str] = frozenset(),
+    cobertura_nac: pl.DataFrame | None = None,
 ) -> tuple[pl.DataFrame, dict[str, dict[str, str]]]:
     """Funde con «otras_extranjeras» las nacionalidades cuyo objetivo en el bloque es menor que
     `MIN_CELDA_NACIONALIDAD` personas (p. ej. 7,6 ecuatorianos en Melilla): con tan pocos casos,
@@ -137,11 +138,20 @@ def fusionar(
     obj, fusion = _fusionar_actividad(obj, cobertura)
     top = obj.filter(pl.col("objetivo") == "nacionalidad_top")
     otras = "nacionalidad_top=otras_extranjeras"
+    pequena = pl.col("valor") < MIN_CELDA_NACIONALIDAD
+    if cobertura_nac is not None:
+        # Exceso de cobertura (D-050): los donantes del bloque, con el factor mínimo, pesan más
+        # que el objetivo (p. ej. 9 hogares chinos para 123 chinos en Teruel)
+        top = top.join(cobertura_nac, on="clave", how="left").with_columns(
+            (pl.col("valor") / pl.col("valor").sum()).alias("_cuota")
+        )
+        pequena = pequena | (
+            pl.col("cuota_local").fill_null(0.0) * FACTOR_MIN * MARGEN > pl.col("_cuota")
+        )
     peq = top.filter(
-        (pl.col("valor") < MIN_CELDA_NACIONALIDAD)
-        & (pl.col("clave") != otras)
-        & (pl.col("clave") != "nacionalidad_top=espanola")
+        pequena & (pl.col("clave") != otras) & (pl.col("clave") != "nacionalidad_top=espanola")
     )
+    top = top.select(obj.columns)
     mapa = {c: otras for c in peq["clave"]}
     if mapa:
         nuevo = (
@@ -303,7 +313,10 @@ def _fusionar_actividad(
 
 def _cruce(objetivo: str) -> pl.Expr:
     """Parte de la clave que define el cruce dentro del que se comparan las celdas: el resto de
-    la clave salvo en nacionalidad × edad, donde es la nacionalidad (se funden edades)."""
+    la clave salvo en nacionalidad × edad, donde es la nacionalidad (se funden edades); con una
+    sola variable, todo el objetivo."""
+    if objetivo == "nacionalidad_top":
+        return pl.lit("")
     if objetivo == "nacionalidad_top_edad":
         return pl.col("clave").str.extract(r"^([^;]+);")
     return pl.col("clave").str.extract(r"^[^;]+(;.*)$")
@@ -626,9 +639,10 @@ def _ampliar(
                 pl.col("d").alias("d_anadida")
             )
         elif locales < amp.min_donantes_celda:
-            t = cand.head(amp.min_donantes_celda - locales).with_columns(
-                pl.lit(valor / amp.min_donantes_celda).alias("d_anadida")
-            )
+            # Peso inicial para que las unidades añadidas sumen el objetivo de la celda contando
+            # las personas de la celda que trae cada una (`x`): un hogar con 4 chinos cuenta 4
+            t = cand.head(amp.min_donantes_celda - locales)
+            t = t.with_columns(pl.lit(valor / max(float(t["x"].sum()), 1.0)).alias("d_anadida"))
         cuota = _pesos_provincias(b, ps, objetivo, clave_, prov_obj)
         # Cada unidad va a una provincia que tenga su grado de urbanización (p. ej. un hogar de
         # ciudad no puede ir a una provincia sin ciudades); reparto sistemático por grado.
@@ -723,6 +737,7 @@ def calibrar(
                 ),
                 cob,
                 sin_edad,
+                cobertura_local(u, ps, "nacionalidad_top"),
             )
             for o in OBJETIVOS_SOBRECOBERTURA:
                 obj, mapa_o = fusionar_sobrecobertura(obj, o, cobertura_local(u, ps, o))

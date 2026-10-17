@@ -65,6 +65,22 @@ def _n_universo(p: pl.DataFrame, universo: str, unidad: str) -> float:
     return float(D.en_universo(p, universo, unidad, ["peso"])["peso"].sum())
 
 
+def _fundidas(territorio: str) -> set[tuple[str, str]]:
+    """Celdas (objetivo, clave) fundidas en la calibración del territorio (D-041, D-050): las
+    personas conservan su categoría, así que una celda fundida con objetivo 0 puede tener
+    personas sin ser un código fuera de dominio."""
+    import json
+
+    from sinpop.synth import poblacion as PB
+    from sinpop.targets.run import nombre_fichero
+
+    f = PB.CALIBRACION_DIR / f"{nombre_fichero(territorio)}_{PB.METODO}.json"
+    if not f.exists():
+        return set()
+    fus = json.loads(f.read_text("utf-8")).get("fusiones", [])
+    return {(x["objetivo"], x["clave"]) for x in fus}
+
+
 def comparar(
     p: pl.DataFrame, territorio: str, uso: str, niveles: list[str], semilla: int = 0
 ) -> pl.DataFrame:
@@ -73,6 +89,7 @@ def comparar(
 
     cfg = umbrales()
     filas = []
+    fundidas = _fundidas(territorio) if uso == "calibrar" else set()
     for nivel in niveles:
         for t in _territorios(territorio, nivel):
             obj = run.leer(t).filter(
@@ -109,7 +126,12 @@ def comparar(
                         "tvd": M.tvd(g["sintetico"], g["valor"]),
                         "hellinger": M.hellinger(g["sintetico"], g["valor"]),
                         "tvd_ref": ref,
-                        "fuera_dominio": float(g.filter(pl.col("valor") == 0)["sintetico"].sum()),
+                        "fuera_dominio": float(
+                            g.filter(
+                                (pl.col("valor") == 0)
+                                & ~pl.col("clave").is_in([c for oo, c in fundidas if oo == o])
+                            )["sintetico"].sum()
+                        ),
                     }
                 )
     return pl.DataFrame(filas)
