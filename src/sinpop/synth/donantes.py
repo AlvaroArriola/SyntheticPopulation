@@ -293,7 +293,7 @@ class Matriz:
     X: sparse.csr_matrix  # unidades × celdas
     celdas: pl.DataFrame  # j, objetivo, clave, unidad_obj, universo, valor
     d: np.ndarray
-    ceros: pl.DataFrame  # celdas con objetivo 0 y sin donantes (fuera de la calibración)
+    ceros: pl.DataFrame  # celdas fuera de la calibración: objetivo 0 o sin donantes (motivo)
 
 
 def objetivos_calibrables(obj: pl.DataFrame, municipios: bool = False) -> pl.DataFrame:
@@ -375,6 +375,30 @@ def recuentos(
     return pl.concat(out).sort("objetivo", "clave")
 
 
+MAX_SIN_DONANTES = 0.001
+
+
+def _repartir(celdas: pl.DataFrame, sd: np.ndarray, usadas: np.ndarray) -> pl.DataFrame:
+    """Reparte el valor de las celdas `sd` entre las celdas con donantes de su mismo objetivo y
+    resto de clave, en proporción a su valor."""
+    resto = pl.col("clave").str.split(";").list.slice(1).list.join(";")
+    c = celdas.with_columns(
+        resto.alias("_resto"), pl.Series("_sd", sd), pl.Series("_usada", usadas)
+    )
+    g = ["objetivo", "_resto"]
+    receptora = pl.col("_usada") & ~pl.col("_sd") & (pl.col("valor") > 0)
+    c = c.with_columns(
+        pl.when(pl.col("_sd")).then(pl.col("valor")).otherwise(0.0).sum().over(g).alias("_extra"),
+        pl.when(receptora).then(pl.col("valor")).otherwise(0.0).sum().over(g).alias("_base"),
+    )
+    return c.with_columns(
+        pl.when(receptora & (pl.col("_base") > 0))
+        .then(pl.col("valor") * (1 + pl.col("_extra") / pl.col("_base")))
+        .otherwise(pl.col("valor"))
+        .alias("valor")
+    ).drop("_resto", "_sd", "_usada", "_extra", "_base")
+
+
 def matriz(
     u: Unidades, obj: pl.DataFrame, fusion: dict[str, dict[str, str]] | None = None
 ) -> Matriz:
@@ -411,10 +435,21 @@ def matriz(
     )
     d = u.unidades["d"].to_numpy().astype(float)
     vacias = celdas.filter((pl.col("valor") > 0) & ~pl.col("j").is_in(t["j"].unique().implode()))
-    if vacias.height:
+    # Celdas sin ningún donante posible (ni tras la ampliación de donantes): si son muy pequeñas
+    # (≤ 0,1 % de su objetivo), salen de la calibración, su valor se reparte entre las demás
+    # categorías del mismo cruce (mismas claves salvo la primera variable) para conservar los
+    # totales y quedan registradas (D-049; p. ej. jubilados de 25-34 años en Ceuta); si no, la
+    # construcción se detiene.
+    tot = celdas.group_by("objetivo").agg(pl.col("valor").sum().alias("_t"))
+    vacias = vacias.join(tot, on="objetivo").with_columns(
+        (pl.col("valor") <= MAX_SIN_DONANTES * pl.col("_t")).alias("_peq")
+    )
+    if vacias.filter(~pl.col("_peq")).height:
         raise ValueError(
-            f"celdas con objetivo > 0 sin donantes: {vacias.select('objetivo', 'clave').rows()}"
+            "celdas con objetivo > 0 sin donantes: "
+            f"{vacias.filter(~pl.col('_peq')).select('objetivo', 'clave', 'valor').rows()}"
         )
+    sin_donantes = vacias["j"].to_numpy()
     # Ceros estructurales (p. ej. estudios superiores a los 15-19 años): sin donantes, se quitan
     # de la calibración; con donantes, el objetivo es incompatible con los datos y se detiene.
     usadas = np.asarray((X != 0).sum(axis=0)).ravel() > 0
@@ -422,11 +457,18 @@ def matriz(
     if np.any(ceros & usadas):
         malas = celdas.filter(pl.Series(ceros & usadas)).select("objetivo", "clave").rows()
         raise ValueError(f"celdas con objetivo 0 y donantes: {malas}")
+    sd = np.isin(np.arange(len(ceros)), sin_donantes)
+    if sd.any():
+        celdas = _repartir(celdas, sd, usadas)
+    motivo = np.where(sd, "sin_donantes", "cero_estructural")
+    ceros = ceros | sd
     keep = ~ceros
-    celdas = celdas.with_columns(pl.Series("cero_estructural", ceros))
+    celdas = celdas.with_columns(pl.Series("cero_estructural", ceros), pl.Series("motivo", motivo))
     return Matriz(
         X=sparse.csr_matrix(X[:, keep]),
         celdas=celdas.filter(~pl.col("cero_estructural")).drop("j").with_row_index("j"),
         d=d,
-        ceros=celdas.filter(pl.col("cero_estructural")).select("objetivo", "clave"),
+        ceros=celdas.filter(pl.col("cero_estructural")).select(
+            "objetivo", "clave", "valor", "motivo"
+        ),
     )

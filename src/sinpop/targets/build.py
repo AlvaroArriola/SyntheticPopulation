@@ -200,12 +200,6 @@ def actividad_epa(cortes: list[int]) -> pl.DataFrame:
                 / (pl.col("n") + PESO_PREVIO)
             ).alias("objetivo")
         )
-        # Una categoría que el Censo no tiene en toda la celda (p. ej. jubilados de 25-34 en
-        # Ceuta) no tiene donantes que la representen: objetivo 0 y se reparte su peso (D-049)
-        .with_columns(
-            pl.when(pl.col("cv") > 0).then(pl.col("objetivo")).otherwise(0.0).alias("objetivo")
-        )
-        .with_columns((pl.col("objetivo") / pl.col("objetivo").sum().over(k)).alias("objetivo"))
     )
     # Reparto dentro de la celda: cuotas del Censo por provincia × grupo quinquenal; si el Censo
     # no tiene a nadie de esa categoría en la celda, las de la propia celda en conjunto.

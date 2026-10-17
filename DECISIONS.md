@@ -825,18 +825,24 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Decisiones:**
   1. **La relación con la actividad, entera, de la EPA del 2T 2026.** Ocupados y parados según AOI (OIT). Los inactivos, según su situación autopercibida (SIDI1, comprobada en `dr_EPA_2026.json`):
      - 01 → estudiante;
-     - 02 y 05 → jubilado_pensionista;
+     - 02 → jubilado_pensionista;
      - 04 → incapacidad_permanente;
-     - 03, 06 y 07 → otra_inactividad;
+     - 03, 05, 06 y 07 → otra_inactividad (05 no entra en jubilado: la categoría 5 del Censo es solo «pensionista de jubilación, prejubilación»);
      - 00 y vacío → NC (0,6 %).
 
      El reparto entre provincias y edades quinquenales dentro de cada comunidad × sexo × tramo sigue siendo el del Censo Anual, con la misma contracción de D-046.
 
      Es la definición declarada de la ECV, la TIC-H y el CIS, de modo que las capas de enriquecimiento, opinión y política comparan lo mismo.
 
-     `actividad_edad` pasa a calibrarse, para que el perfil de edad de los parados y estudiantes sea el de la EPA, y `actividad_sexo` pasa a reservado.
+     La actividad se calibra por los tramos de edad de la EPA (`actividad_tramo`: 16-24, 25-34, 35-44, 45-54, 55-64, 65+), que es la resolución a la que la EPA tiene muestra, para que el perfil de edad de los parados y estudiantes sea el de la EPA. El objetivo por tramo se deriva del quinquenal ya reescalado (coherencia G3.2). `actividad_edad` y `actividad_sexo` de ámbito provincial pasan a reservados; la comprobación de esquema de calibrados frente a reservados distingue ahora el ámbito (provincia o municipios).
 
      En las listas de municipios, las tablas municipales del Censo Anual se llevan a la EPA con el cociente provincial (`actividad_sexo_mun`).
   2. **Nuevo objetivo calibrado `sin_estudios_edad`:** «Sin estudios» (CNED-A nivel 0: analfabetos y primaria incompleta) por edad, de la tabla 66601. Va con la variable derivada `sin_estudios`.
   3. **Nuevo objetivo calibrado `nacimiento_nacionalidad`:** nacido fuera × nacionalidad española/extranjera. Usa la proporción de nacidos fuera de cada provincia × sexo × edad × nacionalidad en el Censo Anual exhaustivo 2025, sobre las celdas de la ECP 2026 (3,07 millones de españoles nacidos fuera, 6,2 %). Va con la variable derivada `nacido_fuera`.
-- **Consecuencias:** se rehacen F3-F6 y la auditoría. La prueba del territorio reservado de F5 retira ahora `actividad_edad` y `estudios_edad`.
+  4. **Celdas diminutas sin donantes.** Algunas celdas con objetivo positivo no tienen ningún donante posible ni tras ampliar los donantes. Ejemplo: jubilados de 25-34 años en Ceuta, que salen de la contracción hacia la EPA.
+     - Si la celda pesa ≤ 0,1 % de su objetivo (`MAX_SIN_DONANTES`), sale de la calibración.
+     - Su valor se reparte, en proporción, entre las demás categorías del mismo cruce (mismo tramo), así que los totales se conservan.
+     - Queda registrada en los metadatos de la población (`ceros`, motivo `sin_donantes`).
+     - Si es mayor, la construcción se sigue deteniendo.
+     - Alternativa descartada: poner a 0 en los objetivos las categorías que el Censo agregado no tiene en la celda. Choca con la muestra de donantes, que sí las tiene (p. ej. jubilados de 16-24), y fuerza ceros que no son reales.
+- **Consecuencias:** se rehacen F3-F6 y la auditoría. La prueba del territorio reservado de F5 retira ahora `actividad_tramo` y `estudios_edad`.
