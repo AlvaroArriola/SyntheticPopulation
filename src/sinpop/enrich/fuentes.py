@@ -41,6 +41,7 @@ BLOQUE_PERSONA_ECV = [
     "privacion_material_n",
 ]
 BLOQUE_EMPLEO = ["tipo_jornada", "sector_publico"]
+BLOQUE_FORMACION = ["cursa_formacion"]
 BLOQUE_DIGITAL = ["uso_internet", "compra_online", "teletrabajo"]
 
 
@@ -177,6 +178,21 @@ def donantes_empleo() -> pl.DataFrame:
             & pl.col("sector_publico").is_in(["si", "no"])
         )
         .with_columns(pl.col("edad_grupo_epa").alias("edad_grupo"), situacion_3())
+        .with_row_index("_fila")
+        .sort("_fila")
+        .drop("_fila")
+    )
+
+
+def donantes_formacion() -> pl.DataFrame:
+    """Personas de 16+ de la EPA que no están ocupadas, con la formación conocida (D-050)."""
+    e = pl.read_parquet(INTERIM_DIR / "epa.parquet")
+    return (
+        e.filter(
+            ~pl.col("relacion_actividad").is_in(["ocupado", "NC", "NP"])
+            & pl.col("cursa_formacion").is_in(["si", "no"])
+        )
+        .with_columns(pl.col("edad_grupo_epa").alias("edad_grupo"))
         .with_row_index("_fila")
         .sort("_fila")
         .drop("_fila")

@@ -3434,6 +3434,27 @@ variables:
           08: inactivo
           09: inactivo
         notas: clasificación OIT; la EPA no distingue los tipos de inactividad del Censo
+  cursa_formacion:
+    prioridad: P2
+    nivel: persona
+    tipo: categorica
+    descripcion: Ha cursado estudios reglados o formación no reglada en las cuatro últimas
+      semanas (16+; definición de la educación o formación de la tasa de jóvenes que ni estudian
+      ni trabajan de Eurostat; D-050)
+    categorias:
+    - si
+    - 'no'
+    fuente_principal: epa
+    fuentes:
+      epa:
+        variable_original: CURSR y CURSNR (código derivado, ver notas)
+        verificado_contra: dr_EPA_2026.json (INE)
+        recodificacion:
+          '1': si
+          '3': 'no'
+        notas: 'CURSR (estudios reglados) y CURSNR (formación no reglada), tabla TCURSR: 1 = sí,
+          2 = estudiante en vacaciones, 3 = no. Código derivado: 1 si alguna de las dos es 1 o 2;
+          3 si las dos son 3; vacío en el resto (menores de 16 → NP; 16+ sin respuesta → NC)'
   sector_publico:
     prioridad: P2
     nivel: persona

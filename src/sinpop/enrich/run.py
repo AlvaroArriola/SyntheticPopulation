@@ -7,8 +7,10 @@ Bloques, en este orden (cada uno hereda todas sus variables del mismo donante):
 2. Persona (ECV): salud, limitación (GALI) y carencia material y social, 16+, con el decil del
    hogar como llave.
 3. Empleo (EPA): jornada y sector público, ocupados de 16+.
-4. Digital (TIC-H): uso de internet, compra en línea y teletrabajo, 16+.
-5. Contexto: renta media del municipio (Atlas) y envejecimiento (Censo Anual).
+4. Formación (EPA): estudios o formación en las cuatro últimas semanas, 16+ no ocupados, con la
+   relación con la actividad como llave fija (D-050).
+5. Digital (TIC-H): uso de internet, compra en línea y teletrabajo, 16+.
+6. Contexto: renta media del municipio (Atlas) y envejecimiento (Censo Anual).
 
 Los residentes en colectivos están fuera del universo de las encuestas (viviendas familiares):
 reciben los bloques personales por extrapolación (mismas llaves, sin las del hogar) y se marcan
@@ -57,6 +59,8 @@ ESTRATEGIA: dict[str, dict] = {
     # situacion_3 es llave fija: un autónomo o un empresario no puede ser del sector público
     # y la nacionalidad va pronto: el empleo público exige en general la nacionalidad española
     "empleo": ["ocupacion", "nacionalidad_esp_ext", "sexo", "edad_grupo_epa", "estudios_3"],
+    # relacion_actividad es llave fija: un estudiante (EPA) cursa siempre estudios reglados
+    "formacion": ["edad_grupo_epa", "sexo", "estudios_3", "nacionalidad_esp_ext"],
     "digital": ["edad_grupo", "relacion_actividad", "estudios_3", "nacionalidad_esp_ext", "sexo"],
 }
 GEOGRAFIA: list[str | None] = ["ccaa", "nuts1", None]
@@ -356,6 +360,15 @@ def enriquecer(
             ["situacion_3"],
         ),
         (
+            "formacion",
+            "epa",
+            F.donantes_formacion().with_columns(F.nuts1()),
+            "peso",
+            F.BLOQUE_FORMACION,
+            adulto & ~pl.col("relacion_actividad").is_in(["ocupado", "NC"]),
+            ["relacion_actividad"],
+        ),
+        (
             "digital",
             "tic_h",
             _llaves_persona(F.donantes_digital()),
@@ -385,6 +398,14 @@ def enriquecer(
             ]
             + [calidad.alias(f"{v}__calidad") for v in variables]
         )
+
+    # Formación de quien no consta su relación con la actividad: no consta (NC)
+    p = p.with_columns(
+        pl.when(adulto & (pl.col("relacion_actividad") == "NC"))
+        .then(pl.lit("NC"))
+        .otherwise(pl.col("cursa_formacion"))
+        .alias("cursa_formacion")
+    )
 
     # Variables del hogar: NP en colectivos (fuera del universo de la ECV)
     p = p.with_columns(

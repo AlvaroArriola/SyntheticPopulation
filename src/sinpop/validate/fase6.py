@@ -304,6 +304,7 @@ def VE_columnas(p: pl.DataFrame) -> list[str]:
         *F.BLOQUE_HOGAR,
         *F.BLOQUE_PERSONA_ECV,
         *F.BLOQUE_EMPLEO,
+        *F.BLOQUE_FORMACION,
         *F.BLOQUE_DIGITAL,
         "ctx_renta_municipio",
         "ctx_envejecimiento",

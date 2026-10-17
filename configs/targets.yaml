@@ -12,7 +12,7 @@ agrupaciones_edad:
   edad_tramo_epa: [16, 25, 35, 45, 55, 65]  # tramos de la EPA en los que se calibra la actividad
   edad_estado_civil: [16, 35, 55, 75]  # Censo Anual, tabla 76291
   edad_urbanizacion: [16, 65]  # Censo Anual, tabla 79341
-  # Perfil de edad de cada nacionalidad (reservado; F7, V-MINORIAS-PERFIL). La nacionalidad
+  # Perfil de edad de cada nacionalidad (calibrado desde D-050; F7, V-MINORIAS-PERFIL). La nacionalidad
   # procede a todas las edades: el primer grupo, 00-19, no es NP. Límites múltiplos de 5 porque
   # las celdas de nacionalidad van por edad quinquenal (D-038).
   edad_nacionalidad: [20, 35, 50, 65]
@@ -43,6 +43,18 @@ calibrar:
     descripcion: Española/extranjera por edad quinquenal (ECP 2026, tabla 60129, y colectivos);
       sin ella, los hogares extranjeros de 2021 llegaban con sus hijos y faltaban adultos
       extranjeros (D-042 A)
+  - id: nacionalidad_top_edad
+    variables: [nacionalidad_top, edad_nacionalidad]
+    descripcion: Las 15 nacionalidades extranjeras más numerosas por grupo de edad (Censo Anual
+      exhaustivo 2025 sobre los extranjeros ECP 2026); sin ella, el perfil de edad de cada
+      nacionalidad era el de los donantes de 2021 (p. ej. paraguayos más jóvenes y rumanos más
+      mayores en 2025; D-050). Las celdas pequeñas se funden con otras_extranjeras (D-041)
+  - id: estado_civil_edad
+    ambito: provincia
+    variables: [estado_civil, edad_estado_civil]
+    descripcion: Estado civil por edad (Censo Anual 2024, tabla 76291, sobre la ECP 2026); pasa de
+      reservado a calibrado porque los donantes de 2021 tienen más casados que la población de
+      2026 (D-050)
   - id: estudios_edad
     ambito: provincia
     variables: [estudios_3, edad_estudios]
@@ -137,9 +149,6 @@ reservar:
     ambito: provincia
     variables: [nacionalidad_top, sexo, edad_nacionalidad]
     descripcion: Perfil por sexo y edad de cada nacionalidad (D-038)
-  - id: estado_civil_edad
-    ambito: provincia
-    variables: [estado_civil, edad_estado_civil]
   - id: tamano_municipio
     variables: [tamano_municipio]
   - id: provincia_si_calibra_ccaa

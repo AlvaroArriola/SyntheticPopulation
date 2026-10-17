@@ -214,6 +214,7 @@ COLS_EPA = [
     "SIDI2",
     "SIDI3",
     "CURSR",
+    "CURSNR",
     "FACTOREL",
 ]
 
@@ -246,6 +247,20 @@ def _situacion_inactividad(df: pl.DataFrame) -> pl.DataFrame:
         .then(pl.lit("01NR"))
         .otherwise(pl.col("SIDI1").str.strip_chars())
         .alias("SIDI")
+    )
+
+
+def _formacion(df: pl.DataFrame) -> pl.DataFrame:
+    """Código derivado `_CURS` de CURSR y CURSNR (tabla TCURSR): 1 si alguna es 1 (sí) o 2
+    (estudiante en vacaciones); 3 si las dos son 3 (no); vacío en el resto."""
+    r, nr = pl.col("CURSR").str.strip_chars(), pl.col("CURSNR").str.strip_chars()
+    return df.with_columns(
+        pl.when(r.is_in(["1", "2"]) | nr.is_in(["1", "2"]))
+        .then(pl.lit("1"))
+        .when((r == "3") & (nr == "3"))
+        .then(pl.lit("3"))
+        .otherwise(pl.lit(""))
+        .alias("_CURS")
     )
 
 
@@ -312,6 +327,15 @@ def epa() -> pl.DataFrame:
         recode(df, "AOI", "relacion_actividad_3", s, np_si=menor16),
         # D-049: ocupados y parados por AOI; inactivos por su situación autopercibida (SIDI1-3)
         _actividad_epa(df, menor16),
+        # D-050: educación o formación en las cuatro últimas semanas (reglada o no)
+        recode(
+            _formacion(df),
+            "_CURS",
+            "cursa_formacion",
+            s,
+            np_si=menor16,
+            nc_si=~menor16,
+        ),
         recode(df, "SITU", "situacion_profesional", s, np_si=no_ocup),
         recode(df, "SITU", "sector_publico", s, np_si=no_ocup),
         recode(df, "PARCO1", "tipo_jornada", s, np_si=no_ocup),

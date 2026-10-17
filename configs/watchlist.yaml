@@ -54,11 +54,13 @@ grupos:
     capa: enriquecimiento
     motivo: Grupo frecuentemente invisible
   - id: jovenes_ni_ni
-    nombre: Jóvenes de 18 a 24 que ni estudian ni trabajan
-    definicion: "relacion_actividad NOT IN ('ocupado', 'estudiante')"
-    universo: "edad >= 18 AND edad <= 24 AND tipo_residencia = 'vivienda_familiar'"
-    referencia: ecv
-    motivo: Situación vital específica (la EPA armonizada no separa a los estudiantes inactivos)
+    nombre: Jóvenes de 20 a 24 que ni estudian ni trabajan
+    definicion: "relacion_actividad <> 'ocupado' AND cursa_formacion = 'no'"
+    universo: "edad >= 20 AND edad <= 24 AND tipo_residencia = 'vivienda_familiar'"
+    referencia: epa
+    motivo: Situación vital específica. Definición de Eurostat (sin empleo y sin educación ni
+      formación en las cuatro últimas semanas); de 20 a 24 porque la EPA no separa a los de 18
+      y 19 (D-050)
   - id: parados
     nombre: Personas en paro (16+)
     definicion: "relacion_actividad = 'parado'"

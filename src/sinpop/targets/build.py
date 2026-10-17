@@ -572,6 +572,20 @@ def provincias() -> pl.DataFrame:
     )
     out.append(
         _largo(
+            top.with_columns(
+                edades.agrupar(
+                    pl.col("edad_5").str.slice(0, 2).cast(pl.Int64),
+                    edades.cortes()["edad_nacionalidad"],
+                    "edad_nacionalidad",
+                )
+            ),
+            ["nacionalidad_top", "edad_nacionalidad"],
+            "nacionalidad_top_edad",
+            meta_nac,
+        )
+    )
+    out.append(
+        _largo(
             adultos_nacionalidad(nac),
             ["nacionalidad_esp_ext", "es_adulto"],
             "adultos_nacionalidad",

@@ -857,3 +857,38 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
      - Si es mayor, la construcción se sigue deteniendo.
      - Alternativa descartada: poner a 0 en los objetivos las categorías que el Censo agregado no tiene en la celda. Choca con la muestra de donantes, que sí las tiene (p. ej. jubilados de 16-24), y fuerza ceros que no son reales.
 - **Consecuencias:** se rehacen F3-F6 y la auditoría. La prueba del territorio reservado de F5 retira ahora `actividad_tramo` y `estudios_edad`.
+
+## D-050 · Desfase de los donantes de 2021 y comparaciones homogéneas en la auditoría (2026-10-17)
+
+- **Fecha:** 2026-10-17
+- **Fase:** F7 (corrige F3, F6 y la lista de vigilancia)
+- **Estado:** aprobada por la persona responsable el 2026-10-17. Eligió las cuatro opciones recomendadas.
+- **Contexto:** la cadena F4-F7 repetida tras D-049 deja estos fallos:
+  - **G4.2:** estado civil × edad, sistemático a 10.000 personas.
+  - **G5.2:** V de Cramér de actividad × sexo.
+  - **Auditoría F7:** en rojo los jóvenes ni-ni, el perfil de actividad de los grupos de la ECV y la TIC-H, y el perfil de edad de paraguayos y rumanos.
+- **Decisiones:**
+  1. **Estado civil × edad pasa a calibrado.**
+     - **Por qué falla:** los donantes del Censo 2021 tienen más casados y menos solteros de 35-54 años que el Censo Anual 2024 llevado a la ECP 2026 (−1,2 puntos de solteros y +0,9 de casados). Con 1.000.000 de personas, la TVD es 0,028 frente a un umbral de 0,03. Con 10.000 lo supera por ruido en las 5 semillas.
+     - **Consecuencia:** se pierde como cruce de control; quedan 10 reservados.
+     - **Alternativa descartada:** declararlo limitación.
+  2. **Nuevo objetivo calibrado `nacionalidad_top_edad`:** 15 nacionalidades × 5 grupos de edad, del Censo Anual exhaustivo 2025 sobre los extranjeros de la ECP 2026.
+     - **Por qué:** los donantes de 2021 no recogen el rejuvenecimiento de los paraguayos (llegados hace poco) ni el envejecimiento de los rumanos (TVD de 0,088 y 0,084 frente a 0,08).
+     - **Celdas pequeñas:** van a otras_extranjeras de la misma edad. Son las celdas de menos de 100 personas y las de las nacionalidades ya fundidas (D-041).
+     - **Consecuencia:** el perfil de edad de cada nacionalidad deja de ser un control independiente; el de sexo sigue reservado.
+  3. **Actividad calibrada por sexo:** `actividad_tramo` pasa a relación con la actividad × sexo × tramo de edad, que es como la EPA construye el objetivo. Sin el sexo, la asociación actividad × sexo era la del Censo y fallaba G5.2.
+     - **Fusión por falta de cobertura** (`_fusionar_actividad`): una categoría no ocupada cuya proporción en todos los donantes es menor que la del objetivo dividida por el factor máximo de la calibración (5) se funde con otra_inactividad del mismo cruce. Ni con ese factor se alcanzaría el objetivo.
+     - **Ejemplos:** los incapacitados de 65 y más años, a los que el Censo, de registros administrativos, cuenta como jubilados, y los parados varones de 65 y más.
+     - Es una regla basada en los datos, no una lista de celdas. La persona conserva su categoría y el total del cruce se calibra.
+  4. **Atributo nuevo `cursa_formacion`.** Indica si la persona ha cursado estudios reglados o formación no reglada en las cuatro últimas semanas. Sale de CURSR y CURSNR de la EPA 2T 2026 (tabla TCURSR, comprobada en `dr_EPA_2026.json`).
+     - Se enriquece en un bloque nuevo, «formación» (F6): EPA, 16+ no ocupados, con la relación con la actividad como llave fija; los ocupados quedan NP.
+     - **Jóvenes ni-ni con la definición de Eurostat:** sin empleo y sin educación ni formación. La referencia es la EPA con la misma definición, de 20 a 24 años, porque la EPA no separa a los de 18 y 19; da un 11,5 %.
+     - **Antes:** se comparaba con la ECV, cuya situación principal declarada no es la de la EPA (ratio 1,55).
+     - **Alternativas descartadas:** referencia de la EPA sin el atributo (no es la tasa oficial) o limitación declarada.
+  5. **Perfiles de actividad en tres categorías** (ocupado, parado, inactivo) cuando la referencia es una encuesta (ECV, TIC-H, EPA).
+     - **Por qué:** las subcategorías de inactividad de la ECV y la TIC-H (situación principal declarada) no se definen como las de la EPA, de la que sale la población.
+     - **TVD con 3 categorías:** limitación grave 0,027, privación severa 0,080 y nunca usa internet 0,008. Con 6 categorías eran 0,107, 0,112 y 0,162.
+- **Otros cambios sin decisión de método:**
+  - La auditoría da «sin referencia» si el territorio no tiene el objetivo del que sale la cifra (listas de municipios); antes se detenía.
+  - Ajustes de memoria en la construcción de España, sin efecto en los resultados.
+- **Consecuencias:** se rehacen F2 (EPA), F3-F6 y la auditoría.

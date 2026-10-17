@@ -129,6 +129,14 @@ def _edad_grupos(edad: pl.Expr) -> pl.Expr:
 # --------------------------------------------------------------------------- encuestas
 
 
+ACTIVIDAD_3 = (
+    pl.when(pl.col("relacion_actividad").is_in(["ocupado", "parado", "NC", "NS", "NP"]))
+    .then(pl.col("relacion_actividad"))
+    .otherwise(pl.lit("inactivo"))
+    .alias("actividad_3")
+)
+
+
 @lru_cache(maxsize=4)
 def _encuesta(nombre: str) -> pl.DataFrame:
     return pl.read_parquet(INTERIM_DIR / f"{nombre}.parquet")
@@ -176,7 +184,11 @@ def _ref_encuesta(
     p, lo, hi = _ic_bootstrap(d, en_grupo, peso, conglomerado)
     sub = d.filter(en_grupo)
     perfiles = {}
-    for v in ("sexo", "edad_4", "estudios_3", "relacion_actividad"):
+    # La actividad, en tres categorías: las subcategorías de inactividad de la ECV y la TIC-H
+    # (situación principal declarada) no se definen como las de la EPA, de la que sale la
+    # actividad de la población (D-049, D-050)
+    sub = sub.with_columns(ACTIVIDAD_3)
+    for v in ("sexo", "edad_4", "estudios_3", "actividad_3"):
         if v in sub.columns and sub.height >= 30:
             s = sub.filter(~pl.col(v).is_in(["NC", "NS"]))
             if v == "edad_4":
@@ -325,14 +337,19 @@ def _referencia(grupo: str, territorio: str) -> Referencia | None:
             "ECV 2025 (16+, viviendas familiares; vrMATSOCDEP)",
         )
     if grupo == "jovenes_ni_ni":
+        # D-050: definición de Eurostat (sin empleo y sin educación ni formación en las cuatro
+        # últimas semanas) con la EPA, de la que salen la actividad y la formación de la
+        # población; de 20 a 24 años, porque la EPA no separa a los de 18 y 19
         return _ref_encuesta(
-            "ecv",
-            fam16 & pl.col("edad").is_between(18, 24) & ~pl.col("relacion_actividad").is_in(["NP"]),
-            ~pl.col("relacion_actividad").is_in(["ocupado", "estudiante"]),
-            "peso_16",
-            "household_id",
+            "epa",
+            (pl.col("edad_grupo_epa") == "20")
+            & ~pl.col("relacion_actividad").is_in(["NC", "NP"])
+            & pl.col("cursa_formacion").is_in(["si", "no"]),
+            (pl.col("relacion_actividad") != "ocupado") & (pl.col("cursa_formacion") == "no"),
+            "peso",
+            None,
             territorio,
-            "ECV 2025 (18-24, viviendas familiares)",
+            "EPA 2T 2026 (20-24, viviendas familiares)",
         )
     if grupo == "nunca_internet":
         return _ref_encuesta(

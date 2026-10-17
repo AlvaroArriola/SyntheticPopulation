@@ -69,6 +69,14 @@ BLOQUES = (
         None,
     ),
     Bloque(
+        "formacion",
+        "epa",
+        tuple(F.BLOQUE_FORMACION),
+        ("sexo", "relacion_actividad", "estudios_3", "nacionalidad_esp_ext"),
+        "peso",
+        None,
+    ),
+    Bloque(
         "digital",
         "tic_h",
         tuple(F.BLOQUE_DIGITAL),
@@ -80,8 +88,8 @@ BLOQUES = (
 
 
 def _universo(df: pl.DataFrame, bloque: Bloque, sintetica: bool) -> pl.DataFrame:
-    """Mismo universo a los dos lados (18+, viviendas familiares; ocupados en el empleo; 20+
-    en la EPA, que no separa a los de 18 y 19)."""
+    """Mismo universo a los dos lados (18+, viviendas familiares; ocupados en el empleo y no
+    ocupados en la formación; 20+ en la EPA, que no separa a los de 18 y 19)."""
     d = df
     if sintetica:
         d = d.filter(pl.col("tipo_residencia") == "vivienda_familiar")
@@ -92,6 +100,9 @@ def _universo(df: pl.DataFrame, bloque: Bloque, sintetica: bool) -> pl.DataFrame
         else:
             d = d.filter(pl.col("tipo_jornada").is_in(["completa", "parcial"]))
         d = d.with_columns(F.situacion_3())
+    if bloque.nombre == "formacion":
+        d = d.filter(~pl.col("relacion_actividad").is_in(["ocupado", "NC"]))
+        d = d.filter(pl.col("edad") >= 20) if sintetica else d
     if bloque.nombre == "persona_ecv" or "privacion_material_n" in d.columns:
         d = d.with_columns(CARENCIAS.fill_null("NP").alias("carencias"))
     return d
@@ -106,6 +117,8 @@ def _encuesta(bloque: Bloque) -> pl.DataFrame:
     e = encuesta(bloque.fuente)
     if bloque.nombre == "empleo":
         e = e.filter(pl.col("relacion_actividad_3") == "ocupado")
+    if bloque.nombre == "formacion":
+        e = e.filter(pl.col("cursa_formacion").is_in(["si", "no"]))
     if bloque.nombre == "persona_ecv":
         e = e.filter(pl.col("peso_16").is_not_null())
     return _universo(e, bloque, sintetica=False)

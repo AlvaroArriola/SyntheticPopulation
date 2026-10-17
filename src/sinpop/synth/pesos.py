@@ -116,14 +116,17 @@ def _celdas_por_unidad(personas: pl.DataFrame, obj: pl.DataFrame) -> pl.DataFram
 
 
 MIN_INACTIVIDAD = 0.02
+FACTOR_MAX = 5.0  # cota superior de los factores de la calibración logit
 
 
-def fusionar(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict[str, str]]]:
+def fusionar(
+    obj: pl.DataFrame, cobertura: pl.DataFrame | None = None
+) -> tuple[pl.DataFrame, dict[str, dict[str, str]]]:
     """Funde con «otras_extranjeras» las nacionalidades cuyo objetivo en el bloque es menor que
     `MIN_CELDA_NACIONALIDAD` personas (p. ej. 7,6 ecuatorianos en Melilla): con tan pocos casos,
     los pocos hogares donantes locales pueden pesar más que el objetivo y la calibración acotada
     no tiene solución. La nacionalidad sigue calibrada por grupos (`nacionalidad`)."""
-    obj, fusion = _fusionar_actividad(obj)
+    obj, fusion = _fusionar_actividad(obj, cobertura)
     top = obj.filter(pl.col("objetivo") == "nacionalidad_top")
     otras = "nacionalidad_top=otras_extranjeras"
     peq = top.filter(
@@ -131,26 +134,74 @@ def fusionar(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict[str, str]]
         & (pl.col("clave") != otras)
         & (pl.col("clave") != "nacionalidad_top=espanola")
     )
-    if peq.height == 0:
-        return obj, fusion
     mapa = {c: otras for c in peq["clave"]}
-    nuevo = (
-        top.with_columns(pl.col("clave").replace(mapa))
-        .group_by("clave", maintain_order=True)
-        .agg(pl.all().exclude("valor").first(), pl.col("valor").sum())
-        .select(obj.columns)
+    if mapa:
+        nuevo = (
+            top.with_columns(pl.col("clave").replace(mapa))
+            .group_by("clave", maintain_order=True)
+            .agg(pl.all().exclude("valor").first(), pl.col("valor").sum())
+            .select(obj.columns)
+        )
+        obj = pl.concat([obj.filter(pl.col("objetivo") != "nacionalidad_top"), nuevo]).sort(
+            "objetivo", "clave"
+        )
+        fusion = fusion | {"nacionalidad_top": mapa}
+    # Nacionalidad por edad (D-050): las nacionalidades fundidas y las celdas pequeñas de cada
+    # nacionalidad × edad van a otras_extranjeras de la misma edad.
+    te = obj.filter(pl.col("objetivo") == "nacionalidad_top_edad")
+    if te.height:
+        nac = pl.col("clave").str.extract(r"^(nacionalidad_top=[^;]+)")
+        resto = pl.col("clave").str.extract(r"^nacionalidad_top=[^;]+(;.*)$")
+        te = te.with_columns(nac.alias("_n"), resto.alias("_r"))
+        fundir = te.filter(
+            ~pl.col("_n").is_in([otras, "nacionalidad_top=espanola"])
+            & (pl.col("_n").is_in(list(mapa)) | (pl.col("valor") < MIN_CELDA_NACIONALIDAD))
+        )
+        mapa_e = {c: otras + r for c, r in fundir.select("clave", "_r").iter_rows()}
+        if mapa_e:
+            nuevo = (
+                te.with_columns(pl.col("clave").replace(mapa_e))
+                .group_by("clave", maintain_order=True)
+                .agg(pl.all().exclude("valor", "_n", "_r").first(), pl.col("valor").sum())
+                .select(obj.columns)
+            )
+            obj = pl.concat(
+                [obj.filter(pl.col("objetivo") != "nacionalidad_top_edad"), nuevo]
+            ).sort("objetivo", "clave")
+            fusion = fusion | {"nacionalidad_top_edad": mapa_e}
+    return obj, fusion
+
+
+def cobertura_actividad(u: D.Unidades) -> pl.DataFrame:
+    """Proporción de cada clave de `actividad_tramo` en todos los donantes (peso inicial) dentro
+    de su cruce (sexo × tramo): la cobertura que los donantes pueden dar a cada celda."""
+    vs = D.variables_de("actividad_tramo")
+    return (
+        u.personas.lazy()
+        .filter(~pl.col("relacion_actividad").is_in(["NP"]))
+        .group_by(D.clave(vs).alias("clave"))
+        .agg(pl.col("peso_inicial").sum().alias("w"))
+        .with_columns(pl.col("clave").str.extract(r"^relacion_actividad=[^;]+(;.*)$").alias("_r"))
+        .with_columns((pl.col("w") / pl.col("w").sum().over("_r")).alias("cuota_donantes"))
+        .select("clave", "cuota_donantes")
+        .collect()
     )
-    return pl.concat([obj.filter(pl.col("objetivo") != "nacionalidad_top"), nuevo]).sort(
-        "objetivo", "clave"
-    ), fusion | {"nacionalidad_top": mapa}
 
 
-def _fusionar_actividad(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict[str, str]]]:
-    """Funde con «otra_inactividad» del mismo tramo las categorías de inactividad que pesan menos
-    de `MIN_INACTIVIDAD` de los inactivos del tramo (D-049; p. ej. jubilados de 16-44 años o
-    estudiantes de 65 y más): la EPA tiene algunos y los donantes del Censo (registros
-    administrativos) casi ninguno, y la calibración acotada no tiene solución. Solo afecta a la
-    calibración: la persona conserva su categoría y el total de inactivos del tramo se calibra."""
+def _fusionar_actividad(
+    obj: pl.DataFrame, cobertura: pl.DataFrame | None = None
+) -> tuple[pl.DataFrame, dict[str, dict[str, str]]]:
+    """Funde con «otra_inactividad» del mismo cruce (D-049, D-050):
+
+    - las categorías de inactividad que pesan menos de `MIN_INACTIVIDAD` de los inactivos del
+      cruce (p. ej. jubilados de 16-44 años o estudiantes de 65 y más);
+    - con `cobertura`, las categorías no ocupadas cuya proporción en todos los donantes es menor
+      que la del objetivo dividida por el factor máximo de la calibración (5): ni con ese factor
+      se alcanzaría el objetivo (p. ej. incapacitados de 65 y más, que el Censo, de registros
+      administrativos, cuenta como jubilados, y la EPA, por lo que declaran, no).
+
+    Solo afecta a la calibración: la persona conserva su categoría y el total del cruce se
+    calibra."""
     otra = "relacion_actividad=otra_inactividad"
     inactivas = ["estudiante", "jubilado_pensionista", "incapacidad_permanente"]
     fusion, partes = {}, []
@@ -169,8 +220,18 @@ def _fusionar_actividad(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict
             .over("_resto")
             .alias("_ina")
         )
+        a = a.with_columns((pl.col("valor") / pl.col("valor").sum().over("_resto")).alias("_cuota"))
+        sin_cobertura = pl.lit(False)
+        if cobertura is not None:
+            a = a.join(cobertura, on="clave", how="left").with_columns(
+                pl.col("cuota_donantes").fill_null(0.0)
+            )
+            sin_cobertura = ~pl.col("_c").is_in(["ocupado", "otra_inactividad"]) & (
+                pl.col("cuota_donantes") * FACTOR_MAX < pl.col("_cuota")
+            )
         peq = a.filter(
-            pl.col("_c").is_in(inactivas) & (pl.col("valor") < MIN_INACTIVIDAD * pl.col("_ina"))
+            (pl.col("_c").is_in(inactivas) & (pl.col("valor") < MIN_INACTIVIDAD * pl.col("_ina")))
+            | sin_cobertura
         )
         destino = set(a.filter(pl.col("_c") == "otra_inactividad")["clave"])
         pares = peq.select("clave", "_resto").iter_rows()
@@ -525,13 +586,16 @@ def calibrar(
 
     ccaa = ccaa_de_provincia()
     filas, diags, ceros, ampl, fusiones = [], {}, [], [], []
-    todas = None
+    todas = cob = None
     for b in bloques(territorio):
         ps = provincias_bloque(b)
+        if cob is None:
+            cob = cobertura_actividad(u)
         obj, fusion = fusionar(
             D.objetivos_calibrables(run.leer(b), municipios=b.startswith("MUNIS:")).filter(
                 ~pl.col("objetivo").is_in(list(excluir))
-            )
+            ),
+            cob,
         )
         if todas is None or set(obj["objetivo"].unique()) != set(todas["objetivo"].unique()):
             todas = _celdas_por_unidad(u.personas, obj)

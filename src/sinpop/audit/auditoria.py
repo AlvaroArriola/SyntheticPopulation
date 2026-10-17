@@ -57,6 +57,7 @@ def preparar(p: pl.DataFrame) -> pl.DataFrame:
     """Variables derivadas para comparar perfiles con las fuentes oficiales."""
     cortes = load_config("targets.yaml").agrupaciones_edad  # type: ignore[attr-defined]
     return p.with_columns(
+        R.ACTIVIDAD_3,
         R._edad_grupos(pl.col("edad")),
         agrupar(pl.col("edad"), cortes["edad_actividad"], "edad_actividad"),
         agrupar(pl.col("edad"), cortes["edad_nacionalidad"], "edad_nacionalidad"),
@@ -113,6 +114,7 @@ def auditar(p: pl.DataFrame, lineage: pl.DataFrame, territorio: str) -> pl.DataF
             "uso_internet",
             "compra_online",
             "teletrabajo",
+            "cursa_formacion",
         }
     ]
     filas = []
