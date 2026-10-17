@@ -120,6 +120,7 @@ def fusionar(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict[str, str]]
     `MIN_CELDA_NACIONALIDAD` personas (p. ej. 7,6 ecuatorianos en Melilla): con tan pocos casos,
     los pocos hogares donantes locales pueden pesar más que el objetivo y la calibración acotada
     no tiene solución. La nacionalidad sigue calibrada por grupos (`nacionalidad`)."""
+    obj, fusion = _fusionar_actividad(obj)
     top = obj.filter(pl.col("objetivo") == "nacionalidad_top")
     otras = "nacionalidad_top=otras_extranjeras"
     peq = top.filter(
@@ -128,7 +129,7 @@ def fusionar(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict[str, str]]
         & (pl.col("clave") != "nacionalidad_top=espanola")
     )
     if peq.height == 0:
-        return obj, {}
+        return obj, fusion
     mapa = {c: otras for c in peq["clave"]}
     nuevo = (
         top.with_columns(pl.col("clave").replace(mapa))
@@ -138,7 +139,34 @@ def fusionar(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict[str, str]]
     )
     return pl.concat([obj.filter(pl.col("objetivo") != "nacionalidad_top"), nuevo]).sort(
         "objetivo", "clave"
-    ), {"nacionalidad_top": mapa}
+    ), fusion | {"nacionalidad_top": mapa}
+
+
+def _fusionar_actividad(obj: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, dict[str, str]]]:
+    """Funde con «otra_inactividad» del mismo cruce las categorías de inactividad con objetivo 0
+    (D-049; p. ej. jubilados de 16-24 años: la EPA no tiene ninguno y el Censo, de registros
+    administrativos, sí). Solo afecta a la calibración: la persona conserva su categoría."""
+    otra = "relacion_actividad=otra_inactividad"
+    fusion, partes = {}, []
+    for o in ("actividad_tramo",):
+        a = obj.filter(pl.col("objetivo") == o)
+        cero = a.filter((pl.col("valor") <= 0) & ~pl.col("clave").str.starts_with(otra + ";"))
+        if a.is_empty() or cero.is_empty():
+            continue
+        mapa = {
+            c: otra + c[c.index(";") :]
+            for c in cero["clave"]
+            if otra + c[c.index(";") :] in set(a["clave"])
+        }
+        if not mapa:
+            continue
+        fusion[o] = mapa
+        partes.append(a.filter(~pl.col("clave").is_in(list(mapa))).select(obj.columns))
+    if not fusion:
+        return obj, {}
+    return pl.concat([obj.filter(~pl.col("objetivo").is_in(list(fusion))), *partes]).sort(
+        "objetivo", "clave"
+    ), fusion
 
 
 def _contexto_unidades(u: D.Unidades) -> pl.DataFrame:
