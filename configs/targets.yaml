@@ -9,6 +9,7 @@ fecha_referencia: 2026-01-01
 agrupaciones_edad:
   edad_estudios: [15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90]  # Censo Anual, tabla 66601
   edad_actividad: [16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]  # Censo Anual, tabla 67128
+  edad_tramo_epa: [16, 25, 35, 45, 55, 65]  # tramos de la EPA en los que se calibra la actividad
   edad_estado_civil: [16, 35, 55, 75]  # Censo Anual, tabla 76291
   edad_urbanizacion: [16, 65]  # Censo Anual, tabla 79341
   # Perfil de edad de cada nacionalidad (reservado; F7, V-MINORIAS-PERFIL). La nacionalidad
@@ -57,12 +58,11 @@ calibrar:
     descripcion: Relación con la actividad por sexo (tablas municipales del Censo Anual 2024
       llevadas a la EPA 2T 2026 con el cociente provincial; D-049); sustituye a actividad_edad
       en los territorios por municipios
-  - id: actividad_edad
+  - id: actividad_tramo
     ambito: provincia
-    variables: [relacion_actividad, edad_actividad]
-    descripcion: Relación con la actividad por edad (EPA 2T 2026, inactivos por su situación
-      autopercibida; reparto del Censo Anual 2024 dentro de cada tramo; D-046 A2, D-049). Pasa de
-      reservado a calibrado y actividad_sexo, a reservado (D-049)
+    variables: [relacion_actividad, edad_tramo_epa]
+    descripcion: Relación con la actividad por tramo de edad (EPA 2T 2026, inactivos por su
+      situación autopercibida; D-046 A2, D-049); actividad_sexo y actividad_edad quedan reservados
   - id: sin_estudios_edad
     ambito: provincia
     variables: [sin_estudios, edad_estudios]
@@ -117,10 +117,16 @@ reservar:
   - id: estudios_sexo_edad
     ambito: provincia
     variables: [estudios_3, sexo, edad_estudios]
+  - id: actividad_edad
+    ambito: provincia
+    variables: [relacion_actividad, edad_actividad]
+    descripcion: Relación con la actividad por edad quinquenal (EPA 2T 2026 con el reparto del
+      Censo Anual 2024 dentro de cada tramo)
   - id: actividad_sexo
+    ambito: provincia
     variables: [relacion_actividad, sexo]
     descripcion: Relación con la actividad por sexo (misma fuente que actividad_edad; reservado
-      desde D-049)
+      desde D-049; en las listas de municipios se calibra actividad_sexo_mun)
   - id: tipo_hogar_edad4_ref
     ambito: provincia
     variables: [tipo_hogar, edad_4]

@@ -200,6 +200,12 @@ def actividad_epa(cortes: list[int]) -> pl.DataFrame:
                 / (pl.col("n") + PESO_PREVIO)
             ).alias("objetivo")
         )
+        # Una categoría que el Censo no tiene en toda la celda (p. ej. jubilados de 25-34 en
+        # Ceuta) no tiene donantes que la representen: objetivo 0 y se reparte su peso (D-049)
+        .with_columns(
+            pl.when(pl.col("cv") > 0).then(pl.col("objetivo")).otherwise(0.0).alias("objetivo")
+        )
+        .with_columns((pl.col("objetivo") / pl.col("objetivo").sum().over(k)).alias("objetivo"))
     )
     # Reparto dentro de la celda: cuotas del Censo por provincia × grupo quinquenal; si el Censo
     # no tiene a nadie de esa categoría en la celda, las de la propia celda en conjunto.
@@ -222,6 +228,18 @@ def actividad_epa(cortes: list[int]) -> pl.DataFrame:
         .with_columns((pl.col("tot") * pl.col("objetivo") * pl.col("r")).alias("valor"))
         .select("provincia", "sexo", "grupo", "categoria", "valor")
     )
+
+
+def a_tramos(e: pl.DataFrame) -> pl.DataFrame:
+    """Agrupa `edad_actividad` (quinquenal) en los tramos de la EPA (`edad_tramo_epa`)."""
+    cortes = load_config("targets.yaml").agrupaciones_edad["edad_tramo_epa"]  # type: ignore[attr-defined]
+    labs = etiquetas(cortes)
+    lo = pl.col("edad_actividad").str.slice(0, 2).cast(pl.Int32)
+    g = pl.lit(labs[-1])
+    for lim, lab in reversed(list(zip(cortes[1:], labs[1:-1], strict=True))):
+        g = pl.when(lo < lim).then(pl.lit(lab)).otherwise(g)
+    g = pl.when(lo < cortes[0]).then(pl.lit(labs[0])).otherwise(g)
+    return e.with_columns(g.alias("edad_tramo_epa"))
 
 
 def sin_estudios(cortes: list[int]) -> pl.DataFrame:
@@ -655,6 +673,14 @@ def provincias() -> pl.DataFrame:
             }
         for obj, variables in objetivos:
             out.append(_largo(e, variables, obj, meta))
+        if fn is actividad_epa:
+            # Calibrado por tramos de la EPA: suma de los grupos quinquenales ya reescalados, así
+            # que es coherente con actividad_edad y actividad_sexo (G3.2)
+            out.append(
+                _largo(
+                    a_tramos(e), ["relacion_actividad", "edad_tramo_epa"], "actividad_tramo", meta
+                )
+            )
     hog = pl.read_parquet(INTERIM_DIR / "ecp_hogares.parquet").rename({"hogares": "valor"})
     out.append(
         _largo(

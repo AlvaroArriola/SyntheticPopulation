@@ -182,9 +182,17 @@ class TargetsConfig(Strict):
 
     @model_validator(mode="after")
     def _separacion(self) -> TargetsConfig:
-        cal = {o.clave for o in self.calibrar}
-        res = {o.clave for o in self.reservar}
-        comun = cal & res
+        # Un cruce no puede calibrarse y reservarse en los mismos territorios. «provincia»
+        # (España, CCAA, provincias) y «municipios» (listas de municipios) no se solapan.
+        def solapan(a: str, b: str) -> bool:
+            return "todos" in (a, b) or a == b
+
+        comun = {
+            c.clave
+            for c in self.calibrar
+            for r in self.reservar
+            if c.clave == r.clave and solapan(c.ambito, r.ambito)
+        }
         if comun:
             raise ValueError(f"objetivos a la vez calibrados y reservados: {sorted(comun)}")
         ids = [o.id for o in self.calibrar + self.reservar]

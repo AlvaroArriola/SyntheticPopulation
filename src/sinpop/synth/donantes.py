@@ -306,7 +306,7 @@ def objetivos_calibrables(obj: pl.DataFrame, municipios: bool = False) -> pl.Dat
     ambito = {o.id: o.ambito for o in cfg.calibrar}  # type: ignore[attr-defined]
     if municipios:
         ids = [
-            i for i in ambito if i not in ("estudios_edad", "actividad_edad", "sin_estudios_edad")
+            i for i in ambito if i not in ("estudios_edad", "actividad_tramo", "sin_estudios_edad")
         ]
     else:
         ids = [i for i, a in ambito.items() if a != "municipios"]
