@@ -233,7 +233,23 @@ def validate(
 @app.command()
 def audit(run: Annotated[str, typer.Option(help="run_id de la población")]) -> None:
     """Auditoría de sesgos y minorías de una población (F7)."""
-    _pendiente("audit", "F7")
+    import json
+
+    from sinpop import REPORTS_DIR
+    from sinpop.audit import auditoria as A
+    from sinpop.validate import poblacion as V
+
+    p, lin, meta = V.cargar(run)
+    a = A.auditar(p, lin, meta["territorio"]["codigo"])
+    out = REPORTS_DIR / run
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "auditoria.json").write_text(
+        json.dumps(a.to_dicts(), ensure_ascii=False, indent=1, default=float), "utf-8"
+    )
+    for fila in a.select("grupo", "semaforo", "ratio").to_dicts():
+        r = f"{fila['ratio']:.3f}" if fila["ratio"] is not None else "-"
+        typer.echo(f"{fila['semaforo']:<12} {fila['grupo']:<40} ratio {r}")
+    typer.echo(f"Auditoría: {out / 'auditoria.json'}")
 
 
 @app.command()

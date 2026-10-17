@@ -226,32 +226,41 @@ def _entropias(df: pl.DataFrame, atributo: str, peso: str) -> pl.DataFrame:
     return g.group_by(GRUPO_DIVERSIDAD).agg((-(pl.col("q") * pl.col("q").log())).sum().alias("h"))
 
 
-def v_diversidad(p: pl.DataFrame, referencia: pl.DataFrame, peso_ref: str = "w") -> pl.DataFrame:
-    """Entropía de cada atributo dentro de los grupos edad_4 × sexo × estudios_3 × CCAA con al
-    menos 100 personas, frente a la de los donantes ponderados de la calibración."""
+def diversidad_grupos(
+    p: pl.DataFrame, referencia: pl.DataFrame, peso_ref: str = "w"
+) -> pl.DataFrame:
+    """Entropía de cada atributo en cada grupo edad_4 × sexo × estudios_3 × CCAA con al menos
+    `tamano_grupo_min` personas: sintética frente a la de los donantes ponderados."""
     c = V.umbrales()["V-DIVERSIDAD"]
     adultos = p.filter(pl.col("edad_4").is_in(R.EDAD_4))
     ref = referencia.filter(pl.col("edad_4").is_in(R.EDAD_4))
     tam = adultos.group_by(GRUPO_DIVERSIDAD).agg(pl.col("peso").sum().alias("n"))
     tam = tam.filter(pl.col("n") >= c["tamano_grupo_min"])
-    filas = []
+    partes = []
     for a in ATRIBUTOS_DIVERSIDAD:
         if a not in p.columns or a not in referencia.columns:
             continue
         hs = _entropias(adultos, a, "peso").rename({"h": "h_sintetica"})
         hr = _entropias(ref, a, peso_ref).rename({"h": "h_referencia"})
         j = tam.join(hs, on=GRUPO_DIVERSIDAD).join(hr, on=GRUPO_DIVERSIDAD)
-        j = j.filter(pl.col("h_referencia") > 0.05)  # atributos casi constantes en el grupo
-        ok = j["h_sintetica"] >= c["ratio_entropia_min"] * j["h_referencia"]
-        filas.append(
-            {
-                "atributo": a,
-                "grupos": j.height,
-                "proporcion_ok": float(ok.mean()) if j.height else None,
-                "ratio_mediano": float((j["h_sintetica"] / j["h_referencia"]).median())
-                if j.height
-                else None,
-                "ok": (float(ok.mean()) >= c["proporcion_grupos"]) if j.height else True,
-            }
+        partes.append(j.with_columns(pl.lit(a).alias("atributo")))
+    return pl.concat(partes)
+
+
+def v_diversidad(g: pl.DataFrame) -> pl.DataFrame:
+    """Resumen por atributo: proporción de grupos con entropía ≥ 0,9 × la de referencia (se
+    ignoran los grupos en los que el atributo es casi constante en la referencia, H < 0,05)."""
+    c = V.umbrales()["V-DIVERSIDAD"]
+    g = g.filter(pl.col("h_referencia") > 0.05).with_columns(
+        (pl.col("h_sintetica") >= c["ratio_entropia_min"] * pl.col("h_referencia")).alias("_ok"),
+        (pl.col("h_sintetica") / pl.col("h_referencia")).alias("_r"),
+    )
+    return (
+        g.group_by("atributo", maintain_order=True)
+        .agg(
+            pl.len().alias("grupos"),
+            pl.col("_ok").mean().alias("proporcion_ok"),
+            pl.col("_r").median().alias("ratio_mediano"),
         )
-    return pl.DataFrame(filas)
+        .with_columns((pl.col("proporcion_ok") >= c["proporcion_grupos"]).alias("ok"))
+    )

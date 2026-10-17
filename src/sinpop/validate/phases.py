@@ -1020,6 +1020,132 @@ def _g6_6() -> Check:
     )
 
 
+def _f7() -> dict | None:
+    import json
+
+    from sinpop.validate.fase7 import RESUMEN
+
+    return json.loads(RESUMEN.read_text(encoding="utf-8")) if RESUMEN.exists() else None
+
+
+def _sin_f7(id_: str, desc: str, um: str) -> Check:
+    return Check(
+        id_,
+        desc,
+        False,
+        "falta reports/fase_07_validacion.json (python -m sinpop.validate.fase7)",
+        um,
+    )
+
+
+def _grupos_f7(d: dict) -> list[tuple[str, dict]]:
+    return [(x["territorio"], g) for x in d["poblaciones"] for g in x["grupos"]]
+
+
+def _g7_check(id_: str, desc: str, um: str, campo: str) -> Check:
+    d = _f7()
+    if d is None:
+        return _sin_f7(id_, desc, um)
+    malos = [(t, g["grupo"]) for t, g in _grupos_f7(d) if g.get(campo) is False]
+    n = sum(1 for _, g in _grupos_f7(d) if g.get(campo) is not None)
+    return Check(
+        id_,
+        desc,
+        not malos,
+        f"{n} grupos × población; fuera: {len(malos)} {malos[:6] if malos else ''}",
+        um,
+    )
+
+
+def _g7_1() -> Check:
+    return _g7_check(
+        "G7.1",
+        "Grupos vigilados dentro de su rango de representación (V-MINORIAS)",
+        "ratio en [0,9; 1,1] si el esperado es ≥ 200; si no, IC 95 % de MAS (o IC de la encuesta)",
+        "ok_representacion",
+    )
+
+
+def _g7_2() -> Check:
+    d, desc = _f7(), "Diversidad dentro de grupos (V-DIVERSIDAD)"
+    um = "entropía ≥ 0,9 × la de los donantes ponderados en ≥ 95 % de los grupos (≥ 100 personas)"
+    if d is None:
+        return _sin_f7("G7.2", desc, um)
+    filas = [(x["territorio"], a) for x in d["poblaciones"] for a in x.get("v_diversidad", [])]
+    malos = [(t, a["atributo"], round(a["proporcion_ok"], 3)) for t, a in filas if not a["ok"]]
+    return Check(
+        "G7.2",
+        desc,
+        bool(filas) and not malos,
+        f"{len(filas)} atributo × población; fuera: {malos or 0}",
+        um,
+    )
+
+
+def _g7_3() -> Check:
+    return _g7_check(
+        "G7.3",
+        "Concentración de donantes por grupo (V-CONCENTRACION)",
+        "5 donantes más usados ≤ 20 %; donantes distintos ≥ mín(50, tamaño / 3)",
+        "ok_concentracion",
+    )
+
+
+def _g7_4() -> Check:
+    return _g7_check(
+        "G7.4",
+        "Perfil interno de cada grupo frente al oficial (V-MINORIAS-PERFIL)",
+        "TVD ≤ 0,08 en sexo, edad, estudios y actividad, donde hay referencia",
+        "ok_perfil",
+    )
+
+
+def _g7_5() -> Check:
+    d, desc = _f7(), "Combinaciones de atributos P0 sin donante (V-RAREZA)"
+    um = "0 con el método base"
+    if d is None:
+        return _sin_f7("G7.5", desc, um)
+    r = [y for x in d["poblaciones"] for y in x.get("v_rareza", [])]
+    nuevas = sum(y.get("sin_donante", 0) for y in r)
+    return Check("G7.5", desc, bool(r) and nuevas == 0, f"combinaciones nuevas: {nuevas}", um)
+
+
+def _g7_6() -> Check:
+    desc = "Sección de limitaciones con los grupos no observables (docs/06 §2)"
+    um = (
+        "personas sin hogar, no empadronados, grupos étnicos, orientación sexual, identidad de "
+        "género"
+    )
+    f = REPO_ROOT / "reports" / "fase_07.md"
+    if not f.exists():
+        return Check("G7.6", desc, False, "falta reports/fase_07.md", um)
+    t = f.read_text(encoding="utf-8").lower()
+    claves = [
+        "sin hogar",
+        "empadronad",
+        "étnic",
+        "orientación sexual",
+        "identidad de género",
+        "colectivos",
+    ]
+    faltan = [c for c in claves if c not in t]
+    return Check("G7.6", desc, "## limitaciones" in t and not faltan, f"faltan: {faltan or 0}", um)
+
+
+def _g7_7_human() -> Check:
+    texto = (REPO_ROOT / "DECISIONS.md").read_text(encoding="utf-8")
+    i = texto.find("Aprobación de F7")
+    bloque = texto[i : texto.find("\n## D-", i)] if i >= 0 else ""
+    ok = "**Estado:** aprobada" in bloque
+    return Check(
+        "G7.7",
+        "Revisión humana: aprobación expresa de la población",
+        True if ok else None,
+        "aprobada" if ok else "pendiente (reports/fase_07.md)",
+        "aprobación",
+    )
+
+
 PHASES: dict[int, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
@@ -1042,6 +1168,7 @@ PHASES: dict[int, list[Callable[[], Check]]] = {
     ],
     5: [_g5_1, _g5_2, _g5_3, _g5_4, _g5_5, _g5_6_human],
     6: [_g6_1, _g6_2, _g6_3, _g6_4, _g6_5, _g6_6],
+    7: [_g7_1, _g7_2, _g7_3, _g7_4, _g7_5, _g7_6, _g7_7_human],
     4: [
         _g4_1_marg,
         _g4_2_cruce,
