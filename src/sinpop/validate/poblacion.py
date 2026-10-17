@@ -65,10 +65,10 @@ def _n_universo(p: pl.DataFrame, universo: str, unidad: str) -> float:
     return float(D.en_universo(p, universo, unidad, ["peso"])["peso"].sum())
 
 
-def _fundidas(territorio: str) -> set[tuple[str, str]]:
-    """Celdas (objetivo, clave) fundidas en la calibración del territorio (D-041, D-050): las
-    personas conservan su categoría, así que una celda fundida con objetivo 0 puede tener
-    personas sin ser un código fuera de dominio."""
+def _fundidas(territorio: str) -> list[dict]:
+    """Celdas fundidas en la calibración del territorio (D-041, D-050): bloque, objetivo, clave y
+    celda en la que se calibraron. Las personas conservan su categoría, así que V-MARG compara
+    lo que se calibró: población y objetivo con las mismas fusiones."""
     import json
 
     from sinpop.synth import poblacion as PB
@@ -76,9 +76,40 @@ def _fundidas(territorio: str) -> set[tuple[str, str]]:
 
     f = PB.CALIBRACION_DIR / f"{nombre_fichero(territorio)}_{PB.METODO}.json"
     if not f.exists():
-        return set()
-    fus = json.loads(f.read_text("utf-8")).get("fusiones", [])
-    return {(x["objetivo"], x["clave"]) for x in fus}
+        return []
+    return json.loads(f.read_text("utf-8")).get("fusiones", [])
+
+
+def _aplicar_fusiones(r: pl.DataFrame, fus: list[dict], t: str) -> pl.DataFrame:
+    """Funde las celdas de los recuentos como en la calibración: las del bloque `t` si es un
+    bloque; si no (España, una provincia), las de todos los bloques."""
+    bloques = {x["bloque"] for x in fus}
+    mapa = {
+        (x["objetivo"], x["clave"]): x["fusionada_en"]
+        for x in fus
+        if x["bloque"] == t or t not in bloques
+    }
+    if not mapa:
+        return r
+
+    # Una fusión puede encadenarse (A → B y B → C en bloques distintos, en España)
+    def destino(o: str, c: str) -> str:
+        visto = set()
+        while (o, c) in mapa and c not in visto:
+            visto.add(c)
+            c = mapa[(o, c)]
+        return c
+
+    claves = r.select("objetivo", "clave").unique()
+    claves = claves.with_columns(
+        pl.Series("_f", [destino(o, c) for o, c in claves.iter_rows()], dtype=pl.Utf8)
+    )
+    return (
+        r.join(claves, on=["objetivo", "clave"], how="left")
+        .group_by("objetivo", pl.col("_f").alias("clave"))
+        .agg(pl.col("valor").sum(), pl.col("sintetico").sum())
+        .sort("objetivo", "clave")
+    )
 
 
 def comparar(
@@ -89,7 +120,7 @@ def comparar(
 
     cfg = umbrales()
     filas = []
-    fundidas = _fundidas(territorio) if uso == "calibrar" else set()
+    fundidas = _fundidas(territorio) if uso == "calibrar" else []
     for nivel in niveles:
         for t in _territorios(territorio, nivel):
             obj = run.leer(t).filter(
@@ -101,7 +132,7 @@ def comparar(
             sub = _subconjunto(p, t)
             if sub.height == 0:
                 continue
-            r = D.recuentos(sub, obj, "peso")
+            r = _aplicar_fusiones(D.recuentos(sub, obj, "peso"), fundidas, t)
             for (o,), g in r.group_by("objetivo", maintain_order=True):
                 if g.height < 2 or g["valor"].sum() <= 0:
                     continue  # un objetivo de una sola celda no tiene distribución
@@ -126,12 +157,7 @@ def comparar(
                         "tvd": M.tvd(g["sintetico"], g["valor"]),
                         "hellinger": M.hellinger(g["sintetico"], g["valor"]),
                         "tvd_ref": ref,
-                        "fuera_dominio": float(
-                            g.filter(
-                                (pl.col("valor") == 0)
-                                & ~pl.col("clave").is_in([c for oo, c in fundidas if oo == o])
-                            )["sintetico"].sum()
-                        ),
+                        "fuera_dominio": float(g.filter(pl.col("valor") == 0)["sintetico"].sum()),
                     }
                 )
     return pl.DataFrame(filas)

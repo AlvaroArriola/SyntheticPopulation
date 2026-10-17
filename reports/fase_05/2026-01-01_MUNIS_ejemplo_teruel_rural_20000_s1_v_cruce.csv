@@ -1,2 +1,2 @@
 nivel,territorio,objetivo,celdas,n,tvd,hellinger,tvd_ref,fuera_dominio,umbral,umbral_estricto,excepcion,ok,ok_estricto
-provincia,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,adultos_nacionalidad,4,19989.0,0.0026743224032406733,0.003469587298354154,0.006561570754056148,0.0,0.08,0.08,false,true,true
+provincia,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,adultos_nacionalidad,4,20003.0,0.0030671420635124003,0.004557723697563244,0.006555049019824439,0.0,0.08,0.08,false,true,true

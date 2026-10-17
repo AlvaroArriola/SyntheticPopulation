@@ -62,14 +62,7 @@ def _validar(rid: str, territorio: str, semilla: int, completa: bool) -> dict:
         "obtenido": meta["tamano_obtenido"],
         "semilla": semilla,
         "sha256": meta["sha256"],
-        "v_marg": {
-            "comprobaciones": vm.height,
-            "fallos": vm.filter(~pl.col("ok"))
-            .select("territorio", "objetivo", "tvd", "umbral")
-            .to_dicts(),
-            "tvd_media_espana": float(vm.filter(pl.col("nivel") == "espana")["tvd"].mean()),
-            "tvd_max_espana": float(vm.filter(pl.col("nivel") == "espana")["tvd"].max()),
-        },
+        "v_marg": _resumen_marg(vm),
         "v_cruce": {
             "comprobaciones": vc.height,
             # Criterio aprobado (D-038 A); `excepcion`: limitación aceptada (D-038 B).
@@ -589,7 +582,43 @@ def validar_poblacion(rid: str) -> bool:
     return ok
 
 
+def _resumen_marg(vm: pl.DataFrame) -> dict:
+    return {
+        "comprobaciones": vm.height,
+        "fallos": vm.filter(~pl.col("ok"))
+        .select("territorio", "objetivo", "tvd", "umbral")
+        .to_dicts(),
+        "tvd_media_espana": float(vm.filter(pl.col("nivel") == "espana")["tvd"].mean()),
+        "tvd_max_espana": float(vm.filter(pl.col("nivel") == "espana")["tvd"].max()),
+    }
+
+
+def revalidar_marg(territorio: str = "ES") -> dict:
+    """Recalcula solo V-MARG de las poblaciones ya generadas y validadas (p. ej. tras cambiar
+    la comparación, D-050: celdas fundidas en la calibración), sin regenerarlas."""
+    r = json.loads(RESUMEN.read_text("utf-8"))
+    for x in r["poblaciones"]:
+        p, _, _ = V.cargar(x["run_id"])
+        vm = V.v_marg(V.preparar(p), territorio, x["semilla"])
+        vm.write_csv(DETALLE / f"{x['run_id']}_v_marg.csv")
+        x["v_marg"] = _resumen_marg(vm)
+        print(x["run_id"], "V-MARG", len(x["v_marg"]["fallos"]), "fallos", flush=True)
+        del p
+        gc.collect()
+    r["v_marg_recalculado"] = {
+        "fecha": dt.date.today().isoformat(),
+        "version_codigo": code_version(),
+    }
+    RESUMEN.write_text(json.dumps(r, ensure_ascii=False, indent=1, default=float), "utf-8")
+    return r
+
+
 if __name__ == "__main__":
+    import sys
+
+    if "--solo-marg" in sys.argv:
+        informe(revalidar_marg())
+        sys.exit()
     r = complementos(ejecutar())
     informe(r)
     print(curva(r))

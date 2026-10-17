@@ -3506,6 +3506,574 @@
     ]
    },
    "v_reglas_duras": 0
+  },
+  {
+   "territorio": "PROV:04",
+   "run_id": "2026-01-01_PROV_04_50000_s1",
+   "n": 50000,
+   "obtenido": 49998,
+   "donantes": {
+    "proporcion_local": 0.9893395735829433,
+    "por_nivel": {
+     "ccaa_parecidas": 194,
+     "misma_ccaa_mismo_grado_urbanizacion": 339,
+     "mismo_territorio": 49465
+    },
+    "hogares_donantes": 17616,
+    "kish_hogares_donantes": 10797.805727614357,
+    "kish_min": 200,
+    "confianza": "media",
+    "confianza_reducida": false
+   },
+   "v_marg": {
+    "comprobaciones": 16,
+    "fallos": [],
+    "tvd_media": 0.004204372767876648
+   },
+   "v_cruce": {
+    "comprobaciones": 7,
+    "fallos": [],
+    "excepciones": 0,
+    "proporcion_fallos": 0.0,
+    "propio": [
+     {
+      "objetivo": "actividad_edad",
+      "tvd": 0.012234394162493334,
+      "tvd_ref": 0.01290698672706448,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "actividad_sexo",
+      "tvd": 0.005643672806456779,
+      "tvd_ref": 0.007543969080147271,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.0016750044478913532,
+      "tvd_ref": 0.0043973802492727684,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "estudios_sexo_edad",
+      "tvd": 0.00890708068355918,
+      "tvd_ref": 0.014876574447788827,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.01208929201295215,
+      "tvd_ref": 0.014886082045484344,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "tamano_municipio",
+      "tvd": 0.015265401761927741,
+      "tvd_ref": 0.005303207563820344,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "tipo_hogar_edad4_ref",
+      "tvd": 0.034227043885416614,
+      "tvd_ref": 0.016385425415705215,
+      "umbral": 0.08,
+      "ok": true
+     }
+    ]
+   },
+   "v_reglas_duras": 0
+  },
+  {
+   "territorio": "PROV:35",
+   "run_id": "2026-01-01_PROV_35_50000_s1",
+   "n": 50000,
+   "obtenido": 49978,
+   "donantes": {
+    "proporcion_local": 0.9997198767457681,
+    "por_nivel": {
+     "misma_ccaa_mismo_grado_urbanizacion": 14,
+     "mismo_territorio": 49964
+    },
+    "hogares_donantes": 18487,
+    "kish_hogares_donantes": 12399.970630870352,
+    "kish_min": 200,
+    "confianza": "media",
+    "confianza_reducida": false
+   },
+   "v_marg": {
+    "comprobaciones": 16,
+    "fallos": [],
+    "tvd_media": 0.004809873351789624
+   },
+   "v_cruce": {
+    "comprobaciones": 7,
+    "fallos": [],
+    "excepciones": 0,
+    "proporcion_fallos": 0.0,
+    "propio": [
+     {
+      "objetivo": "actividad_edad",
+      "tvd": 0.017332623723993967,
+      "tvd_ref": 0.013560418127816215,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "actividad_sexo",
+      "tvd": 0.009209474109865437,
+      "tvd_ref": 0.00787660019169022,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.0035414242341465715,
+      "tvd_ref": 0.004220900064389768,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "estudios_sexo_edad",
+      "tvd": 0.01289258279173337,
+      "tvd_ref": 0.015242418016484939,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.010294370156258,
+      "tvd_ref": 0.014211815598938544,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "tamano_municipio",
+      "tvd": 0.005230045009224019,
+      "tvd_ref": 0.0052740603112614,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "tipo_hogar_edad4_ref",
+      "tvd": 0.05206213287329926,
+      "tvd_ref": 0.016688674814403687,
+      "umbral": 0.08,
+      "ok": true
+     }
+    ]
+   },
+   "v_reglas_duras": 0
+  },
+  {
+   "territorio": "PROV:20",
+   "run_id": "2026-01-01_PROV_20_50000_s1",
+   "n": 50000,
+   "obtenido": 50015,
+   "donantes": {
+    "proporcion_local": 0.9904628611416575,
+    "por_nivel": {
+     "ccaa_parecidas": 265,
+     "misma_ccaa_mismo_grado_urbanizacion": 212,
+     "mismo_territorio": 49538
+    },
+    "hogares_donantes": 19714,
+    "kish_hogares_donantes": 12627.653245632191,
+    "kish_min": 200,
+    "confianza": "media",
+    "confianza_reducida": false
+   },
+   "v_marg": {
+    "comprobaciones": 16,
+    "fallos": [
+     {
+      "territorio": "PROV:20",
+      "objetivo": "actividad_tramo",
+      "tvd": 0.020291658438758704,
+      "umbral": 0.017126388142460834
+     }
+    ],
+    "tvd_media": 0.004315110737212903
+   },
+   "v_cruce": {
+    "comprobaciones": 7,
+    "fallos": [],
+    "excepciones": 0,
+    "proporcion_fallos": 0.0,
+    "propio": [
+     {
+      "objetivo": "actividad_edad",
+      "tvd": 0.022904759115263705,
+      "tvd_ref": 0.012287111311524553,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "actividad_sexo",
+      "tvd": 0.007861354725071181,
+      "tvd_ref": 0.007733364730857417,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.00027733200283495095,
+      "tvd_ref": 0.004330178405547659,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "estudios_sexo_edad",
+      "tvd": 0.012680571561662798,
+      "tvd_ref": 0.014834060431569993,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.010633943957410928,
+      "tvd_ref": 0.013391028894402673,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "tamano_municipio",
+      "tvd": 0.016605885128843836,
+      "tvd_ref": 0.005261226803976047,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "tipo_hogar_edad4_ref",
+      "tvd": 0.03295666883453686,
+      "tvd_ref": 0.014564097882334674,
+      "umbral": 0.08,
+      "ok": true
+     }
+    ]
+   },
+   "v_reglas_duras": 0
+  },
+  {
+   "territorio": "PROV:32",
+   "run_id": "2026-01-01_PROV_32_50000_s1",
+   "n": 50000,
+   "obtenido": 49980,
+   "donantes": {
+    "proporcion_local": 0.9800720288115247,
+    "por_nivel": {
+     "ccaa_parecidas": 543,
+     "misma_ccaa_mismo_grado_urbanizacion": 453,
+     "mismo_territorio": 48984
+    },
+    "hogares_donantes": 12441,
+    "kish_hogares_donantes": 6939.2369618480925,
+    "kish_min": 200,
+    "confianza": "media",
+    "confianza_reducida": false
+   },
+   "v_marg": {
+    "comprobaciones": 16,
+    "fallos": [],
+    "tvd_media": 0.0026062703925995704
+   },
+   "v_cruce": {
+    "comprobaciones": 7,
+    "fallos": [],
+    "excepciones": 0,
+    "proporcion_fallos": 0.0,
+    "propio": [
+     {
+      "objetivo": "actividad_edad",
+      "tvd": 0.017985859328058733,
+      "tvd_ref": 0.012437025622492336,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "actividad_sexo",
+      "tvd": 0.0077226449034951804,
+      "tvd_ref": 0.007858788428190365,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.0025009630290215787,
+      "tvd_ref": 0.0038140729385918817,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "estudios_sexo_edad",
+      "tvd": 0.015454685340049077,
+      "tvd_ref": 0.01509145286515719,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.012045484234032,
+      "tvd_ref": 0.012177578871562312,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "tamano_municipio",
+      "tvd": 0.010590084455949653,
+      "tvd_ref": 0.00541972557524765,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "tipo_hogar_edad4_ref",
+      "tvd": 0.019479001454146508,
+      "tvd_ref": 0.015218130471703898,
+      "umbral": 0.08,
+      "ok": true
+     }
+    ]
+   },
+   "v_reglas_duras": 0
+  },
+  {
+   "territorio": "PROV:51",
+   "run_id": "2026-01-01_PROV_51_50000_s1",
+   "n": 50000,
+   "obtenido": 50003,
+   "donantes": {
+    "proporcion_local": 0.9924604523728576,
+    "por_nivel": {
+     "ccaa_parecidas": 377,
+     "mismo_territorio": 49626
+    },
+    "hogares_donantes": 2519,
+    "kish_hogares_donantes": 1153.9279883033432,
+    "kish_min": 200,
+    "confianza": "media",
+    "confianza_reducida": false
+   },
+   "v_marg": {
+    "comprobaciones": 16,
+    "fallos": [],
+    "tvd_media": 0.002573833004170854
+   },
+   "v_cruce": {
+    "comprobaciones": 6,
+    "fallos": [],
+    "excepciones": 0,
+    "proporcion_fallos": 0.0,
+    "propio": [
+     {
+      "objetivo": "actividad_edad",
+      "tvd": 0.030274247604886968,
+      "tvd_ref": 0.01349235899384909,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "actividad_sexo",
+      "tvd": 0.00604311993670661,
+      "tvd_ref": 0.008189586654963069,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.0025974025108272104,
+      "tvd_ref": 0.00417275127862215,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "estudios_sexo_edad",
+      "tvd": 0.023516369773758147,
+      "tvd_ref": 0.0151106726332756,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.009544518265503142,
+      "tvd_ref": 0.010238715467965027,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "tipo_hogar_edad4_ref",
+      "tvd": 0.05506067541441574,
+      "tvd_ref": 0.017856919292494486,
+      "umbral": 0.08,
+      "ok": true
+     }
+    ]
+   },
+   "v_reglas_duras": 0
+  },
+  {
+   "territorio": "PROV:52",
+   "run_id": "2026-01-01_PROV_52_50000_s1",
+   "n": 50000,
+   "obtenido": 50001,
+   "donantes": {
+    "proporcion_local": 0.9731005379892402,
+    "por_nivel": {
+     "ccaa_parecidas": 1345,
+     "mismo_territorio": 48656
+    },
+    "hogares_donantes": 2661,
+    "kish_hogares_donantes": 1428.8237084950458,
+    "kish_min": 200,
+    "confianza": "media",
+    "confianza_reducida": false
+   },
+   "v_marg": {
+    "comprobaciones": 16,
+    "fallos": [],
+    "tvd_media": 0.002090973726842662
+   },
+   "v_cruce": {
+    "comprobaciones": 6,
+    "fallos": [],
+    "excepciones": 0,
+    "proporcion_fallos": 0.0,
+    "propio": [
+     {
+      "objetivo": "actividad_edad",
+      "tvd": 0.01645897270000905,
+      "tvd_ref": 0.012824797375653313,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "actividad_sexo",
+      "tvd": 0.00536651634322048,
+      "tvd_ref": 0.008094458074257672,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.0044146217457663485,
+      "tvd_ref": 0.00466444314408513,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "estudios_sexo_edad",
+      "tvd": 0.020558837341071345,
+      "tvd_ref": 0.014856909693622156,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "nacionalidad_top_sexo_edad",
+      "tvd": 0.01902439844648391,
+      "tvd_ref": 0.011247286542262943,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "tipo_hogar_edad4_ref",
+      "tvd": 0.029987391682119297,
+      "tvd_ref": 0.019028293759471477,
+      "umbral": 0.08,
+      "ok": true
+     }
+    ]
+   },
+   "v_reglas_duras": 0
+  },
+  {
+   "territorio": "MUNIS:configs/territorios/ejemplo_valencia_urbano.yaml",
+   "run_id": "2026-01-01_MUNIS_ejemplo_valencia_urbano_20000_s1",
+   "n": 20000,
+   "obtenido": 19990,
+   "donantes": {
+    "proporcion_local": 0.983791895947974,
+    "por_nivel": {
+     "misma_provincia": 324,
+     "mismo_territorio": 19666
+    },
+    "hogares_donantes": 8096,
+    "kish_hogares_donantes": 6201.118870266915,
+    "kish_min": 200,
+    "confianza": "baja",
+    "confianza_reducida": false
+   },
+   "v_marg": {
+    "comprobaciones": 7,
+    "fallos": [],
+    "tvd_media": 0.0020785152714424882
+   },
+   "v_cruce": {
+    "comprobaciones": 2,
+    "fallos": [],
+    "excepciones": 0,
+    "proporcion_fallos": 0.0,
+    "propio": [
+     {
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.0008267110236775781,
+      "tvd_ref": 0.007301982019205944,
+      "umbral": 0.08,
+      "ok": true
+     },
+     {
+      "objetivo": "tamano_municipio",
+      "tvd": 0.024390729745911884,
+      "tvd_ref": 0.006835859783853023,
+      "umbral": 0.08,
+      "ok": true
+     }
+    ]
+   },
+   "v_reglas_duras": 0
+  },
+  {
+   "territorio": "MUNIS:configs/territorios/ejemplo_teruel_rural.yaml",
+   "run_id": "2026-01-01_MUNIS_ejemplo_teruel_rural_20000_s1",
+   "n": 20000,
+   "obtenido": 20003,
+   "donantes": {
+    "proporcion_local": 0.0,
+    "por_nivel": {
+     "ccaa_parecidas": 12,
+     "misma_ccaa_mismo_grado_urbanizacion": 111,
+     "misma_provincia": 19880
+    },
+    "hogares_donantes": 2353,
+    "kish_hogares_donantes": 1154.3510569241732,
+    "kish_min": 200,
+    "confianza": "baja",
+    "confianza_reducida": true
+   },
+   "v_marg": {
+    "comprobaciones": 6,
+    "fallos": [],
+    "tvd_media": 0.0022331337556626193
+   },
+   "v_cruce": {
+    "comprobaciones": 1,
+    "fallos": [],
+    "excepciones": 0,
+    "proporcion_fallos": 0.0,
+    "propio": [
+     {
+      "objetivo": "adultos_nacionalidad",
+      "tvd": 0.0030671420635124003,
+      "tvd_ref": 0.006555049019824439,
+      "umbral": 0.08,
+      "ok": true
+     }
+    ]
+   },
+   "v_reglas_duras": 0
   }
  ]
 }
