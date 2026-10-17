@@ -35,7 +35,9 @@ def test_unknown_keys_are_rejected() -> None:
 
 def test_targets_reject_reserved_in_calibration() -> None:
     raw = _raw("targets.yaml")
-    raw["calibrar"].append({"id": "x", "variables": ["edad_estado_civil", "estado_civil"]})
+    raw["calibrar"].append(
+        {"id": "x", "ambito": "provincia", "variables": ["edad_4", "tipo_hogar"]}
+    )
     with pytest.raises(ValidationError, match="calibrados y reservados"):
         SCHEMAS["targets.yaml"].model_validate(raw)
 
