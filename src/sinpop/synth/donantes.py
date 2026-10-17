@@ -259,6 +259,12 @@ class Unidades:
     unidades: pl.DataFrame  # una fila por unidad: unidad, tipo, household_id, norden, d, n_personas
 
 
+def _ordenado(df: pl.DataFrame) -> bool:
+    u, n = df["unidad"], df["norden"].cast(pl.Int64)
+    du = u.diff().fill_null(1)
+    return bool((du >= 0).all() and ((du > 0) | (n.diff().fill_null(1) > 0)).all())
+
+
 def unidades(personas_hogar: pl.DataFrame, personas_col: pl.DataFrame) -> Unidades:
     h = personas_hogar.with_columns(pl.lit("hogar").alias("tipo_unidad"))
     h = h.with_columns(pl.col("household_id").rank("dense").cast(pl.Int64).sub(1).alias("unidad"))
@@ -272,7 +278,11 @@ def unidades(personas_hogar: pl.DataFrame, personas_col: pl.DataFrame) -> Unidad
         pl.lit(None, dtype=pl.Utf8).alias("colectivo_donante_nivel"),
     )
     cols = [c_ for c_ in h.columns if c_ in c.columns]
-    p = pl.concat([h.select(cols), c.select(cols)], how="vertical_relaxed").sort("unidad", "norden")
+    # `h` ya viene ordenado por hogar y orden (`hogares`) y `unidad` sigue ese orden; `c`, por
+    # unidad: la unión ya está ordenada y no hace falta otra copia ordenada (memoria, España).
+    h = h.sort("unidad", "norden") if not _ordenado(h) else h
+    p = pl.concat([h.select(cols), c.select(cols)], how="vertical_relaxed", rechunk=False)
+    p = p.with_columns(pl.col("unidad").set_sorted())
     u = (
         p.group_by("unidad", maintain_order=True)
         .agg(

@@ -88,7 +88,10 @@ def unidades_todas() -> D.Unidades:
 
     ph = D.hogares()
     pc = D.colectivos(D.objetivos_colectivos(provincias_de("ES")), ph)
-    return D.unidades(ph, pc)
+    u = D.unidades(ph, pc)
+    del ph, pc
+    gc.collect()
+    return u
 
 
 def _entradas_calibracion(territorio: str) -> dict[str, str]:
