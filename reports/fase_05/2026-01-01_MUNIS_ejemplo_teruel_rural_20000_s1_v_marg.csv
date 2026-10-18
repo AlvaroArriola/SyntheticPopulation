@@ -4,4 +4,4 @@ espana,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,edad5_sexo,38,20003.0
 espana,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,estudios_sexo_mun,8,20003.0,0.0010308631789067192,0.0009205219390163408,0.010304045430365153,0.0,0.014364854516438184,true
 espana,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,nacionalidad,7,20003.0,0.0008408702078869811,0.0016398765062062986,0.005260825559764466,0.0,0.008312990671717358,true
 espana,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,nacionalidad_edad,38,20003.0,0.0020909629897836427,0.0027712803359486757,0.018748023180190868,0.0,0.024497627816229044,true
-espana,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,nacionalidad_top,17,20003.0,0.004452977618405973,0.04059191707384693,0.006786480189829799,0.0,0.010143776227795758,true
+espana,MUNIS:configs/territorios/ejemplo_teruel_rural.yaml,nacionalidad_top,10,20003.0,0.0010014328666215293,0.002230197797550686,0.006220875609649512,0.0,0.009465050731579414,true

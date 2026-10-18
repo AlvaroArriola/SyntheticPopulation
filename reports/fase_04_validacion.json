@@ -6621,7 +6621,7 @@
    "v_marg": {
     "comprobaciones": 316,
     "fallos": [],
-    "tvd_media_espana": 0.01808836236875712,
+    "tvd_media_espana": 0.017312131951563753,
     "tvd_max_espana": 0.21979205955963338
    },
    "v_cruce": {
@@ -6988,7 +6988,7 @@
    "v_marg": {
     "comprobaciones": 316,
     "fallos": [],
-    "tvd_media_espana": 0.0214394284471475,
+    "tvd_media_espana": 0.020864430159732706,
     "tvd_max_espana": 0.2668889073891108
    },
    "v_cruce": {
@@ -7581,7 +7581,7 @@
    "v_marg": {
     "comprobaciones": 314,
     "fallos": [],
-    "tvd_media_espana": 0.018617809386128472,
+    "tvd_media_espana": 0.017890801940298955,
     "tvd_max_espana": 0.2254331212739567
    },
    "v_cruce": {
@@ -8070,7 +8070,7 @@
    "v_marg": {
     "comprobaciones": 317,
     "fallos": [],
-    "tvd_media_espana": 0.01849086188245078,
+    "tvd_media_espana": 0.018025366988724565,
     "tvd_max_espana": 0.22964555144615928
    },
    "v_cruce": {
@@ -8493,7 +8493,7 @@
    "v_marg": {
     "comprobaciones": 317,
     "fallos": [],
-    "tvd_media_espana": 0.019791826485291836,
+    "tvd_media_espana": 0.019226450911347587,
     "tvd_max_espana": 0.24023609213588298
    },
    "v_cruce": {
@@ -8959,7 +8959,7 @@
    "v_marg": {
     "comprobaciones": 320,
     "fallos": [],
-    "tvd_media_espana": 0.006434974334524288,
+    "tvd_media_espana": 0.005955766166345267,
     "tvd_max_espana": 0.07017001705357685
    },
    "v_cruce": {
@@ -9165,7 +9165,7 @@
    "v_marg": {
     "comprobaciones": 320,
     "fallos": [],
-    "tvd_media_espana": 0.0075710153991314436,
+    "tvd_media_espana": 0.007062352104089763,
     "tvd_max_espana": 0.08840818136730347
    },
    "v_cruce": {
@@ -9385,7 +9385,7 @@
    "v_marg": {
     "comprobaciones": 320,
     "fallos": [],
-    "tvd_media_espana": 0.0071777973978595444,
+    "tvd_media_espana": 0.006692349838858411,
     "tvd_max_espana": 0.08361422554310102
    },
    "v_cruce": {
@@ -9663,7 +9663,7 @@
    "v_marg": {
     "comprobaciones": 320,
     "fallos": [],
-    "tvd_media_espana": 0.006651842623757657,
+    "tvd_media_espana": 0.006142146310446675,
     "tvd_max_espana": 0.07297925040986625
    },
    "v_cruce": {
@@ -9934,7 +9934,7 @@
    "v_marg": {
     "comprobaciones": 320,
     "fallos": [],
-    "tvd_media_espana": 0.0070806295283477524,
+    "tvd_media_espana": 0.006594075556788342,
     "tvd_max_espana": 0.08158487833568076
    },
    "v_cruce": {
@@ -10241,7 +10241,7 @@
    "v_marg": {
     "comprobaciones": 320,
     "fallos": [],
-    "tvd_media_espana": 0.0038596341709557576,
+    "tvd_media_espana": 0.003409531110503227,
     "tvd_max_espana": 0.03719278358371999
    },
    "v_cruce": {
@@ -10505,7 +10505,7 @@
    "v_marg": {
     "comprobaciones": 320,
     "fallos": [],
-    "tvd_media_espana": 0.003454970839820642,
+    "tvd_media_espana": 0.003001136774288974,
     "tvd_max_espana": 0.03133046190724348
    },
    "v_cruce": {
@@ -10709,7 +10709,7 @@
    "v_marg": {
     "comprobaciones": 320,
     "fallos": [],
-    "tvd_media_espana": 0.003343901039567893,
+    "tvd_media_espana": 0.0028962155254921833,
     "tvd_max_espana": 0.02797849917069198
    },
    "v_cruce": {
@@ -10929,7 +10929,7 @@
    "v_marg": {
     "comprobaciones": 320,
     "fallos": [],
-    "tvd_media_espana": 0.003638521371899323,
+    "tvd_media_espana": 0.0031971778285616427,
     "tvd_max_espana": 0.03363610736869494
    },
    "v_cruce": {
@@ -11186,7 +11186,7 @@
    "v_marg": {
     "comprobaciones": 320,
     "fallos": [],
-    "tvd_media_espana": 0.004000714582742786,
+    "tvd_media_espana": 0.0035430163486367605,
     "tvd_max_espana": 0.04065819631100311
    },
    "v_cruce": {
@@ -11427,15 +11427,8 @@
    },
    "v_marg": {
     "comprobaciones": 320,
-    "fallos": [
-     {
-      "territorio": "ES",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.00769930929196477,
-      "umbral": 0.006981260892897177
-     }
-    ],
-    "tvd_media_espana": 0.0016327586356291222,
+    "fallos": [],
+    "tvd_media_espana": 0.0012227274108769313,
     "tvd_max_espana": 0.011114479478699662
    },
    "v_cruce": {
@@ -11669,15 +11662,8 @@
    },
    "v_marg": {
     "comprobaciones": 320,
-    "fallos": [
-     {
-      "territorio": "ES",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.007672457000766356,
-      "umbral": 0.006892132129157708
-     }
-    ],
-    "tvd_media_espana": 0.0015769246030084645,
+    "fallos": [],
+    "tvd_media_espana": 0.0011762215892500945,
     "tvd_max_espana": 0.010077615237652517
    },
    "v_cruce": {
@@ -11919,15 +11905,8 @@
    },
    "v_marg": {
     "comprobaciones": 320,
-    "fallos": [
-     {
-      "territorio": "ES",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.007644960739301357,
-      "umbral": 0.007020440338959304
-     }
-    ],
-    "tvd_media_espana": 0.0016804022486308777,
+    "fallos": [],
+    "tvd_media_espana": 0.001286764107860222,
     "tvd_max_espana": 0.011709304477930114
    },
    "v_cruce": {
@@ -12147,15 +12126,8 @@
    },
    "v_marg": {
     "comprobaciones": 320,
-    "fallos": [
-     {
-      "territorio": "ES",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.007682211112784053,
-      "umbral": 0.00705841879766362
-     }
-    ],
-    "tvd_media_espana": 0.001621870250389069,
+    "fallos": [],
+    "tvd_media_espana": 0.0012239135350676075,
     "tvd_max_espana": 0.010773318909498475
    },
    "v_cruce": {
@@ -12382,15 +12354,8 @@
    },
    "v_marg": {
     "comprobaciones": 320,
-    "fallos": [
-     {
-      "territorio": "ES",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.00745573397754647,
-      "umbral": 0.006912870844407791
-     }
-    ],
-    "tvd_media_espana": 0.0016506845053633355,
+    "fallos": [],
+    "tvd_media_espana": 0.0012699822923816133,
     "tvd_max_espana": 0.011332643274474787
    },
    "v_cruce": {
@@ -12610,27 +12575,8 @@
    },
    "v_marg": {
     "comprobaciones": 320,
-    "fallos": [
-     {
-      "territorio": "ES",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.007083827739833471,
-      "umbral": 0.00545766087100528
-     },
-     {
-      "territorio": "CCAA:10",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.0126538692076139,
-      "umbral": 0.012112285306650903
-     },
-     {
-      "territorio": "CCAA:16",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.021133044081039228,
-      "umbral": 0.017790685796726005
-     }
-    ],
-    "tvd_media_espana": 0.0012435138212703184,
+    "fallos": [],
+    "tvd_media_espana": 0.0008566112260300002,
     "tvd_max_espana": 0.0072947763780163
    },
    "v_cruce": {
@@ -13172,22 +13118,9 @@
    },
    "v_marg": {
     "comprobaciones": 320,
-    "fallos": [
-     {
-      "territorio": "ES",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.0071292323300124645,
-      "umbral": 0.00555271238627885
-     },
-     {
-      "territorio": "CCAA:16",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.021063526286510193,
-      "umbral": 0.01825951587798654
-     }
-    ],
-    "tvd_media_espana": 0.0012105283085531045,
-    "tvd_max_espana": 0.0071292323300124645
+    "fallos": [],
+    "tvd_media_espana": 0.0008241615361324397,
+    "tvd_max_espana": 0.006488808574870111
    },
    "v_cruce": {
     "comprobaciones": 511,
@@ -13406,21 +13339,8 @@
    },
    "v_marg": {
     "comprobaciones": 320,
-    "fallos": [
-     {
-      "territorio": "ES",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.007057619868492922,
-      "umbral": 0.005617873581099659
-     },
-     {
-      "territorio": "CCAA:16",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.020799682541855432,
-      "umbral": 0.018333045962716343
-     }
-    ],
-    "tvd_media_espana": 0.0011796364368845398,
+    "fallos": [],
+    "tvd_media_espana": 0.0007823738776735893,
     "tvd_max_espana": 0.007276383811765229
    },
    "v_cruce": {
@@ -13625,22 +13545,9 @@
    },
    "v_marg": {
     "comprobaciones": 320,
-    "fallos": [
-     {
-      "territorio": "ES",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.007112726072249729,
-      "umbral": 0.005692577657942925
-     },
-     {
-      "territorio": "CCAA:16",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.020990145510200803,
-      "umbral": 0.018422812112215005
-     }
-    ],
-    "tvd_media_espana": 0.0011874736725011844,
-    "tvd_max_espana": 0.007112726072249729
+    "fallos": [],
+    "tvd_media_espana": 0.0008068353117491215,
+    "tvd_max_espana": 0.006243108591019267
    },
    "v_cruce": {
     "comprobaciones": 511,
@@ -13859,27 +13766,8 @@
    },
    "v_marg": {
     "comprobaciones": 320,
-    "fallos": [
-     {
-      "territorio": "ES",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.006834112213529953,
-      "umbral": 0.00549353992992031
-     },
-     {
-      "territorio": "CCAA:10",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.012616990882442442,
-      "umbral": 0.012523700117809511
-     },
-     {
-      "territorio": "CCAA:16",
-      "objetivo": "actividad_tramo",
-      "tvd": 0.021095094532587642,
-      "umbral": 0.01809093241601787
-     }
-    ],
-    "tvd_media_espana": 0.001183011518118769,
+    "fallos": [],
+    "tvd_media_espana": 0.000791592990295503,
     "tvd_max_espana": 0.0069121684562497305
    },
    "v_cruce": {
@@ -15464,5 +15352,9 @@
     }
    ]
   }
+ },
+ "v_marg_recalculado": {
+  "fecha": "2026-10-17",
+  "version_codigo": "git:51770a6-dirty"
  }
 }
