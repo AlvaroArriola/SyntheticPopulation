@@ -88,7 +88,15 @@ def calibrar(
             it -= 1
             break
         H = (XsT @ sparse.diags(d * der) @ Xs).toarray()
-        paso = np.linalg.lstsq(H, -g, rcond=1e-10)[0]
+        try:
+            paso = np.linalg.lstsq(H, -g, rcond=1e-10)[0]
+        except np.linalg.LinAlgError:
+            # Con restricciones redundantes (p. ej. objetivos que suman lo mismo, D-050) la SVD
+            # de LAPACK puede no converger; QR con pivotaje da la misma solución de mínimos
+            # cuadrados de forma más robusta
+            from scipy.linalg import lstsq as lstsq_sp
+
+            paso = lstsq_sp(H, -g, cond=1e-10, lapack_driver="gelsy")[0]
         # Búsqueda en línea: se reduce el paso hasta que baje la norma del residuo.
         n0 = float(np.linalg.norm(g))
         t = 1.0
