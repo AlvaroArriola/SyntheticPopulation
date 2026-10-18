@@ -853,12 +853,21 @@ def tasas_empleo_nacionalidad() -> pl.DataFrame:
         ((pl.col("_o") * pl.col("peso")).sum() / pl.col("peso").sum()).alias("r"),
         pl.len().alias("n"),
     )
-    return cc.join(nac, on=k).select(
-        "ccaa",
-        *k,
-        (
-            (pl.col("n") * pl.col("r") + PESO_PREVIO * pl.col("rn")) / (pl.col("n") + PESO_PREVIO)
-        ).alias("tasa"),
+    # Todas las comunidades × nacionalidad × tramo: sin muestra en la EPA (n = 0), la nacional
+    from sinpop.harmonize.core import ccaa_de_provincia
+
+    todas = pl.DataFrame({"ccaa": sorted(set(ccaa_de_provincia().values()))}).join(nac, how="cross")
+    return (
+        todas.join(cc, on=["ccaa", *k], how="left")
+        .with_columns(pl.col("n").fill_null(0), pl.col("r").fill_null(0.0))
+        .select(
+            "ccaa",
+            *k,
+            (
+                (pl.col("n") * pl.col("r") + PESO_PREVIO * pl.col("rn"))
+                / (pl.col("n") + PESO_PREVIO)
+            ).alias("tasa"),
+        )
     )
 
 
