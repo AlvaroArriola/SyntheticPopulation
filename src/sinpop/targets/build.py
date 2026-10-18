@@ -415,9 +415,15 @@ def hogares_censo2021() -> pl.DataFrame:
 def tipo_hogar() -> tuple[pl.DataFrame, pl.DataFrame]:
     """(tipo × tamaño, tipo × tamaño × edad_4 de la referencia) sobre los hogares ECP 2026.
 
-    Cuotas del Censo 2021 dentro de cada provincia y tamaño (1, 2, 3, 4+), aplicadas a los
-    hogares por tamaño de la ECP 2026: así el número de hogares unipersonales coincide con el de
-    tamaño 1 y el resto de tipos con su tamaño.
+    Tipo × tamaño (calibrado): cuotas del Censo 2021 dentro de cada provincia y tamaño (1, 2, 3,
+    4+), aplicadas a los hogares por tamaño de la ECP 2026; así el número de hogares
+    unipersonales coincide con el de tamaño 1 y el resto de tipos con su tamaño.
+
+    Con la edad de la referencia (reservado; D-050): la estructura del Censo 2021 se ajusta (IPF)
+    a ese tipo × tamaño y a los hogares de 2026 por edad de la referencia, que salen del método de
+    las tasas de jefatura: la proporción de personas de cada provincia, sexo y edad que son
+    referencia de su hogar en 2021, aplicada a la población en viviendas familiares de la ECP
+    2026. Sin ello, la edad de la referencia era la de 2021, sin el envejecimiento posterior.
     """
     h = hogares_censo2021()
     ecp = pl.read_parquet(INTERIM_DIR / "ecp_hogares.parquet")
@@ -427,11 +433,84 @@ def tipo_hogar() -> tuple[pl.DataFrame, pl.DataFrame]:
         .agg(pl.col("peso").sum())
         .with_columns((pl.col("peso") / pl.col("peso").sum().over(k)).alias("q"))
     )
-    det = c.join(ecp, on=k).select(
+    semilla = c.join(ecp, on=k).select(
         *k, "tipo_hogar", "edad_4", (pl.col("hogares") * pl.col("q")).alias("valor")
     )
-    tipo = det.group_by(*k, "tipo_hogar").agg(pl.col("valor").sum())
+    tipo = semilla.group_by(*k, "tipo_hogar").agg(pl.col("valor").sum())
+    jef = jefatura_2026()
+    det = _ipf_hogares(semilla, tipo, jef)
     return tipo, det
+
+
+def jefatura_2026() -> pl.DataFrame:
+    """Hogares de 2026 por provincia y edad_4 de la referencia: tasas de jefatura del Censo 2021
+    (referencias / personas en viviendas familiares por provincia × sexo × edad_5, partidas por
+    la edad_4 de la referencia, que corta el grupo 15-19) × población ECP 2026 en viviendas
+    familiares por provincia × sexo × edad_5. Se escalan al total de hogares ECP 2026."""
+    p = pl.read_parquet(
+        INTERIM_DIR / "censo2021_personas.parquet",
+        columns=["provincia", "sexo", "edad", "edad_5", "relacion_persona_ref", "peso"],
+    )
+    k = ["provincia", "sexo", "edad_5"]
+    personas = p.group_by(k).agg(pl.col("peso").sum().alias("personas"))
+    refs = (
+        p.filter(pl.col("relacion_persona_ref") == "persona_referencia")
+        .with_columns(edad_4(pl.col("edad")))
+        .group_by(*k, "edad_4")
+        .agg(pl.col("peso").sum().alias("refs"))
+    )
+    tasa = refs.join(personas, on=k).with_columns((pl.col("refs") / pl.col("personas")).alias("t"))
+    pob = (
+        pl.read_parquet(INTERIM_DIR / "ecp_viviendas_familiares.parquet")
+        .group_by(k)
+        .agg(pl.col("personas").sum().alias("p26"))
+    )
+    j = (
+        tasa.join(pob, on=k)
+        .group_by("provincia", "edad_4")
+        .agg((pl.col("t") * pl.col("p26")).sum().alias("hogares"))
+    )
+    tot = (
+        pl.read_parquet(INTERIM_DIR / "ecp_hogares.parquet")
+        .group_by("provincia")
+        .agg(pl.col("hogares").sum().alias("_t"))
+    )
+    return j.join(tot, on="provincia").select(
+        "provincia",
+        "edad_4",
+        (pl.col("hogares") * pl.col("_t") / pl.col("hogares").sum().over("provincia")).alias(
+            "hogares"
+        ),
+    )
+
+
+def _ipf_hogares(
+    semilla: pl.DataFrame, tipo: pl.DataFrame, jef: pl.DataFrame, iteraciones: int = 200
+) -> pl.DataFrame:
+    """IPF de tipo × tamaño × edad_4 por provincia a dos márgenes: tipo × tamaño (`tipo`) y
+    edad_4 (`jef`), que suman lo mismo en cada provincia."""
+    k = ["provincia", "tamano_hogar_4", "tipo_hogar"]
+    d = semilla
+    for _ in range(iteraciones):
+        d = (
+            d.join(jef.rename({"hogares": "_m"}), on=["provincia", "edad_4"], how="left")
+            .with_columns(
+                (pl.col("valor") * pl.col("_m") / pl.col("valor").sum().over("provincia", "edad_4"))
+                .fill_nan(0.0)
+                .alias("valor")
+            )
+            .drop("_m")
+        )
+        d = (
+            d.join(tipo.rename({"valor": "_m"}), on=k, how="left")
+            .with_columns(
+                (pl.col("valor") * pl.col("_m") / pl.col("valor").sum().over(k))
+                .fill_nan(0.0)
+                .alias("valor")
+            )
+            .drop("_m")
+        )
+    return d.sort(*k, "edad_4")
 
 
 # --------------------------------------------------------------------------- municipio
@@ -736,7 +815,178 @@ def provincias() -> pl.DataFrame:
             {"fuente": "ecp: tabla 59589", "edicion": "2026-01-01", "metodo": "exacto"},
         ).with_columns(pl.col("clave").str.replace("provincia_x=", "provincia="))
     )
+    res = pl.concat(out)
+    out.append(
+        _largo(
+            trabajo_nacionalidad(res),
+            ["trabaja", "nacionalidad_esp_ext", "edad_tramo_epa"],
+            "trabajo_nacionalidad",
+            {
+                "fuente": "epa: 2T 2026, microdatos + objetivos actividad_tramo y "
+                "nacionalidad_edad + ecp: tablas 59589 y 60129",
+                "edicion": "2026-T2 (EPA); 2026-01-01 (efectivos)",
+                "metodo": "ocupados de actividad_tramo repartidos entre españoles y extranjeros "
+                "de nacionalidad_edad con las tasas de empleo de la EPA por comunidad × "
+                "nacionalidad × tramo, contraídas a la nacional (D-050)",
+            },
+        )
+    )
     return pl.concat(out).select(COLUMNAS).sort("provincia", "objetivo", "clave")
+
+
+def tasas_empleo_nacionalidad() -> pl.DataFrame:
+    """Tasa de empleo (ocupados / 16+ sin NC) de la EPA 2T 2026 por comunidad × nacionalidad
+    española o extranjera × tramo, contraída hacia la nacional de su nacionalidad y tramo con
+    `PESO_PREVIO` personas (D-050)."""
+    e = pl.read_parquet(INTERIM_DIR / "epa.parquet").filter(
+        (pl.col("edad_grupo_epa") >= "16") & ~pl.col("relacion_actividad").is_in(["NC", "NP"])
+    )
+    e = e.with_columns(
+        _tramo(pl.col("edad_grupo_epa").cast(pl.Int32)),
+        (pl.col("relacion_actividad") == "ocupado").cast(pl.Float64).alias("_o"),
+    )
+    k = ["nacionalidad_esp_ext", "tramo"]
+    nac = e.group_by(k).agg(
+        ((pl.col("_o") * pl.col("peso")).sum() / pl.col("peso").sum()).alias("rn")
+    )
+    cc = e.group_by("ccaa", *k).agg(
+        ((pl.col("_o") * pl.col("peso")).sum() / pl.col("peso").sum()).alias("r"),
+        pl.len().alias("n"),
+    )
+    return cc.join(nac, on=k).select(
+        "ccaa",
+        *k,
+        (
+            (pl.col("n") * pl.col("r") + PESO_PREVIO * pl.col("rn")) / (pl.col("n") + PESO_PREVIO)
+        ).alias("tasa"),
+    )
+
+
+def trabajo_nacionalidad(res: pl.DataFrame) -> pl.DataFrame:
+    """Ocupados y no ocupados por nacionalidad española/extranjera y tramo de la EPA (D-050).
+
+    Coherente por construcción con los objetivos calibrados: los ocupados de cada provincia y
+    tramo son los de `actividad_tramo`; los extranjeros, los de `nacionalidad_edad` (el grupo
+    15-19 se parte con la proporción de 16-19 de la ECP por edad simple); el reparto de los
+    ocupados entre españoles y extranjeros sigue sus tasas de empleo de la EPA. Menores de 16:
+    no procede (NP)."""
+    from sinpop.harmonize.core import ccaa_de_provincia
+
+    etiqueta = dict(zip([str(t) for t in TRAMOS_EPA], etiquetas(TRAMOS_EPA)[1:], strict=True))
+    np_tramo = etiquetas(TRAMOS_EPA)[0]
+    a = res.filter(pl.col("objetivo") == "actividad_tramo").with_columns(
+        pl.col("clave").str.extract(r"relacion_actividad=([^;]+)").alias("c"),
+        pl.col("clave").str.extract(r"edad_tramo_epa=([^;]+)").alias("t"),
+    )
+    tot = a.group_by("provincia", "t").agg(
+        pl.col("valor").sum().alias("total"),
+        pl.col("valor").filter(pl.col("c") == "ocupado").sum().alias("ocupados"),
+    )
+    ecp = pl.read_parquet(INTERIM_DIR / "ecp_total.parquet")
+    p16 = (
+        ecp.filter(pl.col("edad").is_between(15, 19))
+        .group_by("provincia")
+        .agg(
+            (
+                pl.col("personas").filter(pl.col("edad") >= 16).sum() / pl.col("personas").sum()
+            ).alias("p16")
+        )
+    )
+    n = (
+        res.filter(pl.col("objetivo") == "nacionalidad_edad")
+        .with_columns(
+            pl.col("clave")
+            .str.extract(r"nacionalidad_esp_ext=([^;]+)")
+            .alias("nacionalidad_esp_ext"),
+            pl.col("clave").str.extract(r"edad_5=(\d+)").cast(pl.Int32).alias("lo"),
+        )
+        .filter(pl.col("nacionalidad_esp_ext") == "extranjera")
+        .join(p16, on="provincia")
+    )
+    adultos = n.filter(pl.col("lo") >= 15).with_columns(
+        pl.when(pl.col("lo") == 15)
+        .then(pl.col("valor") * pl.col("p16"))
+        .otherwise(pl.col("valor"))
+        .alias("valor"),
+        _tramo(pl.col("lo").clip(16)),
+    )
+    ext = (
+        adultos.with_columns(pl.col("tramo").replace_strict(etiqueta).alias("t"))
+        .group_by("provincia", "t")
+        .agg(pl.col("valor").sum().alias("ext"))
+    )
+    ext_np = (
+        n.group_by("provincia")
+        .agg(pl.col("valor").sum().alias("_tot"))
+        .join(ext.group_by("provincia").agg(pl.col("ext").sum().alias("_ad")), on="provincia")
+        .select(
+            "provincia", pl.lit(np_tramo).alias("t"), (pl.col("_tot") - pl.col("_ad")).alias("ext")
+        )
+    )
+    tasas = tasas_empleo_nacionalidad().with_columns(
+        pl.col("tramo").replace_strict(etiqueta).alias("t")
+    )
+    cc = ccaa_de_provincia()
+    d = (
+        tot.join(pl.concat([ext, ext_np]), on=["provincia", "t"], how="left")
+        .with_columns(
+            pl.col("ext").fill_null(0.0), pl.col("provincia").replace_strict(cc).alias("ccaa")
+        )
+        .with_columns((pl.col("total") - pl.col("ext")).alias("esp"))
+        .join(
+            tasas.filter(pl.col("nacionalidad_esp_ext") == "extranjera").select(
+                "ccaa", "t", pl.col("tasa").alias("re")
+            ),
+            on=["ccaa", "t"],
+            how="left",
+        )
+        .join(
+            tasas.filter(pl.col("nacionalidad_esp_ext") == "espanola").select(
+                "ccaa", "t", pl.col("tasa").alias("rs")
+            ),
+            on=["ccaa", "t"],
+            how="left",
+        )
+        .with_columns(
+            pl.when(pl.col("re").is_null())
+            .then(0.0)
+            .otherwise(
+                pl.col("ocupados")
+                * pl.col("re")
+                * pl.col("ext")
+                / (pl.col("re") * pl.col("ext") + pl.col("rs") * pl.col("esp"))
+            )
+            .clip(0.0, pl.col("ext"))
+            .fill_nan(0.0)
+            .alias("oe")
+        )
+        .with_columns((pl.col("ocupados") - pl.col("oe")).alias("os"))
+    )
+    filas = []
+    for nac, total, ocup in (("extranjera", "ext", "oe"), ("espanola", "esp", "os")):
+        si = d.select(
+            "provincia", "t", pl.lit(nac).alias("nacionalidad_esp_ext"), pl.col(ocup).alias("valor")
+        )
+        no = d.select(
+            "provincia",
+            "t",
+            pl.lit(nac).alias("nacionalidad_esp_ext"),
+            (pl.col(total) - pl.col(ocup)).alias("valor"),
+        )
+        filas += [
+            si.filter(pl.col("t") != np_tramo).with_columns(pl.lit("si").alias("trabaja")),
+            no.with_columns(
+                pl.when(pl.col("t") == np_tramo)
+                .then(pl.lit("NP"))
+                .otherwise(pl.lit("no"))
+                .alias("trabaja")
+            ),
+        ]
+    return (
+        pl.concat(filas, how="diagonal_relaxed")
+        .rename({"t": "edad_tramo_epa"})
+        .select("provincia", "trabaja", "nacionalidad_esp_ext", "edad_tramo_epa", "valor")
+    )
 
 
 def electorales_provincia() -> list[pl.DataFrame]:

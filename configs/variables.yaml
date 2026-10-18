@@ -3349,6 +3349,16 @@ variables:
     - 'no'
     derivada_de: pais_nacimiento_grupo
     fuente_principal: censo_anual_micro_demograficas
+  trabaja:
+    prioridad: P1
+    nivel: persona
+    tipo: categorica
+    descripcion: Ocupado o no (16+), para calibrar el empleo por nacionalidad (D-050)
+    categorias:
+    - si
+    - 'no'
+    derivada_de: relacion_actividad
+    fuente_principal: epa
   tenencia_censo:
     prioridad: P1
     nivel: hogar

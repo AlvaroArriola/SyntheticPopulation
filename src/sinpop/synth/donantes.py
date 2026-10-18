@@ -102,6 +102,13 @@ def derivadas(p: pl.DataFrame) -> pl.DataFrame:
         .then(pl.col("nivel_estudios"))
         .otherwise(pl.lit("no"))
         .alias("sin_estudios"),
+        # D-050: ocupado o no (16+), para el empleo por nacionalidad
+        pl.when(pl.col("relacion_actividad") == "NP")
+        .then(pl.lit("NP"))
+        .when(pl.col("relacion_actividad") == "ocupado")
+        .then(pl.lit("si"))
+        .otherwise(pl.lit("no"))
+        .alias("trabaja"),
         pl.when(pl.col("pais_nacimiento_grupo") == "espana")
         .then(pl.lit("no"))
         .when(pl.col("pais_nacimiento_grupo").is_in(["NC", "NS"]))
@@ -316,7 +323,10 @@ def objetivos_calibrables(obj: pl.DataFrame, municipios: bool = False) -> pl.Dat
     ambito = {o.id: o.ambito for o in cfg.calibrar}  # type: ignore[attr-defined]
     if municipios:
         ids = [
-            i for i in ambito if i not in ("estudios_edad", "actividad_tramo", "sin_estudios_edad")
+            i
+            for i in ambito
+            if i
+            not in ("estudios_edad", "actividad_tramo", "sin_estudios_edad", "trabajo_nacionalidad")
         ]
     else:
         ids = [i for i, a in ambito.items() if a != "municipios"]

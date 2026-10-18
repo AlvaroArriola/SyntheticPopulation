@@ -896,6 +896,20 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   5. **Perfiles de actividad en tres categorías** (ocupado, parado, inactivo) cuando la referencia es una encuesta (ECV, TIC-H, EPA).
      - **Por qué:** las subcategorías de inactividad de la ECV y la TIC-H (situación principal declarada) no se definen como las de la EPA, de la que sale la población.
      - **TVD con 3 categorías:** limitación grave 0,027, privación severa 0,080 y nunca usa internet 0,008. Con 6 categorías eran 0,107, 0,112 y 0,162.
+  6. **Referencia de tipo de hogar × edad de la persona de referencia llevada a 2026.** Aprobado el 2026-10-18.
+     - **Por qué:** G4.2 fallaba de forma sistemática con 500.000 y 1.000.000 personas (TVD 0,0304-0,0307 frente a 0,03). La referencia reservada repartía los hogares de 2026 con la edad de la referencia de 2021, sin el envejecimiento posterior, mientras que la población está calibrada a la edad y al estado civil de 2026.
+     - **Método de las tasas de jefatura:** la proporción de personas de cada provincia × sexo × edad_5 que son referencia de su hogar en 2021 se aplica a la población en viviendas familiares de la ECP 2026. Da los hogares de 2026 por provincia y edad_4 de la referencia, escalados al total de hogares de la ECP. Como el grupo 15-19 corta los 18 años, las tasas se parten por la edad_4 de la referencia.
+     - **Construcción:** la estructura tipo × tamaño × edad del Censo 2021 se ajusta por IPF a dos márgenes: tipo × tamaño calibrado (sin cambios) y esos hogares por edad.
+     - **Efecto:** los hogares con referencia de 35-49 años pasan del 26,9 % al 24,0 % y los de 65 y más, del 35,6 % al 37,4 %. Con 1.000.000 de personas la TVD baja de 0,0304 a 0,0134.
+     - Sigue reservado y la población no cambia.
+     - **Alternativas descartadas:** una excepción documentada, o calibrarlo, que haría heredar a la población la edad de 2021.
+  7. **Nuevo objetivo calibrado `trabajo_nacionalidad`:** ocupados y no ocupados × nacionalidad española/extranjera × tramo de la EPA, por provincia; variable derivada `trabaja`.
+     - **Por qué:** la actividad se calibraba con la EPA por sexo y tramo, pero no por nacionalidad, y quedaba la de los donantes de 2021. Los extranjeros sintéticos trabajaban entre 8 y 14 puntos menos que en la EPA: de 35-44 años, 67,8 % frente a 75,3 %; de 55-64, 44 % frente a 58 %. Los españoles quedaban algo por encima. Además, por composición, la asociación nacionalidad × formación era más fuerte que en la EPA (fallo de G6.4).
+     - **Construcción, coherente por construcción con lo calibrado:**
+       - los ocupados de cada provincia y tramo son los de `actividad_tramo`;
+       - los extranjeros, los de `nacionalidad_edad` (el grupo 15-19 se parte con la proporción de 16-19 de la ECP por edad simple);
+       - el reparto de los ocupados entre españoles y extranjeros sigue sus tasas de empleo de la EPA por comunidad × nacionalidad × tramo, contraídas hacia la nacional con 200 personas como en D-046.
+     - Es una aplicación de D-049 (la actividad, de la EPA), no un umbral nuevo.
 - **Correcciones de código:**
   - **Peso inicial de los donantes importados.** Con pocos donantes locales, cada unidad añadida recibía el objetivo de la celda dividido entre el número mínimo de donantes, sin contar cuántas personas de la celda trae. Ejemplo: 8 hogares chinos de unas 4 personas para 123 chinos en Teruel daban unas 790 personas, y ni con el factor mínimo se bajaba al objetivo. Ahora se divide entre las personas de la celda que traen.
   - **V-MARG.** Una celda fundida en la calibración con objetivo 0 puede tener personas, porque estas conservan su categoría: no cuenta como fuera de dominio, aunque su desviación sigue en la TVD. Ejemplo: paradas de 65 y más en Melilla, que la EPA no tiene por tamaño de muestra.
