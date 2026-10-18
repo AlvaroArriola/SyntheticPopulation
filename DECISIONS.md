@@ -903,12 +903,14 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
      - **Efecto:** los hogares con referencia de 35-49 años pasan del 26,9 % al 24,0 % y los de 65 y más, del 35,6 % al 37,4 %. Con 1.000.000 de personas la TVD baja de 0,0304 a 0,0134.
      - Sigue reservado y la población no cambia.
      - **Alternativas descartadas:** una excepción documentada, o calibrarlo, que haría heredar a la población la edad de 2021.
-  7. **Nuevo objetivo calibrado `trabajo_nacionalidad`:** ocupados y no ocupados × nacionalidad española/extranjera × tramo de la EPA, por provincia; variable derivada `trabaja`.
+  7. **Nuevo objetivo calibrado `actividad_nacionalidad`:** ocupados, parados e inactivos × nacionalidad española/extranjera × tramo de la EPA, por provincia; variable derivada `actividad_3`.
+     - **Primera versión, solo ocupados y no ocupados:** corrigió el empleo, pero entre los extranjeros no ocupados seguía habiendo un 17 % de parados frente al 27 % de la EPA.
      - **Por qué:** la actividad se calibraba con la EPA por sexo y tramo, pero no por nacionalidad, y quedaba la de los donantes de 2021. Los extranjeros sintéticos trabajaban entre 8 y 14 puntos menos que en la EPA: de 35-44 años, 67,8 % frente a 75,3 %; de 55-64, 44 % frente a 58 %. Los españoles quedaban algo por encima. Además, por composición, la asociación nacionalidad × formación era más fuerte que en la EPA (fallo de G6.4).
      - **Construcción, coherente por construcción con lo calibrado:**
-       - los ocupados de cada provincia y tramo son los de `actividad_tramo`;
+       - los ocupados y los parados de cada provincia y tramo son los de `actividad_tramo`;
        - los extranjeros, los de `nacionalidad_edad` (el grupo 15-19 se parte con la proporción de 16-19 de la ECP por edad simple);
-       - el reparto de los ocupados entre españoles y extranjeros sigue sus tasas de empleo de la EPA por comunidad × nacionalidad × tramo, contraídas hacia la nacional con 200 personas como en D-046.
+       - el reparto de ocupados y de parados entre españoles y extranjeros sigue sus tasas de empleo y de paro de la EPA por comunidad × nacionalidad × tramo, contraídas hacia la nacional con 200 personas como en D-046; sin muestra regional, la nacional;
+       - los inactivos son el resto.
      - Es una aplicación de D-049 (la actividad, de la EPA), no un umbral nuevo.
 - **Correcciones de código:**
   - **Peso inicial de los donantes importados.** Con pocos donantes locales, cada unidad añadida recibía el objetivo de la celda dividido entre el número mínimo de donantes, sin contar cuántas personas de la celda trae. Ejemplo: 8 hogares chinos de unas 4 personas para 123 chinos en Teruel daban unas 790 personas, y ni con el factor mínimo se bajaba al objetivo. Ahora se divide entre las personas de la celda que traen.

@@ -818,67 +818,67 @@ def provincias() -> pl.DataFrame:
     res = pl.concat(out)
     out.append(
         _largo(
-            trabajo_nacionalidad(res),
-            ["trabaja", "nacionalidad_esp_ext", "edad_tramo_epa"],
-            "trabajo_nacionalidad",
+            actividad_nacionalidad(res),
+            ["actividad_3", "nacionalidad_esp_ext", "edad_tramo_epa"],
+            "actividad_nacionalidad",
             {
                 "fuente": "epa: 2T 2026, microdatos + objetivos actividad_tramo y "
                 "nacionalidad_edad + ecp: tablas 59589 y 60129",
                 "edicion": "2026-T2 (EPA); 2026-01-01 (efectivos)",
-                "metodo": "ocupados de actividad_tramo repartidos entre españoles y extranjeros "
-                "de nacionalidad_edad con las tasas de empleo de la EPA por comunidad × "
-                "nacionalidad × tramo, contraídas a la nacional (D-050)",
+                "metodo": "ocupados y parados de actividad_tramo repartidos entre españoles y "
+                "extranjeros de nacionalidad_edad con las tasas de empleo y de paro de la EPA por "
+                "comunidad × nacionalidad × tramo, contraídas a la nacional (D-050)",
             },
         )
     )
     return pl.concat(out).select(COLUMNAS).sort("provincia", "objetivo", "clave")
 
 
-def tasas_empleo_nacionalidad() -> pl.DataFrame:
-    """Tasa de empleo (ocupados / 16+ sin NC) de la EPA 2T 2026 por comunidad × nacionalidad
-    española o extranjera × tramo, contraída hacia la nacional de su nacionalidad y tramo con
-    `PESO_PREVIO` personas (D-050)."""
+def tasas_actividad_nacionalidad() -> pl.DataFrame:
+    """Proporción de ocupados y de parados (sobre 16+ sin NC) de la EPA 2T 2026 por comunidad ×
+    nacionalidad española o extranjera × tramo, contraída hacia la nacional de su nacionalidad y
+    tramo con `PESO_PREVIO` personas; sin muestra regional, la nacional (D-050)."""
+    from sinpop.harmonize.core import ccaa_de_provincia
+
     e = pl.read_parquet(INTERIM_DIR / "epa.parquet").filter(
         (pl.col("edad_grupo_epa") >= "16") & ~pl.col("relacion_actividad").is_in(["NC", "NP"])
     )
-    e = e.with_columns(
-        _tramo(pl.col("edad_grupo_epa").cast(pl.Int32)),
-        (pl.col("relacion_actividad") == "ocupado").cast(pl.Float64).alias("_o"),
-    )
+    e = e.with_columns(_tramo(pl.col("edad_grupo_epa").cast(pl.Int32)))
     k = ["nacionalidad_esp_ext", "tramo"]
-    nac = e.group_by(k).agg(
-        ((pl.col("_o") * pl.col("peso")).sum() / pl.col("peso").sum()).alias("rn")
-    )
-    cc = e.group_by("ccaa", *k).agg(
-        ((pl.col("_o") * pl.col("peso")).sum() / pl.col("peso").sum()).alias("r"),
-        pl.len().alias("n"),
-    )
-    # Todas las comunidades × nacionalidad × tramo: sin muestra en la EPA (n = 0), la nacional
-    from sinpop.harmonize.core import ccaa_de_provincia
-
-    todas = pl.DataFrame({"ccaa": sorted(set(ccaa_de_provincia().values()))}).join(nac, how="cross")
-    return (
-        todas.join(cc, on=["ccaa", *k], how="left")
-        .with_columns(pl.col("n").fill_null(0), pl.col("r").fill_null(0.0))
-        .select(
-            "ccaa",
-            *k,
-            (
-                (pl.col("n") * pl.col("r") + PESO_PREVIO * pl.col("rn"))
-                / (pl.col("n") + PESO_PREVIO)
-            ).alias("tasa"),
+    tasas = []
+    for cat in ("ocupado", "parado"):
+        x = e.with_columns((pl.col("relacion_actividad") == cat).cast(pl.Float64).alias("_x"))
+        r = ((pl.col("_x") * pl.col("peso")).sum() / pl.col("peso").sum()).alias("r")
+        nac = x.group_by(k).agg(r.alias("rn"))
+        cc = x.group_by("ccaa", *k).agg(r, pl.len().alias("n"))
+        todas = pl.DataFrame({"ccaa": sorted(set(ccaa_de_provincia().values()))}).join(
+            nac, how="cross"
         )
-    )
+        tasas.append(
+            todas.join(cc, on=["ccaa", *k], how="left")
+            .with_columns(pl.col("n").fill_null(0), pl.col("r").fill_null(0.0))
+            .select(
+                "ccaa",
+                *k,
+                pl.lit(cat).alias("categoria"),
+                (
+                    (pl.col("n") * pl.col("r") + PESO_PREVIO * pl.col("rn"))
+                    / (pl.col("n") + PESO_PREVIO)
+                ).alias("tasa"),
+            )
+        )
+    return pl.concat(tasas)
 
 
-def trabajo_nacionalidad(res: pl.DataFrame) -> pl.DataFrame:
-    """Ocupados y no ocupados por nacionalidad española/extranjera y tramo de la EPA (D-050).
+def actividad_nacionalidad(res: pl.DataFrame) -> pl.DataFrame:
+    """Ocupados, parados e inactivos por nacionalidad española/extranjera y tramo de la EPA
+    (D-050).
 
-    Coherente por construcción con los objetivos calibrados: los ocupados de cada provincia y
-    tramo son los de `actividad_tramo`; los extranjeros, los de `nacionalidad_edad` (el grupo
-    15-19 se parte con la proporción de 16-19 de la ECP por edad simple); el reparto de los
-    ocupados entre españoles y extranjeros sigue sus tasas de empleo de la EPA. Menores de 16:
-    no procede (NP)."""
+    Coherente por construcción con los objetivos calibrados: los ocupados y los parados de cada
+    provincia y tramo son los de `actividad_tramo`; los extranjeros, los de `nacionalidad_edad`
+    (el grupo 15-19 se parte con la proporción de 16-19 de la ECP por edad simple); el reparto de
+    ocupados y de parados entre españoles y extranjeros sigue sus tasas de la EPA; los inactivos
+    son el resto. Menores de 16: no procede (NP)."""
     from sinpop.harmonize.core import ccaa_de_provincia
 
     etiqueta = dict(zip([str(t) for t in TRAMOS_EPA], etiquetas(TRAMOS_EPA)[1:], strict=True))
@@ -889,7 +889,8 @@ def trabajo_nacionalidad(res: pl.DataFrame) -> pl.DataFrame:
     )
     tot = a.group_by("provincia", "t").agg(
         pl.col("valor").sum().alias("total"),
-        pl.col("valor").filter(pl.col("c") == "ocupado").sum().alias("ocupados"),
+        pl.col("valor").filter(pl.col("c") == "ocupado").sum().alias("ocupado"),
+        pl.col("valor").filter(pl.col("c") == "parado").sum().alias("parado"),
     )
     ecp = pl.read_parquet(INTERIM_DIR / "ecp_total.parquet")
     p16 = (
@@ -932,7 +933,7 @@ def trabajo_nacionalidad(res: pl.DataFrame) -> pl.DataFrame:
             "provincia", pl.lit(np_tramo).alias("t"), (pl.col("_tot") - pl.col("_ad")).alias("ext")
         )
     )
-    tasas = tasas_empleo_nacionalidad().with_columns(
+    tasas = tasas_actividad_nacionalidad().with_columns(
         pl.col("tramo").replace_strict(etiqueta).alias("t")
     )
     cc = ccaa_de_provincia()
@@ -942,59 +943,79 @@ def trabajo_nacionalidad(res: pl.DataFrame) -> pl.DataFrame:
             pl.col("ext").fill_null(0.0), pl.col("provincia").replace_strict(cc).alias("ccaa")
         )
         .with_columns((pl.col("total") - pl.col("ext")).alias("esp"))
-        .join(
-            tasas.filter(pl.col("nacionalidad_esp_ext") == "extranjera").select(
-                "ccaa", "t", pl.col("tasa").alias("re")
-            ),
-            on=["ccaa", "t"],
-            how="left",
+    )
+    for cat in ("ocupado", "parado"):
+        t = tasas.filter(pl.col("categoria") == cat)
+        d = (
+            d.join(
+                t.filter(pl.col("nacionalidad_esp_ext") == "extranjera").select(
+                    "ccaa", "t", pl.col("tasa").alias("re")
+                ),
+                on=["ccaa", "t"],
+                how="left",
+            )
+            .join(
+                t.filter(pl.col("nacionalidad_esp_ext") == "espanola").select(
+                    "ccaa", "t", pl.col("tasa").alias("rs")
+                ),
+                on=["ccaa", "t"],
+                how="left",
+            )
+            .with_columns(
+                (
+                    pl.col(cat)
+                    * pl.col("re")
+                    * pl.col("ext")
+                    / (pl.col("re") * pl.col("ext") + pl.col("rs") * pl.col("esp"))
+                )
+                .fill_nan(0.0)
+                .fill_null(0.0)
+                .alias(f"{cat}_ext")
+            )
+            .drop("re", "rs")
         )
-        .join(
-            tasas.filter(pl.col("nacionalidad_esp_ext") == "espanola").select(
-                "ccaa", "t", pl.col("tasa").alias("rs")
-            ),
-            on=["ccaa", "t"],
-            how="left",
+    # Los extranjeros ocupados y parados no pueden superar a los extranjeros del tramo
+    d = (
+        d.with_columns(
+            pl.col("ocupado_ext").clip(0.0, pl.col("ext")),
         )
         .with_columns(
-            pl.when(pl.col("re").is_null())
-            .then(0.0)
-            .otherwise(
-                pl.col("ocupados")
-                * pl.col("re")
-                * pl.col("ext")
-                / (pl.col("re") * pl.col("ext") + pl.col("rs") * pl.col("esp"))
-            )
-            .clip(0.0, pl.col("ext"))
-            .fill_nan(0.0)
-            .alias("oe")
+            pl.col("parado_ext").clip(0.0, pl.col("ext") - pl.col("ocupado_ext")),
         )
-        .with_columns((pl.col("ocupados") - pl.col("oe")).alias("os"))
+        .with_columns(
+            (pl.col("ocupado") - pl.col("ocupado_ext")).alias("ocupado_esp"),
+            (pl.col("parado") - pl.col("parado_ext")).alias("parado_esp"),
+        )
     )
     filas = []
-    for nac, total, ocup in (("extranjera", "ext", "oe"), ("espanola", "esp", "os")):
-        si = d.select(
-            "provincia", "t", pl.lit(nac).alias("nacionalidad_esp_ext"), pl.col(ocup).alias("valor")
-        )
-        no = d.select(
-            "provincia",
-            "t",
-            pl.lit(nac).alias("nacionalidad_esp_ext"),
-            (pl.col(total) - pl.col(ocup)).alias("valor"),
-        )
-        filas += [
-            si.filter(pl.col("t") != np_tramo).with_columns(pl.lit("si").alias("trabaja")),
-            no.with_columns(
+    for nac, sfx, total in (("extranjera", "ext", "ext"), ("espanola", "esp", "esp")):
+        base = d.with_columns(pl.lit(nac).alias("nacionalidad_esp_ext"))
+        for cat in ("ocupado", "parado"):
+            filas.append(
+                base.filter(pl.col("t") != np_tramo).select(
+                    "provincia",
+                    "t",
+                    "nacionalidad_esp_ext",
+                    pl.lit(cat).alias("actividad_3"),
+                    pl.col(f"{cat}_{sfx}").alias("valor"),
+                )
+            )
+        filas.append(
+            base.select(
+                "provincia",
+                "t",
+                "nacionalidad_esp_ext",
                 pl.when(pl.col("t") == np_tramo)
                 .then(pl.lit("NP"))
-                .otherwise(pl.lit("no"))
-                .alias("trabaja")
-            ),
-        ]
+                .otherwise(pl.lit("inactivo"))
+                .alias("actividad_3"),
+                (pl.col(total) - pl.col(f"ocupado_{sfx}") - pl.col(f"parado_{sfx}")).alias("valor"),
+            )
+        )
     return (
-        pl.concat(filas, how="diagonal_relaxed")
+        pl.concat(filas)
         .rename({"t": "edad_tramo_epa"})
-        .select("provincia", "trabaja", "nacionalidad_esp_ext", "edad_tramo_epa", "valor")
+        .select("provincia", "actividad_3", "nacionalidad_esp_ext", "edad_tramo_epa", "valor")
     )
 
 
