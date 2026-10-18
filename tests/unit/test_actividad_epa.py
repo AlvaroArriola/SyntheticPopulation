@@ -35,10 +35,12 @@ def test_fusion_conserva_totales():
         }
     )
     nuevo, fusion = _fusionar_actividad(obj)
-    assert list(fusion["actividad_tramo"]) == [
-        "relacion_actividad=jubilado_pensionista;edad_tramo_epa=35-44"
+    # jubilados (< 2 % de los inactivos) y estudiantes (celda de menos de 100 personas)
+    assert sorted(fusion["actividad_tramo"]) == [
+        "relacion_actividad=estudiante;edad_tramo_epa=35-44",
+        "relacion_actividad=jubilado_pensionista;edad_tramo_epa=35-44",
     ]
-    assert nuevo.height == obj.height - 1
+    assert nuevo.height == obj.height - 2
     assert abs(nuevo["valor"].sum() - obj["valor"].sum()) < 1e-9
     otra = nuevo.filter(pl.col("clave").str.contains("otra_inactividad"))["valor"][0]
-    assert otra == 101.0
+    assert otra == 121.0
