@@ -110,7 +110,7 @@ def estructura(fn, clave_cortes: str) -> pl.DataFrame:
 # D-046 A2 y D-049: relación con la actividad (las 6 categorías) de la EPA del 2T 2026 por
 # comunidad × sexo × tramo de edad (inactivos por su situación autopercibida, SIDI1); el reparto
 # entre provincias y grupos quinquenales dentro de cada tramo es el del Censo Anual a 01/01/2024.
-TRAMOS_EPA = [16, 25, 35, 45, 55, 65]
+TRAMOS_EPA = [16, 20, 25, 35, 45, 55, 65]  # la EPA da 16-19 y 20-24 por separado (D-050)
 PESO_PREVIO = 200.0  # personas de la muestra que equivalen a la estimación previa
 
 

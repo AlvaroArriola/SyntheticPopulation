@@ -912,6 +912,9 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
        - el reparto de ocupados y de parados entre españoles y extranjeros sigue sus tasas de empleo y de paro de la EPA por comunidad × nacionalidad × tramo, contraídas hacia la nacional con 200 personas como en D-046; sin muestra regional, la nacional;
        - los inactivos son el resto.
      - Es una aplicación de D-049 (la actividad, de la EPA), no un umbral nuevo.
+  8. **Actividad calibrada con 16-19 y 20-24 años por separado** (`edad_tramo_epa`: 16, 20, 25, 35, 45, 55, 65).
+     - **Por qué:** con el tramo 16-24 de una pieza, la actividad del tramo era la de la EPA, pero el reparto entre 16-19 y 20-24 seguía al Censo, que clasifica a muchos estudiantes de 20-24 como «otra inactividad» (el sesgo de D-049). La población de 20-24 tenía un 29,7 % de estudiantes frente al 34,5 % de la EPA, y los jóvenes ni-ni salían con ratio 1,14 (13,1 % frente a 11,5 %), sin que la composición por estudios lo explicara (12,98 % ajustado).
+     - Es una aplicación de D-049; la EPA da los dos grupos por separado.
 - **Correcciones de código:**
   - **Peso inicial de los donantes importados.** Con pocos donantes locales, cada unidad añadida recibía el objetivo de la celda dividido entre el número mínimo de donantes, sin contar cuántas personas de la celda trae. Ejemplo: 8 hogares chinos de unas 4 personas para 123 chinos en Teruel daban unas 790 personas, y ni con el factor mínimo se bajaba al objetivo. Ahora se divide entre las personas de la celda que traen.
   - **V-MARG.** Una celda fundida en la calibración con objetivo 0 puede tener personas, porque estas conservan su categoría: no cuenta como fuera de dominio, aunque su desviación sigue en la TVD. Ejemplo: paradas de 65 y más en Melilla, que la EPA no tiene por tamaño de muestra.

@@ -9,7 +9,7 @@ fecha_referencia: 2026-01-01
 agrupaciones_edad:
   edad_estudios: [15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90]  # Censo Anual, tabla 66601
   edad_actividad: [16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]  # Censo Anual, tabla 67128
-  edad_tramo_epa: [16, 25, 35, 45, 55, 65]  # tramos de la EPA en los que se calibra la actividad
+  edad_tramo_epa: [16, 20, 25, 35, 45, 55, 65]  # tramos de la EPA en los que se calibra la actividad (16-19 y 20-24 por separado, D-050)
   edad_estado_civil: [16, 35, 55, 75]  # Censo Anual, tabla 76291
   edad_urbanizacion: [16, 65]  # Censo Anual, tabla 79341
   # Perfil de edad de cada nacionalidad (calibrado desde D-050; F7, V-MINORIAS-PERFIL). La nacionalidad
