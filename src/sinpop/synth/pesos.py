@@ -120,8 +120,9 @@ MIN_INACTIVIDAD = 0.02
 FACTOR_MAX = 5.0  # cotas de los factores de la calibración logit
 FACTOR_MIN = 0.2
 MARGEN = 1.25  # margen sobre las cotas: otras restricciones también tiran de las mismas unidades
-OBJETIVOS_SOBRECOBERTURA = ("estado_civil_edad", "nacionalidad_top_edad")
+OBJETIVOS_SOBRECOBERTURA = ("estado_civil_edad", "nacionalidad_top_edad", "actividad_nacionalidad")
 MIN_NACIONALIDAD_EDAD = 2000  # por debajo, la nacionalidad se calibra sin la edad (D-050)
+MAX_PESO_IMPORTADA = 10.0  # × mediana del peso de los donantes locales (D-050)
 MAX_SIN_EDAD = 5  # intentos del último recurso de nacionalidad sin edad (D-050)
 
 
@@ -285,6 +286,14 @@ def _fusionar_actividad(
                 )
                 cruce = a.filter(sobra)["_resto"].unique().implode()
                 fundir = fundir | (pl.col("_c").is_in(inactivas) & pl.col("_resto").is_in(cruce))
+                # Parados de más (p. ej. varones de 65 y más en Baleares): con otra_inactividad
+                fundir = fundir | (
+                    (pl.col("_c") == "parado")
+                    & (
+                        pl.col("cuota_local").fill_null(0.0) * FACTOR_MIN * MARGEN
+                        > pl.col("_cuota")
+                    )
+                )
         peq = a.filter(fundir)
         destino = set(a.filter(pl.col("_c") == "otra_inactividad")["clave"])
         pares = peq.select("clave", "_resto").iter_rows()
@@ -613,6 +622,12 @@ def _ampliar(
     }
     niveles = [n for n in cfg.jerarquia_donantes if n in filtros]  # type: ignore[attr-defined]
     prov_obj = {p: run.leer(f"PROV:{p}") for p in ps}
+    # Tope del peso inicial de una unidad añadida (D-050): una unidad con un peso muy por encima
+    # del de los donantes locales desborda las demás celdas en las que cae (p. ej. un hogar con
+    # peso 337 que trae un parado de 65 y más años a una celda de 47 en Baleares)
+    d_max = MAX_PESO_IMPORTADA * float(
+        u.unidades.join(base.select("unidad"), on="unidad")["d"].median() or 1.0
+    )
     anadidas, registro = [], []
     universo = dict(obj.select("objetivo", "universo").unique().iter_rows())
     for objetivo, clave_, valor, locales, masa, falta_r in def_.select(
@@ -636,13 +651,15 @@ def _ampliar(
             falta = falta_r if falta_r is not None else valor / amp.razon_objetivo - masa
             acum = (pl.col("x") * pl.col("d")).cum_sum()
             t = cand.filter(acum.shift(1, fill_value=0) < falta).with_columns(
-                pl.col("d").alias("d_anadida")
+                pl.col("d").clip(upper_bound=d_max).alias("d_anadida")
             )
         elif locales < amp.min_donantes_celda:
             # Peso inicial para que las unidades añadidas sumen el objetivo de la celda contando
             # las personas de la celda que trae cada una (`x`): un hogar con 4 chinos cuenta 4
             t = cand.head(amp.min_donantes_celda - locales)
-            t = t.with_columns(pl.lit(valor / max(float(t["x"].sum()), 1.0)).alias("d_anadida"))
+            t = t.with_columns(
+                pl.lit(min(valor / max(float(t["x"].sum()), 1.0), d_max)).alias("d_anadida")
+            )
         cuota = _pesos_provincias(b, ps, objetivo, clave_, prov_obj)
         # Cada unidad va a una provincia que tenga su grado de urbanización (p. ej. un hogar de
         # ciudad no puede ir a una provincia sin ciudades); reparto sistemático por grado.

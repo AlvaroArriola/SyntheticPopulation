@@ -915,6 +915,10 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Correcciones de código:**
   - **Peso inicial de los donantes importados.** Con pocos donantes locales, cada unidad añadida recibía el objetivo de la celda dividido entre el número mínimo de donantes, sin contar cuántas personas de la celda trae. Ejemplo: 8 hogares chinos de unas 4 personas para 123 chinos en Teruel daban unas 790 personas, y ni con el factor mínimo se bajaba al objetivo. Ahora se divide entre las personas de la celda que traen.
   - **V-MARG.** Una celda fundida en la calibración con objetivo 0 puede tener personas, porque estas conservan su categoría: no cuenta como fuera de dominio, aunque su desviación sigue en la TVD. Ejemplo: paradas de 65 y más en Melilla, que la EPA no tiene por tamaño de muestra.
+  - **Tope del peso inicial de una unidad añadida:** 10 veces la mediana del peso de los donantes locales del bloque (`MAX_PESO_IMPORTADA`).
+    - **Por qué:** una unidad importada para cubrir una celda con pocos candidatos podía llegar con un peso de 337, frente a 10 de los donantes del Censo, y desbordar otras celdas pequeñas en las que también cae. Ejemplo: un hogar con un parado de 65 y más años en Baleares, en una celda de 47 personas.
+    - **Si falta peso:** lo suplen las rondas de reparación, con más donantes.
+    - **Exceso de cobertura:** se aplica también a los parados de `actividad_tramo` (con otra_inactividad) y a `actividad_nacionalidad`.
   - **Resolución numérica del paso de Newton.** Si la SVD de LAPACK no converge con restricciones redundantes (objetivos que suman lo mismo, como `trabajo_nacionalidad`), se usa QR con pivotaje (`gelsy`), que da la misma solución de mínimos cuadrados.
   - **Exceso de cobertura en `nacionalidad_top`.** La nacionalidad sobrecubierta se funde con otras_extranjeras, como las pequeñas (D-041).
 - **Otros cambios sin decisión de método:**
