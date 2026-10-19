@@ -35,6 +35,9 @@ class Referencia:
     ic: tuple[float, float] | None = None  # solo las encuestas
     perfiles: dict[str, pl.DataFrame] = field(default_factory=dict)  # variable → (categoria, p)
     nota: str = ""
+    # Solo las encuestas (D-052): réplicas bootstrap del perfil, variable → (categorías, matriz
+    # réplicas × categorías), para que el umbral del perfil cuente el error de la referencia
+    replicas: dict[str, tuple[list[str], np.ndarray]] = field(default_factory=dict)
 
 
 def _provincias(territorio: str) -> list[str] | None:
@@ -163,6 +166,32 @@ def _ic_bootstrap(
     return p, float(lo), float(hi)
 
 
+def _replicas_perfil(
+    s: pl.DataFrame, var: str, peso: str, conglomerado: str | None, semilla: int = 0
+) -> tuple[list[str], np.ndarray]:
+    """Réplicas bootstrap del perfil (Poisson por conglomerado, como `_ic_bootstrap`)."""
+    from sinpop.validate.poblacion import umbrales
+
+    b = int(umbrales()["V-MINORIAS-PERFIL"]["muestras_ref"])
+    cat = s[var].cast(pl.Utf8)
+    cats = sorted(cat.unique().to_list())
+    j = cat.replace_strict({c: i for i, c in enumerate(cats)}, return_dtype=pl.Int64).to_numpy()
+    w = s[peso].to_numpy().astype(float)
+    if conglomerado:
+        k = s[conglomerado].rank("dense").cast(pl.Int64).to_numpy() - 1
+        n = int(k.max()) + 1
+    else:
+        k, n = None, len(w)
+    rng = make_rng(semilla)
+    reps = np.empty((b, len(cats)))
+    for r in range(b):
+        m = rng.poisson(1.0, n)
+        wb = w * (m[k] if k is not None else m)
+        x = np.bincount(j, weights=wb, minlength=len(cats))
+        reps[r] = x / x.sum() if x.sum() else np.full(len(cats), 1 / len(cats))
+    return cats, reps
+
+
 def _ref_encuesta(
     nombre: str,
     universo: pl.Expr,
@@ -183,7 +212,7 @@ def _ref_encuesta(
         return None
     p, lo, hi = _ic_bootstrap(d, en_grupo, peso, conglomerado)
     sub = d.filter(en_grupo)
-    perfiles = {}
+    perfiles, replicas = {}, {}
     # La actividad, en tres categorías: las subcategorías de inactividad de la ECV y la TIC-H
     # (situación principal declarada) no se definen como las de la EPA, de la que sale la
     # actividad de la población (D-049, D-050)
@@ -195,7 +224,8 @@ def _ref_encuesta(
                 s = s.filter(pl.col(v).is_in(EDAD_4))
             if s.height >= 30:
                 perfiles[v] = _perfil(s, v, peso)
-    return Referencia(p, fuente, (lo, hi), perfiles, nota)
+                replicas[v] = _replicas_perfil(s, v, peso, conglomerado)
+    return Referencia(p, fuente, (lo, hi), perfiles, nota, replicas)
 
 
 # --------------------------------------------------------------------------- referencia por grupo

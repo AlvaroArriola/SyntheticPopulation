@@ -965,3 +965,39 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - **Resultado en la prueba de Aragón con 100.000 personas:** rojos de 8 a 5 y argentinos del 34 % al 23 %.
   - **Alternativa probada y descartada:** 1,2 y 1,0. No mejoraba (6 rojos) y añadía grupos en ámbar por donantes no locales.
   - **Excepción:** la ampliación propia de las nacionalidades no se aplica a las listas de municipios, que ya toman sus donantes de su provincia y clase de municipio. Importar hogares de otras comunidades desbordaba sus celdas de grado de urbanización; en Valencia urbano, la zona intermedia quedaba +49 %.
+
+## D-052 · Error de muestreo de la encuesta de referencia en V-MINORIAS-PERFIL (2026-10-19)
+
+- **Fecha:** 2026-10-19
+- **Fase:** F7
+- **Estado:** propuesta. Se aplica en la auditoría y queda pendiente de aprobación humana en G7.7.
+- **Contexto:**
+  - El margen de muestreo de D-051 compara el perfil del grupo sintético (n personas) con el perfil oficial como si este fuera exacto.
+  - Eso vale para las fuentes exhaustivas: ECP, Padrón, Censo Anual y objetivos.
+  - No vale para los grupos que salen de una encuesta: limitación grave y privación severa (ECV), ni-ni (EPA) y nunca internet (TIC-H).
+    - Por comunidad, esos perfiles salen de unas decenas o cientos de entrevistas.
+    - Con la población a 100.000 personas, el umbral se quedaba en 0,08, mientras que la propia encuesta varía mucho más de una muestra a otra.
+  - Percentil 95 de la TVD entre la encuesta y sus réplicas bootstrap, con 3.000 personas sintéticas:
+
+    | Grupo | Territorio | TVD del perfil |
+    | --- | --- | --- |
+    | privación severa | La Rioja | 0,15 (sexo) a 0,22 (edad) |
+    | privación severa | Andalucía | 0,12 a 0,19 |
+    | ni-ni | Madrid | 0,16 a 0,18 |
+    | privación severa | España | 0,02 a 0,04 |
+
+  - En la auditoría anterior había 28 poblaciones en rojo por el perfil de la privación severa: todas salvo España quedaban dentro de ese ruido. Con la limitación grave, el ni-ni y nunca internet pasaba lo mismo.
+- **Alternativas consideradas:**
+  1. Mantener el umbral y declarar la limitación. Se descarta porque el rojo no indicaría un defecto de la población, sino el tamaño de la encuesta.
+  2. Usar el tamaño efectivo de Kish de la encuesta. Se descarta porque ignora la agrupación por hogares (la privación es del hogar) y daría un margen demasiado estrecho.
+  3. **Elegida:** TVD_ref de dos muestras, como en V-COHERENCIA (D-042 B), con el diseño de la encuesta.
+- **Decisión:** si la referencia del perfil es una encuesta, TVD_ref(n) pasa a ser el percentil 95 de la TVD entre:
+  - una muestra aleatoria simple de tamaño n del perfil de la encuesta, y
+  - una réplica bootstrap de la encuesta: Poisson por hogar en la ECV, por persona en la EPA y la TIC-H, como en el intervalo de la proporción.
+
+  Se hacen 200 réplicas. El umbral sigue siendo máx(0,08; 1,2 × TVD_ref + 0,002). Las referencias exhaustivas no cambian. La representación (ratio o IC 95 % de la encuesta) tampoco cambia.
+- **Evidencia:** `tests/unit/test_auditoria.py`; tabla de umbrales en el informe de F7.
+- **Consecuencias:**
+  - En España el margen apenas cambia: 0,03-0,04, por debajo del mínimo de 0,08. Por eso sigue en rojo el perfil de actividad de la privación severa (0,085), que es la limitación ya declarada en D-051.4.
+  - Por comunidad y provincia, el rojo solo salta cuando la diferencia supera lo que la propia encuesta puede distinguir.
+- **Aprobada por:** pendiente (G7.7).

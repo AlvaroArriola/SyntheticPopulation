@@ -64,9 +64,16 @@ def preparar(p: pl.DataFrame) -> pl.DataFrame:
     )
 
 
-def _tvd_perfil(sub: pl.DataFrame, var: str, ref: pl.DataFrame) -> tuple[float, float] | None:
+def _tvd_perfil(
+    sub: pl.DataFrame,
+    var: str,
+    ref: pl.DataFrame,
+    replicas: tuple[list[str], np.ndarray] | None = None,
+) -> tuple[float, float] | None:
     """(TVD del perfil, umbral). Umbral con margen de muestreo (D-051): máx(tvd_max,
-    factor × TVD_ref(n) + tolerancia), con n las personas del grupo con la variable conocida."""
+    factor × TVD_ref(n) + tolerancia), con n las personas del grupo con la variable conocida.
+    Si la referencia es una encuesta (D-052), TVD_ref es la de dos muestras: la población, de
+    tamaño n, y la propia encuesta, con sus réplicas bootstrap."""
     if var not in sub.columns or sub.is_empty():
         return None
     s = sub.filter(~pl.col(var).cast(pl.Utf8).is_in(["NC", "NS", "NP"]))
@@ -78,9 +85,30 @@ def _tvd_perfil(sub: pl.DataFrame, var: str, ref: pl.DataFrame) -> tuple[float, 
     j = a.join(ref, on="categoria", how="full", coalesce=True, suffix="_ref").fill_null(0.0)
     c = V.umbrales()["V-MINORIAS-PERFIL"]
     n = max(1, round(float(s["peso"].sum())))
-    ref_n = M.tvd_ref(j["p_ref"].to_numpy(), n, c["muestras_ref"], c["percentil_ref"])
+    if replicas is None:
+        ref_n = M.tvd_ref(j["p_ref"].to_numpy(), n, c["muestras_ref"], c["percentil_ref"])
+    else:
+        ref_n = tvd_ref_encuesta(j, replicas, n, c["percentil_ref"])
     umbral = max(c["tvd_max"], c["factor_tvd_ref"] * ref_n + c["tolerancia"])
     return float(M.tvd(j["p"], j["p_ref"])), umbral
+
+
+def tvd_ref_encuesta(
+    j: pl.DataFrame, replicas: tuple[list[str], np.ndarray], n: int, percentil: float
+) -> float:
+    """Percentil de la TVD entre una muestra aleatoria simple de tamaño n del perfil de la
+    encuesta y una réplica bootstrap de la encuesta (D-052)."""
+    cats, reps = replicas
+    orden = j["categoria"].to_list()
+    q = j["p_ref"].to_numpy()
+    pos = {c: i for i, c in enumerate(cats)}
+    r = np.zeros((reps.shape[0], len(orden)))
+    for i, c in enumerate(orden):
+        if c in pos:
+            r[:, i] = reps[:, pos[c]]
+    rng = np.random.default_rng(0)
+    x = rng.multinomial(n, q / q.sum(), size=reps.shape[0]) / n
+    return float(np.percentile(0.5 * np.abs(x - r).sum(axis=1), percentil))
 
 
 def auditar(p: pl.DataFrame, lineage: pl.DataFrame, territorio: str) -> pl.DataFrame:
@@ -156,7 +184,9 @@ def auditar(p: pl.DataFrame, lineage: pl.DataFrame, territorio: str) -> pl.DataF
                 ok = abs(obs - esperado) <= 1.96 * float(np.sqrt(n * q * (1 - q)))
             if not ok and ref.ic is not None and n:
                 ok = ref.ic[0] <= obs / n <= ref.ic[1]
-            perf_u = {v: _tvd_perfil(sub, v, r) for v, r in ref.perfiles.items()}
+            perf_u = {
+                v: _tvd_perfil(sub, v, r, ref.replicas.get(v)) for v, r in ref.perfiles.items()
+            }
             perf_u = {v: x for v, x in perf_u.items() if x is not None}
             perf = {v: x[0] for v, x in perf_u.items()}
             fila |= {
