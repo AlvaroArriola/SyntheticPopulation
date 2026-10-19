@@ -64,7 +64,9 @@ def preparar(p: pl.DataFrame) -> pl.DataFrame:
     )
 
 
-def _tvd_perfil(sub: pl.DataFrame, var: str, ref: pl.DataFrame) -> float | None:
+def _tvd_perfil(sub: pl.DataFrame, var: str, ref: pl.DataFrame) -> tuple[float, float] | None:
+    """(TVD del perfil, umbral). Umbral con margen de muestreo (D-051): máx(tvd_max,
+    factor × TVD_ref(n) + tolerancia), con n las personas del grupo con la variable conocida."""
     if var not in sub.columns or sub.is_empty():
         return None
     s = sub.filter(~pl.col(var).cast(pl.Utf8).is_in(["NC", "NS", "NP"]))
@@ -74,14 +76,17 @@ def _tvd_perfil(sub: pl.DataFrame, var: str, ref: pl.DataFrame) -> float | None:
         return None
     a = R._perfil(s, var, "peso")
     j = a.join(ref, on="categoria", how="full", coalesce=True, suffix="_ref").fill_null(0.0)
-    return float(M.tvd(j["p"], j["p_ref"]))
+    c = V.umbrales()["V-MINORIAS-PERFIL"]
+    n = max(1, round(float(s["peso"].sum())))
+    ref_n = M.tvd_ref(j["p_ref"].to_numpy(), n, c["muestras_ref"], c["percentil_ref"])
+    umbral = max(c["tvd_max"], c["factor_tvd_ref"] * ref_n + c["tolerancia"])
+    return float(M.tvd(j["p"], j["p_ref"])), umbral
 
 
 def auditar(p: pl.DataFrame, lineage: pl.DataFrame, territorio: str) -> pl.DataFrame:
     """Una fila por grupo vigilado con todas las comprobaciones y su semáforo."""
     cm = V.umbrales()["V-MINORIAS"]
     cc = V.umbrales()["V-CONCENTRACION"]
-    tvd_max = V.umbrales()["V-MINORIAS-PERFIL"]["tvd_max"]
     p = preparar(p)
     donante = pl.concat_str(
         [pl.col("donante_household_id").cast(pl.Utf8), pl.col("donante_norden").cast(pl.Utf8)],
@@ -151,8 +156,9 @@ def auditar(p: pl.DataFrame, lineage: pl.DataFrame, territorio: str) -> pl.DataF
                 ok = abs(obs - esperado) <= 1.96 * float(np.sqrt(n * q * (1 - q)))
             if not ok and ref.ic is not None and n:
                 ok = ref.ic[0] <= obs / n <= ref.ic[1]
-            perf = {v: _tvd_perfil(sub, v, r) for v, r in ref.perfiles.items()}
-            perf = {v: x for v, x in perf.items() if x is not None}
+            perf_u = {v: _tvd_perfil(sub, v, r) for v, r in ref.perfiles.items()}
+            perf_u = {v: x for v, x in perf_u.items() if x is not None}
+            perf = {v: x[0] for v, x in perf_u.items()}
             fila |= {
                 "proporcion_oficial": q,
                 "ic_oficial": list(ref.ic) if ref.ic else None,
@@ -162,16 +168,32 @@ def auditar(p: pl.DataFrame, lineage: pl.DataFrame, territorio: str) -> pl.DataF
                 "ratio": ratio,
                 "ok_representacion": bool(ok),
                 "perfil_tvd": perf,
-                "ok_perfil": all(x <= tvd_max for x in perf.values()),
+                "perfil_umbral": {v: x[1] for v, x in perf_u.items()},
+                "ok_perfil": all(t <= u for t, u in perf_u.values()),
             }
         # Concentración de donantes y calidad
         don = sub.group_by("_donante").agg(pl.col("peso").sum())
         top5 = float(don.sort("peso", descending=True).head(5)["peso"].sum() / obs) if obs else 0.0
         minimo = min(cc["donantes_distintos_min"], obs / cc["divisor_tamano_grupo"])
+        # D-051: el top 5 que ninguna población podría evitar con ese tamaño de grupo: el peso de
+        # sus 5 hogares sintéticos con más miembros del grupo (cada residente en colectivo, aparte)
+        inevitable = 0.0
+        if cc["top5_inevitable"] and obs:
+            hog = pl.coalesce(pl.col("household_id"), pl.col("person_id")).alias("_h")
+            inevitable = float(
+                sub.group_by(hog)
+                .agg(pl.col("peso").sum())
+                .sort("peso", descending=True)
+                .head(5)["peso"]
+                .sum()
+                / obs
+            )
+        top5_max = max(cc["top5_max"], inevitable)
         fila |= {
             "donantes_distintos": don.height,
             "top5": top5,
-            "ok_concentracion": top5 <= cc["top5_max"] and don.height >= minimo,
+            "top5_umbral": top5_max,
+            "ok_concentracion": top5 <= top5_max and don.height >= minimo,
             "no_locales": float(1 - sub["local"].mean()) if sub.height else None,
         }
         if calidad_cols and sub.height:
@@ -225,7 +247,20 @@ def _entropias(df: pl.DataFrame, atributo: str, peso: str) -> pl.DataFrame:
         .agg(pl.col(peso).sum().alias("w"))
         .with_columns((pl.col("w") / pl.col("w").sum().over(GRUPO_DIVERSIDAD)).alias("q"))
     )
-    return g.group_by(GRUPO_DIVERSIDAD).agg((-(pl.col("q") * pl.col("q").log())).sum().alias("h"))
+    return g.group_by(GRUPO_DIVERSIDAD).agg(
+        (-(pl.col("q") * pl.col("q").log())).sum().alias("h"), pl.col("q").alias("_q")
+    )
+
+
+def _entropia_muestral(q: list[float], n: int, muestras: int, percentil: float) -> float:
+    """Percentil de la entropía de muestras aleatorias simples de tamaño n de la distribución q
+    (margen de muestreo de V-DIVERSIDAD, D-051)."""
+    p = np.asarray(q, dtype=float)
+    p = p / p.sum()
+    x = np.random.default_rng(0).multinomial(n, p, size=muestras) / n
+    with np.errstate(divide="ignore", invalid="ignore"):
+        h = -np.nansum(np.where(x > 0, x * np.log(x), 0.0), axis=1)
+    return float(np.percentile(h, percentil))
 
 
 def diversidad_grupos(
@@ -242,19 +277,34 @@ def diversidad_grupos(
     for a in ATRIBUTOS_DIVERSIDAD:
         if a not in p.columns or a not in referencia.columns:
             continue
-        hs = _entropias(adultos, a, "peso").rename({"h": "h_sintetica"})
+        hs = _entropias(adultos, a, "peso").rename({"h": "h_sintetica"}).drop("_q")
         hr = _entropias(ref, a, peso_ref).rename({"h": "h_referencia"})
         j = tam.join(hs, on=GRUPO_DIVERSIDAD).join(hr, on=GRUPO_DIVERSIDAD)
+        j = j.with_columns(
+            pl.Series(
+                "h_muestral",
+                [
+                    _entropia_muestral(q, max(1, round(n)), c["muestras_ref"], c["percentil_ref"])
+                    for q, n in zip(j["_q"].to_list(), j["n"].to_list(), strict=True)
+                ],
+                dtype=pl.Float64,
+            )
+        ).drop("_q")
         partes.append(j.with_columns(pl.lit(a).alias("atributo")))
     return pl.concat(partes)
 
 
 def v_diversidad(g: pl.DataFrame) -> pl.DataFrame:
-    """Resumen por atributo: proporción de grupos con entropía ≥ 0,9 × la de referencia (se
-    ignoran los grupos en los que el atributo es casi constante en la referencia, H < 0,05)."""
+    """Resumen por atributo: proporción de grupos con entropía ≥ 0,9 × la de referencia o, por
+    margen de muestreo (D-051), no menor que el percentil 5 de la de muestras aleatorias simples
+    de su tamaño (se ignoran los grupos en los que el atributo es casi constante en la
+    referencia, H < 0,05)."""
     c = V.umbrales()["V-DIVERSIDAD"]
     g = g.filter(pl.col("h_referencia") > 0.05).with_columns(
-        (pl.col("h_sintetica") >= c["ratio_entropia_min"] * pl.col("h_referencia")).alias("_ok"),
+        (
+            (pl.col("h_sintetica") >= c["ratio_entropia_min"] * pl.col("h_referencia"))
+            | (pl.col("h_sintetica") >= pl.col("h_muestral"))  # margen de muestreo (D-051)
+        ).alias("_ok"),
         (pl.col("h_sintetica") / pl.col("h_referencia")).alias("_r"),
     )
     return (

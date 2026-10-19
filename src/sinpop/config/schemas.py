@@ -384,16 +384,32 @@ class VTvdMax(_Th):
     tvd_max: float
 
 
+class VMinoriasPerfil(_Th):
+    tvd_max: float
+    # Margen de muestreo (D-051): umbral = máx(tvd_max, factor × TVD_ref(n) + tolerancia)
+    factor_tvd_ref: float
+    tolerancia: float
+    muestras_ref: int
+    percentil_ref: float
+
+
 class VDiversidad(_Th):
     ratio_entropia_min: float
     proporcion_grupos: float
     tamano_grupo_min: int
+    # Margen de muestreo (D-051): también cumple si la entropía no baja del percentil
+    # `percentil_ref` de la de muestras aleatorias simples de tamaño n de la referencia
+    muestras_ref: int
+    percentil_ref: float
 
 
 class VConcentracion(_Th):
     top5_max: float
     donantes_distintos_min: int
     divisor_tamano_grupo: int
+    # D-051: el top 5 inevitable por el tamaño del grupo (5 × miembros por hogar / tamaño)
+    # también es aceptable
+    top5_inevitable: bool
 
 
 class VRareza(_Th):
@@ -492,7 +508,7 @@ class ThresholdsConfig(Strict):
     v_enriq_bloque: VEnriqBloque = Field(alias="V-ENRIQ-BLOQUE")
     v_enriq_holdout: VDelta = Field(alias="V-ENRIQ-HOLDOUT")
     v_minorias: VMinorias = Field(alias="V-MINORIAS")
-    v_minorias_perfil: VTvdMax = Field(alias="V-MINORIAS-PERFIL")
+    v_minorias_perfil: VMinoriasPerfil = Field(alias="V-MINORIAS-PERFIL")
     v_diversidad: VDiversidad = Field(alias="V-DIVERSIDAD")
     v_concentracion: VConcentracion = Field(alias="V-CONCENTRACION")
     v_rareza: VRareza = Field(alias="V-RAREZA")

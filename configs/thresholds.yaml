@@ -82,12 +82,23 @@ V-MINORIAS:
   recuento_esperado_min: 200
 V-MINORIAS-PERFIL:
   tvd_max: 0.08
+  # D-051: margen de muestreo, como V-MARG (D-038 A): umbral = máx(0,08; 1,2 × TVD_ref(n) + 0,002)
+  factor_tvd_ref: 1.2
+  tolerancia: 0.002
+  muestras_ref: 200
+  percentil_ref: 95
 V-DIVERSIDAD:
   ratio_entropia_min: 0.9
   proporcion_grupos: 0.95
   tamano_grupo_min: 100
+  # D-051: también cumple si la entropía no baja del percentil 5 de la de muestras aleatorias
+  # simples de tamaño n de la distribución de referencia
+  muestras_ref: 200
+  percentil_ref: 5
 V-CONCENTRACION:
   top5_max: 0.20
+  # D-051: o el top 5 inevitable por el tamaño del grupo (5 × miembros por hogar / tamaño)
+  top5_inevitable: true
   donantes_distintos_min: 50
   divisor_tamano_grupo: 3
 V-RAREZA:

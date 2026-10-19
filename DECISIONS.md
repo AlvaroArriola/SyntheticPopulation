@@ -938,3 +938,24 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - La auditoría da «sin referencia» si el territorio no tiene el objetivo del que sale la cifra (listas de municipios); antes se detenía.
   - Ajustes de memoria en la construcción de España, sin efecto en los resultados.
 - **Consecuencias:** se rehacen F2 (EPA), F3-F6 y la auditoría.
+
+## D-051 · Márgenes de muestreo en la auditoría de F7 y limitaciones de composición (2026-10-19)
+
+- **Fecha:** 2026-10-19
+- **Fase:** F7
+- **Estado:** aprobada por la persona responsable el 2026-10-19. Eligió las tres opciones recomendadas.
+- **Contexto:** con F4, F5 y F6 superadas, la auditoría de F7 da 25 grupos en verde y 2 en rojo en la población nacional. En los territorios pequeños hay muchos rojos, casi todos en nacionalidades de 40 a 250 personas.
+  - Esos rojos vienen de dos criterios que no dependen del tamaño:
+    - **Perfil:** TVD ≤ 0,08, con un perfil muy ruidoso con tan pocas personas.
+    - **Concentración:** los 5 hogares donantes más usados ≤ 20 %. Con 60 personas en hogares de 3, los 5 mayores ya pesan más del 20 % por fuerza.
+  - V-DIVERSIDAD falla en la nacionalidad (93,9 %) y en el país de nacimiento (93,2 %) frente al 95 %. Los grupos que fallan tienen de 100 a 760 personas y casi ningún extranjero.
+- **Decisiones:**
+  1. **V-MINORIAS-PERFIL con margen de muestreo,** como V-MARG y V-CRUCE (D-038 A): umbral = máx(0,08; 1,2 × TVD_ref(n) + 0,002).
+     - TVD_ref(n) es el percentil 95 de la TVD de muestras aleatorias simples de tamaño n de la distribución oficial.
+     - n son las personas del grupo con la variable conocida.
+  2. **V-CONCENTRACION:** el top 5 cumple si es ≤ máx(20 %, el inevitable). El inevitable es el peso de los 5 hogares sintéticos con más miembros del grupo; cada residente en colectivo cuenta por separado. Se mantiene el mínimo de donantes distintos.
+  3. **V-DIVERSIDAD:** un grupo cumple si su entropía es ≥ 0,9 × la de referencia o si no baja del percentil 5 de la entropía de muestras aleatorias simples de su tamaño de la distribución de referencia.
+  4. **Limitaciones declaradas en la población nacional,** como en D-048:
+     - **Personas que nunca usan internet:** ratio 1,11 frente a la TIC-H 2025; 1,04 si la población se repondera a la composición por edad × estudios de la TIC-H. El Censo Anual 2024, al que se calibran los estudios, tiene más personas con estudios obligatorios o menos que la muestra ponderada de la TIC-H (25-34 años: 27,5 % frente a 15,5 %).
+     - **Carencia material y social severa:** la representación está dentro del intervalo de la ECV (ratio 0,95). Solo falla el perfil de actividad (TVD 0,085, con 3 categorías), porque la ECV mide el paro según lo que declara cada persona y la población usa el paro de la OIT de la EPA (D-049).
+- **Alternativas descartadas:** solo grupos de 200 o más; subir el mínimo de V-DIVERSIDAD a 500; mantener los criterios y declarar limitaciones; un criterio ajustado por composición para los grupos de encuestas.
