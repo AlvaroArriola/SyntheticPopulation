@@ -136,7 +136,7 @@ OBJETIVOS_SOBRECOBERTURA = (
 )
 MIN_NACIONALIDAD_EDAD = 2000  # por debajo, la nacionalidad se calibra sin la edad (D-050)
 MAX_PESO_IMPORTADA = 10.0  # × mediana del peso de los donantes locales (D-050)
-MAX_SIN_EDAD = 5  # intentos del último recurso de nacionalidad sin edad (D-050)
+MAX_SIN_EDAD = 8  # intentos del último recurso (D-050)
 
 
 def fusionar(
@@ -144,6 +144,7 @@ def fusionar(
     cobertura: pl.DataFrame | None = None,
     sin_edad: frozenset[str] = frozenset(),
     cobertura_nac: pl.DataFrame | None = None,
+    forzar_nac: frozenset[str] = frozenset(),
 ) -> tuple[pl.DataFrame, dict[str, dict[str, str]]]:
     """Funde con «otras_extranjeras» las nacionalidades cuyo objetivo en el bloque es menor que
     `MIN_CELDA_NACIONALIDAD` personas (p. ej. 7,6 ecuatorianos en Melilla): con tan pocos casos,
@@ -152,7 +153,7 @@ def fusionar(
     obj, fusion = _fusionar_actividad(obj, cobertura)
     top = obj.filter(pl.col("objetivo") == "nacionalidad_top")
     otras = "nacionalidad_top=otras_extranjeras"
-    pequena = pl.col("valor") < MIN_CELDA_NACIONALIDAD
+    pequena = (pl.col("valor") < MIN_CELDA_NACIONALIDAD) | pl.col("clave").is_in(list(forzar_nac))
     if cobertura_nac is not None:
         # Exceso de cobertura (D-050): los donantes del bloque, con el factor mínimo, pesan más
         # que el objetivo (p. ej. 9 hogares chinos para 123 chinos en Teruel)
@@ -412,6 +413,85 @@ def fusionar_sobrecobertura(
     ), mapa
 
 
+# Último recurso (D-050): objetivos secundarios cuyas celdas fuera de tolerancia se funden si el
+# bloque no converge. Nunca edad, sexo, tamaño o tipo de hogar ni españoles/extranjeros por edad.
+OBJETIVOS_ULTIMO_RECURSO = (
+    "actividad_tramo",
+    "actividad_nacionalidad",
+    "estado_civil_edad",
+    "sin_estudios_edad",
+    "nacimiento_nacionalidad",
+    "nacionalidad",
+    "nacionalidad_top",
+    "nacionalidad_top_edad",
+)
+
+
+def fusionar_forzadas(
+    obj: pl.DataFrame, forzadas: dict[str, frozenset[str]]
+) -> tuple[pl.DataFrame, dict[str, dict[str, str]]]:
+    """Funde las celdas `forzadas` (las que han quedado fuera de tolerancia en un intento
+    anterior) con su destino: en `actividad_tramo`, «otra_inactividad» del mismo cruce (y, si es
+    ella la que falla, todas las de inactividad del cruce con ella); en el resto, la categoría
+    más numerosa de su cruce. `nacionalidad_top` se trata en `fusionar`."""
+    otra = "relacion_actividad=otra_inactividad"
+    inactivas = ["estudiante", "jubilado_pensionista", "incapacidad_permanente"]
+    fusion: dict[str, dict[str, str]] = {}
+    for o, claves in forzadas.items():
+        if not claves or o == "nacionalidad_top":
+            continue
+        a = obj.filter(pl.col("objetivo") == o)
+        if a.is_empty():
+            continue
+        if o == "actividad_tramo":
+            a = a.with_columns(
+                pl.col("clave").str.extract(r"^relacion_actividad=([^;]+)").alias("_c"),
+                pl.col("clave").str.extract(r"^relacion_actividad=[^;]+(;.*)$").alias("_r"),
+            )
+            mapa = {}
+            for c, cat, r in (
+                a.filter(pl.col("clave").is_in(list(claves)))
+                .select("clave", "_c", "_r")
+                .iter_rows()
+            ):
+                if cat in (*inactivas, "parado"):
+                    mapa[c] = otra + r
+                elif cat == "otra_inactividad":
+                    for c2 in a.filter((pl.col("_r") == r) & pl.col("_c").is_in(inactivas))[
+                        "clave"
+                    ]:
+                        mapa[c2] = otra + r
+        else:
+            a = a.with_columns(_cruce(o).alias("_r"))
+            mayor = dict(
+                a.sort("valor", "clave", descending=True)
+                .unique("_r", keep="first")
+                .select("_r", "clave")
+                .iter_rows()
+            )
+            mapa = {
+                c: mayor[r]
+                for c, r in a.filter(pl.col("clave").is_in(list(claves)))
+                .select("clave", "_r")
+                .iter_rows()
+                if mayor.get(r) not in (None, c)
+            }
+        destinos = set(a["clave"])
+        mapa = {k: v for k, v in mapa.items() if v in destinos and k != v}
+        if not mapa:
+            continue
+        nuevo = (
+            obj.filter(pl.col("objetivo") == o)
+            .with_columns(pl.col("clave").replace(mapa))
+            .group_by("clave", maintain_order=True)
+            .agg(pl.all().exclude("valor").first(), pl.col("valor").sum())
+            .select(obj.columns)
+        )
+        obj = pl.concat([obj.filter(pl.col("objetivo") != o), nuevo]).sort("objetivo", "clave")
+        fusion[o] = mapa
+    return obj, fusion
+
+
 def _contexto_unidades(u: D.Unidades) -> pl.DataFrame:
     """Una fila por unidad: municipio, tamaño de municipio y grado de urbanización del donante."""
     ref = u.personas.filter(pl.col("relacion_persona_ref").is_in(["persona_referencia", "NP"]))
@@ -595,8 +675,13 @@ def _ampliar(
         evitar = pl.DataFrame(schema={"unidad": pl.Int64})
     else:
         def_ = def_.join(reparar.select("objetivo", "clave", "falta"), on=["objetivo", "clave"])
+        # Semi-join en diferido: solo las unidades, sin materializar el cruce (memoria)
         evitar = (
-            todas.join(evitar_celdas, on=["objetivo", "clave"]).select("unidad").unique()
+            todas.lazy()
+            .join(evitar_celdas.lazy(), on=["objetivo", "clave"], how="semi")
+            .select("unidad")
+            .unique()
+            .collect()
             if evitar_celdas is not None and evitar_celdas.height
             else pl.DataFrame(schema={"unidad": pl.Int64})
         )
@@ -777,6 +862,7 @@ def calibrar(
         # nacionalidad × edad, esas nacionalidades se calibran en el bloque sin la edad (solo su
         # total) y se repite; queda en las fusiones (`edad_nacionalidad=todas`).
         sin_edad: frozenset[str] = frozenset()
+        forzadas: dict[str, frozenset[str]] = {}
         for _intento in range(MAX_SIN_EDAD + 1):
             # Se suelta lo del intento anterior antes de rehacerlo (memoria: `todas_b` y la
             # matriz ocupan varios GB con España entera como reserva de donantes)
@@ -790,7 +876,12 @@ def calibrar(
                 cob,
                 sin_edad,
                 cobertura_local(u, ps, "nacionalidad_top"),
+                forzadas.get("nacionalidad_top", frozenset()),
             )
+            obj, fus_f = fusionar_forzadas(obj, forzadas)
+            for o, mapa_o in fus_f.items():
+                previa = {k: mapa_o.get(v, v) for k, v in fusion.get(o, {}).items()}
+                fusion[o] = previa | mapa_o
             for o in OBJETIVOS_SOBRECOBERTURA:
                 obj, mapa_o = fusionar_sobrecobertura(obj, o, cobertura_local(u, ps, o))
                 if mapa_o:
@@ -840,9 +931,19 @@ def calibrar(
                 - set(sin_edad)
                 - {"nacionalidad_top=otras_extranjeras", "nacionalidad_top=espanola"}
             )
-            if not nuevas:
+            malas = m.celdas.filter(
+                pl.Series(dev > tol) & pl.col("objetivo").is_in(list(OBJETIVOS_ULTIMO_RECURSO))
+            )
+            nuevas_f = {
+                o: frozenset(g["clave"]) - forzadas.get(o, frozenset())
+                for (o,), g in malas.group_by("objetivo")
+            }
+            nuevas_f = {o: c for o, c in nuevas_f.items() if c}
+            if not nuevas and not nuevas_f:
                 break
             sin_edad = sin_edad | nuevas
+            for o, c in nuevas_f.items():
+                forzadas[o] = forzadas.get(o, frozenset()) | c
         if r.desviacion_max > tol:
             raise RuntimeError(
                 f"{b}: la calibración ({metodo}) no converge: {r.desviacion_max:.2e}"
