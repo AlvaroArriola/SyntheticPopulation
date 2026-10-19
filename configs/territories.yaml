@@ -107,6 +107,17 @@ ampliacion:
     nacionalidad_top: 1.5
   razon_objetivo_objetivo:
     nacionalidad_top: 1.2
+  # D-054: las celdas de extranjeros por edad y actividad (la población extranjera ha crecido
+  # mucho desde 2021) se amplían igual; si un territorio no converge con ello sin fundir
+  # nacionalidades (provincias rurales pequeñas, Ceuta), se calibra sin esta ampliación
+  razon_max_extranjeros:
+    nacionalidad_edad: 1.5
+    nacionalidad_top_edad: 1.5
+    actividad_nacionalidad: 1.5
+  razon_objetivo_extranjeros:
+    nacionalidad_edad: 1.2
+    nacionalidad_top_edad: 1.2
+    actividad_nacionalidad: 1.2
   razon_max: 3.5
   razon_objetivo: 2.5
 donantes_min_kish: 200

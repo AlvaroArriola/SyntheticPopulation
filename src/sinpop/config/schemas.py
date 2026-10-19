@@ -240,6 +240,11 @@ class Ampliacion(Strict):
     # desde 2021 se amplían antes, para no clonar mucho sus pocos hogares donantes
     razon_max_objetivo: dict[str, float] = Field(default_factory=dict)
     razon_objetivo_objetivo: dict[str, float] = Field(default_factory=dict)
+    # D-054: las celdas de extranjeros (edad, actividad, nacionalidad × edad) se amplían con
+    # estas razones; si el territorio no converge con ellas sin fundir nacionalidades, se
+    # calibra sin ellas
+    razon_max_extranjeros: dict[str, float] = Field(default_factory=dict)
+    razon_objetivo_extranjeros: dict[str, float] = Field(default_factory=dict)
 
 
 class TerritoriesConfig(Strict):

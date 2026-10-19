@@ -1001,3 +1001,75 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - En España el margen apenas cambia: 0,03-0,04, por debajo del mínimo de 0,08. Por eso sigue en rojo el perfil de actividad de la privación severa (0,085), que es la limitación ya declarada en D-051.4.
   - Por comunidad y provincia, el rojo solo salta cuando la diferencia supera lo que la propia encuesta puede distinguir.
 - **Aprobada por:** pendiente (G7.7).
+
+## D-053 · Inclinación de la ECV por comunidad: limitación grave y privación severa (2026-10-20)
+
+- **Fecha:** 2026-10-20
+- **Fase:** F6 (detectado en la auditoría de F7)
+- **Estado:** aprobada por el agente. Es una mejora del método de enriquecimiento hacia cifras oficiales y no cambia ningún umbral (docs/06 §4, medida 2: llevar el grupo a una cifra oficial fiable).
+- **Contexto:**
+  - En la auditoría, la limitación grave sale por debajo del IC 95 % de la ECV en varias comunidades:
+
+    | Comunidad | Población | ECV |
+    | --- | --- | --- |
+    | Castilla y León | 3,9 % | 4,7 % |
+    | Murcia | 3,3 % | 4,0 % |
+    | Castilla-La Mancha | 4,4 % | 4,8 % |
+
+  - Lo mismo pasa con la privación severa en Cataluña y en Castilla y León.
+  - El 99,5 % de las personas encuentra donante en su propia comunidad, así que no es un problema de geografía.
+  - **Causa: composición.** Una llave del bloque es la relación con la actividad.
+    - En la población viene de la EPA (D-046, D-050).
+    - En la ECV es la que declara cada persona.
+    - La población tiene menos «incapacidad permanente» que la ECV (Castilla y León: 1,2 % frente a 2,9 % de los de 16+). Ese grupo tiene un 40 % de limitación grave.
+  - Con las tasas de la ECV por celda (edad × actividad) y la composición de la población, se reproduce lo que da la población: Castilla y León 4,0 % y Murcia 3,3 %.
+  - La prevalencia regional de estos indicadores es la que publica el INE con la ECV, y la población debe reproducirla.
+- **Alternativas consideradas:**
+  1. Declararlo como limitación, como en D-048. Se descarta porque existe una cifra oficial a la que llevar la población.
+  2. Usar como llave la actividad en tres categorías. Se descarta porque no corrige el paro (OIT frente a declarado) y rompe la asociación entre la incapacidad y la limitación (G6.2).
+  3. Un λ fijo por comunidad, estimado con la composición de los objetivos (actividad × edad). Se probó y se descarta: la renta, otra llave, no está en esa composición. En privación, el λ de Aragón salía con el signo contrario, y el error residual llegaba a ±0,5 puntos.
+  4. **Elegida:** la misma inclinación que la renta con el Atlas (D-044.5), por comunidad y con las celdas reales de los receptores.
+- **Decisión:**
+  - **Pesos:** en el bloque personal de la ECV, el donante pesa w · exp(λ₁ · [limitación grave] + λ₂ · [privación severa]).
+  - **Estimación de los λ:** en cada comunidad del territorio, los λ se calculan con las celdas de emparejamiento de sus receptores de viviendas familiares (el universo de la ECV). Así, la prevalencia esperada de cada indicador es la de la ECV en esa comunidad. Se resuelven por coordenadas, cada λ por bisección.
+  - **Sorteo:** después se sortea con esos pesos.
+  - **Trazabilidad:** los λ, la prevalencia sin inclinar y la esperada quedan en la metadata del enriquecimiento (`persona_ecv.inclinacion`).
+  - **Poblaciones de una provincia o de una lista de municipios:** reciben la prevalencia de su comunidad, que es también la referencia de la auditoría, porque la ECV no es representativa por provincia. Dentro de una población de comunidad o de España, las provincias conservan sus diferencias de composición.
+- **Evidencia:**
+  - `tests/unit/test_inclinacion_ecv.py` comprueba la prevalencia sin inclinar, que se alcanzan los dos objetivos a la vez y que el denominador no cuenta los valores desconocidos.
+  - En la prueba de Ceuta, la limitación grave pasa de ratio 1,27 a 0,98 y la privación severa queda en 1,00.
+- **Consecuencias:** cambian las variables del bloque personal de la ECV (salud, limitación y privación) en todas las poblaciones. Se repiten F6 y F7.
+
+## D-054 · Ampliación de donantes de las celdas de extranjeros (2026-10-20)
+
+- **Fecha:** 2026-10-20
+- **Fase:** F4-F5 (detectado en la auditoría de F7)
+- **Estado:** aprobada por el agente. Es una medida correctora de docs/06 §4, punto 3 (ampliar los donantes de forma jerárquica) y no cambia ningún umbral.
+- **Contexto:**
+  - Con D-051, la ampliación propia solo miraba el total de cada nacionalidad.
+  - La población extranjera ha crecido mucho desde 2021. Sus celdas de edad (`nacionalidad_edad`, `nacionalidad_top_edad`) y de actividad (`actividad_nacionalidad`) superan entre 1,5 y 4 veces la masa de sus donantes locales.
+  - Esas celdas no se ampliaban hasta pasar de 3,5, y la calibración subía al factor máximo a los pocos hogares que tenían.
+  - Ejemplo en Cantabria: un hogar paraguayo de 5 personas copiado 8 veces da el 18 % de los paraguayos, y los 5 hogares más usados dan el 41 %.
+  - En la cadena con D-051 y D-052 seguía habiendo de 3 a 12 nacionalidades en rojo por concentración en la mayoría de comunidades y provincias.
+- **Alternativas consideradas:**
+  1. Bajar el factor máximo de la calibración para los hogares extranjeros. Se descarta porque compromete la convergencia.
+  2. Declarar la limitación. Se descarta porque hay donantes de otras comunidades parecidas que pueden aportar variedad real.
+  3. Aplicar esa ampliación a todos los territorios. Se probó y se descarta. En Teruel y Ceuta, los hogares importados desbordan otras celdas, la calibración solo converge fundiendo todas las nacionalidades en el último recurso y se rompe la representación (Marruecos 0,8, Colombia 0,3).
+  4. Ampliar solo nacionalidad × edad. Se probó y se descarta porque casi no mejora: Cantabria pasa de 12 a 11 rojos y Aragón de 4 a 3.
+  5. **Elegida:** la regla de D-051 (si el objetivo supera 1,5 veces la masa local, se amplía hasta 1,2) se aplica también a `nacionalidad_edad`, `nacionalidad_top_edad` y `actividad_nacionalidad`, con vuelta atrás:
+     - si el bloque no converge, o solo converge fundiendo nacionalidades (`nacionalidad`, `nacionalidad_top`, `nacionalidad_top_edad`) en el último recurso, se calibra sin esta ampliación;
+     - la metadata de la calibración registra `ampliacion_extranjeros` y las fusiones de último recurso.
+- **Prueba en la copia aislada** (concentración de las nacionalidades):
+
+  | Población | Rojos antes | Rojos después | Ampliación aplicada |
+  | --- | --- | --- | --- |
+  | Aragón | 4 | 1 | sí |
+  | Cantabria | 12 | 7 | sí |
+  | Teruel | 12 | 12 | no (idéntica a la línea base) |
+  | Ceuta | — | — | no |
+
+  - Sube el número de grupos en ámbar por más del 50 % de donantes no locales. Es la señal prevista: se declara, no bloquea.
+- **Prueba descartada:** calibrar el total de cada nacionalidad desde 5 personas en lugar de 100, para controlar las nacionalidades diminutas de Ceuta, Melilla y Teruel.
+  - En Ceuta no lo resuelve: con pocos o ningún donante, un único hogar ucraniano importado daba 4,2 veces el objetivo.
+  - Se mantiene el umbral de 100 y no se abre decisión propia.
+- **Consecuencias:** cambian las calibraciones de todos los territorios salvo las listas de municipios, que siguen la excepción de D-051. Se repiten F4-F7.

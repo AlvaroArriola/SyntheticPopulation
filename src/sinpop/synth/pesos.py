@@ -628,8 +628,10 @@ def _ampliar(
     reparar: pl.DataFrame | None = None,
     previas: pl.DataFrame | None = None,
     evitar_celdas: pl.DataFrame | None = None,
+    extranjeros: bool = False,
 ) -> tuple[pl.DataFrame, pl.DataFrame]:
     """Unidades del bloque (base y añadidas, con `d_anadida`) y registro de ampliaciones.
+    `extranjeros`: con las razones propias de las celdas de extranjeros (D-054).
 
     Con `reparar` (objetivo, clave, falta) se añade a `previas` la masa `falta` en esas celdas,
     sin tomar unidades que caigan en `evitar_celdas` (objetivo, clave; véase `calibrar`)."""
@@ -673,6 +675,9 @@ def _ampliar(
     minimos = amp.min_donantes_objetivo if propias else {}
     razones_max = amp.razon_max_objetivo if propias else {}
     razones_obj = amp.razon_objetivo_objetivo if propias else {}
+    if propias and extranjeros:
+        razones_max = razones_max | amp.razon_max_extranjeros
+        razones_obj = razones_obj | amp.razon_objetivo_extranjeros
 
     def minimo(o: str) -> int:
         return minimos.get(o, amp.min_donantes_celda)
@@ -882,89 +887,107 @@ def calibrar(
         # Último recurso (D-050): si no converge y entre las celdas fuera de tolerancia hay de
         # nacionalidad × edad, esas nacionalidades se calibran en el bloque sin la edad (solo su
         # total) y se repite; queda en las fusiones (`edad_nacionalidad=todas`).
-        sin_edad: frozenset[str] = frozenset()
-        forzadas: dict[str, frozenset[str]] = {}
-        for _intento in range(MAX_SIN_EDAD + 1):
-            # Se suelta lo del intento anterior antes de rehacerlo (memoria: `todas_b` y la
-            # matriz ocupan varios GB con España entera como reserva de donantes)
-            todas_b = ub = uni = m = r = None
-            gc.collect()
-            ampl_b = []
-            obj, fusion = fusionar(
-                D.objetivos_calibrables(run.leer(b), municipios=b.startswith("MUNIS:")).filter(
-                    ~pl.col("objetivo").is_in(list(excluir))
-                ),
-                cob,
-                sin_edad,
-                cobertura_local(u, ps, "nacionalidad_top"),
-                forzadas.get("nacionalidad_top", frozenset()),
-            )
-            obj, fus_f = fusionar_forzadas(obj, forzadas)
-            for o, mapa_o in fus_f.items():
-                previa = {k: mapa_o.get(v, v) for k, v in fusion.get(o, {}).items()}
-                fusion[o] = previa | mapa_o
-            for o in OBJETIVOS_SOBRECOBERTURA:
-                obj, mapa_o = fusionar_sobrecobertura(obj, o, cobertura_local(u, ps, o))
-                if mapa_o:
-                    # Fusiones encadenadas (A → B por nacionalidad pequeña y B → C por celda
-                    # diminuta): cada clave va directamente a su destino final
+        # D-054: primero con la ampliación de las celdas de extranjeros; si así el bloque no
+        # converge o solo converge fundiendo nacionalidades en el último recurso, se repite sin
+        # ella (p. ej. provincias rurales pequeñas: los hogares importados desbordan otras
+        # celdas)
+        for extranjeros in (True, False):
+            sin_edad: frozenset[str] = frozenset()
+            forzadas: dict[str, frozenset[str]] = {}
+            for _intento in range(MAX_SIN_EDAD + 1):
+                # Se suelta lo del intento anterior antes de rehacerlo (memoria: `todas_b` y la
+                # matriz ocupan varios GB con España entera como reserva de donantes)
+                todas_b = ub = uni = m = r = None
+                gc.collect()
+                ampl_b = []
+                obj, fusion = fusionar(
+                    D.objetivos_calibrables(run.leer(b), municipios=b.startswith("MUNIS:")).filter(
+                        ~pl.col("objetivo").is_in(list(excluir))
+                    ),
+                    cob,
+                    sin_edad,
+                    cobertura_local(u, ps, "nacionalidad_top"),
+                    forzadas.get("nacionalidad_top", frozenset()),
+                )
+                obj, fus_f = fusionar_forzadas(obj, forzadas)
+                for o, mapa_o in fus_f.items():
                     previa = {k: mapa_o.get(v, v) for k, v in fusion.get(o, {}).items()}
                     fusion[o] = previa | mapa_o
-            todas_b = _celdas_por_unidad(u.personas, obj, fusion)
-            ub, reg = _ampliar(u, b, ps, obj, todas_b)
-            ampl_b.append(reg)
-            uni, m, r = _calibrar_unidades(u, ub, obj, fusion, metodo, ccaa)
-            # Reparación (D-041): con pocos donantes, la calibración acotada puede no tener
-            # solución aunque ninguna celda sea deficitaria por sí sola (p. ej. faltan africanos
-            # que no sean marroquíes). Se añaden donantes a las celdas que no llegan, sin tomar
-            # unidades de las celdas que se pasan, y se recalibra (hasta RONDAS_REPARACION veces).
-            ronda = 0
-            while r.desviacion_max > tol and ronda < RONDAS_REPARACION:
-                ronda += 1
-                T = m.celdas["valor"].to_numpy()
-                dev = (m.X.T @ r.w) / T - 1
-                c = m.celdas.with_columns(pl.Series("dev", dev))
-                cortas = c.filter(pl.col("dev") < -tol)
-                sobran = c.filter(pl.col("dev") > tol).select("objetivo", "clave")
-                reparar = cortas.select(
-                    "objetivo",
-                    "clave",
-                    (2 * (-pl.col("dev")) * pl.col("valor")).alias("falta"),
-                )
-                ub, reg = _ampliar(
-                    u, b, ps, obj, todas_b, reparar=reparar, previas=ub, evitar_celdas=sobran
-                )
-                ampl_b.append(reg.with_columns(pl.lit(f"reparacion {ronda}").alias("motivo")))
+                for o in OBJETIVOS_SOBRECOBERTURA:
+                    obj, mapa_o = fusionar_sobrecobertura(obj, o, cobertura_local(u, ps, o))
+                    if mapa_o:
+                        # Fusiones encadenadas (A → B por nacionalidad pequeña y B → C por celda
+                        # diminuta): cada clave va directamente a su destino final
+                        previa = {k: mapa_o.get(v, v) for k, v in fusion.get(o, {}).items()}
+                        fusion[o] = previa | mapa_o
+                todas_b = _celdas_por_unidad(u.personas, obj, fusion)
+                ub, reg = _ampliar(u, b, ps, obj, todas_b, extranjeros=extranjeros)
+                ampl_b.append(reg)
                 uni, m, r = _calibrar_unidades(u, ub, obj, fusion, metodo, ccaa)
-            if r.desviacion_max <= tol:
-                break
-            T = m.celdas["valor"].to_numpy()
-            dev = np.abs((m.X.T @ r.w) / T - 1)
-            nuevas = (
-                set(
-                    m.celdas.filter(
-                        pl.Series(dev > tol) & (pl.col("objetivo") == "nacionalidad_top_edad")
-                    )["clave"]
-                    .str.extract(r"^(nacionalidad_top=[^;]+);")
-                    .drop_nulls()
-                    .to_list()
+                # Reparación (D-041): con pocos donantes, la calibración acotada puede no tener
+                # solución aunque ninguna celda sea deficitaria por sí sola (p. ej. faltan
+                # africanos que no sean marroquíes). Se añaden donantes a las celdas que no llegan,
+                # sin tomar unidades de las celdas que se pasan, y se recalibra (hasta
+                # RONDAS_REPARACION veces).
+                ronda = 0
+                while r.desviacion_max > tol and ronda < RONDAS_REPARACION:
+                    ronda += 1
+                    T = m.celdas["valor"].to_numpy()
+                    dev = (m.X.T @ r.w) / T - 1
+                    c = m.celdas.with_columns(pl.Series("dev", dev))
+                    cortas = c.filter(pl.col("dev") < -tol)
+                    sobran = c.filter(pl.col("dev") > tol).select("objetivo", "clave")
+                    reparar = cortas.select(
+                        "objetivo",
+                        "clave",
+                        (2 * (-pl.col("dev")) * pl.col("valor")).alias("falta"),
+                    )
+                    ub, reg = _ampliar(
+                        u,
+                        b,
+                        ps,
+                        obj,
+                        todas_b,
+                        reparar=reparar,
+                        previas=ub,
+                        evitar_celdas=sobran,
+                        extranjeros=extranjeros,
+                    )
+                    ampl_b.append(reg.with_columns(pl.lit(f"reparacion {ronda}").alias("motivo")))
+                    uni, m, r = _calibrar_unidades(u, ub, obj, fusion, metodo, ccaa)
+                if r.desviacion_max <= tol:
+                    break
+                T = m.celdas["valor"].to_numpy()
+                dev = np.abs((m.X.T @ r.w) / T - 1)
+                nuevas = (
+                    set(
+                        m.celdas.filter(
+                            pl.Series(dev > tol) & (pl.col("objetivo") == "nacionalidad_top_edad")
+                        )["clave"]
+                        .str.extract(r"^(nacionalidad_top=[^;]+);")
+                        .drop_nulls()
+                        .to_list()
+                    )
+                    - set(sin_edad)
+                    - {"nacionalidad_top=otras_extranjeras", "nacionalidad_top=espanola"}
                 )
-                - set(sin_edad)
-                - {"nacionalidad_top=otras_extranjeras", "nacionalidad_top=espanola"}
-            )
-            malas = m.celdas.filter(
-                pl.Series(dev > tol) & pl.col("objetivo").is_in(list(OBJETIVOS_ULTIMO_RECURSO))
-            )
-            nuevas_f = {
-                o: frozenset(g["clave"]) - forzadas.get(o, frozenset())
-                for (o,), g in malas.group_by("objetivo")
-            }
-            nuevas_f = {o: c for o, c in nuevas_f.items() if c}
-            if not nuevas and not nuevas_f:
-                break
-            sin_edad = sin_edad | nuevas
-            for o, c in nuevas_f.items():
-                forzadas[o] = forzadas.get(o, frozenset()) | c
+                malas = m.celdas.filter(
+                    pl.Series(dev > tol) & pl.col("objetivo").is_in(list(OBJETIVOS_ULTIMO_RECURSO))
+                )
+                nuevas_f = {
+                    o: frozenset(g["clave"]) - forzadas.get(o, frozenset())
+                    for (o,), g in malas.group_by("objetivo")
+                }
+                nuevas_f = {o: c for o, c in nuevas_f.items() if c}
+                if not nuevas and not nuevas_f:
+                    break
+                sin_edad = sin_edad | nuevas
+                for o, c in nuevas_f.items():
+                    forzadas[o] = forzadas.get(o, frozenset()) | c
+            nacionales = {"nacionalidad", "nacionalidad_top", "nacionalidad_top_edad"}
+            if extranjeros and (r.desviacion_max > tol or any(forzadas.get(o) for o in nacionales)):
+                continue
+            break
         if r.desviacion_max > tol:
             raise RuntimeError(
                 f"{b}: la calibración ({metodo}) no converge: {r.desviacion_max:.2e}"
@@ -978,6 +1001,8 @@ def calibrar(
             )
         )
         diags[b] = C.diagnostico(r, m.d)
+        diags[b]["ampliacion_extranjeros"] = extranjeros
+        diags[b]["fusiones_ultimo_recurso"] = {o: sorted(c) for o, c in forzadas.items() if c}
         diags[b]["proporcion_local"] = float(uni["local"].mean())
         diags[b]["niveles"] = dict(uni.group_by("nivel").agg(pl.len()).iter_rows())
         ceros.append(m.ceros.with_columns(pl.lit(b).alias("bloque")))

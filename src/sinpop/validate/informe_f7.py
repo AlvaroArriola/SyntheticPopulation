@@ -40,7 +40,7 @@ permite analizarlos.
 - **Población de las islas no capitalinas:** no se puede medir aparte con las fuentes usadas
   (grupo `no_medible` de la lista de vigilancia).
 
-### Diferencias de composición o de definición con las encuestas (D-048, D-051)
+### Diferencias de composición o de definición con las encuestas (D-048, D-051, D-053)
 
 La población está calibrada al Censo Anual, a la ECP y a la EPA. Las variables de encuesta
 heredan la medida de cada encuesta y su muestra ponderada no siempre tiene la misma
@@ -50,9 +50,12 @@ composición que las cifras oficiales:
   Reponderada a la composición por edad × estudios de la TIC-H, el ratio baja a 1,04. El Censo
   Anual 2024 tiene más personas con estudios obligatorios o menos que la muestra ponderada de la
   TIC-H (25-34 años: 27,5 % frente a 15,5 %).
-- **Carencia material y social severa:** representación dentro del intervalo de la ECV (ratio
-  0,95). El perfil de actividad difiere (TVD 0,085 con ocupado, parado e inactivo) porque la ECV
-  mide el paro según lo que declara cada persona y la población usa el paro de la OIT de la EPA.
+- **Limitación grave y carencia material y social severa:** la actividad de la población es la
+  de la EPA y la de la ECV, la declarada, con menos incapacidad permanente y menos paro en la
+  población. Por eso, sin corregir, la limitación grave salía hasta un 20 % por debajo de la ECV
+  en algunas comunidades. Desde D-053, el bloque de la ECV se inclina en cada comunidad hasta la
+  prevalencia de la ECV (como la renta con el Atlas). El perfil de actividad de la carencia severa
+  sigue difiriendo de la ECV por la misma diferencia de definición del paro.
 - **Tenencia de la vivienda, vehículo, tipo de jornada, sector público y teletrabajo:** sus
   marginales regionales difieren algo de las encuestas por patrones regionales o por la fecha de
   la encuesta (D-048).
@@ -69,12 +72,30 @@ detallada de los hogares o la ocupación.
 
 ### Grupos pequeños en territorios pequeños
 
-En las poblaciones de provincias y comunidades pequeñas (50.000-100.000 personas), las
-nacionalidades minoritarias de unas decenas de personas salen de pocos hogares donantes, a
-veces copiados dos o tres veces. Su número está calibrado, pero su variedad interna es menor que
-la real (semáforo rojo o ámbar en la tabla por territorio). Estos grupos no deben analizarse por
-separado en esos territorios. Para estudiarlos conviene generar el territorio con más personas o
-usar la población nacional.
+Los donantes son la muestra del 10 % de los hogares del Censo 2021. Una población de N personas
+de un territorio de P habitantes copia cada hogar donante unas N / (0,1 · P) veces:
+
+| Territorio | N | Copias |
+| --- | --- | --- |
+| La Rioja | 100.000 | 3 |
+| Teruel | 50.000 | 3,7 |
+| Soria | 50.000 | 5,5 |
+| Ceuta y Melilla | 100.000 | unas 12 (más personas que las reales) |
+
+Las nacionalidades minoritarias de unas decenas de personas salen así de pocos hogares donantes,
+copiados varias veces. Su número está calibrado, pero su variedad interna es menor que la real
+(rojo por concentración en la tabla por territorio).
+
+D-051 y D-054 amplían con hogares de comunidades parecidas los donantes de las nacionalidades
+y de las celdas de extranjeros que más han crecido desde 2021 (más grupos en ámbar por donantes
+no locales). En las provincias rurales pequeñas y en Ceuta y Melilla, esa ampliación impide que
+la calibración converja sin fundir nacionalidades, y se calibran sin ella.
+
+Además, en Ceuta, Melilla y Teruel las nacionalidades con menos de 100 personas en la población
+se calibran dentro de «otras extranjeras», y su número puede alejarse de la cifra oficial.
+
+Estos grupos no deben analizarse por separado en esos territorios. Para estudiarlos conviene usar
+la población nacional o la de su comunidad.
 
 ### Capas pendientes
 
@@ -228,7 +249,11 @@ def informe() -> str:
                 str(c.get("verde", 0)),
                 str(c.get("ambar", 0)),
                 str(c.get("rojo", 0)),
-                ", ".join(rojos) or "—",
+                *[
+                    str(sum(g["semaforo"] == "rojo" and g.get(k) is False for g in x["grupos"]))
+                    for k in ("ok_representacion", "ok_perfil", "ok_concentracion")
+                ],
+                ", ".join(r.removeprefix("nacionalidad_") for r in rojos) or "—",
             ]
         )
     div = nac.get("v_diversidad", [])
@@ -259,7 +284,10 @@ def informe() -> str:
         " interno, concentración de donantes, diversidad dentro de grupos y combinaciones sin"
         " donante. La auditoría destapó desfases de los datos de entrada (D-049, D-050), que se"
         " corrigieron en origen y obligaron a repetir F3-F6. Los criterios para grupos pequeños"
-        " incluyen el margen de muestreo (D-051).",
+        " incluyen el margen de muestreo (D-051) y, con referencia de encuesta, el error de la"
+        " propia encuesta (D-052). La limitación grave y la carencia severa se llevan a la"
+        " prevalencia de la ECV de cada comunidad (D-053), y los donantes de las celdas de"
+        " extranjeros se amplían para no clonar sus pocos hogares (D-054).",
         "",
         "## Puerta de salida",
         "Ver `reports/fase_07_puerta.md` (`sinpop validate --phase 7`).",
@@ -276,7 +304,21 @@ def informe() -> str:
         _tabla(filas_r, ["Nivel", "Combinaciones", "Sin donante"]),
         "",
         "### Semáforo por población",
-        _tabla(filas_t, ["Población", "Verde", "Ámbar", "Rojo", "Grupos en rojo"]),
+        _tabla(
+            filas_t,
+            [
+                "Población",
+                "Verde",
+                "Ámbar",
+                "Rojo",
+                "Rojo por representación",
+                "Rojo por perfil",
+                "Rojo por concentración",
+                "Grupos en rojo (nacionalidades sin prefijo)",
+            ],
+        ),
+        "",
+        "Un grupo puede estar en rojo por más de un criterio.",
         "",
         "Detalle por población en `reports/fase_07/` y ficha de datos de la población nacional en"
         f" `reports/{nac['run_id']}/ficha.md`.",
@@ -291,6 +333,14 @@ def informe() -> str:
         " fusión para celdas sin solución; correcciones de código.",
         "- D-051: márgenes de muestreo en V-MINORIAS-PERFIL, V-CONCENTRACION y V-DIVERSIDAD;"
         " limitaciones de composición; ampliación propia de los donantes de cada nacionalidad.",
+        "- D-052 (propuesta, pendiente de aprobación): en V-MINORIAS-PERFIL con referencia de"
+        " encuesta, el margen cuenta también el error de muestreo de la encuesta (réplicas"
+        " bootstrap).",
+        "- D-053: inclinación del bloque personal de la ECV por comunidad hasta la prevalencia de"
+        " la ECV de la limitación grave y la carencia material y social severa.",
+        "- D-054: ampliación de los donantes de las celdas de extranjeros por edad y actividad, con"
+        " vuelta atrás si el territorio no converge sin fundir nacionalidades. Se probó y descartó"
+        " calibrar las nacionalidades desde 5 personas (empeoraba Teruel y Ceuta).",
         "",
         "## Limitaciones",
         LIMITACIONES,
@@ -306,7 +356,10 @@ def informe() -> str:
         "1. ¿Se aprueba la población (G7.7) con las limitaciones de esta sección?",
         "2. ¿Se aprueban D-049 y D-050, en vigor y pendientes de aprobación expresa en esta"
         " revisión?",
-        "3. Si quedan grupos en rojo en territorios pequeños, ¿se aceptan como limitación"
+        "3. ¿Se aprueba D-052 (umbral de perfil con el error de la encuesta de referencia)? Es un"
+        " cambio de criterio aplicado de forma provisional: sin él, los grupos de encuesta vuelven"
+        " a rojo en casi todas las comunidades por el ruido de la propia encuesta.",
+        "4. Si quedan grupos en rojo en territorios pequeños, ¿se aceptan como limitación"
         " declarada o se exige otra medida correctora?",
     ]
     texto = "\n".join(out) + "\n"

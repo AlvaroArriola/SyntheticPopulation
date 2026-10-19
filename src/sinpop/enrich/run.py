@@ -20,6 +20,7 @@ reciben los bloques personales por extrapolación (mismas llaves, sin las del ho
 from __future__ import annotations
 
 import hashlib
+from functools import partial
 
 import numpy as np
 import polars as pl
@@ -299,6 +300,119 @@ def _personales(
     return out, {"niveles": _niveles(a.nivel, nv)}
 
 
+# Inclinación de la ECV por comunidad (D-053): indicadores cuya prevalencia regional publica el
+# INE con la ECV y que la población no reproduce porque una llave tiene otra definición (la
+# actividad de la EPA frente a la declarada en la ECV)
+INDICADORES_ECV = {
+    "discapacidad_limitacion": "limitacion_grave",
+    "privacion_material": "si",
+}
+
+
+def prevalencias_ecv(don: pl.DataFrame, peso: str) -> dict[str, dict[str, float]]:
+    """Prevalencia ponderada de cada indicador por comunidad en la ECV (16+, valor conocido)."""
+    out: dict[str, dict[str, float]] = {}
+    for v, c in INDICADORES_ECV.items():
+        g = (
+            don.filter(pl.col(v) != "NP")
+            .group_by("ccaa")
+            .agg(((pl.col(peso) * (pl.col(v) == c)).sum() / pl.col(peso).sum()).alias("p"))
+        )
+        out[v] = dict(g.iter_rows())
+    return out
+
+
+def esperada_ecv(
+    v: str,
+    lam: dict[str, float],
+    w: np.ndarray,
+    xs: dict[str, np.ndarray],
+    conocida: dict[str, np.ndarray],
+    k: np.ndarray,
+    n_c: np.ndarray,
+) -> float:
+    """Prevalencia esperada de `v` entre los receptores (n_c por celda) con la inclinación
+    exp(Σ λ_u · x_u) de los donantes de cada celda (k: celda de cada par celda-donante)."""
+    ww = w * np.exp(sum(lam[u] * xs[u] for u in INDICADORES_ECV))
+    den = np.bincount(k, weights=ww, minlength=len(n_c))
+    num = np.bincount(k, weights=ww * xs[v], minlength=len(n_c))
+    con = np.bincount(k, weights=ww * conocida[v], minlength=len(n_c))
+    ok = den > 0
+    a = (n_c[ok] * num[ok] / den[ok]).sum()
+    b = (n_c[ok] * con[ok] / den[ok]).sum()
+    return float(a / b) if b else 0.0
+
+
+def _esperada_v(v, lam, w, xs, conocida, k, n_c, lv) -> float:  # noqa: ANN001
+    return esperada_ecv(v, lam | {v: lv}, w, xs, conocida, k, n_c)
+
+
+def lambdas_celdas(
+    objetivo: dict[str, float],
+    w: np.ndarray,
+    xs: dict[str, np.ndarray],
+    conocida: dict[str, np.ndarray],
+    k: np.ndarray,
+    n_c: np.ndarray,
+) -> dict[str, float]:
+    """λ de cada indicador para que la prevalencia esperada sea la objetivo (por coordenadas:
+    cada λ por bisección con los demás fijos)."""
+    lam = dict.fromkeys(INDICADORES_ECV, 0.0)
+    for _ in range(20):
+        for v in INDICADORES_ECV:
+            f = partial(_esperada_v, v, dict(lam), w, xs, conocida, k, n_c)
+            lam[v] = _lambda(f, objetivo[v])
+    return lam
+
+
+def _persona_ecv(
+    rec: pl.DataFrame, don: pl.DataFrame, nv: list[list[str]], peso: str, semilla: int
+) -> tuple[pl.DataFrame, dict]:
+    """Bloque personal de la ECV con la inclinación de cada comunidad (D-053), como la renta con
+    el Atlas (D-044.5): con las celdas reales de los receptores de la comunidad (solo los de
+    viviendas familiares, el universo de la ECV), los λ hacen que la prevalencia esperada de
+    cada indicador sea la de la ECV en la comunidad; después se sortea con los pesos inclinados."""
+    variables = F.BLOQUE_PERSONA_ECV
+    if rec.is_empty():
+        return _personales(rec, don, nv, peso, variables, semilla, "persona_ecv")
+    celda, nivel, tabla = HD.celdas(rec, don, nv, [], K_MIN)
+    w = don[peso].to_numpy().astype(float)
+    xs = {v: (don[v] == c).to_numpy().astype(float) for v, c in INDICADORES_ECV.items()}
+    conocida = {v: (don[v] != "NP").to_numpy().astype(float) for v in INDICADORES_ECV}
+    prev = prevalencias_ecv(don, peso)
+    t = tabla.sort("_c", "_d")
+    tc, td = t["_c"].to_numpy(), t["_d"].to_numpy()
+    fam = (rec["tipo_residencia"] == "vivienda_familiar").to_numpy().astype(float)
+    rng = make_rng(semilla_bloque(semilla, "persona_ecv"))
+    donante = np.empty(len(celda), dtype=np.int64)
+    informe = []
+    ccaa_r = rec["ccaa"].to_numpy()
+    for cc in sorted(set(ccaa_r)):
+        idx = np.flatnonzero(ccaa_r == cc)
+        cel_u = celda[idx]
+        usadas = np.unique(cel_u)
+        en = np.isin(tc, usadas)
+        k, dd = np.searchsorted(usadas, tc[en]), td[en]
+        n_c = np.bincount(np.searchsorted(usadas, cel_u), weights=fam[idx], minlength=len(usadas))
+        objetivo = {v: prev[v].get(cc) for v in INDICADORES_ECV}
+        datos = (w[dd], {u: xs[u][dd] for u in xs}, {u: conocida[u][dd] for u in xs}, k, n_c)
+        lam = dict.fromkeys(INDICADORES_ECV, 0.0)
+        sin = {v: esperada_ecv(v, lam, *datos) for v in INDICADORES_ECV}
+        if n_c.sum() > 0 and all(o is not None for o in objetivo.values()):
+            lam = lambdas_celdas(objetivo, *datos)  # type: ignore[arg-type]
+        pesos = w * np.exp(sum(lam[u] * xs[u] for u in INDICADORES_ECV))
+        donante[idx] = HD.muestrear(cel_u, tabla.filter(pl.col("_c").is_in(usadas)), pesos, rng)
+        informe.append(
+            {"ccaa": cc, "receptores": int(len(idx))}
+            | {f"ecv_{v}": objetivo[v] for v in INDICADORES_ECV}
+            | {f"sin_inclinar_{v}": sin[v] for v in INDICADORES_ECV}
+            | {f"esperada_{v}": esperada_ecv(v, lam, *datos) for v in INDICADORES_ECV}
+            | {f"lambda_{v}": lam[v] for v in INDICADORES_ECV}
+        )
+    out = pl.concat([rec.select("_i"), don[donante].select(variables)], how="horizontal")
+    return out, {"niveles": _niveles(nivel, nv), "inclinacion": informe}
+
+
 def _llaves_persona(df: pl.DataFrame) -> pl.DataFrame:
     """Llaves derivadas, con la misma definición en la población y en las encuestas."""
     out = df.with_columns(
@@ -381,7 +495,10 @@ def enriquecer(
     for bloque, fuente, don, peso, variables, universo, fijas in especs:
         rec = p.filter(universo)
         nv = niveles(bloque, quitar)
-        sal, info = _personales(rec, don, nv, peso, variables, semilla, bloque, fijas)
+        if bloque == "persona_ecv":
+            sal, info = _persona_ecv(rec, don, nv, peso, semilla)
+        else:
+            sal, info = _personales(rec, don, nv, peso, variables, semilla, bloque, fijas)
         meta["bloques"][bloque] = {"fuente": fuente, **info}
         p = p.join(sal, on="_i", how="left").sort("_i")
         calidad = (
