@@ -415,6 +415,15 @@ def fusionar_sobrecobertura(
 
 # Último recurso (D-050): objetivos secundarios cuyas celdas fuera de tolerancia se funden si el
 # bloque no converge. Nunca edad, sexo, tamaño o tipo de hogar ni españoles/extranjeros por edad.
+# D-054: fusiones de último recurso que la ampliación de las celdas de extranjeros no puede
+# provocar (si las provoca, el bloque se calibra sin ella)
+OBJETIVOS_SIN_VUELTA = (
+    "actividad_tramo",
+    "actividad_nacionalidad",
+    "nacionalidad",
+    "nacionalidad_top",
+    "nacionalidad_top_edad",
+)
 OBJETIVOS_ULTIMO_RECURSO = (
     "actividad_tramo",
     "actividad_nacionalidad",
@@ -888,9 +897,9 @@ def calibrar(
         # nacionalidad × edad, esas nacionalidades se calibran en el bloque sin la edad (solo su
         # total) y se repite; queda en las fusiones (`edad_nacionalidad=todas`).
         # D-054: primero con la ampliación de las celdas de extranjeros; si así el bloque no
-        # converge o solo converge fundiendo nacionalidades en el último recurso, se repite sin
-        # ella (p. ej. provincias rurales pequeñas: los hogares importados desbordan otras
-        # celdas)
+        # converge o solo converge fundiendo en el último recurso celdas de nacionalidad o de
+        # actividad, se repite sin ella (p. ej. provincias rurales pequeñas o Aragón: los
+        # hogares importados desbordan otras celdas)
         for extranjeros in (True, False):
             sin_edad: frozenset[str] = frozenset()
             forzadas: dict[str, frozenset[str]] = {}
@@ -984,8 +993,9 @@ def calibrar(
                 sin_edad = sin_edad | nuevas
                 for o, c in nuevas_f.items():
                     forzadas[o] = forzadas.get(o, frozenset()) | c
-            nacionales = {"nacionalidad", "nacionalidad_top", "nacionalidad_top_edad"}
-            if extranjeros and (r.desviacion_max > tol or any(forzadas.get(o) for o in nacionales)):
+            if extranjeros and (
+                r.desviacion_max > tol or any(forzadas.get(o) for o in OBJETIVOS_SIN_VUELTA)
+            ):
                 continue
             break
         if r.desviacion_max > tol:

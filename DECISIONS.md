@@ -1057,7 +1057,8 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   3. Aplicar esa ampliación a todos los territorios. Se probó y se descarta. En Teruel y Ceuta, los hogares importados desbordan otras celdas, la calibración solo converge fundiendo todas las nacionalidades en el último recurso y se rompe la representación (Marruecos 0,8, Colombia 0,3).
   4. Ampliar solo nacionalidad × edad. Se probó y se descarta porque casi no mejora: Cantabria pasa de 12 a 11 rojos y Aragón de 4 a 3.
   5. **Elegida:** la regla de D-051 (si el objetivo supera 1,5 veces la masa local, se amplía hasta 1,2) se aplica también a `nacionalidad_edad`, `nacionalidad_top_edad` y `actividad_nacionalidad`, con vuelta atrás:
-     - si el bloque no converge, o solo converge fundiendo nacionalidades (`nacionalidad`, `nacionalidad_top`, `nacionalidad_top_edad`) en el último recurso, se calibra sin esta ampliación;
+     - si el bloque no converge, o solo converge fundiendo en el último recurso celdas de nacionalidad (`nacionalidad`, `nacionalidad_top`, `nacionalidad_top_edad`) o de actividad (`actividad_tramo`, `actividad_nacionalidad`), se calibra sin esta ampliación;
+     - en la primera cadena, Aragón convergía con la ampliación, pero fundiendo inactivos con ocupados de 35-44 años. Se perdía el control de su tasa de actividad, lo que es peor que la concentración que se gana;
      - la metadata de la calibración registra `ampliacion_extranjeros` y las fusiones de último recurso.
 - **Prueba en la copia aislada** (concentración de las nacionalidades):
 
