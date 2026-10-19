@@ -438,7 +438,7 @@ def informe(res: dict) -> str:
     t += [
         "## Ampliación de donantes",
         "",
-        _tabla(pl.DataFrame(res["calibracion"]["ampliaciones"])),
+        _tabla(pl.DataFrame(res["calibracion"]["ampliaciones"], infer_schema_length=None)),
         "",
     ]
     if res["calibracion"]["fusiones"]:

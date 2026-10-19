@@ -133,9 +133,9 @@ def calibracion(
             cal = P.Calibrado(
                 unidades=pl.read_parquet(base.with_suffix(".parquet")),
                 diagnosticos=meta["diagnosticos"],
-                ceros=pl.DataFrame(meta["ceros"]),
-                ampliaciones=pl.DataFrame(meta["ampliaciones"]),
-                fusiones=pl.DataFrame(meta["fusiones"]),
+                ceros=pl.DataFrame(meta["ceros"], infer_schema_length=None),
+                ampliaciones=pl.DataFrame(meta["ampliaciones"], infer_schema_length=None),
+                fusiones=pl.DataFrame(meta["fusiones"], infer_schema_length=None),
             )
             return cal, meta
     bs = P.bloques(territorio)
