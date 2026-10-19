@@ -924,6 +924,12 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
     - **Exceso de cobertura:** se aplica también a los parados de `actividad_tramo` (con otra_inactividad) y a `actividad_nacionalidad`.
   - **Celdas diminutas.** Las celdas de menos de 100 personas (`MIN_CELDA_NACIONALIDAD`, el umbral de D-041) se calibran junto con la categoría principal de su cruce: la no ocupación en `actividad_tramo` (con otra_inactividad), y `actividad_nacionalidad` y `nacionalidad` (con la más numerosa). Con tan pocas personas, uno o dos hogares importados por otra celda bastan para que no haya solución. Ejemplos: parados varones de 65 y más en Cantabria (22) y nacionalidad «otros» en Ceuta (3).
   - **Donantes de menos en `actividad_nacionalidad`.** Una celda que ni con el factor máximo alcanzaría su objetivo se calibra con la más numerosa del cruce. Ejemplo: parados extranjeros de un tramo en Madrid. En las demás tablas, la falta de donantes la resuelve la importación (D-041).
+  - **Último recurso general.** Si un bloque no converge, las celdas fuera de tolerancia de los objetivos secundarios se calibran con su destino y se repite, con hasta 8 intentos.
+    - **Objetivos secundarios:** actividad, actividad por nacionalidad, estado civil, sin estudios, nacimiento y nacionalidad.
+    - **Nunca:** edad, sexo, tamaño o tipo de hogar, ni españoles/extranjeros por edad.
+    - **Destino:** otra_inactividad del cruce en la actividad; otras_extranjeras en la nacionalidad; en el resto, la categoría más numerosa del cruce.
+    - **Ejemplo:** en Teruel, varias celdas pequeñas a la vez (sin estudios de 15-19, británicos, estado civil «no consta» de 75 y más) no tenían solución conjunta.
+    - Queda en las fusiones de la calibración.
   - **Fusiones encadenadas.** Una clave fundida dos veces (nacionalidad pequeña → otras_extranjeras de una edad → edad más numerosa) va directamente a su destino final.
   - **Memoria.** La tabla de celdas por donante se construye con las fusiones ya aplicadas, sin copia, y se suelta lo del intento anterior. Los candidatos a importar reciben su nivel de la jerarquía sin copiar la tabla por nivel.
   - **Resolución numérica del paso de Newton.** Si la SVD de LAPACK no converge con restricciones redundantes (objetivos que suman lo mismo, como `trabajo_nacionalidad`), se usa QR con pivotaje (`gelsy`), que da la misma solución de mínimos cuadrados.
