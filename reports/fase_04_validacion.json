@@ -1,7 +1,7 @@
 {
  "territorio": "ES",
- "fecha": "2026-10-18",
- "version_codigo": "git:d93c7ff",
+ "fecha": "2026-10-19",
+ "version_codigo": "git:414600e",
  "comando": "python -m sinpop.validate.fase4",
  "calibracion": {
   "metodo": "logit",
@@ -790,7 +790,7 @@
     "objetivo": "nacionalidad_top_edad",
     "clave": "nacionalidad_top=colombia;edad_nacionalidad=00-19",
     "locales": 94,
-    "razon_inicial": 4.193549201595669,
+    "razon_inicial": 4.193549201595668,
     "anadidas": 61,
     "motivo": null
    },
@@ -14497,7 +14497,7 @@
    "n": 50000,
    "proporciones": 493,
    "fuera": 0,
-   "razon_media": 0.22950956906520587,
+   "razon_media": 0.22950956906520584,
    "razon_max": 0.6703246880948317,
    "peores": []
   },
@@ -14521,7 +14521,7 @@
    "n": 1000000,
    "proporciones": 493,
    "fuera": 0,
-   "razon_media": 0.2184362805131671,
+   "razon_media": 0.21843628051316705,
    "razon_max": 0.6684003299322419,
    "peores": []
   }

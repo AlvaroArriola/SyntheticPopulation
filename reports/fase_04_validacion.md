@@ -1,6 +1,6 @@
 # Fase 04 · Tablas de validación
 
-Generado por `python -m sinpop.validate.fase4` (git:d93c7ff, 2026-10-18). Resumen en `fase_04_validacion.json`; detalle por población en `fase_04/`.
+Generado por `python -m sinpop.validate.fase4` (git:414600e, 2026-10-19). Resumen en `fase_04_validacion.json`; detalle por población en `fase_04/`.
 
 ## Curva de error frente a tamaño (España; media de 5 semillas)
 
@@ -14,38 +14,38 @@ Generado por `python -m sinpop.validate.fase4` (git:d93c7ff, 2026-10-18). Resume
 
 ## TVD por marginal calibrada (España; media de 5 semillas)
 
-| objetivo | 1000000 | 50000 | 10000 | 500000 | 100000 |
+| objetivo | 10000 | 500000 | 1000000 | 50000 | 100000 |
 | --- | --- | --- | --- | --- | --- |
-| actividad_nacionalidad | 0.0008 | 0.0030 | 0.0070 | 0.0012 | 0.0023 |
-| actividad_tramo | 0.0009 | 0.0032 | 0.0067 | 0.0013 | 0.0025 |
-| edad5_sexo | 0.0005 | 0.0020 | 0.0051 | 0.0009 | 0.0014 |
-| edad5_sexo_colectivos | 0.0074 | 0.0762 | 0.2533 | 0.0105 | 0.0347 |
-| edad5_sexo_familiares | 0.0005 | 0.0021 | 0.0052 | 0.0009 | 0.0014 |
-| estado_civil_edad | 0.0006 | 0.0029 | 0.0055 | 0.0008 | 0.0019 |
-| estudios_edad | 0.0006 | 0.0023 | 0.0056 | 0.0010 | 0.0017 |
-| nacimiento_nacionalidad | 0.0003 | 0.0010 | 0.0037 | 0.0005 | 0.0008 |
-| nacionalidad | 0.0002 | 0.0006 | 0.0015 | 0.0002 | 0.0002 |
-| nacionalidad_edad | 0.0005 | 0.0020 | 0.0052 | 0.0008 | 0.0013 |
-| nacionalidad_top | 0.0002 | 0.0003 | 0.0021 | 0.0002 | 0.0002 |
-| nacionalidad_top_edad | 0.0003 | 0.0011 | 0.0036 | 0.0004 | 0.0006 |
-| sin_estudios_edad | 0.0002 | 0.0011 | 0.0029 | 0.0004 | 0.0008 |
-| tamano_hogar | 0.0002 | 0.0014 | 0.0035 | 0.0002 | 0.0007 |
-| tipo_hogar | 0.0003 | 0.0026 | 0.0066 | 0.0006 | 0.0016 |
-| tipo_residencia (implícito) | 0.0000 | 0.0001 | 0.0006 | 0.0000 | 0.0000 |
-| urbanizacion | 0.0002 | 0.0007 | 0.0014 | 0.0002 | 0.0004 |
+| actividad_nacionalidad | 0.0070 | 0.0012 | 0.0008 | 0.0030 | 0.0023 |
+| actividad_tramo | 0.0067 | 0.0013 | 0.0009 | 0.0032 | 0.0025 |
+| edad5_sexo | 0.0051 | 0.0009 | 0.0005 | 0.0020 | 0.0014 |
+| edad5_sexo_colectivos | 0.2533 | 0.0105 | 0.0074 | 0.0762 | 0.0347 |
+| edad5_sexo_familiares | 0.0052 | 0.0009 | 0.0005 | 0.0021 | 0.0014 |
+| estado_civil_edad | 0.0055 | 0.0008 | 0.0006 | 0.0029 | 0.0019 |
+| estudios_edad | 0.0056 | 0.0010 | 0.0006 | 0.0023 | 0.0017 |
+| nacimiento_nacionalidad | 0.0037 | 0.0005 | 0.0003 | 0.0010 | 0.0008 |
+| nacionalidad | 0.0015 | 0.0002 | 0.0002 | 0.0006 | 0.0002 |
+| nacionalidad_edad | 0.0052 | 0.0008 | 0.0005 | 0.0020 | 0.0013 |
+| nacionalidad_top | 0.0021 | 0.0002 | 0.0002 | 0.0003 | 0.0002 |
+| nacionalidad_top_edad | 0.0036 | 0.0004 | 0.0003 | 0.0011 | 0.0006 |
+| sin_estudios_edad | 0.0029 | 0.0004 | 0.0002 | 0.0011 | 0.0008 |
+| tamano_hogar | 0.0035 | 0.0002 | 0.0002 | 0.0014 | 0.0007 |
+| tipo_hogar | 0.0066 | 0.0006 | 0.0003 | 0.0026 | 0.0016 |
+| tipo_residencia (implícito) | 0.0006 | 0.0000 | 0.0000 | 0.0001 | 0.0000 |
+| urbanizacion | 0.0014 | 0.0002 | 0.0002 | 0.0007 | 0.0004 |
 
 ## TVD por cruce reservado (España; media de 5 semillas)
 
-| objetivo | 500000 | 50000 | 10000 | 1000000 | 100000 |
+| objetivo | 100000 | 500000 | 10000 | 50000 | 1000000 |
 | --- | --- | --- | --- | --- | --- |
-| actividad_edad | 0.0105 | 0.0133 | 0.0180 | 0.0104 | 0.0121 |
-| actividad_sexo | 0.0064 | 0.0074 | 0.0095 | 0.0061 | 0.0075 |
-| adultos_nacionalidad | 0.0014 | 0.0016 | 0.0024 | 0.0014 | 0.0017 |
-| estudios_sexo_edad | 0.0072 | 0.0107 | 0.0186 | 0.0070 | 0.0085 |
-| nacionalidad_top_sexo_edad | 0.0046 | 0.0081 | 0.0169 | 0.0041 | 0.0064 |
-| provincia_si_calibra_ccaa | 0.0089 | 0.0130 | 0.0296 | 0.0090 | 0.0106 |
-| tamano_municipio | 0.0111 | 0.0105 | 0.0151 | 0.0111 | 0.0103 |
-| tipo_hogar_edad4_ref | 0.0138 | 0.0145 | 0.0252 | 0.0139 | 0.0149 |
+| actividad_edad | 0.0121 | 0.0105 | 0.0180 | 0.0133 | 0.0104 |
+| actividad_sexo | 0.0075 | 0.0064 | 0.0095 | 0.0074 | 0.0061 |
+| adultos_nacionalidad | 0.0017 | 0.0014 | 0.0024 | 0.0016 | 0.0014 |
+| estudios_sexo_edad | 0.0085 | 0.0072 | 0.0186 | 0.0107 | 0.0070 |
+| nacionalidad_top_sexo_edad | 0.0064 | 0.0046 | 0.0169 | 0.0081 | 0.0041 |
+| provincia_si_calibra_ccaa | 0.0106 | 0.0089 | 0.0296 | 0.0130 | 0.0090 |
+| tamano_municipio | 0.0103 | 0.0111 | 0.0151 | 0.0105 | 0.0111 |
+| tipo_hogar_edad4_ref | 0.0149 | 0.0138 | 0.0252 | 0.0145 | 0.0139 |
 
 ## Fallos por tamaño
 
