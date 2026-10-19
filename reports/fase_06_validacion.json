@@ -1,6 +1,6 @@
 {
- "fecha": "2026-10-18",
- "version_codigo": "git:49e7fd3-dirty",
+ "fecha": "2026-10-19",
+ "version_codigo": "git:d2f032c-dirty",
  "comando": "python -m sinpop.validate.fase6",
  "semilla": 1,
  "run_id": "2026-01-01_ES_1000000_s1",
@@ -48,88 +48,87 @@
  },
  "niveles": {
   "hogar": {
-   "ccaa+ocupados+estudios_max+extranjero+mayores_65+menores+tamano_hogar_4+grado_urbanizacion": 253430,
-   "ccaa+ocupados+estudios_max+extranjero+mayores_65+menores+tamano_hogar_4": 59429,
-   "ccaa+ocupados+estudios_max+extranjero+mayores_65+menores": 45194,
-   "ccaa+ocupados+estudios_max+extranjero+mayores_65": 18422,
-   "ccaa+ocupados+estudios_max+extranjero": 15763,
-   "ccaa+ocupados+estudios_max": 5200,
-   "nuts1+ocupados+estudios_max+extranjero+mayores_65+menores+tamano_hogar_4+grado_urbanizacion": 147,
-   "nuts1+ocupados+estudios_max+extranjero+mayores_65+menores+tamano_hogar_4": 265,
+   "ccaa+ocupados+estudios_max+extranjero+mayores_65+menores+tamano_hogar_4+grado_urbanizacion": 253431,
+   "ccaa+ocupados+estudios_max+extranjero+mayores_65+menores+tamano_hogar_4": 59002,
+   "ccaa+ocupados+estudios_max+extranjero+mayores_65+menores": 45420,
+   "ccaa+ocupados+estudios_max+extranjero+mayores_65": 18731,
+   "ccaa+ocupados+estudios_max+extranjero": 15526,
+   "ccaa+ocupados+estudios_max": 5264,
+   "nuts1+ocupados+estudios_max+extranjero+mayores_65+menores+tamano_hogar_4+grado_urbanizacion": 162,
+   "nuts1+ocupados+estudios_max+extranjero+mayores_65+menores+tamano_hogar_4": 293,
    "nuts1+ocupados+estudios_max+extranjero+mayores_65+menores": 251,
-   "nuts1+ocupados+estudios_max+extranjero+mayores_65": 171,
-   "nuts1+ocupados+estudios_max+extranjero": 90,
-   "ocupados+estudios_max+extranjero+mayores_65+menores+tamano_hogar_4+grado_urbanizacion": 60,
-   "ocupados+estudios_max+extranjero+mayores_65+menores+tamano_hogar_4": 18,
-   "ocupados+estudios_max+extranjero+mayores_65+menores": 7,
+   "nuts1+ocupados+estudios_max+extranjero+mayores_65": 175,
+   "nuts1+ocupados+estudios_max+extranjero": 102,
+   "ocupados+estudios_max+extranjero+mayores_65+menores+tamano_hogar_4+grado_urbanizacion": 78,
+   "ocupados+estudios_max+extranjero+mayores_65+menores+tamano_hogar_4": 23,
+   "ocupados+estudios_max+extranjero+mayores_65+menores": 6,
    "ocupados+estudios_max+extranjero+mayores_65": 7
   },
   "persona_ecv": {
-   "ccaa+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext+sexo": 589084,
-   "ccaa+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext": 79858,
-   "ccaa+edad_grupo+relacion_actividad+estudios_3+renta_quintil": 69369,
-   "ccaa+edad_grupo+relacion_actividad+estudios_3": 104619,
-   "ccaa+edad_grupo+relacion_actividad": 15870,
-   "nuts1+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext+sexo": 47,
-   "nuts1+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext": 78,
-   "nuts1+edad_grupo+relacion_actividad+estudios_3+renta_quintil": 81,
-   "nuts1+edad_grupo+relacion_actividad+estudios_3": 1072,
-   "nuts1+edad_grupo+relacion_actividad": 892,
-   "edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext+sexo": 196,
-   "edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext": 288,
-   "edad_grupo+relacion_actividad+estudios_3+renta_quintil": 89,
-   "edad_grupo+relacion_actividad+estudios_3": 1533,
-   "edad_grupo+relacion_actividad": 240,
-   "ccaa+edad_grupo": 150
+   "ccaa+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext+sexo": 588323,
+   "ccaa+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext": 79669,
+   "ccaa+edad_grupo+relacion_actividad+estudios_3+renta_quintil": 69711,
+   "ccaa+edad_grupo+relacion_actividad+estudios_3": 104824,
+   "ccaa+edad_grupo+relacion_actividad": 16227,
+   "nuts1+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext+sexo": 62,
+   "nuts1+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext": 54,
+   "nuts1+edad_grupo+relacion_actividad+estudios_3+renta_quintil": 75,
+   "nuts1+edad_grupo+relacion_actividad+estudios_3": 1090,
+   "nuts1+edad_grupo+relacion_actividad": 884,
+   "edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext+sexo": 202,
+   "edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext": 274,
+   "edad_grupo+relacion_actividad+estudios_3+renta_quintil": 97,
+   "edad_grupo+relacion_actividad+estudios_3": 1542,
+   "edad_grupo+relacion_actividad": 242,
+   "ccaa+edad_grupo": 149
   },
   "empleo": {
-   "ccaa+ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa+estudios_3": 268298,
-   "ccaa+ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa": 85511,
-   "ccaa+ocupacion+nacionalidad_esp_ext+sexo": 88508,
-   "ccaa+ocupacion+nacionalidad_esp_ext": 10981,
-   "nuts1+ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa+estudios_3": 158,
-   "nuts1+ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa": 278,
-   "nuts1+ocupacion+nacionalidad_esp_ext+sexo": 3952,
-   "nuts1+ocupacion+nacionalidad_esp_ext": 1419,
-   "ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa+estudios_3": 358,
-   "ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa": 485,
-   "ocupacion+nacionalidad_esp_ext+sexo": 2388,
-   "ocupacion+nacionalidad_esp_ext": 447,
-   "ccaa+ocupacion": 38,
-   "nuts1+ocupacion": 13,
-   "ocupacion": 116,
+   "ccaa+ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa+estudios_3": 266548,
+   "ccaa+ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa": 85498,
+   "ccaa+ocupacion+nacionalidad_esp_ext+sexo": 89299,
+   "ccaa+ocupacion+nacionalidad_esp_ext": 11191,
+   "nuts1+ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa+estudios_3": 152,
+   "nuts1+ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa": 277,
+   "nuts1+ocupacion+nacionalidad_esp_ext+sexo": 4038,
+   "nuts1+ocupacion+nacionalidad_esp_ext": 1413,
+   "ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa+estudios_3": 360,
+   "ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa": 521,
+   "ocupacion+nacionalidad_esp_ext+sexo": 2396,
+   "ocupacion+nacionalidad_esp_ext": 468,
+   "ccaa+ocupacion": 46,
+   "nuts1+ocupacion": 17,
+   "ocupacion": 131,
    "ccaa": 31,
    "nuts1": 1
   },
   "formacion": {
-   "ccaa+edad_grupo_epa+sexo+estudios_3+nacionalidad_esp_ext": 328294,
-   "ccaa+edad_grupo_epa+sexo+estudios_3": 30836,
-   "ccaa+edad_grupo_epa+sexo": 31950,
-   "nuts1+edad_grupo_epa+sexo+estudios_3+nacionalidad_esp_ext": 3383,
-   "nuts1+edad_grupo_epa+sexo+estudios_3": 1368,
-   "nuts1+edad_grupo_epa+sexo": 2031,
-   "edad_grupo_epa+sexo+estudios_3+nacionalidad_esp_ext": 1496,
-   "edad_grupo_epa+sexo+estudios_3": 406,
-   "edad_grupo_epa+sexo": 647,
-   "ccaa+edad_grupo_epa": 12,
-   "nuts1+edad_grupo_epa": 3,
-   "edad_grupo_epa": 57,
-   "ccaa": 1
+   "ccaa+edad_grupo_epa+sexo+estudios_3+nacionalidad_esp_ext": 328269,
+   "ccaa+edad_grupo_epa+sexo+estudios_3": 30337,
+   "ccaa+edad_grupo_epa+sexo": 32885,
+   "nuts1+edad_grupo_epa+sexo+estudios_3+nacionalidad_esp_ext": 3541,
+   "nuts1+edad_grupo_epa+sexo+estudios_3": 1329,
+   "nuts1+edad_grupo_epa+sexo": 2042,
+   "edad_grupo_epa+sexo+estudios_3+nacionalidad_esp_ext": 1473,
+   "edad_grupo_epa+sexo+estudios_3": 441,
+   "edad_grupo_epa+sexo": 655,
+   "ccaa+edad_grupo_epa": 10,
+   "nuts1+edad_grupo_epa": 2,
+   "edad_grupo_epa": 54
   },
   "digital": {
-   "ccaa+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext+sexo": 609085,
-   "ccaa+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext": 75733,
-   "ccaa+edad_grupo+relacion_actividad+estudios_3": 82605,
-   "ccaa+edad_grupo+relacion_actividad": 71588,
-   "nuts1+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext+sexo": 1814,
-   "nuts1+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext": 1972,
-   "nuts1+edad_grupo+relacion_actividad+estudios_3": 1562,
-   "nuts1+edad_grupo+relacion_actividad": 9983,
-   "edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext+sexo": 1476,
-   "edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext": 2329,
-   "edad_grupo+relacion_actividad+estudios_3": 883,
-   "edad_grupo+relacion_actividad": 4229,
-   "ccaa+edad_grupo": 207
+   "ccaa+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext+sexo": 608040,
+   "ccaa+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext": 75550,
+   "ccaa+edad_grupo+relacion_actividad+estudios_3": 82725,
+   "ccaa+edad_grupo+relacion_actividad": 72042,
+   "nuts1+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext+sexo": 1840,
+   "nuts1+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext": 2028,
+   "nuts1+edad_grupo+relacion_actividad+estudios_3": 1537,
+   "nuts1+edad_grupo+relacion_actividad": 9900,
+   "edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext+sexo": 1848,
+   "edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext": 2298,
+   "edad_grupo+relacion_actividad+estudios_3": 879,
+   "edad_grupo+relacion_actividad": 4517,
+   "ccaa+edad_grupo": 221
   }
  },
  "v_enriq_marg": {
@@ -144,19 +143,19 @@
    {
     "bloque": "digital",
     "variable": "teletrabajo",
-    "proporcion": 0.8981132075471698,
+    "proporcion": 0.8943396226415095,
     "celdas": 265
    },
    {
     "bloque": "digital",
     "variable": "uso_internet",
-    "proporcion": 0.9384615384615385,
+    "proporcion": 0.95,
     "celdas": 260
    },
    {
     "bloque": "empleo",
     "variable": "sector_publico",
-    "proporcion": 0.8157894736842105,
+    "proporcion": 0.8026315789473685,
     "celdas": 152
    },
    {
@@ -168,55 +167,55 @@
    {
     "bloque": "formacion",
     "variable": "cursa_formacion",
-    "proporcion": 0.9731543624161074,
+    "proporcion": 0.9664429530201343,
     "celdas": 149
    },
    {
     "bloque": "hogar",
     "variable": "dificultad_fin_mes",
-    "proporcion": 0.9474747474747475,
+    "proporcion": 0.9515151515151515,
     "celdas": 495
    },
    {
     "bloque": "hogar",
     "variable": "renta_hogar_decil",
-    "proporcion": 0.9498680738786279,
+    "proporcion": 0.9511873350923483,
     "celdas": 758
    },
    {
     "bloque": "hogar",
     "variable": "renta_hogar_decil_ccaa",
-    "proporcion": 0.9631093544137023,
+    "proporcion": 0.9591567852437418,
     "celdas": 759
    },
    {
     "bloque": "hogar",
     "variable": "tenencia_vivienda",
-    "proporcion": 0.6546052631578947,
+    "proporcion": 0.6381578947368421,
     "celdas": 304
    },
    {
     "bloque": "hogar",
     "variable": "vehiculo_hogar",
-    "proporcion": 0.8235294117647058,
+    "proporcion": 0.8352941176470589,
     "celdas": 170
    },
    {
     "bloque": "persona_ecv",
     "variable": "carencias",
-    "proporcion": 0.9779735682819384,
+    "proporcion": 0.9853157121879589,
     "celdas": 681
    },
    {
     "bloque": "persona_ecv",
     "variable": "discapacidad_limitacion",
-    "proporcion": 0.9603960396039604,
+    "proporcion": 0.9504950495049505,
     "celdas": 303
    },
    {
     "bloque": "persona_ecv",
     "variable": "privacion_material",
-    "proporcion": 0.9555555555555556,
+    "proporcion": 0.9688888888888889,
     "celdas": 225
    },
    {
@@ -226,7 +225,7 @@
     "celdas": 446
    }
   ],
-  "global": 0.928842504743833
+  "global": 0.9290322580645162
  },
  "tvd_nacional": {
   "umbral": 0.02,
@@ -234,77 +233,77 @@
    {
     "bloque": "hogar",
     "variable": "renta_hogar_decil",
-    "tvd": 0.006436830064295074
+    "tvd": 0.00716713240296938
    },
    {
     "bloque": "hogar",
     "variable": "renta_hogar_decil_ccaa",
-    "tvd": 0.008442815520528092
+    "tvd": 0.00884522283723116
    },
    {
     "bloque": "hogar",
     "variable": "tenencia_vivienda",
-    "tvd": 0.023043370993398378
+    "tvd": 0.02368961711440465
    },
    {
     "bloque": "hogar",
     "variable": "dificultad_fin_mes",
-    "tvd": 0.0032814307615454427
+    "tvd": 0.003856750459349853
    },
    {
     "bloque": "hogar",
     "variable": "vehiculo_hogar",
-    "tvd": 0.014156223976333676
+    "tvd": 0.014069464031711585
    },
    {
     "bloque": "persona_ecv",
     "variable": "salud_autopercibida",
-    "tvd": 0.007846684241093867
+    "tvd": 0.008365058565319172
    },
    {
     "bloque": "persona_ecv",
     "variable": "discapacidad_limitacion",
-    "tvd": 0.006252966125968415
+    "tvd": 0.006581113082959313
    },
    {
     "bloque": "persona_ecv",
     "variable": "privacion_material",
-    "tvd": 0.004549385498167405
+    "tvd": 0.003808461227574042
    },
    {
     "bloque": "persona_ecv",
     "variable": "carencias",
-    "tvd": 0.007507497073309639
+    "tvd": 0.007736774295416067
    },
    {
     "bloque": "empleo",
     "variable": "tipo_jornada",
-    "tvd": 0.004372286297727346
+    "tvd": 0.0036779727209450414
    },
    {
     "bloque": "empleo",
     "variable": "sector_publico",
-    "tvd": 0.007136411594471828
+    "tvd": 0.009066049078686647
    },
    {
     "bloque": "formacion",
     "variable": "cursa_formacion",
-    "tvd": 0.00815890812036274
+    "tvd": 0.003438942222909802
    },
    {
     "bloque": "digital",
     "variable": "uso_internet",
-    "tvd": 0.011876096910537527
+    "tvd": 0.011891150329450846
    },
    {
     "bloque": "digital",
     "variable": "compra_online",
-    "tvd": 0.015898103630049565
+    "tvd": 0.014847924211616403
    },
    {
     "bloque": "digital",
     "variable": "teletrabajo",
-    "tvd": 0.03809811054010864
+    "tvd": 0.03661783737328237
    }
   ]
  },
@@ -312,111 +311,111 @@
   "umbral": 0.05,
   "comprobaciones": 86,
   "fuera": [],
-  "dif_max": 0.04804526842531254
+  "dif_max": 0.048944449404712195
  },
  "v_enriq_bloque": {
   "umbral_max": 0.05,
   "umbral_media": 0.02,
-  "dif_max": 0.024083826241616424,
-  "dif_media": 0.006957060385216561,
+  "dif_max": 0.024480206142166894,
+  "dif_media": 0.006246742020955996,
   "pares": [
    {
     "bloque": "hogar",
     "par": "renta_hogar_decil × tenencia_vivienda",
     "v_encuesta": 0.14428522369457497,
-    "v_sintetica": 0.14257722020551794,
-    "dif": 0.0017080034890570306
+    "v_sintetica": 0.14323422545397596,
+    "dif": 0.0010509982405990104
    },
    {
     "bloque": "hogar",
     "par": "renta_hogar_decil × dificultad_fin_mes",
     "v_encuesta": 0.18338431424660348,
-    "v_sintetica": 0.18364419579132038,
-    "dif": 0.00025988154471690006
+    "v_sintetica": 0.1822789189486011,
+    "dif": 0.0011053952980023818
    },
    {
     "bloque": "hogar",
     "par": "renta_hogar_decil × vehiculo_hogar",
     "v_encuesta": 0.15696339792714264,
-    "v_sintetica": 0.1621944602679356,
-    "dif": 0.005231062340792958
+    "v_sintetica": 0.15891961071244237,
+    "dif": 0.001956212785299727
    },
    {
     "bloque": "hogar",
     "par": "renta_hogar_decil_ccaa × tenencia_vivienda",
     "v_encuesta": 0.15391028112693922,
-    "v_sintetica": 0.1540757429747289,
-    "dif": 0.00016546184778967743
+    "v_sintetica": 0.15455210155000476,
+    "dif": 0.0006418204230655422
    },
    {
     "bloque": "hogar",
     "par": "renta_hogar_decil_ccaa × dificultad_fin_mes",
     "v_encuesta": 0.17483521822295034,
-    "v_sintetica": 0.17538177298221985,
-    "dif": 0.000546554759269513
+    "v_sintetica": 0.17414100161918267,
+    "dif": 0.0006942166037676722
    },
    {
     "bloque": "hogar",
     "par": "renta_hogar_decil_ccaa × vehiculo_hogar",
     "v_encuesta": 0.16740717319723455,
-    "v_sintetica": 0.17221780712099685,
-    "dif": 0.0048106339237622975
+    "v_sintetica": 0.16912219903671996,
+    "dif": 0.0017150258394854068
    },
    {
     "bloque": "hogar",
     "par": "tenencia_vivienda × dificultad_fin_mes",
     "v_encuesta": 0.14560014214216266,
-    "v_sintetica": 0.14465905755834724,
-    "dif": 0.0009410845838154214
+    "v_sintetica": 0.1448035743853701,
+    "dif": 0.0007965677567925711
    },
    {
     "bloque": "hogar",
     "par": "tenencia_vivienda × vehiculo_hogar",
     "v_encuesta": 0.16796887667224822,
-    "v_sintetica": 0.1811644336257093,
-    "dif": 0.013195556953461085
+    "v_sintetica": 0.180790063248133,
+    "dif": 0.012821186575884769
    },
    {
     "bloque": "hogar",
     "par": "dificultad_fin_mes × vehiculo_hogar",
-    "v_encuesta": 0.11705467448548544,
-    "v_sintetica": 0.12216793676032603,
-    "dif": 0.005113262274840588
+    "v_encuesta": 0.11705467448548543,
+    "v_sintetica": 0.11996521952638248,
+    "dif": 0.00291054504089705
    },
    {
     "bloque": "persona_ecv",
     "par": "salud_autopercibida × discapacidad_limitacion",
     "v_encuesta": 0.45997377724203714,
-    "v_sintetica": 0.4556102959827302,
-    "dif": 0.004363481259306967
+    "v_sintetica": 0.45671804642869057,
+    "dif": 0.003255730813346569
    },
    {
     "bloque": "persona_ecv",
     "par": "salud_autopercibida × privacion_material",
     "v_encuesta": 0.1493411191957404,
-    "v_sintetica": 0.12925686762624441,
-    "dif": 0.020084251569495976
+    "v_sintetica": 0.12897539818638773,
+    "dif": 0.02036572100935266
    },
    {
     "bloque": "persona_ecv",
     "par": "salud_autopercibida × carencias",
     "v_encuesta": 0.11799201307120223,
-    "v_sintetica": 0.10794106764331184,
-    "dif": 0.010050945427890395
+    "v_sintetica": 0.10856663064232353,
+    "dif": 0.009425382428878706
    },
    {
     "bloque": "persona_ecv",
     "par": "discapacidad_limitacion × privacion_material",
-    "v_encuesta": 0.08803735707345597,
-    "v_sintetica": 0.07793373699858859,
-    "dif": 0.010103620074867384
+    "v_encuesta": 0.08803735707345603,
+    "v_sintetica": 0.07927972112632443,
+    "dif": 0.008757635947131595
    },
    {
     "bloque": "persona_ecv",
     "par": "discapacidad_limitacion × carencias",
     "v_encuesta": 0.09536615072397876,
-    "v_sintetica": 0.08978121173214307,
-    "dif": 0.0055849389918356945
+    "v_sintetica": 0.0908675452904741,
+    "dif": 0.0044986054335046655
    },
    {
     "bloque": "persona_ecv",
@@ -429,29 +428,29 @@
     "bloque": "empleo",
     "par": "tipo_jornada × sector_publico",
     "v_encuesta": 0.10118764379593345,
-    "v_sintetica": 0.1035091035350058,
-    "dif": 0.002321459739072343
+    "v_sintetica": 0.10215395064615075,
+    "dif": 0.0009663068502172995
    },
    {
     "bloque": "digital",
     "par": "uso_internet × compra_online",
-    "v_encuesta": 0.41461950819697474,
-    "v_sintetica": 0.41845146360151814,
-    "dif": 0.0038319554045433968
+    "v_encuesta": 0.4146195081969748,
+    "v_sintetica": 0.41864021346327973,
+    "dif": 0.004020705266304936
    },
    {
     "bloque": "digital",
     "par": "uso_internet × teletrabajo",
     "v_encuesta": 0.1955534184034335,
-    "v_sintetica": 0.2153415852964141,
-    "dif": 0.019788166892980602
+    "v_sintetica": 0.21477925434689996,
+    "dif": 0.01922583594346647
    },
    {
     "bloque": "digital",
     "par": "compra_online × teletrabajo",
     "v_encuesta": 0.34465550817596674,
-    "v_sintetica": 0.36873933441758316,
-    "dif": 0.024083826241616424
+    "v_sintetica": 0.36913571431813363,
+    "dif": 0.024480206142166894
    }
   ]
  },
@@ -469,390 +468,390 @@
     "bloque": "hogar",
     "variable": "renta_hogar_decil",
     "v_encuesta": 0.03746037718742643,
-    "v_sintetica": 0.014495228537181862,
-    "dif": 0.02296514865024457,
+    "v_sintetica": 0.013900851469811133,
+    "dif": 0.0235595257176153,
     "dif_independencia": 0.03746037718742643,
-    "recuperada": 0.38694828043662044
+    "recuperada": 0.37108146029231526
    },
    {
     "llave": "sexo",
     "bloque": "hogar",
     "variable": "renta_hogar_decil_ccaa",
     "v_encuesta": 0.03978981600101196,
-    "v_sintetica": 0.016833674162156382,
-    "dif": 0.022956141838855578,
+    "v_sintetica": 0.016560701436854654,
+    "dif": 0.023229114564157306,
     "dif_independencia": 0.03978981600101196,
-    "recuperada": 0.42306489081850135
+    "recuperada": 0.4162045242037176
    },
    {
     "llave": "sexo",
     "bloque": "hogar",
     "variable": "tenencia_vivienda",
     "v_encuesta": 0.020809506244461096,
-    "v_sintetica": 0.02082663080989217,
-    "dif": 1.7124565431073796e-05,
+    "v_sintetica": 0.022105301211647922,
+    "dif": 0.0012957949671868266,
     "dif_independencia": 0.020809506244461096,
-    "recuperada": 1.0008229203148744
+    "recuperada": 1.0622693759267705
    },
    {
     "llave": "sexo",
     "bloque": "hogar",
     "variable": "dificultad_fin_mes",
     "v_encuesta": 0.015650407899766138,
-    "v_sintetica": 0.005124768476814931,
-    "dif": 0.010525639422951207,
+    "v_sintetica": 0.0052568393525016886,
+    "dif": 0.01039356854726445,
     "dif_independencia": 0.015650407899766138,
-    "recuperada": 0.3274527098358574
+    "recuperada": 0.3358915234778156
    },
    {
     "llave": "sexo",
     "bloque": "hogar",
     "variable": "vehiculo_hogar",
-    "v_encuesta": 0.07412508118344246,
-    "v_sintetica": 0.030863133716886513,
-    "dif": 0.043261947466555956,
-    "dif_independencia": 0.07412508118344246,
-    "recuperada": 0.4163655975027856
+    "v_encuesta": 0.07412508118344244,
+    "v_sintetica": 0.03298846484796362,
+    "dif": 0.04113661633547882,
+    "dif_independencia": 0.07412508118344244,
+    "recuperada": 0.4450378241923917
    },
    {
     "llave": "sexo",
     "bloque": "persona_ecv",
     "variable": "salud_autopercibida",
-    "v_encuesta": 0.06835274012815461,
-    "v_sintetica": 0.035859230970976666,
-    "dif": 0.03249350915717794,
-    "dif_independencia": 0.06835274012815461,
-    "recuperada": 0.524620240589392
+    "v_encuesta": 0.06835274012815462,
+    "v_sintetica": 0.035692718299924944,
+    "dif": 0.03266002182822968,
+    "dif_independencia": 0.06835274012815462,
+    "recuperada": 0.5221841616445022
    },
    {
     "llave": "sexo",
     "bloque": "persona_ecv",
     "variable": "discapacidad_limitacion",
     "v_encuesta": 0.05134396496309455,
-    "v_sintetica": 0.03592895506470131,
-    "dif": 0.015415009898393235,
+    "v_sintetica": 0.03440312287690799,
+    "dif": 0.016940842086186556,
     "dif_independencia": 0.05134396496309455,
-    "recuperada": 0.6997697799639477
+    "recuperada": 0.6700519311595152
    },
    {
     "llave": "sexo",
     "bloque": "persona_ecv",
     "variable": "privacion_material",
     "v_encuesta": 0.014178023195008566,
-    "v_sintetica": 0.005684037889803124,
-    "dif": 0.008493985305205443,
+    "v_sintetica": 0.003914684340901832,
+    "dif": 0.010263338854106734,
     "dif_independencia": 0.014178023195008566,
-    "recuperada": 0.4009048237277686
+    "recuperada": 0.27610931982958054
    },
    {
     "llave": "sexo",
     "bloque": "persona_ecv",
     "variable": "carencias",
     "v_encuesta": 0.028851671101712575,
-    "v_sintetica": 0.0072311478660753385,
-    "dif": 0.021620523235637235,
+    "v_sintetica": 0.005564364917145063,
+    "dif": 0.02328730618456751,
     "dif_independencia": 0.028851671101712575,
-    "recuperada": 0.2506318556239924
+    "recuperada": 0.1928610962439113
    },
    {
     "llave": "sexo",
     "bloque": "empleo",
     "variable": "tipo_jornada",
-    "v_encuesta": 0.20228372242981607,
-    "v_sintetica": 0.05603008889329768,
-    "dif": 0.14625363353651838,
-    "dif_independencia": 0.20228372242981607,
-    "recuperada": 0.2769876301477385
+    "v_encuesta": 0.2022837224298161,
+    "v_sintetica": 0.05581935408096321,
+    "dif": 0.1464643683488529,
+    "dif_independencia": 0.2022837224298161,
+    "recuperada": 0.2759458517495404
    },
    {
     "llave": "sexo",
     "bloque": "empleo",
     "variable": "sector_publico",
-    "v_encuesta": 0.10211218716667914,
-    "v_sintetica": 0.08383358873777486,
-    "dif": 0.01827859842890428,
-    "dif_independencia": 0.10211218716667914,
-    "recuperada": 0.8209949376652967
+    "v_encuesta": 0.1021121871666791,
+    "v_sintetica": 0.0818217070927739,
+    "dif": 0.0202904800739052,
+    "dif_independencia": 0.1021121871666791,
+    "recuperada": 0.8012922782587667
    },
    {
     "llave": "sexo",
     "bloque": "formacion",
     "variable": "cursa_formacion",
     "v_encuesta": 0.004107774854456878,
-    "v_sintetica": 0.016324082156500067,
-    "dif": 0.012216307302043188,
+    "v_sintetica": 0.015848073298781455,
+    "dif": 0.011740298444324577,
     "dif_independencia": 0.004107774854456878,
-    "recuperada": 3.97394763220498
+    "recuperada": 3.8580676547027686
    },
    {
     "llave": "sexo",
     "bloque": "digital",
     "variable": "uso_internet",
-    "v_encuesta": 0.05330827707922384,
-    "v_sintetica": 0.05898252350586446,
-    "dif": 0.0056742464266406265,
-    "dif_independencia": 0.05330827707922384,
-    "recuperada": 1.1064421275181688
+    "v_encuesta": 0.053308277079223865,
+    "v_sintetica": 0.058931049700959325,
+    "dif": 0.00562277262173546,
+    "dif_independencia": 0.053308277079223865,
+    "recuperada": 1.1054765400385986
    },
    {
     "llave": "sexo",
     "bloque": "digital",
     "variable": "compra_online",
-    "v_encuesta": 0.01454755944667418,
-    "v_sintetica": 0.03152721541526196,
-    "dif": 0.016979655968587783,
-    "dif_independencia": 0.01454755944667418,
-    "recuperada": 2.1671824425828086
+    "v_encuesta": 0.014547559446674041,
+    "v_sintetica": 0.03170561018224992,
+    "dif": 0.01715805073557588,
+    "dif_independencia": 0.014547559446674041,
+    "recuperada": 2.1794453082299428
    },
    {
     "llave": "sexo",
     "bloque": "digital",
     "variable": "teletrabajo",
     "v_encuesta": 0.09553003533917154,
-    "v_sintetica": 0.10801308577441567,
-    "dif": 0.012483050435244128,
+    "v_sintetica": 0.10798482131146792,
+    "dif": 0.012454785972296378,
     "dif_independencia": 0.09553003533917154,
-    "recuperada": 1.130671473018136
+    "recuperada": 1.1303756031082444
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "hogar",
     "variable": "renta_hogar_decil",
     "v_encuesta": 0.27237393363221657,
-    "v_sintetica": 0.22662407702231813,
-    "dif": 0.04574985660989844,
+    "v_sintetica": 0.22712632720123432,
+    "dif": 0.045247606430982246,
     "dif_independencia": 0.27237393363221657,
-    "recuperada": 0.8320329115205497
+    "recuperada": 0.833876884518327
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "hogar",
     "variable": "renta_hogar_decil_ccaa",
     "v_encuesta": 0.2896141755566699,
-    "v_sintetica": 0.24156890713135737,
-    "dif": 0.04804526842531254,
+    "v_sintetica": 0.24221389221381986,
+    "dif": 0.04740028334285004,
     "dif_independencia": 0.2896141755566699,
-    "recuperada": 0.834105950328694
+    "recuperada": 0.8363329997513362
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "hogar",
     "variable": "tenencia_vivienda",
     "v_encuesta": 0.43197932354992813,
-    "v_sintetica": 0.3889592098550899,
-    "dif": 0.04302011369483821,
+    "v_sintetica": 0.390372740672774,
+    "dif": 0.04160658287715413,
     "dif_independencia": 0.43197932354992813,
-    "recuperada": 0.900411636970708
+    "recuperada": 0.903683855664112
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "hogar",
     "variable": "dificultad_fin_mes",
     "v_encuesta": 0.10694016347216422,
-    "v_sintetica": 0.11674276807012915,
-    "dif": 0.009802604597964934,
+    "v_sintetica": 0.11641518509847269,
+    "dif": 0.009475021626308477,
     "dif_independencia": 0.10694016347216422,
-    "recuperada": 1.0916643876322154
+    "recuperada": 1.0886011515100662
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "hogar",
     "variable": "vehiculo_hogar",
     "v_encuesta": 0.14094094378691846,
-    "v_sintetica": 0.11757889929842753,
-    "dif": 0.023362044488490927,
+    "v_sintetica": 0.11672151848067938,
+    "dif": 0.02421942530623908,
     "dif_independencia": 0.14094094378691846,
-    "recuperada": 0.8342423155345772
+    "recuperada": 0.828159052611034
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "persona_ecv",
     "variable": "salud_autopercibida",
-    "v_encuesta": 0.0727407930655126,
-    "v_sintetica": 0.05527557599192725,
-    "dif": 0.017465217073585344,
-    "dif_independencia": 0.0727407930655126,
-    "recuperada": 0.7598979013350098
+    "v_encuesta": 0.07274079306551262,
+    "v_sintetica": 0.054353848663621196,
+    "dif": 0.018386944401891425,
+    "dif_independencia": 0.07274079306551262,
+    "recuperada": 0.7472265062420811
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "persona_ecv",
     "variable": "discapacidad_limitacion",
     "v_encuesta": 0.07722904258306046,
-    "v_sintetica": 0.05955543954252897,
-    "dif": 0.01767360304053149,
+    "v_sintetica": 0.05793886580679508,
+    "dif": 0.019290176776265378,
     "dif_independencia": 0.07722904258306046,
-    "recuperada": 0.7711534100461832
+    "recuperada": 0.7502212104271702
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "persona_ecv",
     "variable": "privacion_material",
-    "v_encuesta": 0.11832147520694603,
-    "v_sintetica": 0.06653349208378001,
-    "dif": 0.051787983123166015,
-    "dif_independencia": 0.11832147520694603,
-    "recuperada": 0.5623112116157438
+    "v_encuesta": 0.11832147520694597,
+    "v_sintetica": 0.06599592729270695,
+    "dif": 0.05232554791423902,
+    "dif_independencia": 0.11832147520694597,
+    "recuperada": 0.557767955286892
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "persona_ecv",
     "variable": "carencias",
-    "v_encuesta": 0.1792551088424935,
-    "v_sintetica": 0.12107825647135174,
-    "dif": 0.05817685237114174,
-    "dif_independencia": 0.1792551088424935,
-    "recuperada": 0.6754521935424438
+    "v_encuesta": 0.17925510884249374,
+    "v_sintetica": 0.11985665735495206,
+    "dif": 0.05939845148754168,
+    "dif_independencia": 0.17925510884249374,
+    "recuperada": 0.668637329942248
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "empleo",
     "variable": "tipo_jornada",
-    "v_encuesta": 0.062047355448853515,
-    "v_sintetica": 0.04246848678577839,
-    "dif": 0.01957886866307513,
-    "dif_independencia": 0.062047355448853515,
-    "recuperada": 0.6844528099313716
+    "v_encuesta": 0.062047355448853495,
+    "v_sintetica": 0.04480812490765447,
+    "dif": 0.017239230541199024,
+    "dif_independencia": 0.062047355448853495,
+    "recuperada": 0.7221601079290226
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "empleo",
     "variable": "sector_publico",
     "v_encuesta": 0.16826506940042574,
-    "v_sintetica": 0.087235331363549,
-    "dif": 0.08102973803687674,
+    "v_sintetica": 0.08668165362280841,
+    "dif": 0.08158341577761732,
     "dif_independencia": 0.16826506940042574,
-    "recuperada": 0.5184399333408427
+    "recuperada": 0.5151494242487686
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "formacion",
     "variable": "cursa_formacion",
     "v_encuesta": 0.025752160862388816,
-    "v_sintetica": 0.053491088028267506,
-    "dif": 0.02773892716587869,
+    "v_sintetica": 0.039522780163838096,
+    "dif": 0.01377061930144928,
     "dif_independencia": 0.025752160862388816,
-    "recuperada": 2.0771494987976546
+    "recuperada": 1.53473645862322
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "digital",
     "variable": "uso_internet",
     "v_encuesta": 0.10850524369614567,
-    "v_sintetica": 0.0865416455342209,
-    "dif": 0.021963598161924766,
+    "v_sintetica": 0.08601310593642467,
+    "dif": 0.022492137759721004,
     "dif_independencia": 0.10850524369614567,
-    "recuperada": 0.7975803065939295
+    "recuperada": 0.7927092093105914
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "digital",
     "variable": "compra_online",
     "v_encuesta": 0.0016797704746760803,
-    "v_sintetica": 0.04910889602180023,
-    "dif": 0.04742912554712415,
+    "v_sintetica": 0.048911318690241776,
+    "dif": 0.047231548215565695,
     "dif_independencia": 0.0016797704746760803,
-    "recuperada": 29.235479943335815
+    "recuperada": 29.117858319109715
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "digital",
     "variable": "teletrabajo",
-    "v_encuesta": 0.049683954326588536,
-    "v_sintetica": 0.06077289523857822,
-    "dif": 0.011088940911989684,
-    "dif_independencia": 0.049683954326588536,
-    "recuperada": 1.2231895802636505
+    "v_encuesta": 0.04968395432658863,
+    "v_sintetica": 0.06570443516419953,
+    "dif": 0.016020480837610908,
+    "dif_independencia": 0.04968395432658863,
+    "recuperada": 1.3224477812756836
    },
    {
     "llave": "relacion_actividad",
     "bloque": "hogar",
     "variable": "renta_hogar_decil",
     "v_encuesta": 0.12746782453449962,
-    "v_sintetica": 0.09716109725166114,
-    "dif": 0.03030672728283848,
+    "v_sintetica": 0.09682456025136135,
+    "dif": 0.030643264283138266,
     "dif_independencia": 0.12746782453449962,
-    "recuperada": 0.762240177915362
+    "recuperada": 0.7596000057658114
    },
    {
     "llave": "relacion_actividad",
     "bloque": "hogar",
     "variable": "renta_hogar_decil_ccaa",
     "v_encuesta": 0.12111406305188248,
-    "v_sintetica": 0.0918113301541892,
-    "dif": 0.02930273289769328,
+    "v_sintetica": 0.09112579804784711,
+    "dif": 0.02998826500403537,
     "dif_independencia": 0.12111406305188248,
-    "recuperada": 0.7580567263676006
+    "recuperada": 0.7523965074874164
    },
    {
     "llave": "relacion_actividad",
     "bloque": "hogar",
     "variable": "tenencia_vivienda",
     "v_encuesta": 0.21578354854637602,
-    "v_sintetica": 0.18692976203044737,
-    "dif": 0.028853786515928653,
+    "v_sintetica": 0.1861925907001221,
+    "dif": 0.02959095784625393,
     "dif_independencia": 0.21578354854637602,
-    "recuperada": 0.866283659202465
+    "recuperada": 0.8628674055756652
    },
    {
     "llave": "relacion_actividad",
     "bloque": "hogar",
     "variable": "dificultad_fin_mes",
     "v_encuesta": 0.09490395190555709,
-    "v_sintetica": 0.05765121790657301,
-    "dif": 0.03725273399898408,
+    "v_sintetica": 0.05703354731398267,
+    "dif": 0.03787040459157442,
     "dif_independencia": 0.09490395190555709,
-    "recuperada": 0.6074690963759249
+    "recuperada": 0.6009607204844236
    },
    {
     "llave": "relacion_actividad",
     "bloque": "hogar",
     "variable": "vehiculo_hogar",
     "v_encuesta": 0.13618128416432732,
-    "v_sintetica": 0.15340082468056832,
-    "dif": 0.017219540516241,
+    "v_sintetica": 0.1519547713715632,
+    "dif": 0.015773487207235898,
     "dif_independencia": 0.13618128416432732,
-    "recuperada": 1.126445719923323
+    "recuperada": 1.1158271292860062
    },
    {
     "llave": "relacion_actividad",
     "bloque": "persona_ecv",
     "variable": "salud_autopercibida",
     "v_encuesta": 0.20344993628901958,
-    "v_sintetica": 0.14597908032393628,
-    "dif": 0.057470855965083306,
+    "v_sintetica": 0.1467191096882331,
+    "dif": 0.05673082660078649,
     "dif_independencia": 0.20344993628901958,
-    "recuperada": 0.7175184371478956
+    "recuperada": 0.7211558399300992
    },
    {
     "llave": "relacion_actividad",
     "bloque": "persona_ecv",
     "variable": "discapacidad_limitacion",
-    "v_encuesta": 0.2486895113452722,
-    "v_sintetica": 0.14838777165706687,
-    "dif": 0.10030173968820533,
-    "dif_independencia": 0.2486895113452722,
-    "recuperada": 0.5966788500824639
+    "v_encuesta": 0.24868951134527223,
+    "v_sintetica": 0.1496328932493823,
+    "dif": 0.09905661809588992,
+    "dif_independencia": 0.24868951134527223,
+    "recuperada": 0.6016855815106612
    },
    {
     "llave": "relacion_actividad",
     "bloque": "persona_ecv",
     "variable": "privacion_material",
     "v_encuesta": 0.12883915612591465,
-    "v_sintetica": 0.049316704268950136,
-    "dif": 0.07952245185696452,
+    "v_sintetica": 0.04999724706626881,
+    "dif": 0.07884190905964583,
     "dif_independencia": 0.12883915612591465,
-    "recuperada": 0.3827772996336057
+    "recuperada": 0.3880594112042029
    },
    {
     "llave": "relacion_actividad",
     "bloque": "persona_ecv",
     "variable": "carencias",
     "v_encuesta": 0.11791822113196308,
-    "v_sintetica": 0.05190386850008204,
-    "dif": 0.06601435263188105,
+    "v_sintetica": 0.05221762600109164,
+    "dif": 0.06570059513087145,
     "dif_independencia": 0.11791822113196308,
-    "recuperada": 0.4401683471971313
+    "recuperada": 0.44282915311836785
    },
    {
     "llave": "relacion_actividad",
@@ -879,30 +878,30 @@
     "bloque": "formacion",
     "variable": "cursa_formacion",
     "v_encuesta": 0.6784870870691794,
-    "v_sintetica": 0.656507700615213,
-    "dif": 0.021979386453966354,
+    "v_sintetica": 0.6697504434977938,
+    "dif": 0.008736643571385594,
     "dif_independencia": 0.6784870870691794,
-    "recuperada": 0.967605298799555
+    "recuperada": 0.9871233458412234
    },
    {
     "llave": "relacion_actividad",
     "bloque": "digital",
     "variable": "uso_internet",
     "v_encuesta": 0.2717080598254331,
-    "v_sintetica": 0.2683013070803554,
-    "dif": 0.0034067527450777346,
+    "v_sintetica": 0.2676361618910411,
+    "dif": 0.004071897934391999,
     "dif_independencia": 0.2717080598254331,
-    "recuperada": 0.9874617162727285
+    "recuperada": 0.9850137020704939
    },
    {
     "llave": "relacion_actividad",
     "bloque": "digital",
     "variable": "compra_online",
-    "v_encuesta": 0.4120718572407476,
-    "v_sintetica": 0.40950633498726946,
-    "dif": 0.002565522253478114,
-    "dif_independencia": 0.4120718572407476,
-    "recuperada": 0.9937740901049226
+    "v_encuesta": 0.4120718572407475,
+    "v_sintetica": 0.40964588578904,
+    "dif": 0.0024259714517075315,
+    "dif_independencia": 0.4120718572407475,
+    "recuperada": 0.9941127465778615
    },
    {
     "llave": "relacion_actividad",
@@ -919,150 +918,150 @@
     "bloque": "hogar",
     "variable": "renta_hogar_decil",
     "v_encuesta": 0.21493927631796944,
-    "v_sintetica": 0.08616186396464717,
-    "dif": 0.12877741235332227,
+    "v_sintetica": 0.08633483604069389,
+    "dif": 0.12860444027727555,
     "dif_independencia": 0.21493927631796944,
-    "recuperada": 0.4008660745520703
+    "recuperada": 0.4016708231257597
    },
    {
     "llave": "estudios_3",
     "bloque": "hogar",
     "variable": "renta_hogar_decil_ccaa",
     "v_encuesta": 0.20268593046754846,
-    "v_sintetica": 0.06314407262249176,
-    "dif": 0.13954185784505668,
+    "v_sintetica": 0.063527910528584,
+    "dif": 0.13915801993896446,
     "dif_independencia": 0.20268593046754846,
-    "recuperada": 0.3115365357468737
+    "recuperada": 0.31343029277878415
    },
    {
     "llave": "estudios_3",
     "bloque": "hogar",
     "variable": "tenencia_vivienda",
     "v_encuesta": 0.09149069230775644,
-    "v_sintetica": 0.08785402158034245,
-    "dif": 0.0036366707274139987,
+    "v_sintetica": 0.08870075314397195,
+    "dif": 0.002789939163784491,
     "dif_independencia": 0.09149069230775644,
-    "recuperada": 0.9602509213157885
+    "recuperada": 0.9695057596197907
    },
    {
     "llave": "estudios_3",
     "bloque": "hogar",
     "variable": "dificultad_fin_mes",
     "v_encuesta": 0.1293625265693423,
-    "v_sintetica": 0.030983693808814196,
-    "dif": 0.09837883276052811,
+    "v_sintetica": 0.028633686015286073,
+    "dif": 0.10072884055405623,
     "dif_independencia": 0.1293625265693423,
-    "recuperada": 0.2395105803086335
+    "recuperada": 0.22134451741662245
    },
    {
     "llave": "estudios_3",
     "bloque": "hogar",
     "variable": "vehiculo_hogar",
     "v_encuesta": 0.10085084190511057,
-    "v_sintetica": 0.05903346625879891,
-    "dif": 0.041817375646311654,
+    "v_sintetica": 0.05921556602871635,
+    "dif": 0.041635275876394214,
     "dif_independencia": 0.10085084190511057,
-    "recuperada": 0.585354223560601
+    "recuperada": 0.5871598581639171
    },
    {
     "llave": "estudios_3",
     "bloque": "persona_ecv",
     "variable": "salud_autopercibida",
     "v_encuesta": 0.1839408127749135,
-    "v_sintetica": 0.11714303732572318,
-    "dif": 0.06679777544919033,
+    "v_sintetica": 0.11695511671123651,
+    "dif": 0.06698569606367699,
     "dif_independencia": 0.1839408127749135,
-    "recuperada": 0.6368517979153975
+    "recuperada": 0.6358301615985208
    },
    {
     "llave": "estudios_3",
     "bloque": "persona_ecv",
     "variable": "discapacidad_limitacion",
     "v_encuesta": 0.12528903928842258,
-    "v_sintetica": 0.10053526195662105,
-    "dif": 0.024753777331801535,
+    "v_sintetica": 0.10087394268323316,
+    "dif": 0.024415096605189424,
     "dif_independencia": 0.12528903928842258,
-    "recuperada": 0.8024266330687003
+    "recuperada": 0.8051298282447161
    },
    {
     "llave": "estudios_3",
     "bloque": "persona_ecv",
     "variable": "privacion_material",
-    "v_encuesta": 0.09663490928221641,
-    "v_sintetica": 0.01731533662410588,
-    "dif": 0.07931957265811053,
-    "dif_independencia": 0.09663490928221641,
-    "recuperada": 0.17918303802135815
+    "v_encuesta": 0.0966349092822164,
+    "v_sintetica": 0.0169318222984771,
+    "dif": 0.07970308698373929,
+    "dif_independencia": 0.0966349092822164,
+    "recuperada": 0.17521434463221505
    },
    {
     "llave": "estudios_3",
     "bloque": "persona_ecv",
     "variable": "carencias",
     "v_encuesta": 0.1513231482875784,
-    "v_sintetica": 0.03701677350317748,
-    "dif": 0.11430637478440092,
+    "v_sintetica": 0.03694382177435591,
+    "dif": 0.1143793265132225,
     "dif_independencia": 0.1513231482875784,
-    "recuperada": 0.24462069367490197
+    "recuperada": 0.24413860134701215
    },
    {
     "llave": "estudios_3",
     "bloque": "empleo",
     "variable": "tipo_jornada",
     "v_encuesta": 0.07803411155023286,
-    "v_sintetica": 0.04319963277939491,
-    "dif": 0.03483447877083795,
+    "v_sintetica": 0.043015439833086706,
+    "dif": 0.035018671717146156,
     "dif_independencia": 0.07803411155023286,
-    "recuperada": 0.553599341636459
+    "recuperada": 0.551238925881746
    },
    {
     "llave": "estudios_3",
     "bloque": "empleo",
     "variable": "sector_publico",
     "v_encuesta": 0.24951146344516142,
-    "v_sintetica": 0.18142269547010187,
-    "dif": 0.06808876797505956,
+    "v_sintetica": 0.17809987244328726,
+    "dif": 0.07141159100187416,
     "dif_independencia": 0.24951146344516142,
-    "recuperada": 0.7271116643904244
+    "recuperada": 0.7137943483002765
    },
    {
     "llave": "estudios_3",
     "bloque": "formacion",
     "variable": "cursa_formacion",
     "v_encuesta": 0.33125618681381996,
-    "v_sintetica": 0.22330084176812096,
-    "dif": 0.10795534504569901,
+    "v_sintetica": 0.23441786054739286,
+    "dif": 0.0968383262664271,
     "dif_independencia": 0.33125618681381996,
-    "recuperada": 0.6741031583921042
+    "recuperada": 0.7076633429918265
    },
    {
     "llave": "estudios_3",
     "bloque": "digital",
     "variable": "uso_internet",
     "v_encuesta": 0.21879524019236748,
-    "v_sintetica": 0.15181742916561233,
-    "dif": 0.06697781102675515,
+    "v_sintetica": 0.15093562764315566,
+    "dif": 0.06785961254921183,
     "dif_independencia": 0.21879524019236748,
-    "recuperada": 0.6938790306047452
+    "recuperada": 0.6898487714378575
    },
    {
     "llave": "estudios_3",
     "bloque": "digital",
     "variable": "compra_online",
-    "v_encuesta": 0.40863405024162275,
-    "v_sintetica": 0.19599547270160253,
-    "dif": 0.21263857754002022,
-    "dif_independencia": 0.40863405024162275,
-    "recuperada": 0.4796356852438304
+    "v_encuesta": 0.40863405024162264,
+    "v_sintetica": 0.19757122278520572,
+    "dif": 0.2110628274564169,
+    "dif_independencia": 0.40863405024162264,
+    "recuperada": 0.48349182518780104
    },
    {
     "llave": "estudios_3",
     "bloque": "digital",
     "variable": "teletrabajo",
     "v_encuesta": 0.22079728521995345,
-    "v_sintetica": 0.20982501114684804,
-    "dif": 0.010972274073105415,
+    "v_sintetica": 0.20792208658283942,
+    "dif": 0.012875198637114033,
     "dif_independencia": 0.22079728521995345,
-    "recuperada": 0.9503061187451871
+    "recuperada": 0.9416876950081698
    }
   ]
  },
@@ -1070,17 +1069,17 @@
   {
    "bloque": "hogar",
    "variable": "renta_hogar_decil",
-   "proporcion": 0.9591029023746702
+   "proporcion": 0.9551451187335093
   },
   {
    "bloque": "hogar",
    "variable": "renta_hogar_decil_ccaa",
-   "proporcion": 0.9683794466403162
+   "proporcion": 0.9578392621870883
   },
   {
    "bloque": "hogar",
    "variable": "tenencia_vivienda",
-   "proporcion": 0.6513157894736842
+   "proporcion": 0.6348684210526315
   },
   {
    "bloque": "hogar",
@@ -1095,32 +1094,32 @@
   {
    "bloque": "persona_ecv",
    "variable": "salud_autopercibida",
-   "proporcion": 0.9820627802690582
+   "proporcion": 0.9865470852017937
   },
   {
    "bloque": "persona_ecv",
    "variable": "discapacidad_limitacion",
-   "proporcion": 0.9867986798679867
+   "proporcion": 0.9834983498349835
   },
   {
    "bloque": "persona_ecv",
    "variable": "privacion_material",
-   "proporcion": 0.9822222222222222
+   "proporcion": 0.9777777777777777
   },
   {
    "bloque": "persona_ecv",
    "variable": "carencias",
-   "proporcion": 0.9897209985315712
+   "proporcion": 0.9911894273127754
   },
   {
    "bloque": "empleo",
    "variable": "tipo_jornada",
-   "proporcion": 0.8807947019867549
+   "proporcion": 0.8543046357615894
   },
   {
    "bloque": "empleo",
    "variable": "sector_publico",
-   "proporcion": 0.8552631578947368
+   "proporcion": 0.881578947368421
   },
   {
    "bloque": "formacion",
@@ -1135,89 +1134,89 @@
   {
    "bloque": "digital",
    "variable": "compra_online",
-   "proporcion": 1.0
+   "proporcion": 0.9868421052631579
   },
   {
    "bloque": "digital",
    "variable": "teletrabajo",
-   "proporcion": 1.0
+   "proporcion": 0.9962264150943396
   }
  ],
  "tvd_ajustada": [
   {
    "bloque": "hogar",
    "variable": "renta_hogar_decil",
-   "tvd": 0.004199741239210651
+   "tvd": 0.006288697559714548
   },
   {
    "bloque": "hogar",
    "variable": "renta_hogar_decil_ccaa",
-   "tvd": 0.007528732887299924
+   "tvd": 0.008341962800298898
   },
   {
    "bloque": "hogar",
    "variable": "tenencia_vivienda",
-   "tvd": 0.018702576960366736
+   "tvd": 0.018996602348663093
   },
   {
    "bloque": "hogar",
    "variable": "dificultad_fin_mes",
-   "tvd": 0.003472856505037783
+   "tvd": 0.0038169589844599646
   },
   {
    "bloque": "hogar",
    "variable": "vehiculo_hogar",
-   "tvd": 0.012165250503017162
+   "tvd": 0.011482749853695995
   },
   {
    "bloque": "persona_ecv",
    "variable": "salud_autopercibida",
-   "tvd": 0.003158542175197991
+   "tvd": 0.00348967677035328
   },
   {
    "bloque": "persona_ecv",
    "variable": "discapacidad_limitacion",
-   "tvd": 0.0017695832765242236
+   "tvd": 0.0019528253590121534
   },
   {
    "bloque": "persona_ecv",
    "variable": "privacion_material",
-   "tvd": 0.0033671694843120507
+   "tvd": 0.0028307177078703586
   },
   {
    "bloque": "persona_ecv",
    "variable": "carencias",
-   "tvd": 0.006005670270889276
+   "tvd": 0.005692364315466608
   },
   {
    "bloque": "empleo",
    "variable": "tipo_jornada",
-   "tvd": 0.004045520617578208
+   "tvd": 0.00321847256854714
   },
   {
    "bloque": "empleo",
    "variable": "sector_publico",
-   "tvd": 0.004819423711868873
+   "tvd": 0.006808699368083745
   },
   {
    "bloque": "formacion",
    "variable": "cursa_formacion",
-   "tvd": 0.00246016217194156
+   "tvd": 0.0002693593385764137
   },
   {
    "bloque": "digital",
    "variable": "uso_internet",
-   "tvd": 0.002233817561439304
+   "tvd": 0.0021340264707214052
   },
   {
    "bloque": "digital",
    "variable": "compra_online",
-   "tvd": 0.004766518678809395
+   "tvd": 0.006190589383892525
   },
   {
    "bloque": "digital",
    "variable": "teletrabajo",
-   "tvd": 0.001964185692663845
+   "tvd": 0.001581348448018086
   }
  ],
  "g65": {
@@ -1293,878 +1292,878 @@
   "provincias": [
    {
     "provincia": "01",
-    "lambda": -0.1862245987299732,
+    "lambda": -0.18722110288527666,
     "objetivo": 26926.72801678565,
-    "esperada_sin_inclinar": 28304.313711794,
-    "esperada": 26926.728016785648,
-    "hogares": 3036,
-    "media": 26427.467734863167,
-    "et": 290.3042327222914,
-    "hogares_right": 3036,
-    "error_relativo": -0.01854143888597437,
-    "tolerancia": 0.021562533148574217,
+    "esperada_sin_inclinar": 28288.242751039485,
+    "esperada": 26926.72801678565,
+    "hogares": 3017,
+    "media": 26994.19098925637,
+    "et": 293.38226631218686,
+    "hogares_right": 3017,
+    "error_relativo": 0.0025054277827096794,
+    "tolerancia": 0.02179115606837173,
     "ok": true
    },
    {
     "provincia": "02",
-    "lambda": -0.43501810345122893,
+    "lambda": -0.4152562999073658,
     "objetivo": 19880.521959134654,
-    "esperada_sin_inclinar": 21248.69308876452,
+    "esperada_sin_inclinar": 21190.21240610679,
     "esperada": 19880.52195913465,
-    "hogares": 3199,
-    "media": 20016.735057382557,
-    "et": 212.95908363528267,
-    "hogares_right": 3199,
-    "error_relativo": 0.006851585613692368,
-    "tolerancia": 0.021423892599301976,
+    "hogares": 3171,
+    "media": 19710.457328559485,
+    "et": 207.6188876644292,
+    "hogares_right": 3171,
+    "error_relativo": -0.008554334283815357,
+    "tolerancia": 0.020886663649093275,
     "ok": true
    },
    {
     "provincia": "03",
-    "lambda": -0.19958738016231792,
+    "lambda": -0.21423489520488348,
     "objetivo": 18632.380687186174,
-    "esperada_sin_inclinar": 19353.1424455209,
-    "esperada": 18632.38068718617,
-    "hogares": 16323,
-    "media": 18656.029793524383,
-    "et": 103.04143751174945,
-    "hogares_right": 16323,
-    "error_relativo": 0.0012692477002937963,
+    "esperada_sin_inclinar": 19417.528001268573,
+    "esperada": 18632.380687186178,
+    "hogares": 16331,
+    "media": 18604.022866727257,
+    "et": 102.59136810814228,
+    "hogares_right": 16331,
+    "error_relativo": -0.001521964419631039,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "04",
-    "lambda": -0.10900604187269666,
+    "lambda": -0.09662710013629652,
     "objetivo": 17942.745217636966,
-    "esperada_sin_inclinar": 18295.394718270225,
+    "esperada_sin_inclinar": 18259.731059955648,
     "esperada": 17942.745217636962,
-    "hogares": 6481,
-    "media": 17762.91143341796,
-    "et": 144.12540110895569,
-    "hogares_right": 6481,
-    "error_relativo": -0.010022646035358962,
+    "hogares": 6483,
+    "media": 17960.078702155977,
+    "et": 149.67399456301538,
+    "hogares_right": 6483,
+    "error_relativo": 0.0009660441760033223,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "05",
-    "lambda": -0.3668467297722565,
+    "lambda": -0.3480197978503644,
     "objetivo": 19621.791546965516,
-    "esperada_sin_inclinar": 21214.197999942044,
+    "esperada_sin_inclinar": 21112.034198651076,
     "esperada": 19621.791546965516,
-    "hogares": 1453,
-    "media": 20070.172451891987,
-    "et": 326.88808360117457,
-    "hogares_right": 1453,
-    "error_relativo": 0.022851170539308407,
-    "tolerancia": 0.03331888251067751,
+    "hogares": 1448,
+    "media": 19557.74540759967,
+    "et": 298.4309610708969,
+    "hogares_right": 1448,
+    "error_relativo": -0.003264031177405591,
+    "tolerancia": 0.030418319382976917,
     "ok": true
    },
    {
     "provincia": "06",
-    "lambda": -0.288205725173147,
+    "lambda": -0.2798533950245481,
     "objetivo": 18638.60898421143,
-    "esperada_sin_inclinar": 19468.887062473823,
-    "esperada": 18638.60898421143,
-    "hogares": 5451,
-    "media": 18435.736219182523,
-    "et": 136.03644195726613,
-    "hogares_right": 5451,
-    "error_relativo": -0.010884544291945741,
+    "esperada_sin_inclinar": 19429.219744832,
+    "esperada": 18638.608984211427,
+    "hogares": 5465,
+    "media": 18494.279703647368,
+    "et": 144.01424510268916,
+    "hogares_right": 5465,
+    "error_relativo": -0.007743565020668863,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "07",
-    "lambda": -0.09449835631751394,
+    "lambda": -0.09908987570560251,
     "objetivo": 24810.619361937195,
-    "esperada_sin_inclinar": 25331.868325583022,
-    "esperada": 24810.61936193719,
-    "hogares": 9479,
-    "media": 24591.52504785843,
-    "et": 156.45866862293528,
-    "hogares_right": 9479,
-    "error_relativo": -0.008830666856099678,
+    "esperada_sin_inclinar": 25356.24927741975,
+    "esperada": 24810.6193619372,
+    "hogares": 9478,
+    "media": 25136.418087921233,
+    "et": 164.58303210225534,
+    "hogares_right": 9478,
+    "error_relativo": 0.013131422526430514,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "08",
-    "lambda": -0.004709980150749854,
+    "lambda": 0.0017451674202594455,
     "objetivo": 26369.13087317751,
-    "esperada_sin_inclinar": 26404.227626847114,
-    "esperada": 26369.13087317751,
-    "hogares": 47355,
-    "media": 26398.25410187436,
-    "et": 75.82737835984543,
-    "hogares_right": 47355,
-    "error_relativo": 0.0011044440120882015,
+    "esperada_sin_inclinar": 26356.172255875415,
+    "esperada": 26369.130873177506,
+    "hogares": 47246,
+    "media": 26303.724436782384,
+    "et": 75.08506321851992,
+    "hogares_right": 47246,
+    "error_relativo": -0.002480416844593769,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "09",
-    "lambda": 0.08277980418314543,
+    "lambda": 0.06547551817708114,
     "objetivo": 23331.875452378677,
-    "esperada_sin_inclinar": 22789.16035125405,
+    "esperada_sin_inclinar": 22895.44723825052,
     "esperada": 23331.875452378674,
-    "hogares": 3334,
-    "media": 23359.074612847904,
-    "et": 295.445981013348,
-    "hogares_right": 3334,
-    "error_relativo": 0.001165751142669258,
-    "tolerancia": 0.025325523583936957,
+    "hogares": 3363,
+    "media": 23363.56517524732,
+    "et": 278.95435633767624,
+    "hogares_right": 3363,
+    "error_relativo": 0.0013582158422422719,
+    "tolerancia": 0.023911867428491433,
     "ok": true
    },
    {
     "provincia": "10",
-    "lambda": -0.08338669543136668,
+    "lambda": -0.08158125214485795,
     "objetivo": 19223.03994388586,
-    "esperada_sin_inclinar": 19484.389453814067,
-    "esperada": 19223.039943885855,
-    "hogares": 3611,
-    "media": 19137.655503796108,
-    "et": 192.5031233630376,
-    "hogares_right": 3611,
-    "error_relativo": -0.004441776136292597,
-    "tolerancia": 0.020028374692553842,
+    "esperada_sin_inclinar": 19480.651649649142,
+    "esperada": 19223.03994388586,
+    "hogares": 3597,
+    "media": 19314.696754163357,
+    "et": 195.8022151795641,
+    "hogares_right": 3597,
+    "error_relativo": 0.004768070531250723,
+    "tolerancia": 0.020371618198904234,
     "ok": true
    },
    {
     "provincia": "11",
-    "lambda": -0.2723238179198939,
+    "lambda": -0.27864473277106316,
     "objetivo": 19022.264404258567,
-    "esperada_sin_inclinar": 20060.00351462309,
-    "esperada": 19022.264404258567,
-    "hogares": 9364,
-    "media": 18912.096571345344,
-    "et": 122.53431017876343,
-    "hogares_right": 9364,
-    "error_relativo": -0.0057915204295320155,
+    "esperada_sin_inclinar": 20069.926988780353,
+    "esperada": 19022.26440425856,
+    "hogares": 9360,
+    "media": 19104.213872074608,
+    "et": 127.31897567092071,
+    "hogares_right": 9360,
+    "error_relativo": 0.004308081628688454,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "12",
-    "lambda": 0.16391252141421964,
+    "lambda": 0.15265144256623248,
     "objetivo": 21048.011394036243,
-    "esperada_sin_inclinar": 20342.38674720731,
+    "esperada_sin_inclinar": 20399.073072754334,
     "esperada": 21048.01139403624,
-    "hogares": 5470,
-    "media": 21139.081339795426,
-    "et": 202.82414010615133,
-    "hogares_right": 5470,
-    "error_relativo": 0.0043267719716737485,
-    "tolerancia": 0.02,
+    "hogares": 5447,
+    "media": 20996.678974608516,
+    "et": 212.493171763811,
+    "hogares_right": 5447,
+    "error_relativo": -0.002438825144415846,
+    "tolerancia": 0.02019128247184615,
     "ok": true
    },
    {
     "provincia": "13",
-    "lambda": -0.4013806697576563,
+    "lambda": -0.3973619088749929,
     "objetivo": 19034.344939670216,
-    "esperada_sin_inclinar": 20199.697187498805,
-    "esperada": 19034.344939670216,
+    "esperada_sin_inclinar": 20208.144183477336,
+    "esperada": 19034.344939670213,
     "hogares": 3967,
-    "media": 18856.000726261023,
-    "et": 177.57269662010154,
+    "media": 19011.691536211918,
+    "et": 175.69952725426137,
     "hogares_right": 3967,
-    "error_relativo": -0.009369600791330535,
+    "error_relativo": -0.0011901330741929117,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "14",
-    "lambda": -0.3864171814832623,
+    "lambda": -0.3740716591471671,
     "objetivo": 18991.273422824455,
-    "esperada_sin_inclinar": 20362.24560722184,
-    "esperada": 18991.273422824455,
-    "hogares": 6450,
-    "media": 19057.050103515838,
-    "et": 143.3248269748412,
-    "hogares_right": 6450,
-    "error_relativo": 0.003463521335663966,
+    "esperada_sin_inclinar": 20327.16028164873,
+    "esperada": 18991.27342282445,
+    "hogares": 6482,
+    "media": 19088.012973451154,
+    "et": 143.15108828908612,
+    "hogares_right": 6482,
+    "error_relativo": 0.005093894889135475,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "15",
-    "lambda": 0.1220999993169049,
+    "lambda": 0.15381629913563893,
     "objetivo": 23714.6412737472,
-    "esperada_sin_inclinar": 23143.086914729094,
-    "esperada": 23714.64127374719,
-    "hogares": 9579,
-    "media": 23931.946147196093,
-    "et": 148.67099682362198,
-    "hogares_right": 9579,
-    "error_relativo": 0.009163321128937252,
+    "esperada_sin_inclinar": 22996.02144308447,
+    "esperada": 23714.641273747195,
+    "hogares": 9575,
+    "media": 23760.45544152875,
+    "et": 149.2190340113731,
+    "hogares_right": 9575,
+    "error_relativo": 0.0019318937719825513,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "16",
-    "lambda": -0.10892399778068834,
+    "lambda": -0.11282736286633441,
     "objetivo": 19079.694256182316,
-    "esperada_sin_inclinar": 19379.78488364344,
-    "esperada": 19079.694256182316,
-    "hogares": 1802,
-    "media": 19263.267774010033,
-    "et": 260.99470501308457,
-    "hogares_right": 1802,
-    "error_relativo": 0.00962140773132325,
-    "tolerancia": 0.02735837393500323,
+    "esperada_sin_inclinar": 19389.35216657586,
+    "esperada": 19079.694256182313,
+    "hogares": 1813,
+    "media": 18988.579282269777,
+    "et": 243.09100534358046,
+    "hogares_right": 1813,
+    "error_relativo": -0.00477549444394354,
+    "tolerancia": 0.02548164578316685,
     "ok": true
    },
    {
     "provincia": "17",
-    "lambda": -0.07727481888509319,
+    "lambda": -0.10383575495838618,
     "objetivo": 23435.308302190573,
-    "esperada_sin_inclinar": 23810.19638817221,
-    "esperada": 23435.308302190573,
-    "hogares": 6546,
-    "media": 23886.134621477555,
-    "et": 188.10841840198168,
-    "hogares_right": 6546,
-    "error_relativo": 0.019237055193545016,
+    "esperada_sin_inclinar": 23943.913980218065,
+    "esperada": 23435.30830219057,
+    "hogares": 6616,
+    "media": 23421.25137065247,
+    "et": 175.36748323050315,
+    "hogares_right": 6616,
+    "error_relativo": -0.0005998185027841219,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "18",
-    "lambda": -0.15926197134297992,
+    "lambda": -0.139921581734762,
     "objetivo": 19257.79586315783,
-    "esperada_sin_inclinar": 19861.71634335953,
+    "esperada_sin_inclinar": 19794.370302403007,
     "esperada": 19257.79586315783,
-    "hogares": 7954,
-    "media": 19281.02405367387,
-    "et": 141.1557583603934,
-    "hogares_right": 7954,
-    "error_relativo": 0.001206170772662496,
+    "hogares": 7937,
+    "media": 19213.611918355095,
+    "et": 139.65013850092026,
+    "hogares_right": 7937,
+    "error_relativo": -0.0022943406980060477,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "19",
-    "lambda": 0.5834212763828457,
+    "lambda": 0.6113925497641874,
     "objetivo": 22463.371667755706,
-    "esperada_sin_inclinar": 20425.796712498293,
+    "esperada_sin_inclinar": 20321.06103202515,
     "esperada": 22463.371667755706,
-    "hogares": 2489,
-    "media": 22715.962293819393,
-    "et": 284.6967240585147,
-    "hogares_right": 2489,
-    "error_relativo": 0.011244555349910312,
-    "tolerancia": 0.02534763955022594,
+    "hogares": 2486,
+    "media": 22780.979390433673,
+    "et": 288.1900339105834,
+    "hogares_right": 2486,
+    "error_relativo": 0.014138915892749404,
+    "tolerancia": 0.025658662303509504,
     "ok": true
    },
    {
     "provincia": "20",
-    "lambda": 0.09919200039331436,
+    "lambda": 0.11992459099841266,
     "objetivo": 29920.45740080829,
-    "esperada_sin_inclinar": 29041.091207811052,
-    "esperada": 29920.457400808293,
-    "hogares": 6409,
-    "media": 29571.437343191075,
-    "et": 234.7180468674912,
-    "hogares_right": 6409,
-    "error_relativo": -0.011664930550419506,
+    "esperada_sin_inclinar": 28868.018819176472,
+    "esperada": 29920.457400808285,
+    "hogares": 6400,
+    "media": 29814.919690546158,
+    "et": 230.58910129105416,
+    "hogares_right": 6400,
+    "error_relativo": -0.003527275965349408,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "21",
-    "lambda": -0.19948171948057375,
+    "lambda": -0.17182412870681207,
     "objetivo": 18484.054360019476,
-    "esperada_sin_inclinar": 19196.21506389697,
+    "esperada_sin_inclinar": 19102.418863644147,
     "esperada": 18484.054360019472,
-    "hogares": 4238,
-    "media": 18521.417476757306,
-    "et": 179.97780081543806,
-    "hogares_right": 4238,
-    "error_relativo": 0.0020213702042906068,
+    "hogares": 4243,
+    "media": 18365.017133469002,
+    "et": 184.09733852722525,
+    "hogares_right": 4243,
+    "error_relativo": -0.006439995481075211,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "22",
-    "lambda": 0.026136204883921432,
+    "lambda": 0.09540370317873409,
     "objetivo": 23808.438920216042,
-    "esperada_sin_inclinar": 23699.392622078296,
+    "esperada_sin_inclinar": 23398.847495840877,
     "esperada": 23808.438920216042,
-    "hogares": 1989,
-    "media": 23975.30878396901,
-    "et": 312.8609478036887,
-    "hogares_right": 1989,
-    "error_relativo": 0.007008853638500234,
-    "tolerancia": 0.026281517142061304,
+    "hogares": 2006,
+    "media": 24164.316026771266,
+    "et": 328.8761474653342,
+    "hogares_right": 2006,
+    "error_relativo": 0.014947519564293854,
+    "tolerancia": 0.027626855214440908,
     "ok": true
    },
    {
     "provincia": "23",
-    "lambda": -0.5581023942315886,
+    "lambda": -0.5372849742910386,
     "objetivo": 17987.165624359193,
-    "esperada_sin_inclinar": 19792.85785838765,
-    "esperada": 17987.16562435919,
-    "hogares": 5392,
-    "media": 17997.607120581455,
-    "et": 144.61896657567732,
-    "hogares_right": 5392,
-    "error_relativo": 0.0005804970299556622,
+    "esperada_sin_inclinar": 19694.393360379563,
+    "esperada": 17987.165624359193,
+    "hogares": 5399,
+    "media": 17981.527510546854,
+    "et": 145.37475018748583,
+    "hogares_right": 5399,
+    "error_relativo": -0.0003134520429780574,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "24",
-    "lambda": -0.15291632295268404,
+    "lambda": -0.16487785822310957,
     "objetivo": 21811.38265227386,
-    "esperada_sin_inclinar": 22703.456494272243,
-    "esperada": 21811.382652273856,
-    "hogares": 4021,
-    "media": 21798.055356060988,
-    "et": 224.9741588660315,
-    "hogares_right": 4021,
-    "error_relativo": -0.000611024822467332,
-    "tolerancia": 0.0206290598310674,
+    "esperada_sin_inclinar": 22812.939557383324,
+    "esperada": 21811.38265227386,
+    "hogares": 4003,
+    "media": 21649.587107300238,
+    "et": 203.35751989315594,
+    "hogares_right": 4003,
+    "error_relativo": -0.007417940785920507,
+    "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "25",
-    "lambda": -0.48501901269697434,
+    "lambda": -0.5372165058632306,
     "objetivo": 22638.570065090866,
-    "esperada_sin_inclinar": 24760.34203399473,
+    "esperada_sin_inclinar": 24960.15490506546,
     "esperada": 22638.570065090866,
-    "hogares": 3751,
-    "media": 22769.435219525058,
-    "et": 212.83938038342293,
-    "hogares_right": 3751,
-    "error_relativo": 0.005780628107602492,
+    "hogares": 3754,
+    "media": 22979.47641450804,
+    "et": 212.91421855996043,
+    "hogares_right": 3754,
+    "error_relativo": 0.015058652045468968,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "26",
-    "lambda": -0.06739708537670275,
+    "lambda": -0.04475473760981101,
     "objetivo": 22510.80726768552,
-    "esperada_sin_inclinar": 22815.22825935931,
-    "esperada": 22510.807267685515,
-    "hogares": 2817,
-    "media": 22775.696003753466,
-    "et": 288.7908380774838,
-    "hogares_right": 2817,
-    "error_relativo": 0.01176718066651472,
-    "tolerancia": 0.025657972603412214,
+    "esperada_sin_inclinar": 22712.391628694444,
+    "esperada": 22510.80726768551,
+    "hogares": 2819,
+    "media": 22416.083580031074,
+    "et": 262.83530009494496,
+    "hogares_right": 2819,
+    "error_relativo": -0.004207920512491858,
+    "tolerancia": 0.023351921321120062,
     "ok": true
    },
    {
     "provincia": "27",
-    "lambda": -0.16111193139452423,
+    "lambda": -0.1375622032799832,
     "objetivo": 21764.333606777713,
-    "esperada_sin_inclinar": 22418.892050462837,
-    "esperada": 21764.333606777705,
-    "hogares": 2990,
-    "media": 21830.67267710955,
-    "et": 223.2070009277947,
-    "hogares_right": 2990,
-    "error_relativo": 0.003048063475335594,
-    "tolerancia": 0.020511264434789307,
+    "esperada_sin_inclinar": 22342.025087310212,
+    "esperada": 21764.33360677771,
+    "hogares": 3012,
+    "media": 21720.4862448335,
+    "et": 231.266433342427,
+    "hogares_right": 3012,
+    "error_relativo": -0.002014642981329695,
+    "tolerancia": 0.021251873594733676,
     "ok": true
    },
    {
     "provincia": "28",
-    "lambda": -0.05653166862309396,
+    "lambda": -0.055188872856259064,
     "objetivo": 27136.199646553363,
-    "esperada_sin_inclinar": 27642.361435202445,
-    "esperada": 27136.199646553363,
-    "hogares": 55431,
-    "media": 27226.746963720278,
-    "et": 81.12095864028339,
-    "hogares_right": 55431,
-    "error_relativo": 0.003336772221102624,
+    "esperada_sin_inclinar": 27630.932183154975,
+    "esperada": 27136.19964655336,
+    "hogares": 55432,
+    "media": 27131.801521550682,
+    "et": 80.86331371689359,
+    "hogares_right": 55432,
+    "error_relativo": -0.0001620759376761427,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "29",
-    "lambda": 0.21926705076618913,
+    "lambda": 0.20895475414089343,
     "objetivo": 19973.68753428584,
-    "esperada_sin_inclinar": 19088.191459014033,
+    "esperada_sin_inclinar": 19115.05541954242,
     "esperada": 19973.687534285837,
-    "hogares": 14644,
-    "media": 19923.42952628458,
-    "et": 115.6709052244607,
-    "hogares_right": 14644,
-    "error_relativo": -0.002516210785564188,
+    "hogares": 14621,
+    "media": 19948.732536542066,
+    "et": 116.97768807408,
+    "hogares_right": 14621,
+    "error_relativo": -0.0012493936185262733,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "30",
-    "lambda": -0.18203757283438682,
+    "lambda": -0.19673119887807522,
     "objetivo": 18919.975567586345,
-    "esperada_sin_inclinar": 19491.096834595195,
+    "esperada_sin_inclinar": 19539.275483838508,
     "esperada": 18919.975567586345,
-    "hogares": 11895,
-    "media": 18924.195016062673,
-    "et": 105.591713676264,
-    "hogares_right": 11895,
-    "error_relativo": 0.00022301553515524652,
+    "hogares": 11893,
+    "media": 18823.888133013646,
+    "et": 103.64143655584277,
+    "hogares_right": 11893,
+    "error_relativo": -0.0050786236075968105,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "31",
-    "lambda": -0.15135032910516094,
+    "lambda": -0.1637562886338198,
     "objetivo": 26751.81826551118,
-    "esperada_sin_inclinar": 27887.20304464685,
-    "esperada": 26751.81826551118,
-    "hogares": 5499,
-    "media": 27022.31856326138,
-    "et": 222.75529687717517,
-    "hogares_right": 5499,
-    "error_relativo": 0.010111473361006373,
+    "esperada_sin_inclinar": 27931.439721959912,
+    "esperada": 26751.818265511178,
+    "hogares": 5501,
+    "media": 26823.731574835147,
+    "et": 212.84440656743564,
+    "hogares_right": 5501,
+    "error_relativo": 0.002688165290681388,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "32",
-    "lambda": -0.22887384561072832,
+    "lambda": -0.18753963338148444,
     "objetivo": 21136.089163079298,
-    "esperada_sin_inclinar": 22035.977333839655,
+    "esperada_sin_inclinar": 21864.11367975417,
     "esperada": 21136.089163079294,
-    "hogares": 2826,
-    "media": 21187.204864421816,
-    "et": 231.27778567059153,
-    "hogares_right": 2826,
-    "error_relativo": 0.002418408672868688,
-    "tolerancia": 0.021884633802036525,
+    "hogares": 2829,
+    "media": 21086.081546217214,
+    "et": 226.25933793712142,
+    "hogares_right": 2829,
+    "error_relativo": -0.0023659824897709347,
+    "tolerancia": 0.021409763763899442,
     "ok": true
    },
    {
     "provincia": "33",
-    "lambda": -0.029096230831164603,
+    "lambda": -0.0380092691723693,
     "objetivo": 23536.02678626136,
-    "esperada_sin_inclinar": 23662.981418023202,
+    "esperada_sin_inclinar": 23701.577193197085,
     "esperada": 23536.02678626136,
-    "hogares": 9303,
-    "media": 23531.60990892557,
-    "et": 143.8114968275891,
-    "hogares_right": 9303,
-    "error_relativo": -0.00018766452706309167,
+    "hogares": 9300,
+    "media": 23497.238516940208,
+    "et": 143.67310214536695,
+    "hogares_right": 9300,
+    "error_relativo": -0.0016480381193223481,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "34",
-    "lambda": -0.16787843968398736,
+    "lambda": -0.11397461125658179,
     "objetivo": 21949.88701986546,
-    "esperada_sin_inclinar": 22957.3442597924,
+    "esperada_sin_inclinar": 22655.414554454495,
     "esperada": 21949.887019865455,
-    "hogares": 1401,
-    "media": 21617.947495297198,
-    "et": 363.2744489275713,
-    "hogares_right": 1401,
-    "error_relativo": -0.015122607431548252,
-    "tolerancia": 0.03310034795156754,
+    "hogares": 1404,
+    "media": 22058.838287001894,
+    "et": 443.5064553762762,
+    "hogares_right": 1404,
+    "error_relativo": 0.004963636807689742,
+    "tolerancia": 0.04041081896912604,
     "ok": true
    },
    {
     "provincia": "35",
-    "lambda": -0.18876576259258976,
+    "lambda": -0.20320047098974547,
     "objetivo": 21238.012626415933,
-    "esperada_sin_inclinar": 22154.653464595278,
-    "esperada": 21238.01262641593,
-    "hogares": 9114,
-    "media": 21127.19104570408,
-    "et": 142.65881578630905,
-    "hogares_right": 9114,
-    "error_relativo": -0.005218076788127246,
+    "esperada_sin_inclinar": 22226.026380853393,
+    "esperada": 21238.012626415933,
+    "hogares": 9096,
+    "media": 21311.51538754439,
+    "et": 146.4305027051759,
+    "hogares_right": 9096,
+    "error_relativo": 0.0034609058023176154,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "36",
-    "lambda": -0.10264938644789098,
+    "lambda": -0.10155384077080964,
     "objetivo": 22114.41594829989,
-    "esperada_sin_inclinar": 22558.824279678873,
+    "esperada_sin_inclinar": 22540.31405100421,
     "esperada": 22114.41594829989,
-    "hogares": 7498,
-    "media": 22074.04561700292,
-    "et": 146.6313109942907,
-    "hogares_right": 7498,
-    "error_relativo": -0.0018255210262549948,
+    "hogares": 7475,
+    "media": 22215.167404439322,
+    "et": 147.86730558852747,
+    "hogares_right": 7475,
+    "error_relativo": 0.004555917568656254,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "37",
-    "lambda": -0.3365315733448595,
+    "lambda": -0.37286778200448756,
     "objetivo": 21067.94009093661,
-    "esperada_sin_inclinar": 22713.22209341958,
-    "esperada": 21067.9400909366,
-    "hogares": 2989,
-    "media": 21472.122607135538,
-    "et": 242.90214906394021,
-    "hogares_right": 2989,
-    "error_relativo": 0.019184719267965278,
-    "tolerancia": 0.023058936755609657,
+    "esperada_sin_inclinar": 22874.74112334157,
+    "esperada": 21067.940090936605,
+    "hogares": 2991,
+    "media": 20845.95744672975,
+    "et": 223.7591786001182,
+    "hogares_right": 2991,
+    "error_relativo": -0.010536513928210534,
+    "tolerancia": 0.021241675990561506,
     "ok": true
    },
    {
     "provincia": "38",
-    "lambda": -0.3401216678330249,
+    "lambda": -0.3380040651994689,
     "objetivo": 20532.056912367036,
-    "esperada_sin_inclinar": 22115.56715368277,
+    "esperada_sin_inclinar": 22086.382764650014,
     "esperada": 20532.056912367032,
-    "hogares": 8446,
-    "media": 20554.851582597945,
-    "et": 151.45835899325976,
-    "hogares_right": 8446,
-    "error_relativo": 0.0011101990574153842,
+    "hogares": 8467,
+    "media": 20446.199479783496,
+    "et": 143.98567026939253,
+    "hogares_right": 8467,
+    "error_relativo": -0.004181628414044791,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "39",
-    "lambda": -0.10428817846140176,
+    "lambda": -0.10306406997471082,
     "objetivo": 23087.39830066051,
-    "esperada_sin_inclinar": 23695.057473770634,
+    "esperada_sin_inclinar": 23702.1416291029,
     "esperada": 23087.398300660512,
-    "hogares": 5033,
-    "media": 23081.55674012089,
-    "et": 180.88279799531497,
-    "hogares_right": 5033,
-    "error_relativo": -0.0002530194378571604,
+    "hogares": 5035,
+    "media": 23224.36828450508,
+    "et": 193.70120113778538,
+    "hogares_right": 5035,
+    "error_relativo": 0.005932672969940045,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "40",
-    "lambda": 0.05885000047420909,
+    "lambda": 0.0749903069052919,
     "objetivo": 22022.194447064012,
-    "esperada_sin_inclinar": 21595.98827134059,
-    "esperada": 22022.194447064012,
-    "hogares": 1407,
-    "media": 22093.227663766153,
-    "et": 419.4463366444162,
-    "hogares_right": 1407,
-    "error_relativo": 0.0032255285399866995,
-    "tolerancia": 0.038093055408502816,
+    "esperada_sin_inclinar": 21534.956393173794,
+    "esperada": 22022.19444706401,
+    "hogares": 1390,
+    "media": 22358.463174853037,
+    "et": 408.17061937232165,
+    "hogares_right": 1390,
+    "error_relativo": 0.015269537674700517,
+    "tolerancia": 0.03706902328498319,
     "ok": true
    },
    {
     "provincia": "41",
-    "lambda": -0.07950243433176049,
+    "lambda": -0.06169735234919367,
     "objetivo": 20151.369161174753,
-    "esperada_sin_inclinar": 20477.01455796223,
-    "esperada": 20151.369161174753,
+    "esperada_sin_inclinar": 20404.59124406124,
+    "esperada": 20151.36916117475,
     "hogares": 15062,
-    "media": 19974.01525859071,
-    "et": 102.21734143700633,
+    "media": 20279.425430496805,
+    "et": 105.22740468439956,
     "hogares_right": 15062,
-    "error_relativo": -0.00880108449036543,
+    "error_relativo": 0.00635471804907306,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "42",
-    "lambda": 0.16267420046479097,
+    "lambda": 0.11390958863352169,
     "objetivo": 22778.876396479875,
-    "esperada_sin_inclinar": 21595.34882728654,
-    "esperada": 22778.876396479875,
-    "hogares": 878,
-    "media": 22445.80435167971,
-    "et": 634.6193380161759,
-    "hogares_right": 878,
-    "error_relativo": -0.014621969890122988,
-    "tolerancia": 0.05571998609327777,
+    "esperada_sin_inclinar": 21826.551315566245,
+    "esperada": 22778.87639647987,
+    "hogares": 879,
+    "media": 22903.798901124093,
+    "et": 567.311048066987,
+    "hogares_right": 879,
+    "error_relativo": 0.005484138131744087,
+    "tolerancia": 0.04981027494004544,
     "ok": true
    },
    {
     "provincia": "43",
-    "lambda": -0.48282410886030724,
+    "lambda": -0.4840460990885376,
     "objetivo": 22342.905484917148,
-    "esperada_sin_inclinar": 24498.733806681346,
-    "esperada": 22342.905484917148,
-    "hogares": 6726,
-    "media": 22111.97389073247,
-    "et": 154.40658403684463,
-    "hogares_right": 6726,
-    "error_relativo": -0.010335790675951695,
+    "esperada_sin_inclinar": 24478.896710403296,
+    "esperada": 22342.905484917144,
+    "hogares": 6763,
+    "media": 22237.859603062916,
+    "et": 152.95304355529558,
+    "hogares_right": 6763,
+    "error_relativo": -0.004701531854267804,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "44",
-    "lambda": -0.12516612515295777,
+    "lambda": -0.11182416128516942,
     "objetivo": 22741.378988469587,
-    "esperada_sin_inclinar": 23182.65565893183,
-    "esperada": 22741.37898846958,
-    "hogares": 1164,
-    "media": 22755.15702142897,
-    "et": 358.38307189343254,
-    "hogares_right": 1164,
-    "error_relativo": 0.0006058574093668057,
-    "tolerancia": 0.031518147784717995,
+    "esperada_sin_inclinar": 23152.779828633636,
+    "esperada": 22741.378988469583,
+    "hogares": 1173,
+    "media": 22223.866100882024,
+    "et": 327.1488739662356,
+    "hogares_right": 1173,
+    "error_relativo": -0.022756442687576484,
+    "tolerancia": 0.02877124330341689,
     "ok": true
    },
    {
     "provincia": "45",
-    "lambda": -0.21638264215574543,
+    "lambda": -0.2299495929938984,
     "objetivo": 19198.2208788844,
-    "esperada_sin_inclinar": 19824.418482147947,
-    "esperada": 19198.220878884396,
-    "hogares": 5797,
-    "media": 19304.755895248978,
-    "et": 150.25485473286065,
-    "hogares_right": 5797,
-    "error_relativo": 0.005549212973257944,
+    "esperada_sin_inclinar": 19862.405610049012,
+    "esperada": 19198.2208788844,
+    "hogares": 5821,
+    "media": 19193.670167409833,
+    "et": 152.5207011567804,
+    "hogares_right": 5821,
+    "error_relativo": -0.00023703818719844616,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "46",
-    "lambda": 0.09808781064254846,
+    "lambda": 0.08716475764790618,
     "objetivo": 21857.314184853014,
-    "esperada_sin_inclinar": 21372.605506151584,
+    "esperada_sin_inclinar": 21427.891516423268,
     "esperada": 21857.31418485301,
-    "hogares": 22886,
-    "media": 21803.75332040595,
-    "et": 103.4766156964634,
-    "hogares_right": 22886,
-    "error_relativo": -0.0024504778580791697,
+    "hogares": 22904,
+    "media": 21851.95531255258,
+    "et": 100.58381820351612,
+    "hogares_right": 22904,
+    "error_relativo": -0.0002451752422604203,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "47",
-    "lambda": 0.012667435199651644,
+    "lambda": 0.00028980014109930335,
     "objetivo": 23028.387941038265,
-    "esperada_sin_inclinar": 22956.843552393388,
+    "esperada_sin_inclinar": 23026.699562298607,
     "esperada": 23028.38794103826,
-    "hogares": 4568,
-    "media": 22874.986950074803,
-    "et": 213.4099321825677,
-    "hogares_right": 4568,
-    "error_relativo": -0.006661386431226934,
+    "hogares": 4582,
+    "media": 23049.847379419618,
+    "et": 209.81307353740442,
+    "hogares_right": 4582,
+    "error_relativo": 0.0009318688931374552,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "48",
-    "lambda": -0.07170834265794951,
+    "lambda": -0.0804589548199311,
     "objetivo": 28564.071750191353,
-    "esperada_sin_inclinar": 29146.0694447461,
-    "esperada": 28564.071750191353,
-    "hogares": 9892,
-    "media": 28571.992866494395,
-    "et": 178.9640723664988,
-    "hogares_right": 9892,
-    "error_relativo": 0.00027731047493206873,
+    "esperada_sin_inclinar": 29220.101480395668,
+    "esperada": 28564.07175019135,
+    "hogares": 9919,
+    "media": 28393.777994697066,
+    "et": 178.34203782773608,
+    "hogares_right": 9919,
+    "error_relativo": -0.005961816542949472,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "49",
-    "lambda": -0.5680270436012433,
+    "lambda": -0.5058624752177017,
     "objetivo": 19863.155775783227,
-    "esperada_sin_inclinar": 22392.954898307627,
-    "esperada": 19863.15577578323,
-    "hogares": 1536,
-    "media": 19818.688300551683,
-    "et": 296.17961522228944,
-    "hogares_right": 1536,
-    "error_relativo": -0.0022386913607029824,
-    "tolerancia": 0.02982201001347287,
+    "esperada_sin_inclinar": 22095.36516787206,
+    "esperada": 19863.155775783223,
+    "hogares": 1532,
+    "media": 20057.727316866316,
+    "et": 305.9413347583269,
+    "hogares_right": 1532,
+    "error_relativo": 0.009795600622551026,
+    "tolerancia": 0.030804907156930683,
     "ok": true
    },
    {
     "provincia": "50",
-    "lambda": 0.05139270185636646,
+    "lambda": 0.03729256133410079,
     "objetivo": 24621.89749859678,
-    "esperada_sin_inclinar": 24364.77635426765,
+    "esperada_sin_inclinar": 24432.91247043318,
     "esperada": 24621.89749859678,
-    "hogares": 8418,
-    "media": 24513.49506628994,
-    "et": 159.84879164106817,
-    "hogares_right": 8418,
-    "error_relativo": -0.004402683924462747,
+    "hogares": 8394,
+    "media": 24627.986600839788,
+    "et": 168.3644624994171,
+    "hogares_right": 8394,
+    "error_relativo": 0.00024730434538411394,
     "tolerancia": 0.02,
     "ok": true
    },
    {
     "provincia": "51",
-    "lambda": -0.6882980852909373,
+    "lambda": -0.6405637567686535,
     "objetivo": 21254.48229831936,
-    "esperada_sin_inclinar": 25651.1479271374,
-    "esperada": 21254.482298319363,
+    "esperada_sin_inclinar": 25277.922856809015,
+    "esperada": 21254.482298319355,
     "hogares": 541,
-    "media": 20652.067240557884,
-    "et": 588.6056444306943,
+    "media": 20890.95063095092,
+    "et": 672.4835222050076,
     "hogares_right": 541,
-    "error_relativo": -0.028342965465176673,
-    "tolerancia": 0.05538649553249638,
+    "error_relativo": -0.017103764856092663,
+    "tolerancia": 0.06327921920339433,
     "ok": true
    },
    {
     "provincia": "52",
-    "lambda": -1.2233970021638672,
+    "lambda": -1.3140726194149295,
     "objetivo": 19216.984198602437,
-    "esperada_sin_inclinar": 24770.659389660035,
+    "esperada_sin_inclinar": 25006.253265113057,
     "esperada": 19216.984198602437,
-    "hogares": 550,
-    "media": 19165.60950542096,
-    "et": 546.6845778489588,
-    "hogares_right": 550,
-    "error_relativo": -0.0026734003967808784,
-    "tolerancia": 0.05689598036810757,
+    "hogares": 549,
+    "media": 19619.827375789373,
+    "et": 557.7226160033949,
+    "hogares_right": 549,
+    "error_relativo": 0.02096287185458756,
+    "tolerancia": 0.05804475980616725,
     "ok": true
    }
   ],
   "fuera": [],
-  "error_max": 0.028342965465176673,
+  "error_max": 0.022756442687576484,
   "municipios": {
-   "n": 329,
-   "correlacion_relativa": 0.5990893052821026,
-   "error_relativo_medio": 0.07708305153143065
+   "n": 324,
+   "correlacion_relativa": 0.5878968584970308,
+   "error_relativo_medio": 0.07952120750215623
   }
  },
  "triangulacion_esde": [
   {
    "variable": "salud_autopercibida",
    "edad_4": "65+",
-   "tvd": 0.03512560971066771
+   "tvd": 0.034652780499238936
   },
   {
    "variable": "salud_autopercibida",
    "edad_4": "50-64",
-   "tvd": 0.04521295344535351
-  },
-  {
-   "variable": "salud_autopercibida",
-   "edad_4": "35-49",
-   "tvd": 0.07131742504551221
+   "tvd": 0.046241549686248155
   },
   {
    "variable": "salud_autopercibida",
    "edad_4": "18-34",
-   "tvd": 0.07713084901489131
+   "tvd": 0.07629834441949768
+  },
+  {
+   "variable": "salud_autopercibida",
+   "edad_4": "35-49",
+   "tvd": 0.0731940982750099
   },
   {
    "variable": "discapacidad_limitacion",
    "edad_4": "65+",
-   "tvd": 0.0986219042661324
+   "tvd": 0.0977784105853851
   },
   {
    "variable": "discapacidad_limitacion",
    "edad_4": "35-49",
-   "tvd": 0.08117554791617923
+   "tvd": 0.08176846785649203
   },
   {
    "variable": "discapacidad_limitacion",
    "edad_4": "18-34",
-   "tvd": 0.06208853185450819
+   "tvd": 0.06108352456012606
   },
   {
    "variable": "discapacidad_limitacion",
    "edad_4": "50-64",
-   "tvd": 0.08420479646382815
+   "tvd": 0.08641673893926027
   }
  ],
  "calidad": {
   "salud_autopercibida": {
-   "emparejada": 856115,
-   "extrapolada": 7351,
-   "observada": 136333
+   "emparejada": 856090,
+   "observada": 136451,
+   "extrapolada": 7335
   },
   "discapacidad_limitacion": {
-   "emparejada": 856115,
-   "observada": 136333,
-   "extrapolada": 7351
+   "emparejada": 856090,
+   "observada": 136451,
+   "extrapolada": 7335
   },
   "privacion_material": {
-   "observada": 136333,
-   "emparejada": 856115,
-   "extrapolada": 7351
+   "emparejada": 856090,
+   "observada": 136451,
+   "extrapolada": 7335
   },
   "privacion_material_n": {
-   "extrapolada": 7351,
-   "emparejada": 856115,
-   "observada": 136333
+   "emparejada": 856090,
+   "observada": 136451,
+   "extrapolada": 7335
   },
   "tipo_jornada": {
-   "extrapolada": 2604,
-   "observada": 536817,
-   "emparejada": 460378
+   "emparejada": 459759,
+   "observada": 537489,
+   "extrapolada": 2628
   },
   "sector_publico": {
-   "emparejada": 460378,
-   "observada": 536817,
-   "extrapolada": 2604
+   "extrapolada": 2628,
+   "observada": 537489,
+   "emparejada": 459759
   },
   "cursa_formacion": {
-   "observada": 599315,
-   "extrapolada": 4747,
-   "emparejada": 395737
+   "observada": 598838,
+   "extrapolada": 4707,
+   "emparejada": 396331
   },
   "uso_internet": {
-   "emparejada": 856115,
-   "observada": 136333,
-   "extrapolada": 7351
+   "observada": 136451,
+   "emparejada": 856090,
+   "extrapolada": 7335
   },
   "compra_online": {
-   "emparejada": 856115,
-   "extrapolada": 7351,
-   "observada": 136333
+   "extrapolada": 7335,
+   "emparejada": 856090,
+   "observada": 136451
   },
   "teletrabajo": {
-   "emparejada": 856115,
-   "observada": 136333,
-   "extrapolada": 7351
+   "observada": 136451,
+   "emparejada": 856090,
+   "extrapolada": 7335
   },
   "renta_hogar_decil": {
-   "emparejada": 992012,
-   "observada": 7787
+   "observada": 7770,
+   "emparejada": 992106
   },
   "renta_hogar_decil_ccaa": {
-   "observada": 7787,
-   "emparejada": 992012
+   "observada": 7770,
+   "emparejada": 992106
   },
   "tenencia_vivienda": {
-   "emparejada": 992012,
-   "observada": 7787
+   "emparejada": 992106,
+   "observada": 7770
   },
   "dificultad_fin_mes": {
-   "emparejada": 992012,
-   "observada": 7787
+   "emparejada": 992106,
+   "observada": 7770
   },
   "vehiculo_hogar": {
-   "observada": 7787,
-   "emparejada": 992012
+   "observada": 7770,
+   "emparejada": 992106
   },
   "ctx_renta_municipio": {
-   "observada": 791438,
-   "modelada": 208361
+   "observada": 790563,
+   "modelada": 209313
   },
   "ctx_envejecimiento": {
-   "modelada": 209002,
-   "observada": 790797
+   "observada": 789971,
+   "modelada": 209905
   }
  },
  "contexto": {
   "ctx_renta_municipio": {
-   "media": 15108.442725499786,
+   "media": 15109.968485266216,
    "nulos": 0,
    "calidad": {
-    "modelada": 208361,
-    "observada": 791438
+    "modelada": 209313,
+    "observada": 790563
    }
   },
   "ctx_envejecimiento": {
-   "media": 0.20768861666920688,
+   "media": 0.2076619314946916,
    "nulos": 0,
    "calidad": {
-    "observada": 790797,
-    "modelada": 209002
+    "modelada": 209905,
+    "observada": 789971
    }
   }
  }
