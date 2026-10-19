@@ -666,7 +666,13 @@ def _ampliar(
     )
     pos = obj.filter(pl.col("valor") > 0).select("objetivo", "clave", "valor")
     def_ = pos.join(n, on=["objetivo", "clave"], how="left").fill_null(0)
-    minimos = amp.min_donantes_objetivo
+    # Las listas de municipios toman sus donantes de su provincia y clase de municipio: la
+    # ampliación propia de las nacionalidades (D-051) traería hogares de otro grado de
+    # urbanización y desbordaría sus celdas (p. ej. zona intermedia en Valencia urbano)
+    propias = not b.startswith("MUNIS:")
+    minimos = amp.min_donantes_objetivo if propias else {}
+    razones_max = amp.razon_max_objetivo if propias else {}
+    razones_obj = amp.razon_objetivo_objetivo if propias else {}
 
     def minimo(o: str) -> int:
         return minimos.get(o, amp.min_donantes_celda)
@@ -675,7 +681,7 @@ def _ampliar(
         minimos, default=amp.min_donantes_celda, return_dtype=pl.Int64
     )
     razon_max_col = pl.col("objetivo").replace_strict(
-        amp.razon_max_objetivo, default=amp.razon_max, return_dtype=pl.Float64
+        razones_max, default=amp.razon_max, return_dtype=pl.Float64
     )
     if reparar is None:
         def_ = def_.filter(
@@ -775,7 +781,7 @@ def _ampliar(
             .drop("_rango")
         )
         if falta_r is not None or locales >= minimo(objetivo):
-            razon = amp.razon_objetivo_objetivo.get(objetivo, amp.razon_objetivo)
+            razon = razones_obj.get(objetivo, amp.razon_objetivo)
             falta = falta_r if falta_r is not None else valor / razon - masa
             acum = (pl.col("x") * pl.col("d")).cum_sum()
             t = cand.filter(acum.shift(1, fill_value=0) < falta).with_columns(

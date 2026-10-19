@@ -964,3 +964,4 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - **Regla:** una nacionalidad cuyo objetivo supera 1,5 veces la masa de sus donantes locales se amplía por la jerarquía hasta 1,2; antes, 3,5 y 2,5. Además, cada nacionalidad tiene al menos 30 hogares donantes.
   - **Resultado en la prueba de Aragón con 100.000 personas:** rojos de 8 a 5 y argentinos del 34 % al 23 %.
   - **Alternativa probada y descartada:** 1,2 y 1,0. No mejoraba (6 rojos) y añadía grupos en ámbar por donantes no locales.
+  - **Excepción:** la ampliación propia de las nacionalidades no se aplica a las listas de municipios, que ya toman sus donantes de su provincia y clase de municipio. Importar hogares de otras comunidades desbordaba sus celdas de grado de urbanización; en Valencia urbano, la zona intermedia quedaba +49 %.
