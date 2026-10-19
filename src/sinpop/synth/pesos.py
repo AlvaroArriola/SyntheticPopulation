@@ -666,10 +666,20 @@ def _ampliar(
     )
     pos = obj.filter(pl.col("valor") > 0).select("objetivo", "clave", "valor")
     def_ = pos.join(n, on=["objetivo", "clave"], how="left").fill_null(0)
+    minimos = amp.min_donantes_objetivo
+
+    def minimo(o: str) -> int:
+        return minimos.get(o, amp.min_donantes_celda)
+
+    min_col = pl.col("objetivo").replace_strict(
+        minimos, default=amp.min_donantes_celda, return_dtype=pl.Int64
+    )
+    razon_max_col = pl.col("objetivo").replace_strict(
+        amp.razon_max_objetivo, default=amp.razon_max, return_dtype=pl.Float64
+    )
     if reparar is None:
         def_ = def_.filter(
-            (pl.col("locales") < amp.min_donantes_celda)
-            | (pl.col("valor") > amp.razon_max * pl.col("masa"))
+            (pl.col("locales") < min_col) | (pl.col("valor") > razon_max_col * pl.col("masa"))
         ).sort("objetivo", "clave")
         def_ = def_.with_columns(pl.lit(None, dtype=pl.Float64).alias("falta"))
         evitar = pl.DataFrame(schema={"unidad": pl.Int64})
@@ -764,18 +774,23 @@ def _ampliar(
             .sort("_rango", "_o", "unidad")
             .drop("_rango")
         )
-        if falta_r is not None or locales >= amp.min_donantes_celda:
-            falta = falta_r if falta_r is not None else valor / amp.razon_objetivo - masa
+        if falta_r is not None or locales >= minimo(objetivo):
+            razon = amp.razon_objetivo_objetivo.get(objetivo, amp.razon_objetivo)
+            falta = falta_r if falta_r is not None else valor / razon - masa
             acum = (pl.col("x") * pl.col("d")).cum_sum()
             t = cand.filter(acum.shift(1, fill_value=0) < falta).with_columns(
                 pl.col("d").clip(upper_bound=d_max).alias("d_anadida")
             )
-        elif locales < amp.min_donantes_celda:
+        elif locales < minimo(objetivo):
             # Peso inicial para que las unidades añadidas sumen el objetivo de la celda contando
             # las personas de la celda que trae cada una (`x`): un hogar con 4 chinos cuenta 4
-            t = cand.head(amp.min_donantes_celda - locales)
+            # Las añadidas representan la parte del objetivo que corresponde a los donantes que
+            # faltan hasta el mínimo (todo el objetivo si no hay ninguno local)
+            k = minimo(objetivo)
+            t = cand.head(k - locales)
+            parte = valor * (k - locales) / k
             t = t.with_columns(
-                pl.lit(min(valor / max(float(t["x"].sum()), 1.0), d_max)).alias("d_anadida")
+                pl.lit(min(parte / max(float(t["x"].sum()), 1.0), d_max)).alias("d_anadida")
             )
         cuota = _pesos_provincias(b, ps, objetivo, clave_, prov_obj)
         # Cada unidad va a una provincia que tenga su grado de urbanización (p. ej. un hogar de

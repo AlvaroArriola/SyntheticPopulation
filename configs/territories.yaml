@@ -97,6 +97,16 @@ ccaa_parecidas:
 # `razon_max` veces la masa inicial de sus donantes (se amplía hasta `razon_objetivo`).
 ampliacion:
   min_donantes_celda: 5
+  # D-051: cada nacionalidad principal, de al menos 30 hogares donantes (los que falten, por la
+  # jerarquía): con menos, los 5 más usados pesan más del 20 % del grupo (V-CONCENTRACION)
+  min_donantes_objetivo:
+    nacionalidad_top: 30
+  # D-051: una nacionalidad cuyo objetivo supera 1,5 veces la masa de sus donantes locales se
+  # amplía hasta 1,2 (las que han crecido mucho desde 2021 clonaban 3-4 veces sus hogares)
+  razon_max_objetivo:
+    nacionalidad_top: 1.5
+  razon_objetivo_objetivo:
+    nacionalidad_top: 1.2
   razon_max: 3.5
   razon_objetivo: 2.5
 donantes_min_kish: 200

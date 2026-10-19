@@ -959,3 +959,8 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
      - **Personas que nunca usan internet:** ratio 1,11 frente a la TIC-H 2025; 1,04 si la población se repondera a la composición por edad × estudios de la TIC-H. El Censo Anual 2024, al que se calibran los estudios, tiene más personas con estudios obligatorios o menos que la muestra ponderada de la TIC-H (25-34 años: 27,5 % frente a 15,5 %).
      - **Carencia material y social severa:** la representación está dentro del intervalo de la ECV (ratio 0,95). Solo falla el perfil de actividad (TVD 0,085, con 3 categorías), porque la ECV mide el paro según lo que declara cada persona y la población usa el paro de la OIT de la EPA (D-049).
 - **Alternativas descartadas:** solo grupos de 200 o más; subir el mínimo de V-DIVERSIDAD a 500; mantener los criterios y declarar limitaciones; un criterio ajustado por composición para los grupos de encuestas.
+- **Medida correctora complementaria** (docs/06 §4, punto 3: ampliar los donantes de forma jerárquica): ampliación propia de `nacionalidad_top`.
+  - **Por qué:** muchas nacionalidades han crecido desde 2021 (por ejemplo, argentinos). Sus pocos hogares donantes llegaban al factor máximo y se clonaban 3 o 4 veces; en Aragón, los 5 donantes más usados daban el 34 % de los argentinos.
+  - **Regla:** una nacionalidad cuyo objetivo supera 1,5 veces la masa de sus donantes locales se amplía por la jerarquía hasta 1,2; antes, 3,5 y 2,5. Además, cada nacionalidad tiene al menos 30 hogares donantes.
+  - **Resultado en la prueba de Aragón con 100.000 personas:** rojos de 8 a 5 y argentinos del 34 % al 23 %.
+  - **Alternativa probada y descartada:** 1,2 y 1,0. No mejoraba (6 rojos) y añadía grupos en ámbar por donantes no locales.

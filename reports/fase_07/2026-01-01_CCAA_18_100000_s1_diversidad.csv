@@ -2,7 +2,7 @@ atributo,grupos,proporcion_ok,ratio_mediano,ok
 nacionalidad_grupo,22,1.0,1.0005208292981291,true
 pais_nacimiento_grupo,24,1.0,1.000279903018105,true
 estado_civil,24,1.0,0.99917811870332,true
-nivel_estudios,24,1.0,1.0000983334238733,true
+nivel_estudios,24,1.0,1.0000983334238736,true
 relacion_actividad,24,1.0,0.9992884349551503,true
 ocupacion,24,1.0,1.0003504832327548,true
 situacion_profesional,24,1.0,1.0007049367194671,true

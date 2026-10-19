@@ -231,8 +231,15 @@ class CCAAParecidas(Strict):
 
 class Ampliacion(Strict):
     min_donantes_celda: int = Field(gt=0)
+    # Mínimo propio de algunos objetivos (D-051): p. ej. cada nacionalidad, para que un grupo
+    # pequeño no salga de unos pocos hogares (V-CONCENTRACION)
+    min_donantes_objetivo: dict[str, int] = Field(default_factory=dict)
     razon_max: float = Field(gt=1)
     razon_objetivo: float = Field(gt=1)
+    # Razones propias de algunos objetivos (D-051): p. ej. las nacionalidades que han crecido
+    # desde 2021 se amplían antes, para no clonar mucho sus pocos hogares donantes
+    razon_max_objetivo: dict[str, float] = Field(default_factory=dict)
+    razon_objetivo_objetivo: dict[str, float] = Field(default_factory=dict)
 
 
 class TerritoriesConfig(Strict):
