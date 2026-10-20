@@ -22,6 +22,7 @@ import json
 import re
 import sys
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -56,6 +57,12 @@ def _get(url: str, reintentos: int = 6) -> str:
             if "Comprobación de acceso" in texto[:5000]:
                 raise RuntimeError("página de comprobación de acceso (anti-bots)")
             return texto
+        except urllib.error.HTTPError as exc:
+            if exc.code == 404:  # no existe: no se reintenta
+                raise RuntimeError(f"no existe ({url})") from exc
+            print(f"  fallo ({exc}); reintento {i + 1} en {espera} s", flush=True)
+            time.sleep(espera)
+            espera = min(espera * 2, 900)
         except Exception as exc:  # 429, cortes de conexión, tiempo agotado
             print(f"  fallo ({exc}); reintento {i + 1} en {espera} s", flush=True)
             time.sleep(espera)

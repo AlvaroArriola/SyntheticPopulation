@@ -3036,6 +3036,8 @@ variables:
     - media_baja
     - baja
     - obrera
+    - otras
+    - no_cree_clases
     descripcion: Clase social subjetiva
     fuente_principal: cis_barometros
     fuentes:

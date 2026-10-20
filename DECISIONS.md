@@ -1220,3 +1220,30 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 ### Aprobación de F7
 
 - **Estado:** aprobada por la persona responsable el 2026-10-20. Aprueba la población con las limitaciones declaradas (D-059, D-061 y D-062) y las decisiones D-049 a D-062.
+
+## D-063 · Capa de opinión: datos del CIS, armonización y variables de valores (2026-10-20)
+
+- **Fecha:** 2026-10-20
+- **Fase:** F8A
+- **Estado:** aprobada por el agente (la persona responsable delegó las decisiones de esta noche; los umbrales no se tocan y la puerta G8A.7 queda para revisión humana).
+- **Datos:**
+  - **Descarga:** la web del CIS limita las peticiones y corta conexiones. `tools/descargar_cis.py` va despacio y guarda en caché las fichas.
+    - La paginación del catálogo cae en una comprobación anti-bots, así que los barómetros se leen directamente de su ficha (`/en/surveys/barometro-de-<mes>-<año>`).
+    - Los estudios con trabajo de campo desde el 01/07/2026 van a `data/eval/cis/` (regla 5).
+  - **Universo:** los barómetros del CIS entrevistan a personas de **nacionalidad española** de 18 años y más (en el 3567, el 100 % de la muestra).
+- **Armonización** (`opinion/cis.py`):
+  - Todo se recodifica **por la etiqueta** de valor del fichero SPSS, nunca por el código, y una etiqueta no prevista detiene el proceso.
+  - El CIS numera las comunidades por orden alfabético (7 = Castilla-La Mancha, 8 = Castilla y León) y el INE al revés.
+  - Las clases de tamaño de municipio del CIS cortan en 400.000; la población usa las del Padrón. Se comparan en cinco clases comunes (hasta 2.000, 2.001-10.000, 10.001-50.000, 50.001-100.000 y más de 100.000).
+  - Estudios: la «F.P.» sin nivel se precisa con `NIVELESTENTREV` (grado medio → secundaria 2.ª etapa; grado superior → superior).
+  - «No sabe» y «No contesta» se conservan como categorías (regla 10).
+  - **Clase subjetiva** (`CLASESOCIAL`, respuesta espontánea codificada por el CIS): proletariado → obrera; pobre, infraclase, «los de abajo», excluidos y clase baja → baja. Se añaden «otras» y «no cree en las clases», que son respuestas reales, al dominio de `variables.yaml`.
+- **Modelo** (`opinion/valores.py`):
+  - Para cada variable, una regresión logística multinomial ponderada con el peso del CIS (normalizado por estudio).
+  - Predictores: sexo, grupo de edad, estudios, actividad, comunidad y tamaño de municipio.
+  - Se ajusta con los barómetros de los 12 meses anteriores al corte.
+  - A cada adulto sintético se le asigna una extracción aleatoria de su distribución predicha, con la semilla (docs/03 §2.4: no la media).
+- **Calidad y limitación:**
+  - Los extranjeros y los residentes en colectivos, fuera del universo del CIS, reciben la predicción con su perfil y se marcan `extrapolada`; el resto, `modelada`.
+  - Limitación declarada: en los extranjeros, el modelo de los españoles infravalora previsiblemente «otra religión», y no hay fuente oficial para corregirlo.
+- **Dependencias nuevas:** `pyreadstat`, `scikit-learn` y `statsmodels`. `semopy` no compila en el entorno; el análisis factorial confirmatorio de V-LATENTE se programa con `scipy`.
