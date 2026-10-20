@@ -1063,7 +1063,7 @@ def _g7_aceptado(territorio: str, grupo: str) -> bool:
     from sinpop.config import load_config
 
     cfg = load_config("thresholds.yaml").v_minorias  # type: ignore[attr-defined]
-    if grupo in cfg.limitaciones:
+    if grupo in cfg.limitaciones or f"{territorio}|{grupo}" in cfg.excepciones:
         return True
     return (
         cfg.nacionalidades_territoriales

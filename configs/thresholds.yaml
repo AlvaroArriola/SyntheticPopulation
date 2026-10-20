@@ -91,6 +91,13 @@ V-MINORIAS:
     privacion_severa: perfil de actividad (paro declarado en la ECV frente al de la OIT, D-051)
     nunca_internet: composición por estudios de la TIC-H frente al Censo Anual (D-051)
   nacionalidades_territoriales: true
+  # D-061 (aprobada): excepciones concretas, por territorio y grupo
+  excepciones:
+    "CCAA:05|municipios_menos_2000": clase de tamaño de municipio del Censo 2021 frente al Padrón 2025
+    "CCAA:13|municipios_menos_2000": clase de tamaño de municipio del Censo 2021 frente al Padrón 2025
+    "PROV:28|municipios_menos_2000": clase de tamaño de municipio del Censo 2021 frente al Padrón 2025
+    "PROV:42|nacidos_fuera_espanoles": perfil de edad 0,09 frente a 0,08 con cada donante copiado 5,5 veces
+    "PROV:42|sin_estudios": concentración con cada donante copiado 5,5 veces (como las nacionalidades)
 V-MINORIAS-PERFIL:
   tvd_max: 0.08
   # D-051: margen de muestreo, como V-MARG (D-038 A): umbral = máx(0,08; 1,2 × TVD_ref(n) + 0,002)

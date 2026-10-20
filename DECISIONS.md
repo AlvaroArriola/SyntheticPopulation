@@ -1188,3 +1188,18 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - `tests/unit/test_repartir_inactividad.py`.
   - Madrid, 100.000 personas: 20-24 con 33,8 % de estudiantes y 6,9 % de «otra inactividad»; ni-ni 8,5 %; 1.132 personas modeladas (1,1 %).
 - **Consecuencias:** se repiten F4-F7. Las calibraciones no cambian.
+
+## D-061 · Excepciones concretas aceptadas en G7 (2026-10-20)
+
+- **Fecha:** 2026-10-20
+- **Fase:** F7 (G7.7)
+- **Estado:** aprobada por la persona responsable el 2026-10-20 («Acepto ambos puntos»).
+- **Decisiones:** se aceptan como limitación declarada, solo en estos territorios. Aplicado en `V-MINORIAS.excepciones` y en G7.1-G7.4; el resultado estricto se informa siempre.
+  1. **Municipios de menos de 2.000 habitantes en Canarias y Madrid** (CCAA:05, CCAA:13 y PROV:28, que es la misma comunidad uniprovincial).
+     - Canarias: 0,75 % de la población frente al 0,47 % del Padrón 2025, unas 6.000 personas. Madrid: 0,77 % frente al 0,68 %.
+     - Los donantes traen la clase de tamaño de municipio del Censo 2021, y varios municipios cercanos a 2.000 habitantes han cambiado de clase.
+     - Es un objetivo reservado (de validación), no calibrado.
+  2. **Soria (PROV:42):**
+     - Perfil de edad de los nacidos fuera con nacionalidad española: TVD 0,09 frente a 0,08.
+     - Concentración de donantes en «sin estudios».
+     - La causa es la misma que la de las nacionalidades en territorios pequeños: con 50.000 personas sobre unos 90.000 habitantes, cada donante se copia unas 5,5 veces.

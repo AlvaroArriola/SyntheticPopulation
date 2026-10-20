@@ -400,6 +400,8 @@ class VMinorias(_Th):
     # España (territorios con pocos donantes por nacionalidad)
     limitaciones: dict[str, str] = {}
     nacionalidades_territoriales: bool = False
+    # Excepciones concretas aprobadas (D-061): "territorio|grupo" → motivo
+    excepciones: dict[str, str] = {}
 
 
 class VTvdMax(_Th):
