@@ -147,24 +147,55 @@ def barometros_por_ficha(desde: int, hasta: int) -> list[dict]:
     return out
 
 
+def por_ficha(fichas: list[str]) -> list[dict]:
+    """Estudios concretos por su ficha: «slug@AAAA-MM» (la fecha es la del trabajo de campo,
+    para separar los posteriores al corte)."""
+    out = []
+    for f in fichas:
+        slug, fecha = f.split("@")
+        url = f"{BASE}/en/surveys/{slug}"
+        try:
+            texto = _pagina(url, f"ficha_{slug[:80]}.html")
+        except RuntimeError as exc:
+            print(f"  sin ficha {slug}: {exc}", flush=True)
+            continue
+        m = re.search(r"/MD(\d+)\.zip", texto, re.I)
+        if not m:
+            print(f"  {slug}: sin microdatos publicados", flush=True)
+            continue
+        out.append({"estudio": m.group(1), "titulo": slug, "url": url, "fecha": f"{fecha}-01"})
+        print(f"  {slug}: estudio {m.group(1)}", flush=True)
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--tipos", default="barometro,sanitario")
     ap.add_argument("--max-paginas", type=int, default=12)
     ap.add_argument("--fichas-barometro", default="", help="años, p. ej. 2023-2025")
+    ap.add_argument("--fichas", default="", help="slug@AAAA-MM separados por comas")
+    ap.add_argument("--solo-fichas", action="store_true", help="sin catálogo")
     args = ap.parse_args()
     tipos = [TIPOS[t] for t in args.tipos.split(",")]
     lista = [
         e
-        for e in catalogo(args.max_paginas)
+        for e in (catalogo(args.max_paginas) if not args.solo_fichas else [])
         if dt.date.fromisoformat(e["fecha"]) >= DESDE and any(t.search(e["titulo"]) for t in tipos)
     ]
+    if args.fichas:
+        vistos = {e["estudio"] for e in lista}
+        lista += [e for e in por_ficha(args.fichas.split(",")) if e["estudio"] not in vistos]
     if args.fichas_barometro:
         a, b = (int(x) for x in args.fichas_barometro.split("-"))
         vistos = {e["estudio"] for e in lista}
         lista += [e for e in barometros_por_ficha(a, b) if e["estudio"] not in vistos]
         lista.sort(key=lambda e: e["fecha"])
-    (CACHE / "seleccion.json").write_text(json.dumps(lista, ensure_ascii=False, indent=1), "utf-8")
+    previa = CACHE / "seleccion.json"
+    if previa.exists():  # se acumula con las descargas anteriores
+        vistos = {e["estudio"] for e in lista}
+        lista += [e for e in json.loads(previa.read_text("utf-8")) if e["estudio"] not in vistos]
+        lista.sort(key=lambda e: e["fecha"])
+    previa.write_text(json.dumps(lista, ensure_ascii=False, indent=1), "utf-8")
     print(f"{len(lista)} estudios seleccionados", flush=True)
     for e in lista:
         posterior = dt.date.fromisoformat(e["fecha"]) >= CORTE
