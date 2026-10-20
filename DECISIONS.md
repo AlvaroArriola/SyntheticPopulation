@@ -1074,3 +1074,20 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - En Ceuta no lo resuelve: con pocos o ningún donante, un único hogar ucraniano importado daba 4,2 veces el objetivo.
   - Se mantiene el umbral de 100 y no se abre decisión propia.
 - **Consecuencias:** cambian las calibraciones de todos los territorios salvo las listas de municipios, que siguen la excepción de D-051. Se repiten F4-F7.
+
+## D-056 · V-MARG en N = 10.000: un fallo aislado por azar (2026-10-20)
+
+- **Fecha:** 2026-10-20
+- **Fase:** F4 (serie repetida con D-053 y D-054)
+- **Estado:** propuesta. Pendiente de aprobación humana; la puerta G4.1 queda fallida en estricto.
+- **Contexto:** G4.1 falla en 1 de 8.480 comprobaciones.
+  - Es el tipo de residencia (vivienda familiar o colectivo) de Navarra en la población de España de 10.000 personas con semilla 1.
+  - Navarra tiene allí 139 personas: TVD 0,0208 frente a un umbral de 0,0183, unas 3 personas de diferencia en colectivos.
+  - El mismo indicador queda muy por dentro del umbral en las otras 4 semillas de N = 10.000 (TVD de 0,0007 a 0,008) y en las 20 poblaciones de 50.000 a 1.000.000 (TVD ≤ 0,0021, con umbrales de 0,0036 a 0,0098).
+  - Detalle en `reports/fase_04/*_v_marg.csv`.
+- **Por qué es azar:** el umbral, 1,2 × el percentil 95 de TVD_ref + 0,002, deja una probabilidad pequeña pero no nula de fallo por celda. Con 8.480 comprobaciones, un fallo aislado en la población más pequeña es esperable. El patrón no es sistemático: no se repite en otra semilla ni en otro tamaño.
+- **Propuesta** (como D-047 para V-SEMILLAS y D-039 para V-CRUCE): una marginal solo falla V-MARG en la serie de F4 si queda fuera del umbral en dos o más poblaciones de la serie (semillas o tamaños). El resultado estricto se informa siempre.
+- **Alternativas:**
+  1. Repetir la semilla 1 con otra semilla. Se descarta porque elegir la semilla hasta que pase sería manipular el resultado.
+  2. Aceptar el fallo como limitación declarada.
+- **Aprobada por:** pendiente (G7.7).
