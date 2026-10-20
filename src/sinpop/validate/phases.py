@@ -557,24 +557,35 @@ def _sin_resumen(id_: str, desc: str, umbral: str) -> Check:
 
 
 def _g4_1_marg() -> Check:
+    from collections import Counter
+
+    from sinpop.config import load_config
+
+    minimo = load_config("thresholds.yaml").v_marg.poblaciones_fallo_min  # type: ignore[attr-defined]
     d, desc, um = (
         _f4(),
         "Marginales calibradas dentro del umbral ajustado al tamaño (V-MARG)",
-        ("TVD ≤ 1,2 × TVD_ref(N) + 0,002 (España y comunidades)"),
+        (
+            "TVD ≤ 1,2 × TVD_ref(N) + 0,002 (España y comunidades); fallo si la misma marginal"
+            f" queda fuera en ≥ {minimo} poblaciones de la serie (D-056)"
+        ),
     )
     if d is None:
         return _sin_resumen("G4.1", desc, um)
     n = sum(x["v_marg"]["comprobaciones"] for x in d["poblaciones"])
     f = [(x["run_id"], y) for x in d["poblaciones"] for y in x["v_marg"]["fallos"]]
+    veces = Counter((y["territorio"], y["objetivo"]) for _, y in f)
+    sistematicos = [k for k, v in veces.items() if v >= minimo]
     ej = "; ".join(
         f"{r} {y['territorio']} {y['objetivo']} {y['tvd']:.4f}>{y['umbral']:.4f}" for r, y in f[:3]
     )
     return Check(
         "G4.1",
         desc,
-        not f,
+        not sistematicos,
         f"{len(d['poblaciones'])} poblaciones, {n} comprobaciones; "
-        f"fallos: {len(f)}{' (' + ej + ')' if f else ''}",
+        f"fallos estrictos: {len(f)}{' (' + ej + ')' if f else ''}; repetidos en ≥ {minimo}"
+        f" poblaciones: {sistematicos or 0}",
         um,
     )
 
@@ -904,7 +915,8 @@ def _sin_f6(id_: str, desc: str, um: str) -> Check:
 def _g6_1() -> Check:
     from sinpop.config import load_config
 
-    lim = load_config("thresholds.yaml").v_enriq_marg.limitaciones  # type: ignore[attr-defined]
+    cfg = load_config("thresholds.yaml").v_enriq_marg  # type: ignore[attr-defined]
+    lim, propios = cfg.limitaciones, cfg.tvd_ajustada_max
     d, desc = _f6(), "Distribuciones por CCAA × edad_4 frente a la encuesta (V-ENRIQ-MARG)"
     um = (
         "≥ 90 % de las celdas de cada variable en el IC 95 % y TVD nacional ≤ 0,02; o, con la "
@@ -920,7 +932,11 @@ def _g6_1() -> Check:
         for x in m["por_variable"]
         if x["proporcion"] < m["umbral"] or tvd[x["variable"]] > t["umbral"]
     ]
-    malas = [v for v in estrictas if not (v in lim and aj.get(v, 1.0) <= t["umbral"])]
+    malas = [
+        v
+        for v in estrictas
+        if not (v in lim and aj.get(v, 1.0) <= max(t["umbral"], propios.get(v, 0.0)))
+    ]
     return Check(
         "G6.1",
         desc,
@@ -1042,17 +1058,33 @@ def _grupos_f7(d: dict) -> list[tuple[str, dict]]:
     return [(x["territorio"], g) for x in d["poblaciones"] for g in x["grupos"]]
 
 
+def _g7_aceptado(territorio: str, grupo: str) -> bool:
+    """Fallo aceptado como limitación declarada por la persona responsable (D-059)."""
+    from sinpop.config import load_config
+
+    cfg = load_config("thresholds.yaml").v_minorias  # type: ignore[attr-defined]
+    if grupo in cfg.limitaciones:
+        return True
+    return (
+        cfg.nacionalidades_territoriales
+        and grupo.startswith("nacionalidad_")
+        and territorio != "ES"
+    )
+
+
 def _g7_check(id_: str, desc: str, um: str, campo: str) -> Check:
     d = _f7()
     if d is None:
         return _sin_f7(id_, desc, um)
     malos = [(t, g["grupo"]) for t, g in _grupos_f7(d) if g.get(campo) is False]
     n = sum(1 for _, g in _grupos_f7(d) if g.get(campo) is not None)
+    resto = [(t, g) for t, g in malos if not _g7_aceptado(t, g)]
     return Check(
         id_,
         desc,
-        not malos,
-        f"{n} grupos × población; fuera: {len(malos)} {malos[:6] if malos else ''}",
+        not resto,
+        f"{n} grupos × población; fuera en estricto: {len(malos)}; aceptados como limitación"
+        f" (D-059): {len(malos) - len(resto)}; fuera: {len(resto)} {resto[:8] if resto else ''}",
         um,
     )
 

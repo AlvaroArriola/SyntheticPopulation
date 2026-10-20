@@ -8,6 +8,9 @@ V-MARG:
   tolerancia: 0.002
   muestras_ref: 200
   percentil_ref: 95
+  # D-056 (aprobada): en la serie de F4, una marginal solo falla si queda fuera en dos o más
+  # poblaciones (semillas o tamaños); un fallo aislado es azar. El estricto se informa siempre.
+  poblaciones_fallo_min: 2
 V-CRUCE:
   espana: 0.03
   ccaa: 0.05
@@ -70,6 +73,9 @@ V-ENRIQ-MARG:
     tipo_jornada: regional
     sector_publico: regional
     teletrabajo: fecha (ocupados del 2T 2026 frente a la TIC-H 2025)
+  # D-059 (aprobada): la tenencia, con D-058, queda en 0,0206 con la composición de la encuesta
+  tvd_ajustada_max:
+    tenencia_vivienda: 0.021
 V-ENRIQ-ASOC:
   max_abs_dif: 0.05
 V-ENRIQ-BLOQUE:
@@ -80,6 +86,11 @@ V-ENRIQ-HOLDOUT:
 V-MINORIAS:
   ratio: [0.9, 1.1]
   recuento_esperado_min: 200
+  # D-059 (aprobada en G7.7): fallos aceptados como limitación declarada (el estricto se informa)
+  limitaciones:
+    privacion_severa: perfil de actividad (paro declarado en la ECV frente al de la OIT, D-051)
+    nunca_internet: composición por estudios de la TIC-H frente al Censo Anual (D-051)
+  nacionalidades_territoriales: true
 V-MINORIAS-PERFIL:
   tvd_max: 0.08
   # D-051: margen de muestreo, como V-MARG (D-038 A): umbral = máx(0,08; 1,2 × TVD_ref(n) + 0,002)

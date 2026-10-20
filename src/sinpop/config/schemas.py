@@ -318,6 +318,9 @@ class VMarg(_Th):
     tolerancia: float = Field(ge=0)
     muestras_ref: int = Field(gt=0)
     percentil_ref: float = Field(gt=0, lt=100)
+    # D-056: en la serie de F4, una marginal solo falla si queda fuera en este número de
+    # poblaciones o más (azar frente a sesgo, como D-047)
+    poblaciones_fallo_min: int = Field(default=1, ge=1)
 
 
 class ExcepcionCruce(Strict):
@@ -376,6 +379,8 @@ class VEnriqMarg(_Th):
     proporcion_celdas_ic95: float
     tvd_nacional: float
     limitaciones: dict[str, str] = {}
+    # TVD ajustada máxima propia de una limitación, aprobada por la persona responsable (D-059)
+    tvd_ajustada_max: dict[str, float] = {}
 
 
 class VDelta(_Th):
@@ -390,6 +395,11 @@ class VEnriqBloque(_Th):
 class VMinorias(_Th):
     ratio: Rango
     recuento_esperado_min: int
+    # D-059: fallos de G7.1, G7.3 y G7.4 aceptados como limitación declarada por la persona
+    # responsable: grupos (en cualquier población) y nacionalidades fuera de la población de
+    # España (territorios con pocos donantes por nacionalidad)
+    limitaciones: dict[str, str] = {}
+    nacionalidades_territoriales: bool = False
 
 
 class VTvdMax(_Th):

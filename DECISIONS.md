@@ -811,7 +811,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-17
 - **Fase:** F7 (corrige F2-F3)
-- **Estado:** en vigor. Son medidas correctoras de docs/06 §4: primero revisar los datos de entrada y, si hay cifra oficial, calibrar el grupo. Se presentan en la revisión humana G7.7.
+- **Estado:** aprobada por la persona responsable el 2026-10-20 (G7.7, D-059). Son medidas correctoras de docs/06 §4: primero revisar los datos de entrada y, si hay cifra oficial, calibrar el grupo.
 - **Contexto:** la primera auditoría de la población nacional (1.000.000, semilla 1) da tres grupos con representación fuera de rango y perfiles de actividad desviados.
   - Jóvenes de 18 a 24 que ni estudian ni trabajan: 26 % frente al 13 % de la ECV 2025.
   - Personas sin estudios: ratio 1,16 frente al Censo Anual 2024.
@@ -862,7 +862,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-17
 - **Fase:** F7 (corrige F3, F6 y la lista de vigilancia)
-- **Estado:** aprobada por la persona responsable el 2026-10-17. Eligió las cuatro opciones recomendadas.
+- **Estado:** aprobada por la persona responsable el 2026-10-17. Eligió las cuatro opciones recomendadas. Ratificada en G7.7 (D-059).
 - **Contexto:** la cadena F4-F7 repetida tras D-049 deja estos fallos:
   - **G4.2:** estado civil × edad, sistemático a 10.000 personas.
   - **G5.2:** V de Cramér de actividad × sexo.
@@ -970,7 +970,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-19
 - **Fase:** F7
-- **Estado:** propuesta. Se aplica en la auditoría y queda pendiente de aprobación humana en G7.7.
+- **Estado:** aprobada por la persona responsable el 2026-10-20 (G7.7, D-059).
 - **Contexto:**
   - El margen de muestreo de D-051 compara el perfil del grupo sintético (n personas) con el perfil oficial como si este fuera exacto.
   - Eso vale para las fuentes exhaustivas: ECP, Padrón, Censo Anual y objetivos.
@@ -1000,7 +1000,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Consecuencias:**
   - En España el margen apenas cambia: 0,03-0,04, por debajo del mínimo de 0,08. Por eso sigue en rojo el perfil de actividad de la privación severa (0,085), que es la limitación ya declarada en D-051.4.
   - Por comunidad y provincia, el rojo solo salta cuando la diferencia supera lo que la propia encuesta puede distinguir.
-- **Aprobada por:** pendiente (G7.7).
+- **Aprobada por:** humano (2026-10-20, D-059).
 
 ## D-053 · Inclinación de la ECV por comunidad: limitación grave y privación severa (2026-10-20)
 
@@ -1079,7 +1079,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-20
 - **Fase:** F4 (serie repetida con D-053 y D-054)
-- **Estado:** propuesta. Pendiente de aprobación humana; la puerta G4.1 queda fallida en estricto.
+- **Estado:** aprobada por la persona responsable el 2026-10-20 (D-059). Aplicada en `thresholds.yaml` (`V-MARG.poblaciones_fallo_min`) y en la puerta G4.1.
 - **Contexto:** G4.1 falla en 1 de 8.480 comprobaciones.
   - Es el tipo de residencia (vivienda familiar o colectivo) de Navarra en la población de España de 10.000 personas con semilla 1.
   - Navarra tiene allí 139 personas: TVD 0,0208 frente a un umbral de 0,0183, unas 3 personas de diferencia en colectivos.
@@ -1090,7 +1090,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Alternativas:**
   1. Repetir la semilla 1 con otra semilla. Se descarta porque elegir la semilla hasta que pase sería manipular el resultado.
   2. Aceptar el fallo como limitación declarada.
-- **Aprobada por:** pendiente (G7.7).
+- **Aprobada por:** humano (2026-10-20, D-059).
 
 ## D-057 · Tamaño de municipio de los hogares añadidos desde otra provincia (2026-10-20)
 
@@ -1141,3 +1141,24 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - No se relaja el umbral. Se pide decidir entre:
     1. aceptar la tenencia como limitación con esa TVD;
     2. volver a la versión sin D-058 (commit `b9ec7a2`), que supera G6.1 pero deja el sexo de paraguayos y hondureños desviado (+8 y +5,5 puntos de mujeres).
+
+## D-059 · Revisión humana de F7: decisiones aprobadas (2026-10-20)
+
+- **Fecha:** 2026-10-20
+- **Fase:** F7 (G7.7)
+- **Estado:** aprobada por la persona responsable el 2026-10-20. Aceptó las recomendaciones del agente («Venga. Adelante»).
+- **Decisiones:**
+  1. **D-049 y D-050**, aprobadas.
+  2. **D-052** (umbral de perfil con el error de muestreo de la encuesta de referencia), aprobada.
+  3. **D-056** (un fallo aislado de V-MARG en la serie de F4 es azar si no se repite en otra población), aprobada.
+     - Aplicada en `thresholds.yaml` (`V-MARG.poblaciones_fallo_min: 2`) y en G4.1.
+     - El resultado estricto se informa siempre.
+  4. **Se mantiene D-058** (sexo de las nacionalidades calibrado) y la tenencia de la vivienda se acepta como limitación con su TVD ajustada de 0,0206.
+     - Aplicado en `V-ENRIQ-MARG.tvd_ajustada_max` y en G6.1.
+  5. **Fallos aceptados como limitación declarada** en G7.1, G7.3 y G7.4. Aplicado en `V-MINORIAS.limitaciones` y `nacionalidades_territoriales`; el estricto se informa siempre.
+     - Las nacionalidades minoritarias en las poblaciones de comunidades, provincias y municipios. Causa: muestra del 10 % del Censo 2021; en Ceuta y Melilla, además, la población de prueba es mayor que la real.
+     - La carencia material severa (perfil de actividad) y las personas que nunca usan internet (representación), en cualquier población (D-051).
+  6. **Propuesta del agente para F5 y siguientes, aceptada:** el tamaño por defecto de la población de un territorio no debe superar su población real. Generar Ceuta o Melilla con 100.000 personas solo multiplica las copias de los donantes. Se aplicará cuando se repita la serie de F5.
+- **Lo que no cubre esta aprobación:**
+  - Los fallos de G7 fuera de esas categorías: municipios de menos de 2.000 habitantes en Canarias y Madrid, jóvenes ni-ni en seis poblaciones, y nacidos fuera con nacionalidad española y «sin estudios» en Soria.
+  - El agente los investiga antes de cerrar F7.
