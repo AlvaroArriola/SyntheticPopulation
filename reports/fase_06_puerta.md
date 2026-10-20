@@ -1,7 +1,7 @@
 # Puerta de la fase F6
 
 **Resultado:** superada  
-**Fecha:** 2026-10-20 · **Versión del código:** git:e911ae6-dirty  
+**Fecha:** 2026-10-20 · **Versión del código:** git:6162e0f-dirty  
 **Comando:** `sinpop validate --phase 6`
 
 | ID | Comprobación | Resultado | Valor | Umbral |

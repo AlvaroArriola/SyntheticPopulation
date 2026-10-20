@@ -1,7 +1,7 @@
 {
  "territorio": "ES",
  "fecha": "2026-10-20",
- "version_codigo": "git:402e437-dirty",
+ "version_codigo": "git:6162e0f-dirty",
  "comando": "python -m sinpop.validate.fase4",
  "calibracion": {
   "metodo": "logit",
@@ -11687,7 +11687,7 @@
    "obtenido": 9977,
    "semilla": 1,
    "sha256": {
-    "persons.parquet": "e42f0ded05c3cdae791e1a8ef2d31c840d98ca8a4bdcdf2318df919fdd886e1f",
+    "persons.parquet": "c3cb760c1b3d3ed4129f529063b4e824fac46e6b7c1b8088aac0338aecf6cc79",
     "households.parquet": "45a7b1626838b7b32e89b93ad1acd3b8a3ed0fc0e51656dd56fc53bfea44e9b8",
     "lineage.parquet": "85c0a499044874700c2e3fbd631d22770dc184b2b285c4054e387359008c633c"
    },
@@ -11831,14 +11831,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.018935036834534177,
+      "tvd": 0.018231093486243116,
       "tvd_ref": 0.029184272109407675,
       "umbral": 0.03702112653128921,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.009262195887125624,
+      "tvd": 0.00806810788363061,
       "tvd_ref": 0.017012124494629865,
       "umbral": 0.03,
       "ok": true
@@ -11886,7 +11886,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.013872133421849947,
+    "tvd_media_espana": 0.013634879502876687,
     "fallos_estricto": [
      {
       "nivel": "ccaa",
@@ -12187,7 +12187,7 @@
    "obtenido": 9962,
    "semilla": 2,
    "sha256": {
-    "persons.parquet": "4dfb4d2bf22356c095ee5934826310a2fce59ae7b683d287828cd1d7841e2d4d",
+    "persons.parquet": "191198a17fe930342019b7679dfb81eeb2db85706d6493d916f7cf349690400d",
     "households.parquet": "0e22b0caae1837c4381b3f0b04b7726834bf2fe737276052c8b2f1ca836af612",
     "lineage.parquet": "f9034d76257f5014c2329c5616f6f26442d2f1980343672632e5dd7a2750bb8e"
    },
@@ -12260,14 +12260,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.018891669252122014,
+      "tvd": 0.018010833631413713,
       "tvd_ref": 0.029314491503625577,
       "umbral": 0.037177389804350695,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.010932374237082317,
+      "tvd": 0.010330085540033538,
       "tvd_ref": 0.018317750594754233,
       "umbral": 0.03,
       "ok": true
@@ -12315,7 +12315,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.01751777762874631,
+    "tvd_media_espana": 0.017332387089026673,
     "fallos_estricto": [
      {
       "nivel": "ccaa",
@@ -12492,8 +12492,8 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0002007628990162618,
-     "exceso_relativo": -0.6505185787501899,
+     "frecuencia_sintetica": 0.0001003814495081309,
+     "exceso_relativo": -0.825259289375095,
      "ok_estricto": true,
      "ok": true
     },
@@ -12553,7 +12553,7 @@
    "obtenido": 9967,
    "semilla": 3,
    "sha256": {
-    "persons.parquet": "85452ab35928feae48fc0b3feebbf1f66f3ade22fb8ae56a010402b59f57c2f0",
+    "persons.parquet": "b46364ffb9135445ce7bc00a14e021a7966c1305e6b23b696b493c06789ca4ed",
     "households.parquet": "3c8bf51fa92f26bddedc721c88a25ff1098c56a0b42ceb66d024690236947850",
     "lineage.parquet": "7dd754f199d6def117a96ab14164186a7ce5dc7615f8e631014945e73484a962"
    },
@@ -12682,14 +12682,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.017081392325127526,
+      "tvd": 0.01630129065224508,
       "tvd_ref": 0.029801336722064333,
       "umbral": 0.0377616040664772,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.011257946457494403,
+      "tvd": 0.010254635531438417,
       "tvd_ref": 0.018267823654809574,
       "umbral": 0.03,
       "ok": true
@@ -12737,7 +12737,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.015165034003809686,
+    "tvd_media_espana": 0.014942107428942381,
     "fallos_estricto": [
      {
       "nivel": "ccaa",
@@ -12963,8 +12963,8 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0,
-     "exceso_relativo": -1.0,
+     "frecuencia_sintetica": 0.00010033109260559848,
+     "exceso_relativo": -0.8253469490071934,
      "ok_estricto": true,
      "ok": true
     },
@@ -13024,7 +13024,7 @@
    "obtenido": 9977,
    "semilla": 4,
    "sha256": {
-    "persons.parquet": "646db9b6d9126f1e80c4f553a268886ed13816981971e1ba8c4e98066217307e",
+    "persons.parquet": "ec1c365b7a335292b2a2ef0eea9fadbeb820bb270c3cb8c3788d2e5263231e6b",
     "households.parquet": "24ead5a2d7ebd385119432d2277180b108c28232984b924642f5794d2e03029a",
     "lineage.parquet": "54cc358429b9cc9124d6d0ee21bb606910b1f34cd71b663cbbd566ede804d8a8"
    },
@@ -13097,14 +13097,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.022135795544546377,
+      "tvd": 0.02144721917201035,
       "tvd_ref": 0.029546269864951836,
       "umbral": 0.037455523837942206,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.010259340067515626,
+      "tvd": 0.009156804235101075,
       "tvd_ref": 0.01845038088123092,
       "umbral": 0.03,
       "ok": true
@@ -13152,7 +13152,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.01616340707717426,
+    "tvd_media_espana": 0.01593951805155544,
     "fallos_estricto": [
      {
       "nivel": "ccaa",
@@ -13312,7 +13312,7 @@
       "nivel": "provincia",
       "territorio": "PROV:47",
       "objetivo": "actividad_edad",
-      "tvd": 0.30105336785480513,
+      "tvd": 0.3040480974955697,
       "umbral_estricto": 0.2787256867848403
      }
     ]
@@ -13371,8 +13371,8 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.00040092212087801946,
-     "exceso_relativo": -0.3020880187449919,
+     "frecuencia_sintetica": 0.00030069159065851457,
+     "exceso_relativo": -0.476566014058744,
      "ok_estricto": true,
      "ok": true
     },
@@ -13432,7 +13432,7 @@
    "obtenido": 9964,
    "semilla": 5,
    "sha256": {
-    "persons.parquet": "baba4ae4feeea32dcbd85c851902e360e8b9fcfd46f6558293c3227788a54eed",
+    "persons.parquet": "c4219955215e764219c86872579c8bb543b37051d5fc76de303643d53ee4a917",
     "households.parquet": "af6534ab844960327ba87a7613fb53e415369e99024c073a7df3bf2f1cd6b6bc",
     "lineage.parquet": "f483b8c3ed55b3bf3c1f2c7c53c06755e20446131337a1b773ca8d465221934e"
    },
@@ -13497,14 +13497,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.019929716620970376,
+      "tvd": 0.018825742313463355,
       "tvd_ref": 0.028663495680384433,
       "umbral": 0.03639619481646132,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.009367016337391103,
+      "tvd": 0.008263042029884076,
       "tvd_ref": 0.016726167173873197,
       "umbral": 0.03,
       "ok": true
@@ -13552,7 +13552,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.01652104554092259,
+    "tvd_media_espana": 0.016245051964045833,
     "fallos_estricto": [
      {
       "nivel": "ccaa",
@@ -13715,8 +13715,8 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0004014452027298274,
-     "exceso_relativo": -0.30117745514038385,
+     "frecuencia_sintetica": 0.00030108390204737056,
+     "exceso_relativo": -0.47588309135528784,
      "ok_estricto": true,
      "ok": true
     },
@@ -13776,7 +13776,7 @@
    "obtenido": 49977,
    "semilla": 1,
    "sha256": {
-    "persons.parquet": "2ee69524b3f13098c1ee89f3f613f8cdbe15550c04a43d958b7184a6cd922e70",
+    "persons.parquet": "cab42bf9ae9883641b44e2bccfc11f7768d0859150d76f855ce1a96614ba49b1",
     "households.parquet": "17f17098ec9acbd402dc2751d9a34bef2c6890827e405c035679cb053f4ab6c1",
     "lineage.parquet": "1b7ce58b1be644577728953eb72d7b6c21567e282e954d4d7612d6ed53debf60"
    },
@@ -13825,14 +13825,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.013373576484196707,
+      "tvd": 0.01238210681138774,
       "tvd_ref": 0.012351292405594235,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.007011685337401618,
+      "tvd": 0.005871160696066603,
       "tvd_ref": 0.007658372415728735,
       "umbral": 0.03,
       "ok": true
@@ -13880,7 +13880,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.00970966856560395,
+    "tvd_media_espana": 0.009443169276335952,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -13942,7 +13942,7 @@
       "nivel": "provincia",
       "territorio": "PROV:49",
       "objetivo": "actividad_edad",
-      "tvd": 0.2231324076796345,
+      "tvd": 0.2255070092634795,
       "umbral_estricto": 0.21649028575043905
      }
     ]
@@ -14062,7 +14062,7 @@
    "obtenido": 49953,
    "semilla": 2,
    "sha256": {
-    "persons.parquet": "7fd7f452e9153f62bcfdff74a8ac88edcad4c581aacdf451904f1c4ad245ed7b",
+    "persons.parquet": "382e6989f02a16a9f2e5420f54993491275ddc02f059691de7332db510f1ec1b",
     "households.parquet": "e1edad8bab27e6d40ef6d7aaac9bb53f2abd9658b401ec663dd20dc1da165da5",
     "lineage.parquet": "a2940850f09e2cb70637bb5a72a09038b7a2f51634b6eb44404e5915b436fe48"
    },
@@ -14087,14 +14087,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.014101706277237412,
+      "tvd": 0.013309560021742457,
       "tvd_ref": 0.012947427697304306,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.006590153796011532,
+      "tvd": 0.005623640761490864,
       "tvd_ref": 0.008036645123359325,
       "umbral": 0.03,
       "ok": true
@@ -14142,7 +14142,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.010397593746215272,
+    "tvd_media_espana": 0.01017776133496332,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -14214,8 +14214,8 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0003603387183952916,
-     "exceso_relativo": -0.3727342648806785,
+     "frecuencia_sintetica": 0.0004203951714611735,
+     "exceso_relativo": -0.26818997569412495,
      "ok_estricto": true,
      "ok": true
     },
@@ -14275,7 +14275,7 @@
    "obtenido": 49956,
    "semilla": 3,
    "sha256": {
-    "persons.parquet": "9229dba198f30885c19fd8c2877a851b4ded838ac5329e5652eea1a97657dea4",
+    "persons.parquet": "f8b91cc2b4c4065bab2c2d10e343fb095f99282811be0bf73523f00c4f8930e8",
     "households.parquet": "b3b16c0c5e37292085dfeba56a895a2e350286d423e6bcf8e539b8e85fed506c",
     "lineage.parquet": "2b8384fef5d5bf91aed8ad0a0c512dcd7fe068dc5a5fe83c4e9c67b407d63689"
    },
@@ -14316,14 +14316,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.010070784875533801,
+      "tvd": 0.008957672032071444,
       "tvd_ref": 0.012238374188378726,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.007322582659077733,
+      "tvd": 0.006221613806487452,
       "tvd_ref": 0.008340698888330401,
       "umbral": 0.03,
       "ok": true
@@ -14371,7 +14371,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008913014825569799,
+    "tvd_media_espana": 0.008636254613563219,
     "fallos_estricto": [
      {
       "nivel": "ccaa",
@@ -14405,7 +14405,7 @@
       "nivel": "provincia",
       "territorio": "PROV:20",
       "objetivo": "actividad_edad",
-      "tvd": 0.10175004873282863,
+      "tvd": 0.10151290273335206,
       "umbral_estricto": 0.10026634510954613
      },
      {
@@ -14485,8 +14485,8 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.000540475618544319,
-     "exceso_relativo": -0.059157900960381204,
+     "frecuencia_sintetica": 0.0005604932340459605,
+     "exceso_relativo": -0.02431189729224703,
      "ok_estricto": true,
      "ok": true
     },
@@ -14546,7 +14546,7 @@
    "obtenido": 49938,
    "semilla": 4,
    "sha256": {
-    "persons.parquet": "6d8d17e103d20c048186f74045472307e78cb39c30d4792ecc0d587152016fe2",
+    "persons.parquet": "3351406317250924b31852d30a8e87511f7c2112e51c27efa4a5e9a301b111e4",
     "households.parquet": "92069244daaa03578599741803ea74ae1a10abc834b3889f02d9b02b3aa36c21",
     "lineage.parquet": "42c031d2bd88b96c2e831561538019ecb62d768fd0166fa009d12d4bb073538d"
    },
@@ -14587,14 +14587,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.01407918543944777,
+      "tvd": 0.01307251176404751,
       "tvd_ref": 0.013154801726700489,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.007980969367372947,
+      "tvd": 0.006819529181542515,
       "tvd_ref": 0.008307176082511665,
       "umbral": 0.03,
       "ok": true
@@ -14642,7 +14642,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.009880821849281074,
+    "tvd_media_espana": 0.009609807616627237,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -14735,8 +14735,8 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005206456005446754,
-     "exceso_relativo": -0.09367734109540027,
+     "frecuencia_sintetica": 0.0005406704313348552,
+     "exceso_relativo": -0.0588187772913773,
      "ok_estricto": true,
      "ok": true
     },
@@ -14796,7 +14796,7 @@
    "obtenido": 49946,
    "semilla": 5,
    "sha256": {
-    "persons.parquet": "4bd705d923020b2688cde661711407567dca6cda55c2a4df0cd01af83ce40ba0",
+    "persons.parquet": "ad718da4f351377bd0dcaceff7ae4c880e73659e29f2303a7b9206266526c090",
     "households.parquet": "087069692ad39eb0f28678eaf35658eb618cd13c1bc3647c740463f3afb9c353",
     "lineage.parquet": "cff4dd253a9247424e38cb4c1dfd3440629effd2e74e13df7e9da8e6706b178e"
    },
@@ -14821,14 +14821,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.013731183777644615,
+      "tvd": 0.012516723420546114,
       "tvd_ref": 0.012635916053074821,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.00794253139326239,
+      "tvd": 0.006801298862128771,
       "tvd_ref": 0.007451631093402418,
       "umbral": 0.03,
       "ok": true
@@ -14876,7 +14876,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.009361233668854082,
+    "tvd_media_espana": 0.009066772057825067,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -14909,15 +14909,8 @@
      {
       "nivel": "provincia",
       "territorio": "PROV:42",
-      "objetivo": "actividad_edad",
-      "tvd": 0.24897259385448028,
-      "umbral_estricto": 0.24842632819005725
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:42",
       "objetivo": "actividad_sexo",
-      "tvd": 0.1692931261292043,
+      "tvd": 0.17187878386739722,
       "umbral_estricto": 0.16686628757119554
      }
     ]
@@ -14976,8 +14969,8 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005205622071837585,
-     "exceso_relativo": -0.09382250950270499,
+     "frecuencia_sintetica": 0.00054058383053698,
+     "exceso_relativo": -0.0589695290989628,
      "ok_estricto": true,
      "ok": true
     },
@@ -15037,7 +15030,7 @@
    "obtenido": 99891,
    "semilla": 1,
    "sha256": {
-    "persons.parquet": "879f4e997dddd9f3ec24222825d763f48af9daa0b2b1dbb23abb2754781b88a4",
+    "persons.parquet": "3b50f4dd1d203e04179350eb0584a12bb9a661a0a83c117e4c69bdc197606e3c",
     "households.parquet": "f7de07275e3f0d9bace215c6a4c15fd699235440618ec9ee3a48cdb347bbecd4",
     "lineage.parquet": "487c1a498ddd5de5e56dff5822d96277ef33c4302ee26b3c44da10e0241ac02b"
    },
@@ -15070,14 +15063,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.012259965182058985,
+      "tvd": 0.011137282066922686,
       "tvd_ref": 0.008919057887459647,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.007053643551595764,
+      "tvd": 0.005841697325802284,
       "tvd_ref": 0.005646240351626755,
       "umbral": 0.03,
       "ok": true
@@ -15125,7 +15118,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.009095361730660898,
+    "tvd_media_espana": 0.008803533063044674,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -15197,9 +15190,9 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005506001541680432,
-     "exceso_relativo": -0.04153344386890001,
-     "ok_estricto": true,
+     "frecuencia_sintetica": 0.0006707310968956162,
+     "exceso_relativo": 0.1675865320142491,
+     "ok_estricto": false,
      "ok": true
     },
     {
@@ -15258,7 +15251,7 @@
    "obtenido": 99884,
    "semilla": 2,
    "sha256": {
-    "persons.parquet": "8d73d9acf769b53f0ca0d906068db7e59dc0703288a4cf6de11b7cab295108a2",
+    "persons.parquet": "b849f0d345692cd6109e2b38001286589c7ce08ca9ad5f4ce1ea14a1f80e4500",
     "households.parquet": "1912bba74ff1cb55ddbece8755b1a54891774112f23003a5a2bcbe0f80c338a9",
     "lineage.parquet": "6ffbb60dedcebf941dcf6bb2ea32913e78bebbc9de4a0c5a188c01d71da7e6eb"
    },
@@ -15291,14 +15284,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.01175303172531773,
+      "tvd": 0.010821453744647715,
       "tvd_ref": 0.008928688235224512,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.006633500816838996,
+      "tvd": 0.005432107200243744,
       "tvd_ref": 0.005621969238678099,
       "umbral": 0.03,
       "ok": true
@@ -15346,7 +15339,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.00884467854910145,
+    "tvd_media_espana": 0.00857805709944329,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -15446,8 +15439,8 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0004805574466381002,
-     "exceso_relativo": -0.16346147487310703,
+     "frecuencia_sintetica": 0.0005906851948259982,
+     "exceso_relativo": 0.028245270468472583,
      "ok_estricto": true,
      "ok": true
     },
@@ -15507,7 +15500,7 @@
    "obtenido": 99915,
    "semilla": 3,
    "sha256": {
-    "persons.parquet": "106877e4eb440999a8823f1b173737d1e649913843d4209a2a94cb3580400b34",
+    "persons.parquet": "df9041f4b19ddba704a39fc09c423b7750b4800d27c487761efd0e226880536a",
     "households.parquet": "90310ae2709d14348f4de9465f0ad81692cd7c04c416ba9ee5eeff1710e87e73",
     "lineage.parquet": "3a82ec8e9d6612b26a716c2f5e28c8129fb31d21d317ce6663add58c7959ff63"
    },
@@ -15540,14 +15533,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.012144325459316417,
+      "tvd": 0.011212274694493048,
       "tvd_ref": 0.008764643018865969,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.006477892718130127,
+      "tvd": 0.005303854833310969,
       "tvd_ref": 0.005508909197609716,
       "umbral": 0.03,
       "ok": true
@@ -15595,7 +15588,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.00847761933515564,
+    "tvd_media_espana": 0.008214358253950324,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -15667,8 +15660,8 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005304508832507631,
-     "exceso_relativo": -0.07660862893458342,
+     "frecuencia_sintetica": 0.000610518941099935,
+     "exceso_relativo": 0.06277120066019637,
      "ok_estricto": true,
      "ok": true
     },
@@ -15728,7 +15721,7 @@
    "obtenido": 99909,
    "semilla": 4,
    "sha256": {
-    "persons.parquet": "322fa7fa75722531bff63590726fa4f412f575cecb8ef9ba98fe41ab872b3982",
+    "persons.parquet": "3bf739d0ef90be0c8c321f950dcc4a83928388e28395b5acc42570d74be822e4",
     "households.parquet": "0e0d9969a5c83cb1e94f7074049f684b27d4d09bd1bf8633289be042636e898b",
     "lineage.parquet": "26c11f2ca46bd28a9f8ed9e83b2e44d646fd01c14c40e080a5e9a382e8edf2a4"
    },
@@ -15753,14 +15746,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.012637609043269481,
+      "tvd": 0.011677416130648658,
       "tvd_ref": 0.009434269668943144,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.007163397926281805,
+      "tvd": 0.006095052989849603,
       "tvd_ref": 0.005793908646767768,
       "umbral": 0.03,
       "ok": true
@@ -15808,7 +15801,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008943458898094838,
+    "tvd_media_espana": 0.00868989166696321,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -15828,7 +15821,7 @@
       "nivel": "provincia",
       "territorio": "PROV:25",
       "objetivo": "actividad_edad",
-      "tvd": 0.09372641312754769,
+      "tvd": 0.09437695636130976,
       "umbral_estricto": 0.08797227528817896
      },
      {
@@ -15894,9 +15887,9 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005505009558698416,
-     "exceso_relativo": -0.041706124988822646,
-     "ok_estricto": true,
+     "frecuencia_sintetica": 0.0006906284719094376,
+     "exceso_relativo": 0.20222322501402235,
+     "ok_estricto": false,
      "ok": true
     },
     {
@@ -15955,7 +15948,7 @@
    "obtenido": 99945,
    "semilla": 5,
    "sha256": {
-    "persons.parquet": "1165da082e7ace494533c67538878898cbf38f82737db89baa969810d3a029b4",
+    "persons.parquet": "83f731f5d766de30d0ac928430a2cb4bce260699a906c3bdf7a9bf3bb4ba1548",
     "households.parquet": "4f535f3b4190deac7b0c0d3b67ae7edd1c8fa4f6bcee58a13bbfc4cf2097c561",
     "lineage.parquet": "1c5e7bac0b8f5637f1614ce450a0e94ca4009f5ced2e042bc78c99a4b1dfca15"
    },
@@ -15980,14 +15973,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.011197748179176467,
+      "tvd": 0.010305001665514112,
       "tvd_ref": 0.008875551921288291,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.006556304466791028,
+      "tvd": 0.005383992497446666,
       "tvd_ref": 0.005417963338122015,
       "umbral": 0.03,
       "ok": true
@@ -16035,7 +16028,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008146596584915239,
+    "tvd_media_espana": 0.0078884642745394,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -16107,8 +16100,8 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005302916604132273,
-     "exceso_relativo": -0.07688579878932322,
+     "frecuencia_sintetica": 0.0006303466906798739,
+     "exceso_relativo": 0.09728669200514406,
      "ok_estricto": true,
      "ok": true
     },
@@ -16168,7 +16161,7 @@
    "obtenido": 499852,
    "semilla": 1,
    "sha256": {
-    "persons.parquet": "03de7151df736046a9f8f9807995f2c6d3cb6b3176c98c27705cda6dd46942a5",
+    "persons.parquet": "1f1e7bfc120e82dcb0e037ea29f03d182d65dbe8ba456c70a5c94a6ba62078a4",
     "households.parquet": "2f8a475a18a81f72c2bf97a86a48fb6dce2218e1feabfc04c27cf788d22570d9",
     "lineage.parquet": "425293f201d03e800e56216291cf33f8a8452378caabec682ae376dd4e8194ff"
    },
@@ -16184,14 +16177,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.01054298896204741,
+      "tvd": 0.009493896567547937,
       "tvd_ref": 0.0040716499936328965,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.00633988853270275,
+      "tvd": 0.005132940352588008,
       "tvd_ref": 0.0023982108731248415,
       "umbral": 0.03,
       "ok": true
@@ -16239,7 +16232,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.007847964189415068,
+    "tvd_media_espana": 0.00756595911758829,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -16296,9 +16289,9 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005881740995334619,
-     "exceso_relativo": 0.023874038751709126,
-     "ok_estricto": true,
+     "frecuencia_sintetica": 0.0006641966021942495,
+     "exceso_relativo": 0.15621149954274638,
+     "ok_estricto": false,
      "ok": true
     },
     {
@@ -16357,7 +16350,7 @@
    "obtenido": 499850,
    "semilla": 2,
    "sha256": {
-    "persons.parquet": "66ff237b576054f88a5f82ad29aa8541bc4f39ab5f213118298aab7b05254465",
+    "persons.parquet": "9185fb043ca18cbabaddf4620eae51764bf7216abaa8424ea363a9cf313c12ed",
     "households.parquet": "05a1ecad0b0213bfc0b7bf8ded4a922ca73a2adc2989d5840e6aa2c6f726bc60",
     "lineage.parquet": "398b200e27552c3cc98929ae021ea326d61803b0f146144248ba44406079d5b6"
    },
@@ -16373,14 +16366,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.010072787494476262,
+      "tvd": 0.009163574262787393,
       "tvd_ref": 0.004058203823950962,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.006284521768851685,
+      "tvd": 0.00523620727450338,
       "tvd_ref": 0.002555739502703158,
       "umbral": 0.03,
       "ok": true
@@ -16428,7 +16421,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.007969117583620523,
+    "tvd_media_espana": 0.007724426617865876,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -16485,9 +16478,9 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005901770531159348,
-     "exceso_relativo": 0.027360714168980005,
-     "ok_estricto": true,
+     "frecuencia_sintetica": 0.0006561968590577173,
+     "exceso_relativo": 0.14228581100822169,
+     "ok_estricto": false,
      "ok": true
     },
     {
@@ -16546,7 +16539,7 @@
    "obtenido": 499858,
    "semilla": 3,
    "sha256": {
-    "persons.parquet": "842279a910d9153262f76cbff2e50670e03c66ec51ce5ab4dc0fdf94828c9331",
+    "persons.parquet": "ad804c497633dc0e1eca0eaae8f85ab6fb868924142fb9182071c9d38cd6bd2d",
     "households.parquet": "433402bd870e0f8471d333ae8a0df10a8e91e4225d32209dcef8032a69562930",
     "lineage.parquet": "c3cd7fd9ccdb54b56966c094178511cca18ebd728b741204314ecd1cd1e72eb4"
    },
@@ -16562,14 +16555,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.0103299705667903,
+      "tvd": 0.009376985779009602,
       "tvd_ref": 0.003992838194496302,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.006168601716702693,
+      "tvd": 0.005052968188324921,
       "tvd_ref": 0.002727713332930334,
       "umbral": 0.03,
       "ok": true
@@ -16617,7 +16610,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008013157566751531,
+    "tvd_media_espana": 0.0077545802772317225,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -16674,9 +16667,9 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.000574163062309696,
-     "exceso_relativo": -0.0005159119121787015,
-     "ok_estricto": true,
+     "frecuencia_sintetica": 0.0006481840842799355,
+     "exceso_relativo": 0.12833743742318493,
+     "ok_estricto": false,
      "ok": true
     },
     {
@@ -16735,7 +16728,7 @@
    "obtenido": 499875,
    "semilla": 4,
    "sha256": {
-    "persons.parquet": "8d33756a591770d0ca5721a2ed055488f255abd58ff9dd7bd6640bb8d17184b0",
+    "persons.parquet": "0d9719ec35e0b7c5a228bab497ecc310a6aed30aa5c7ccc3a0b76dc02719aaea",
     "households.parquet": "6768b6b2deb32a49e01c8ec8c6160e339a7a17d59e8a9be8b9513c46cd55bf65",
     "lineage.parquet": "7afee2e0aa5f45731c5d7869aaf0a90c4638db53149c5fdac25979e6b86b52b1"
    },
@@ -16751,14 +16744,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.01032957147362226,
+      "tvd": 0.00929972971406552,
       "tvd_ref": 0.004116577927054517,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.006309658114946727,
+      "tvd": 0.005179396183849168,
       "tvd_ref": 0.002524905442673252,
       "umbral": 0.03,
       "ok": true
@@ -16806,7 +16799,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008009369568882489,
+    "tvd_media_espana": 0.007739356607550703,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -16863,9 +16856,9 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005921480370092523,
-     "exceso_relativo": 0.03079173780767186,
-     "ok_estricto": true,
+     "frecuencia_sintetica": 0.0006581645411352839,
+     "exceso_relativo": 0.14571108695514878,
+     "ok_estricto": false,
      "ok": true
     },
     {
@@ -16924,7 +16917,7 @@
    "obtenido": 499832,
    "semilla": 5,
    "sha256": {
-    "persons.parquet": "ec37a10ae51e0e9d5a1d9c420e589bf463a3aeb6d15b54a07598c4ef2b5605e3",
+    "persons.parquet": "41c191b4652a66db8553dd3f9724d97fd9fbb6c00ccdba5589682b90aaffeb19",
     "households.parquet": "71782aa28ca2058db59a0a2a04f8b0d06c55349af65858c9530b046eb0e03478",
     "lineage.parquet": "6349dd298736309b240f92f652c5519544aff934a4de4ef7f7676d04771804d1"
    },
@@ -16940,14 +16933,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.010515184720921946,
+      "tvd": 0.009399179299089176,
       "tvd_ref": 0.004048280484994479,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.00659133220210214,
+      "tvd": 0.005388928194355535,
       "tvd_ref": 0.0023919358802952403,
       "umbral": 0.03,
       "ok": true
@@ -16995,7 +16988,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.007802974131582036,
+    "tvd_media_espana": 0.007513172952884615,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -17052,9 +17045,9 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005621888954688776,
-     "exceso_relativo": -0.02136014591316604,
-     "ok_estricto": true,
+     "frecuencia_sintetica": 0.0006342130956001217,
+     "exceso_relativo": 0.10401720194137498,
+     "ok_estricto": false,
      "ok": true
     },
     {
@@ -17113,7 +17106,7 @@
    "obtenido": 999974,
    "semilla": 1,
    "sha256": {
-    "persons.parquet": "43f0fb66c77a060bb5da1af4f94d13c50c84785d6e13759550f8625c33d945c2",
+    "persons.parquet": "534453230c0ca57873f766b495513990444657d4ff08dd91593cf9a2094c6ad0",
     "households.parquet": "c547526ae76562626149271d5d27ac8335503ace401cb3382dce323abcbf5cee",
     "lineage.parquet": "55d9cdb3edcc7cee54438ae44b0cc1ce05e8315c37da8134a35cb4f8db6f89a5"
    },
@@ -17138,14 +17131,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.010808711195778978,
+      "tvd": 0.009779142121201567,
       "tvd_ref": 0.0028483557911715644,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.006091696534355238,
+      "tvd": 0.004969931249178133,
       "tvd_ref": 0.0017299133792289556,
       "umbral": 0.03,
       "ok": true
@@ -17193,7 +17186,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.00790560934268922,
+    "tvd_media_espana": 0.007636692547719905,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -17258,9 +17251,9 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005650146903819499,
-     "exceso_relativo": -0.01644109549488626,
-     "ok_estricto": true,
+     "frecuencia_sintetica": 0.0006460167964367074,
+     "exceso_relativo": 0.12456469435451956,
+     "ok_estricto": false,
      "ok": true
     },
     {
@@ -17317,16 +17310,16 @@
      "objetivo": "actividad_edad",
      "par": "relacion_actividad × edad_actividad",
      "v_oficial": 0.6113657820511976,
-     "v_sintetica": 0.6137786842797858,
-     "dif": 0.002412902228588143,
+     "v_sintetica": 0.6135404429688538,
+     "dif": 0.002174660917656168,
      "ok": true
     },
     {
      "objetivo": "actividad_sexo",
      "par": "relacion_actividad × sexo",
      "v_oficial": 0.22092455558228477,
-     "v_sintetica": 0.21735206346538014,
-     "dif": 0.0035724921169046353,
+     "v_sintetica": 0.22061058797277047,
+     "dif": 0.0003139676095142985,
      "ok": true
     },
     {
@@ -17656,7 +17649,7 @@
    "obtenido": 999955,
    "semilla": 2,
    "sha256": {
-    "persons.parquet": "4bbc8a2f56c9bb1c19a643e4273f494baec4fb56dbf45dce0380055f483899fe",
+    "persons.parquet": "df4478a143baeeeec02603f571647cb7f533858634397c552f463a1224b20fa5",
     "households.parquet": "bcfd8f244bdbddf7f648f44ec0cf29081c586604a4c62def058c88bf4226dbce",
     "lineage.parquet": "7d018470b4f6a7033e45808bc269998d8ea7a6fa54840d904e7577101e154aea"
    },
@@ -17672,14 +17665,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.010769879431391014,
+      "tvd": 0.009629425684487962,
       "tvd_ref": 0.0028207833756395185,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.006199587643720609,
+      "tvd": 0.005056346470780598,
       "tvd_ref": 0.0017922606099064235,
       "umbral": 0.03,
       "ok": true
@@ -17727,7 +17720,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.007758202632236766,
+    "tvd_media_espana": 0.007472740767256384,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -17784,9 +17777,9 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005680255611502518,
-     "exceso_relativo": -0.0111998711428688,
-     "ok_estricto": true,
+     "frecuencia_sintetica": 0.0006400288012960583,
+     "exceso_relativo": 0.11414099026155622,
+     "ok_estricto": false,
      "ok": true
     },
     {
@@ -17845,7 +17838,7 @@
    "obtenido": 1000014,
    "semilla": 3,
    "sha256": {
-    "persons.parquet": "a5f1e170c8cce79727a31b37f60574eab9c47cf8ee73728bf63bbafb7de94df0",
+    "persons.parquet": "5f6d4daabb86c69dfe8d96f6ba2e2a8d70c213da91b7258c7f6186ae76d0f1de",
     "households.parquet": "0ecb90371c61ad8d6bce1a5b742489aba6088618b64928e6749ad0d877f1036c",
     "lineage.parquet": "067198430a78b709add0d64974110aabf47c4720785635a9314769cb96a637f1"
    },
@@ -17861,14 +17854,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.010149114276287442,
+      "tvd": 0.00909658910160362,
       "tvd_ref": 0.0029789519552575147,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.006011090382261792,
+      "tvd": 0.004827220537807368,
       "tvd_ref": 0.0018454849364715248,
       "umbral": 0.03,
       "ok": true
@@ -17916,7 +17909,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.007812952942934898,
+    "tvd_media_espana": 0.007533403565542616,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -17973,9 +17966,9 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005679920481113265,
-     "exceso_relativo": -0.01125820953373391,
-     "ok_estricto": true,
+     "frecuencia_sintetica": 0.0006519908721277902,
+     "exceso_relativo": 0.134964167929587,
+     "ok_estricto": false,
      "ok": true
     },
     {
@@ -18034,7 +18027,7 @@
    "obtenido": 1000078,
    "semilla": 4,
    "sha256": {
-    "persons.parquet": "b1dd2080592da84d89b04d56a3cc0f0f16002afb45888da33c884c6800516e12",
+    "persons.parquet": "61e439cd9932886c576bfb65e290cc26394efe25055ff04c3c0e6dab02ab1637",
     "households.parquet": "0fbd65be83e568e8a1b7c11611f275eaa1e0d9d97f07c7877d2b41b6fb6ae7ca",
     "lineage.parquet": "c5e8b2ba9530cf3aa8643ebe6b461b680befc985f490e61c7508a5a112a0b1fa"
    },
@@ -18050,14 +18043,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.010762944019175524,
+      "tvd": 0.009695218942481633,
       "tvd_ref": 0.0029696281246927134,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.006079887134554841,
+      "tvd": 0.00487498111722419,
       "tvd_ref": 0.0018014810103715326,
       "umbral": 0.03,
       "ok": true
@@ -18105,7 +18098,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.00803673494882547,
+    "tvd_media_espana": 0.007752656062072401,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -18162,9 +18155,9 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.000585954295564946,
-     "exceso_relativo": 0.020009877347314964,
-     "ok_estricto": true,
+     "frecuencia_sintetica": 0.0006509492259603751,
+     "exceso_relativo": 0.1331509046981263,
+     "ok_estricto": false,
      "ok": true
     },
     {
@@ -18223,7 +18216,7 @@
    "obtenido": 999842,
    "semilla": 5,
    "sha256": {
-    "persons.parquet": "8e2741954d2591cc4bdf26c41abea0eb7af7fb59bba6bfdb103b33428fcd148b",
+    "persons.parquet": "779ce12dc0eef97ca05c3534eec59b4d637e9bd277d3e2f4c42ca64d8f19e684",
     "households.parquet": "bc0f73a83ecf289e3a232ad1034b64b8106d296dcc3279b1f8a24b729080ffc1",
     "lineage.parquet": "4610919684a17c4e601d85f3c9100b9cb586dcaf7cef55b40710d541c8f698f0"
    },
@@ -18248,14 +18241,14 @@
     "espana": [
      {
       "objetivo": "actividad_edad",
-      "tvd": 0.010073196102018173,
+      "tvd": 0.009094770456087255,
       "tvd_ref": 0.0028239161568959525,
       "umbral": 0.03,
       "ok": true
      },
      {
       "objetivo": "actividad_sexo",
-      "tvd": 0.006146039594830047,
+      "tvd": 0.00502510623742208,
       "tvd_ref": 0.0016378787019014774,
       "umbral": 0.03,
       "ok": true
@@ -18303,7 +18296,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.007815822569906183,
+    "tvd_media_espana": 0.007553402694488823,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -18368,9 +18361,9 @@
     {
      "regla": "estudiante_50_o_mas",
      "frecuencia_donantes": 0.0005744594327741276,
-     "frecuencia_sintetica": 0.0005900932347310875,
-     "exceso_relativo": 0.027214805894060445,
-     "ok_estricto": true,
+     "frecuencia_sintetica": 0.000653103190304068,
+     "exceso_relativo": 0.13690045465901934,
+     "ok_estricto": false,
      "ok": true
     },
     {
@@ -18429,7 +18422,7 @@
    "n": 10000,
    "proporciones": 527,
    "fuera": 2,
-   "razon_media": 0.3092970326821568,
+   "razon_media": 0.3065100499150678,
    "razon_max": 2.3105730450781627,
    "peores": [
     {
@@ -18450,15 +18443,15 @@
    "n": 50000,
    "proporciones": 527,
    "fuera": 0,
-   "razon_media": 0.23531994937118456,
-   "razon_max": 1.0329579486635774,
+   "razon_media": 0.2324275052717702,
+   "razon_max": 0.7701891282779944,
    "peores": []
   },
   {
    "n": 100000,
    "proporciones": 527,
    "fuera": 0,
-   "razon_media": 0.21238973996356453,
+   "razon_media": 0.21131474000604314,
    "razon_max": 0.5651301661954393,
    "peores": []
   },
@@ -18466,16 +18459,16 @@
    "n": 500000,
    "proporciones": 527,
    "fuera": 0,
-   "razon_media": 0.22064984989845685,
-   "razon_max": 0.7250610192701112,
+   "razon_media": 0.21927774606275915,
+   "razon_max": 0.7204917728962309,
    "peores": []
   },
   {
    "n": 1000000,
    "proporciones": 527,
    "fuera": 0,
-   "razon_media": 0.2247177041416055,
-   "razon_max": 0.5559691951447777,
+   "razon_media": 0.2230162691636487,
+   "razon_max": 0.5268244542702772,
    "peores": []
   }
  ],
@@ -18483,7 +18476,7 @@
   "run_id": "2026-01-01_ES_10000_s1",
   "hashes_iguales": true,
   "sha256": {
-   "persons.parquet": "e42f0ded05c3cdae791e1a8ef2d31c840d98ca8a4bdcdf2318df919fdd886e1f",
+   "persons.parquet": "c3cb760c1b3d3ed4129f529063b4e824fac46e6b7c1b8088aac0338aecf6cc79",
    "households.parquet": "45a7b1626838b7b32e89b93ad1acd3b8a3ed0fc0e51656dd56fc53bfea44e9b8",
    "lineage.parquet": "85c0a499044874700c2e3fbd631d22770dc184b2b285c4054e387359008c633c"
   }
@@ -18508,7 +18501,7 @@
    },
    {
     "objetivo": "actividad_tramo",
-    "tvd": 0.010328398763642407,
+    "tvd": 0.009222716220082862,
     "n_efectivo": 90900.96479347808,
     "umbral": 0.014144162194179027,
     "ok": true
@@ -18808,14 +18801,14 @@
   "v_rareza": [
    {
     "nivel": "persona",
-    "combinaciones": 24616,
+    "combinaciones": 24607,
     "sin_donante": 0,
     "personas_afectadas": 0,
     "ok": true
    },
    {
     "nivel": "persona_y_hogar",
-    "combinaciones": 153518,
+    "combinaciones": 153546,
     "sin_donante": 0,
     "personas_afectadas": 0,
     "ok": true

@@ -12,7 +12,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0130 | 0,0090 | 0,050 | ✅ |
+| actividad_edad | 0,0129 | 0,0090 | 0,050 | ✅ |
 | actividad_sexo | 0,0076 | 0,0057 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0015 | 0,0029 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0073 | 0,0111 | 0,050 | ✅ |
@@ -24,7 +24,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
 | relacion_actividad × edad_actividad (actividad_edad) | 0,612 | 0,615 | 0,004 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,251 | 0,251 | 0,000 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,251 | 0,250 | 0,001 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,015 | 0,018 | 0,003 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,043 | 0,039 | 0,004 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,615 | 0,615 | 0,000 | ✅ |
@@ -44,8 +44,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0082 | 0,0087 | 0,050 | ✅ |
-| actividad_sexo | 0,0057 | 0,0055 | 0,050 | ✅ |
+| actividad_edad | 0,0080 | 0,0087 | 0,050 | ✅ |
+| actividad_sexo | 0,0052 | 0,0055 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0013 | 0,0029 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0084 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0093 | 0,0097 | 0,050 | ✅ |
@@ -55,8 +55,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,614 | 0,618 | 0,003 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,253 | 0,257 | 0,004 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,614 | 0,617 | 0,003 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,253 | 0,256 | 0,003 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,022 | 0,019 | 0,003 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,039 | 0,041 | 0,001 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,627 | 0,627 | 0,000 | ✅ |
@@ -138,8 +138,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0129 | 0,0095 | 0,050 | ✅ |
-| actividad_sexo | 0,0097 | 0,0055 | 0,050 | ✅ |
+| actividad_edad | 0,0123 | 0,0095 | 0,050 | ✅ |
+| actividad_sexo | 0,0093 | 0,0055 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0020 | 0,0029 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0074 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0057 | 0,0100 | 0,050 | ✅ |
@@ -149,8 +149,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,605 | 0,609 | 0,004 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,206 | 0,184 | 0,022 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,605 | 0,610 | 0,005 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,206 | 0,185 | 0,021 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,009 | 0,010 | 0,001 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,056 | 0,054 | 0,001 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,615 | 0,614 | 0,000 | ✅ |
@@ -170,7 +170,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0086 | 0,0090 | 0,050 | ✅ |
+| actividad_edad | 0,0084 | 0,0090 | 0,050 | ✅ |
 | actividad_sexo | 0,0056 | 0,0056 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0011 | 0,0029 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0107 | 0,0108 | 0,050 | ✅ |
@@ -180,8 +180,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,621 | 0,623 | 0,002 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,265 | 0,254 | 0,011 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,621 | 0,622 | 0,002 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,265 | 0,253 | 0,012 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,017 | 0,015 | 0,003 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,040 | 0,038 | 0,002 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,633 | 0,633 | 0,000 | ✅ |
@@ -201,8 +201,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0115 | 0,0086 | 0,050 | ✅ |
-| actividad_sexo | 0,0074 | 0,0057 | 0,050 | ✅ |
+| actividad_edad | 0,0087 | 0,0086 | 0,050 | ✅ |
+| actividad_sexo | 0,0046 | 0,0057 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0010 | 0,0027 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0088 | 0,0107 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0046 | 0,0088 | 0,050 | ✅ |
@@ -212,8 +212,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,619 | 0,619 | 0,001 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,277 | 0,265 | 0,013 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,619 | 0,620 | 0,001 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,277 | 0,273 | 0,004 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,041 | 0,042 | 0,001 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,052 | 0,049 | 0,003 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,632 | 0,632 | 0,000 | ✅ |
@@ -234,7 +234,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
 | actividad_edad | 0,0075 | 0,0091 | 0,050 | ✅ |
-| actividad_sexo | 0,0037 | 0,0055 | 0,050 | ✅ |
+| actividad_sexo | 0,0036 | 0,0055 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0014 | 0,0030 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0091 | 0,0106 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0080 | 0,0097 | 0,050 | ✅ |
@@ -265,8 +265,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0116 | 0,0089 | 0,050 | ✅ |
-| actividad_sexo | 0,0085 | 0,0053 | 0,050 | ✅ |
+| actividad_edad | 0,0104 | 0,0089 | 0,050 | ✅ |
+| actividad_sexo | 0,0068 | 0,0053 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0020 | 0,0030 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0093 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0076 | 0,0107 | 0,050 | ✅ |
@@ -276,8 +276,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,609 | 0,612 | 0,003 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,174 | 0,170 | 0,003 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,609 | 0,609 | 0,001 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,174 | 0,178 | 0,004 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,018 | 0,022 | 0,004 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,042 | 0,037 | 0,005 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,626 | 0,626 | 0,000 | ✅ |
@@ -298,7 +298,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
 | actividad_edad | 0,0140 | 0,0090 | 0,050 | ✅ |
-| actividad_sexo | 0,0107 | 0,0053 | 0,050 | ✅ |
+| actividad_sexo | 0,0109 | 0,0053 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0014 | 0,0032 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0092 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0073 | 0,0110 | 0,050 | ✅ |
@@ -308,7 +308,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,611 | 0,611 | 0,001 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,611 | 0,611 | 0,000 | ✅ |
 | relacion_actividad × sexo (actividad_sexo) | 0,222 | 0,224 | 0,002 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,001 | 0,002 | 0,001 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,043 | 0,030 | 0,013 | ✅ |
@@ -329,8 +329,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0105 | 0,0091 | 0,050 | ✅ |
-| actividad_sexo | 0,0047 | 0,0055 | 0,050 | ✅ |
+| actividad_edad | 0,0104 | 0,0091 | 0,050 | ✅ |
+| actividad_sexo | 0,0048 | 0,0055 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0008 | 0,0028 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0088 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0042 | 0,0081 | 0,050 | ✅ |
@@ -341,7 +341,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
 | relacion_actividad × edad_actividad (actividad_edad) | 0,616 | 0,619 | 0,003 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,285 | 0,282 | 0,004 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,285 | 0,282 | 0,003 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,019 | 0,018 | 0,001 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,061 | 0,056 | 0,005 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,629 | 0,629 | 0,000 | ✅ |
@@ -362,7 +362,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
 | actividad_edad | 0,0109 | 0,0087 | 0,050 | ✅ |
-| actividad_sexo | 0,0064 | 0,0057 | 0,050 | ✅ |
+| actividad_sexo | 0,0063 | 0,0057 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0014 | 0,0027 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0078 | 0,0107 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0042 | 0,0087 | 0,050 | ✅ |
@@ -373,7 +373,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
 | relacion_actividad × edad_actividad (actividad_edad) | 0,620 | 0,623 | 0,003 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,198 | 0,202 | 0,004 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,198 | 0,201 | 0,003 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,021 | 0,019 | 0,002 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,052 | 0,056 | 0,004 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,641 | 0,641 | 0,000 | ✅ |
@@ -393,8 +393,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0109 | 0,0085 | 0,050 | ✅ |
-| actividad_sexo | 0,0063 | 0,0053 | 0,050 | ✅ |
+| actividad_edad | 0,0073 | 0,0085 | 0,050 | ✅ |
+| actividad_sexo | 0,0030 | 0,0053 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0010 | 0,0030 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0090 | 0,0111 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0043 | 0,0104 | 0,050 | ✅ |
@@ -404,7 +404,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
 | relacion_actividad × edad_actividad (actividad_edad) | 0,615 | 0,616 | 0,001 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,195 | 0,181 | 0,014 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,195 | 0,194 | 0,001 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,016 | 0,018 | 0,002 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,032 | 0,036 | 0,004 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,626 | 0,627 | 0,000 | ✅ |
@@ -424,8 +424,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0087 | 0,0088 | 0,050 | ✅ |
-| actividad_sexo | 0,0042 | 0,0054 | 0,050 | ✅ |
+| actividad_edad | 0,0083 | 0,0088 | 0,050 | ✅ |
+| actividad_sexo | 0,0040 | 0,0054 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0028 | 0,0029 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0098 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0112 | 0,0100 | 0,050 | ✅ |
@@ -434,7 +434,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,604 | 0,607 | 0,003 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,604 | 0,606 | 0,002 | ✅ |
 | relacion_actividad × sexo (actividad_sexo) | 0,229 | 0,222 | 0,006 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,020 | 0,026 | 0,005 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,049 | 0,035 | 0,014 | ✅ |
@@ -486,8 +486,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0252 | 0,0089 | 0,050 | ✅ |
-| actividad_sexo | 0,0109 | 0,0057 | 0,050 | ✅ |
+| actividad_edad | 0,0206 | 0,0089 | 0,050 | ✅ |
+| actividad_sexo | 0,0065 | 0,0057 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0017 | 0,0028 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0104 | 0,0107 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0045 | 0,0090 | 0,050 | ✅ |
@@ -497,8 +497,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,617 | 0,624 | 0,007 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,225 | 0,219 | 0,006 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,617 | 0,623 | 0,006 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,225 | 0,222 | 0,004 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,010 | 0,005 | 0,005 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,048 | 0,059 | 0,011 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,645 | 0,645 | 0,000 | ✅ |
@@ -518,8 +518,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0084 | 0,0084 | 0,050 | ✅ |
-| actividad_sexo | 0,0042 | 0,0052 | 0,050 | ✅ |
+| actividad_edad | 0,0074 | 0,0084 | 0,050 | ✅ |
+| actividad_sexo | 0,0030 | 0,0052 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0027 | 0,0030 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0130 | 0,0107 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0079 | 0,0095 | 0,050 | ✅ |
@@ -528,8 +528,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,619 | 0,622 | 0,003 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,233 | 0,223 | 0,010 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,619 | 0,620 | 0,001 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,233 | 0,228 | 0,005 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,041 | 0,035 | 0,006 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,046 | 0,040 | 0,006 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,624 | 0,623 | 0,000 | ✅ |
@@ -549,8 +549,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0226 | 0,0095 | 0,050 | ✅ |
-| actividad_sexo | 0,0067 | 0,0056 | 0,050 | ✅ |
+| actividad_edad | 0,0223 | 0,0095 | 0,050 | ✅ |
+| actividad_sexo | 0,0064 | 0,0056 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0005 | 0,0027 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0225 | 0,0106 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0078 | 0,0071 | 0,050 | ✅ |
@@ -558,8 +558,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,589 | 0,593 | 0,003 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,265 | 0,262 | 0,003 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,589 | 0,593 | 0,004 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,265 | 0,260 | 0,005 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,087 | 0,090 | 0,002 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,069 | 0,094 | 0,025 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,611 | 0,611 | 0,000 | ✅ |
@@ -579,8 +579,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0189 | 0,0093 | 0,050 | ✅ |
-| actividad_sexo | 0,0045 | 0,0056 | 0,050 | ✅ |
+| actividad_edad | 0,0186 | 0,0093 | 0,050 | ✅ |
+| actividad_sexo | 0,0043 | 0,0056 | 0,050 | ✅ |
 | adultos_nacionalidad | 0,0048 | 0,0030 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0220 | 0,0105 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0179 | 0,0083 | 0,050 | ✅ |
@@ -588,8 +588,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,596 | 0,599 | 0,003 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,231 | 0,219 | 0,011 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,596 | 0,599 | 0,002 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,231 | 0,220 | 0,011 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,107 | 0,111 | 0,004 | ✅ |
 | estudios_3 × sexo (estudios_sexo_edad) | 0,061 | 0,049 | 0,012 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,618 | 0,618 | 0,000 | ✅ |
@@ -609,8 +609,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0132 | 0,0121 | 0,080 | ✅ |
-| actividad_sexo | 0,0067 | 0,0078 | 0,080 | ✅ |
+| actividad_edad | 0,0098 | 0,0121 | 0,080 | ✅ |
+| actividad_sexo | 0,0033 | 0,0078 | 0,080 | ✅ |
 | adultos_nacionalidad | 0,0002 | 0,0044 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0118 | 0,0154 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0067 | 0,0149 | 0,080 | ✅ |
@@ -627,8 +627,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0122 | 0,0126 | 0,080 | ✅ |
-| actividad_sexo | 0,0084 | 0,0079 | 0,080 | ✅ |
+| actividad_edad | 0,0110 | 0,0126 | 0,080 | ✅ |
+| actividad_sexo | 0,0067 | 0,0079 | 0,080 | ✅ |
 | adultos_nacionalidad | 0,0025 | 0,0044 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0087 | 0,0155 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0078 | 0,0152 | 0,080 | ✅ |
@@ -645,8 +645,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0174 | 0,0119 | 0,080 | ✅ |
-| actividad_sexo | 0,0077 | 0,0073 | 0,080 | ✅ |
+| actividad_edad | 0,0148 | 0,0119 | 0,080 | ✅ |
+| actividad_sexo | 0,0031 | 0,0073 | 0,080 | ✅ |
 | adultos_nacionalidad | 0,0023 | 0,0043 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0248 | 0,0154 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0269 | 0,0135 | 0,080 | ✅ |
@@ -663,8 +663,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0132 | 0,0127 | 0,080 | ✅ |
-| actividad_sexo | 0,0054 | 0,0077 | 0,080 | ✅ |
+| actividad_edad | 0,0127 | 0,0127 | 0,080 | ✅ |
+| actividad_sexo | 0,0044 | 0,0077 | 0,080 | ✅ |
 | adultos_nacionalidad | 0,0021 | 0,0042 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0172 | 0,0149 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0170 | 0,0131 | 0,080 | ✅ |
@@ -681,8 +681,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0137 | 0,0125 | 0,080 | ✅ |
-| actividad_sexo | 0,0040 | 0,0077 | 0,080 | ✅ |
+| actividad_edad | 0,0135 | 0,0125 | 0,080 | ✅ |
+| actividad_sexo | 0,0041 | 0,0077 | 0,080 | ✅ |
 | adultos_nacionalidad | 0,0011 | 0,0047 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0097 | 0,0149 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0104 | 0,0149 | 0,080 | ✅ |
@@ -699,8 +699,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0136 | 0,0132 | 0,080 | ✅ |
-| actividad_sexo | 0,0088 | 0,0077 | 0,080 | ✅ |
+| actividad_edad | 0,0132 | 0,0132 | 0,080 | ✅ |
+| actividad_sexo | 0,0085 | 0,0077 | 0,080 | ✅ |
 | adultos_nacionalidad | 0,0022 | 0,0042 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0099 | 0,0154 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0077 | 0,0140 | 0,080 | ✅ |
@@ -717,8 +717,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0239 | 0,0128 | 0,080 | ✅ |
-| actividad_sexo | 0,0089 | 0,0078 | 0,080 | ✅ |
+| actividad_edad | 0,0212 | 0,0128 | 0,080 | ✅ |
+| actividad_sexo | 0,0062 | 0,0078 | 0,080 | ✅ |
 | adultos_nacionalidad | 0,0011 | 0,0043 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0124 | 0,0150 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0075 | 0,0132 | 0,080 | ✅ |
@@ -735,7 +735,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0162 | 0,0126 | 0,080 | ✅ |
+| actividad_edad | 0,0161 | 0,0126 | 0,080 | ✅ |
 | actividad_sexo | 0,0077 | 0,0080 | 0,080 | ✅ |
 | adultos_nacionalidad | 0,0023 | 0,0038 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0141 | 0,0151 | 0,080 | ✅ |
@@ -753,8 +753,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0226 | 0,0130 | 0,080 | ✅ |
-| actividad_sexo | 0,0071 | 0,0079 | 0,080 | ✅ |
+| actividad_edad | 0,0223 | 0,0130 | 0,080 | ✅ |
+| actividad_sexo | 0,0067 | 0,0079 | 0,080 | ✅ |
 | adultos_nacionalidad | 0,0008 | 0,0044 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0231 | 0,0150 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0075 | 0,0101 | 0,080 | ✅ |
@@ -770,8 +770,8 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0191 | 0,0132 | 0,080 | ✅ |
-| actividad_sexo | 0,0044 | 0,0081 | 0,080 | ✅ |
+| actividad_edad | 0,0188 | 0,0132 | 0,080 | ✅ |
+| actividad_sexo | 0,0043 | 0,0081 | 0,080 | ✅ |
 | adultos_nacionalidad | 0,0042 | 0,0047 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0223 | 0,0149 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0177 | 0,0113 | 0,080 | ✅ |

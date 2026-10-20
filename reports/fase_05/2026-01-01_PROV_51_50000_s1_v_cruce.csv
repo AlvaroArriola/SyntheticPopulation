@@ -1,5 +1,5 @@
 nivel,territorio,objetivo,celdas,n,tvd,hellinger,tvd_ref,fuera_dominio,umbral,umbral_estricto,excepcion,ok,ok_estricto
-provincia,PROV:51,actividad_edad,73,49988.0,0.022309734913946045,0.05531342024844367,0.013028270749754765,0.0,0.08,0.08,false,true,true
+provincia,PROV:51,actividad_edad,73,49988.0,0.02233866682507026,0.05546821644812742,0.013028270749754765,0.0,0.08,0.08,false,true,true
 provincia,PROV:51,actividad_sexo,14,49988.0,0.006733128927132366,0.015458769682167023,0.007938406618309609,0.0,0.08,0.08,false,true,true
 provincia,PROV:51,adultos_nacionalidad,4,49988.0,0.000843280918467105,0.001584632614016271,0.004380186909901352,0.0,0.08,0.08,false,true,true
 provincia,PROV:51,estudios_sexo_edad,68,49988.0,0.023067163388415184,0.02488626293098512,0.01499094146279452,0.0,0.08,0.08,false,true,true
