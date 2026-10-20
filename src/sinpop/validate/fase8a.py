@@ -16,6 +16,7 @@ import json
 import polars as pl
 
 from sinpop import POPULATIONS_DIR, REPORTS_DIR
+from sinpop.opinion import rasgos as R
 from sinpop.opinion import run as OR
 from sinpop.opinion import valores as V
 from sinpop.opinion.cis import VALORES
@@ -106,6 +107,41 @@ def tvd_nacional(s: pl.DataFrame) -> list[dict]:
     return out
 
 
+RASGOS = ["estilo_ns_nc"]
+MIN_GRUPO = 200  # encuestados del CIS por grupo para comparar varianzas
+
+
+def v_diversidad_rasgos(run_id: str, s: pl.DataFrame) -> pl.DataFrame:
+    """G8A.3: varianza de cada rasgo dentro de los grupos edad × estudios × sexo, sintética
+    frente a la del CIS (ponderada), en los grupos con al menos `MIN_GRUPO` encuestados."""
+    d = POPULATIONS_DIR / run_id
+    extra = pl.read_parquet(d / "persons.parquet", columns=["person_id", "sexo", "estudios_3"])
+    s = s.join(extra, on="person_id").with_columns(V._edad_grupo(pl.col("edad")))
+    grupo = ["edad_grupo", "estudios_3", "sexo"]
+    filas = []
+    for r in RASGOS:
+        e = R.datos_rasgo(r)
+
+        def var_pond(df: pl.DataFrame, peso: str, r: str = r) -> pl.DataFrame:
+            w, x = pl.col(peso), pl.col(r)
+            media = (w * x).sum() / w.sum()
+            return df.group_by(grupo).agg(
+                pl.len().alias("n"), ((w * (x - media) ** 2).sum() / w.sum()).alias("var")
+            )
+
+        j = (
+            var_pond(e, "peso")
+            .filter(pl.col("n") >= MIN_GRUPO)
+            .join(var_pond(s, "peso"), on=grupo, suffix="_sintetica")
+        )
+        filas.append(
+            j.with_columns(
+                pl.lit(r).alias("rasgo"), (pl.col("var_sintetica") / pl.col("var")).alias("ratio")
+            )
+        )
+    return pl.concat(filas)
+
+
 def ejecutar(run_id: str = NACIONAL) -> dict:
     DETALLE.mkdir(parents=True, exist_ok=True)
     if not (POPULATIONS_DIR / run_id / "opinion.parquet").exists():
@@ -129,6 +165,15 @@ def ejecutar(run_id: str = NACIONAL) -> dict:
             "global": float(m["en_ic"].mean()),
             "tvd_nacional": tvd_nacional(s),
         },
+    }
+    dv = v_diversidad_rasgos(run_id, s)
+    dv.write_csv(DETALLE / f"{run_id}_v_diversidad_rasgos.csv")
+    res["g8a3"] = {
+        "umbral": [0.8, 1.2],
+        "grupos": dv.height,
+        "dentro": int(dv.filter(pl.col("ratio").is_between(0.8, 1.2)).height),
+        "ratio_min": float(dv["ratio"].min()) if dv.height else None,
+        "ratio_max": float(dv["ratio"].max()) if dv.height else None,
     }
     RESUMEN.write_text(json.dumps(res, ensure_ascii=False, indent=1), "utf-8")
     return res

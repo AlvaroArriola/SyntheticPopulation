@@ -14,6 +14,7 @@ import json
 import polars as pl
 
 from sinpop import POPULATIONS_DIR
+from sinpop.opinion import rasgos as R
 from sinpop.opinion import valores as V
 from sinpop.repro import code_version, sha256_file
 
@@ -30,6 +31,9 @@ def construir(run_id: str) -> dict:
     persons = pl.read_parquet(d / "persons.parquet")
     semilla = semilla_capa(int(meta_pob["semilla"]), "opinion")
     tabla, info = V.asignar(persons, semilla)
+    tr, info_r = R.asignar(persons, semilla_capa(semilla, "rasgos"))
+    tabla = tabla.join(tr, on="person_id", how="left")
+    info |= info_r
     tabla = tabla.with_columns(pl.lit(FECHA_REFERENCIA).alias("fecha_referencia"))
     destino = d / "opinion.parquet"
     tabla.write_parquet(destino)
