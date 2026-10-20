@@ -18,7 +18,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | estudios_sexo_edad | 0,0095 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0063 | 0,0095 | 0,050 | ✅ |
 | provincia_si_calibra_ccaa | 0,0164 | 0,0046 | 0,050 | ✅ |
-| tamano_municipio | 0,0187 | 0,0042 | 0,050 | ✅ |
+| tamano_municipio | 0,0147 | 0,0042 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0174 | 0,0114 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -50,7 +50,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | estudios_sexo_edad | 0,0090 | 0,0110 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0086 | 0,0099 | 0,050 | ✅ |
 | provincia_si_calibra_ccaa | 0,0055 | 0,0027 | 0,050 | ✅ |
-| tamano_municipio | 0,0080 | 0,0037 | 0,050 | ✅ |
+| tamano_municipio | 0,0095 | 0,0037 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0149 | 0,0111 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -81,7 +81,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0014 | 0,0028 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0115 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0058 | 0,0087 | 0,050 | ✅ |
-| tamano_municipio | 0,0087 | 0,0039 | 0,050 | ✅ |
+| tamano_municipio | 0,0039 | 0,0039 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0206 | 0,0102 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -112,7 +112,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0015 | 0,0032 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0090 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0075 | 0,0112 | 0,050 | ✅ |
-| tamano_municipio | 0,0244 | 0,0038 | 0,050 | ✅ |
+| tamano_municipio | 0,0232 | 0,0038 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0201 | 0,0123 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -144,7 +144,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | estudios_sexo_edad | 0,0096 | 0,0106 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0060 | 0,0101 | 0,050 | ✅ |
 | provincia_si_calibra_ccaa | 0,0008 | 0,0029 | 0,050 | ✅ |
-| tamano_municipio | 0,0107 | 0,0038 | 0,050 | ✅ |
+| tamano_municipio | 0,0081 | 0,0038 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0162 | 0,0117 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -175,7 +175,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0016 | 0,0028 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0106 | 0,0111 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0050 | 0,0089 | 0,050 | ✅ |
-| tamano_municipio | 0,0148 | 0,0040 | 0,050 | ✅ |
+| tamano_municipio | 0,0049 | 0,0040 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0197 | 0,0105 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -207,7 +207,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | estudios_sexo_edad | 0,0092 | 0,0106 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0054 | 0,0089 | 0,050 | ✅ |
 | provincia_si_calibra_ccaa | 0,0114 | 0,0047 | 0,050 | ✅ |
-| tamano_municipio | 0,0118 | 0,0040 | 0,050 | ✅ |
+| tamano_municipio | 0,0074 | 0,0040 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0169 | 0,0106 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -239,7 +239,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | estudios_sexo_edad | 0,0114 | 0,0106 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0078 | 0,0099 | 0,050 | ✅ |
 | provincia_si_calibra_ccaa | 0,0175 | 0,0040 | 0,050 | ✅ |
-| tamano_municipio | 0,0160 | 0,0041 | 0,050 | ✅ |
+| tamano_municipio | 0,0157 | 0,0041 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0146 | 0,0115 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -271,7 +271,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | estudios_sexo_edad | 0,0097 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0087 | 0,0110 | 0,050 | ✅ |
 | provincia_si_calibra_ccaa | 0,0072 | 0,0028 | 0,050 | ✅ |
-| tamano_municipio | 0,0303 | 0,0043 | 0,050 | ✅ |
+| tamano_municipio | 0,0237 | 0,0043 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0177 | 0,0117 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -303,7 +303,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | estudios_sexo_edad | 0,0094 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0082 | 0,0109 | 0,050 | ✅ |
 | provincia_si_calibra_ccaa | 0,0141 | 0,0032 | 0,050 | ✅ |
-| tamano_municipio | 0,0331 | 0,0044 | 0,050 | ✅ |
+| tamano_municipio | 0,0203 | 0,0044 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0144 | 0,0114 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -335,7 +335,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | estudios_sexo_edad | 0,0081 | 0,0105 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0035 | 0,0081 | 0,050 | ✅ |
 | provincia_si_calibra_ccaa | 0,0124 | 0,0028 | 0,050 | ✅ |
-| tamano_municipio | 0,0096 | 0,0042 | 0,050 | ✅ |
+| tamano_municipio | 0,0150 | 0,0042 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0220 | 0,0105 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -367,7 +367,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | estudios_sexo_edad | 0,0079 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0043 | 0,0087 | 0,050 | ✅ |
 | provincia_si_calibra_ccaa | 0,0109 | 0,0037 | 0,050 | ✅ |
-| tamano_municipio | 0,0135 | 0,0038 | 0,050 | ✅ |
+| tamano_municipio | 0,0103 | 0,0038 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0147 | 0,0107 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -398,7 +398,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0009 | 0,0031 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0090 | 0,0109 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0052 | 0,0104 | 0,050 | ✅ |
-| tamano_municipio | 0,0268 | 0,0038 | 0,050 | ✅ |
+| tamano_municipio | 0,0149 | 0,0038 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0168 | 0,0118 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -429,7 +429,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0026 | 0,0031 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0088 | 0,0106 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0135 | 0,0102 | 0,050 | ✅ |
-| tamano_municipio | 0,0076 | 0,0034 | 0,050 | ✅ |
+| tamano_municipio | 0,0107 | 0,0034 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0149 | 0,0120 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -460,7 +460,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0015 | 0,0032 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0101 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0079 | 0,0098 | 0,050 | ✅ |
-| tamano_municipio | 0,0249 | 0,0038 | 0,050 | ✅ |
+| tamano_municipio | 0,0139 | 0,0038 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0236 | 0,0112 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -492,7 +492,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | estudios_sexo_edad | 0,0119 | 0,0108 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0050 | 0,0091 | 0,050 | ✅ |
 | provincia_si_calibra_ccaa | 0,0082 | 0,0031 | 0,050 | ✅ |
-| tamano_municipio | 0,0150 | 0,0037 | 0,050 | ✅ |
+| tamano_municipio | 0,0122 | 0,0037 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0193 | 0,0107 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -523,7 +523,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0026 | 0,0029 | 0,050 | ✅ |
 | estudios_sexo_edad | 0,0125 | 0,0109 | 0,050 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0103 | 0,0095 | 0,050 | ✅ |
-| tamano_municipio | 0,0197 | 0,0036 | 0,050 | ✅ |
+| tamano_municipio | 0,0018 | 0,0036 | 0,050 | ✅ |
 | tipo_hogar_edad4_ref | 0,0194 | 0,0106 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
@@ -614,7 +614,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0003 | 0,0044 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0095 | 0,0153 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0066 | 0,0152 | 0,080 | ✅ |
-| tamano_municipio | 0,0271 | 0,0052 | 0,080 | ✅ |
+| tamano_municipio | 0,0149 | 0,0052 | 0,080 | ✅ |
 | tipo_hogar_edad4_ref | 0,0163 | 0,0161 | 0,080 | ✅ |
 
 ## PROV:08
@@ -632,7 +632,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0024 | 0,0044 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0117 | 0,0155 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0100 | 0,0151 | 0,080 | ✅ |
-| tamano_municipio | 0,0357 | 0,0060 | 0,080 | ✅ |
+| tamano_municipio | 0,0249 | 0,0060 | 0,080 | ✅ |
 | tipo_hogar_edad4_ref | 0,0201 | 0,0161 | 0,080 | ✅ |
 
 ## PROV:42
@@ -650,7 +650,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0021 | 0,0043 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0256 | 0,0151 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0262 | 0,0134 | 0,080 | ✅ |
-| tamano_municipio | 0,0176 | 0,0049 | 0,080 | ✅ |
+| tamano_municipio | 0,0086 | 0,0049 | 0,080 | ✅ |
 | tipo_hogar_edad4_ref | 0,0298 | 0,0151 | 0,080 | ✅ |
 
 ## PROV:44
@@ -668,7 +668,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0022 | 0,0044 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0174 | 0,0151 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0173 | 0,0132 | 0,080 | ✅ |
-| tamano_municipio | 0,0245 | 0,0049 | 0,080 | ✅ |
+| tamano_municipio | 0,0103 | 0,0049 | 0,080 | ✅ |
 | tipo_hogar_edad4_ref | 0,0269 | 0,0151 | 0,080 | ✅ |
 
 ## PROV:04
@@ -686,7 +686,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0017 | 0,0047 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0085 | 0,0152 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0129 | 0,0149 | 0,080 | ✅ |
-| tamano_municipio | 0,0554 | 0,0054 | 0,080 | ✅ |
+| tamano_municipio | 0,0163 | 0,0054 | 0,080 | ✅ |
 | tipo_hogar_edad4_ref | 0,0150 | 0,0160 | 0,080 | ✅ |
 
 ## PROV:35
@@ -704,7 +704,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0028 | 0,0042 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0105 | 0,0154 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0068 | 0,0144 | 0,080 | ✅ |
-| tamano_municipio | 0,0119 | 0,0053 | 0,080 | ✅ |
+| tamano_municipio | 0,0086 | 0,0053 | 0,080 | ✅ |
 | tipo_hogar_edad4_ref | 0,0175 | 0,0167 | 0,080 | ✅ |
 
 ## PROV:20
@@ -722,7 +722,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0005 | 0,0043 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0126 | 0,0152 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0090 | 0,0131 | 0,080 | ✅ |
-| tamano_municipio | 0,0209 | 0,0055 | 0,080 | ✅ |
+| tamano_municipio | 0,0183 | 0,0055 | 0,080 | ✅ |
 | tipo_hogar_edad4_ref | 0,0206 | 0,0152 | 0,080 | ✅ |
 
 ## PROV:32
@@ -740,7 +740,7 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 | adultos_nacionalidad | 0,0013 | 0,0038 | 0,080 | ✅ |
 | estudios_sexo_edad | 0,0133 | 0,0153 | 0,080 | ✅ |
 | nacionalidad_top_sexo_edad | 0,0105 | 0,0123 | 0,080 | ✅ |
-| tamano_municipio | 0,0037 | 0,0054 | 0,080 | ✅ |
+| tamano_municipio | 0,0151 | 0,0054 | 0,080 | ✅ |
 | tipo_hogar_edad4_ref | 0,0105 | 0,0142 | 0,080 | ✅ |
 
 ## PROV:51

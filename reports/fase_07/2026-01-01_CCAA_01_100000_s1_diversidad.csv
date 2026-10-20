@@ -4,9 +4,9 @@ pais_nacimiento_grupo,24,1.0,0.995163107700942,true
 estado_civil,24,1.0,1.0003154075718583,true
 nivel_estudios,24,1.0,1.0018706783096694,true
 relacion_actividad,24,1.0,1.0014008926197873,true
-ocupacion,24,1.0,0.9985545413484279,true
+ocupacion,24,1.0,0.998554541348428,true
 situacion_profesional,24,1.0,0.9994375397808637,true
 tipo_hogar,24,1.0,0.9996612642256488,true
 tamano_hogar,24,1.0,1.000076995518749,true
 grado_urbanizacion,24,1.0,1.0001593866562777,true
-tamano_municipio,24,1.0,0.9984930525959128,true
+tamano_municipio,24,1.0,1.0011725448305335,true

@@ -31,8 +31,8 @@ permite analizarlos.
 - **Población no empadronada,** incluida parte de la población migrante en situación
   irregular. Los totales son los de la Estadística Continua de Población (ECP), que parte del
   Padrón.
-- **Grupos étnicos** (por ejemplo, la población gitana), **orientación sexual** e **identidad de
-  género**: no figuran en el Censo ni en las encuestas de referencia.
+- **Grupos étnicos** (por ejemplo, la población gitana), **orientación sexual** e
+  **identidad de género**: no figuran en el Censo ni en las encuestas de referencia.
 - **Residentes en establecimientos colectivos** (residencias, centros penitenciarios,
   religiosos…). Están en la población con sus atributos del Censo, pero las encuestas (ECV, EPA,
   TIC-H) no los cubren. Sus variables de encuesta están extrapoladas (`extrapolada`) desde los

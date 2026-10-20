@@ -1,7 +1,7 @@
 # Puerta de la fase F5
 
 **Resultado:** superada  
-**Fecha:** 2026-10-20 · **Versión del código:** git:6c2c73d-dirty  
+**Fecha:** 2026-10-20 · **Versión del código:** git:3392568-dirty  
 **Comando:** `sinpop validate --phase 5`
 
 | ID | Comprobación | Resultado | Valor | Umbral |
