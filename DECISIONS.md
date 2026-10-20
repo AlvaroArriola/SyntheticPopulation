@@ -1091,3 +1091,25 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   1. Repetir la semilla 1 con otra semilla. Se descarta porque elegir la semilla hasta que pase sería manipular el resultado.
   2. Aceptar el fallo como limitación declarada.
 - **Aprobada por:** pendiente (G7.7).
+
+## D-057 · Tamaño de municipio de los hogares añadidos desde otra provincia (2026-10-20)
+
+- **Fecha:** 2026-10-20
+- **Fase:** F4-F7 (detectado en G7.2 tras D-054)
+- **Estado:** aprobada por el agente. Corrige un defecto del código y la referencia de una prueba; no cambia ningún umbral.
+- **Contexto:**
+  - Los hogares añadidos desde otra provincia (ampliación de donantes) no conservan su tamaño de municipio de origen, que puede no existir en el destino.
+  - Hasta ahora todos recibían la clase más frecuente entre los donantes locales de su provincia y grado de urbanización.
+  - Con más hogares añadidos (D-054), los grupos perdían variedad en este atributo y G7.2 bajaba:
+
+    | Población | Grupos dentro (antes de D-054) | Grupos dentro (con D-054) |
+    | --- | --- | --- |
+    | España | 99 % | 89 % |
+    | Baleares | 100 % | 50 % |
+    | Murcia | 100 % | 58 % |
+
+  - Además, la referencia de V-DIVERSIDAD usaba el tamaño de municipio de origen de esos donantes. En Ceuta, con un solo municipio, el ratio salía 0/0 y el atributo fallaba en todas las rondas.
+- **Decisión:**
+  1. Cada hogar añadido recibe una clase de tamaño de municipio sorteada, con semilla, con la distribución ponderada de los donantes locales de su provincia y grado de urbanización. Se sigue marcando como `modelada`. Es un objetivo reservado (no calibrado), así que la calibración no cambia.
+  2. En V-DIVERSIDAD, la entropía de referencia del tamaño de municipio se calcula con los donantes del propio territorio, que son los que conservan su clase. El resto de atributos no cambia.
+- **Consecuencias:** se repiten F4-F7. Las calibraciones no cambian, porque `poblacion.py` no forma parte de sus entradas.

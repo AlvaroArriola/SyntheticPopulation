@@ -421,20 +421,39 @@ def construir(
     # su provincia y clase de tamaño) frente a unidades añadidas desde fuera (ampliación).
     en_base = pl.col("nivel").is_in(["mismo_territorio", "misma_provincia"])
     # Unidades trasladadas desde otra provincia (ampliación de donantes): su tamaño de municipio
-    # era el de origen y puede no existir en la de destino. Se toma la clase más frecuente entre
-    # los donantes locales de la provincia con el mismo grado de urbanización (`modelada`).
-    clase = (
+    # era el de origen y puede no existir en la de destino. Cada unidad recibe una clase sorteada
+    # con la distribución de los donantes locales de la provincia con su mismo grado de
+    # urbanización (`modelada`); antes, la más frecuente, que dejaba sin variedad a los grupos
+    # con muchos donantes añadidos (D-057).
+    clases = (
         p.lazy()  # en diferido: solo se leen las columnas usadas (memoria con España)
         .filter(pl.col("nivel") == "mismo_territorio")
         .group_by("provincia", "grado_urbanizacion", "tamano_municipio")
         .agg(pl.col("w").sum())
-        .sort("w", "tamano_municipio", descending=True)
-        .unique(["provincia", "grado_urbanizacion"], keep="first", maintain_order=True)
-        .select("provincia", "grado_urbanizacion", pl.col("tamano_municipio").alias("_tm"))
+        .sort("provincia", "grado_urbanizacion", "tamano_municipio")
         .collect()
     )
+    fuera = (
+        pers.filter(~en_base)
+        .group_by("k")
+        .agg(pl.col("provincia").first(), pl.col("grado_urbanizacion").first())
+        .sort("k")
+    )
+    sorteo = []
+    for (prov, grado), g in fuera.group_by("provincia", "grado_urbanizacion", maintain_order=True):
+        c = clases.filter((pl.col("provincia") == prov) & (pl.col("grado_urbanizacion") == grado))
+        if c.is_empty():
+            continue
+        pr = c["w"].to_numpy() / c["w"].sum()
+        elegido = rng.choice(c["tamano_municipio"].to_numpy(), size=g.height, p=pr)
+        sorteo.append(pl.DataFrame({"k": g["k"], "_tm": elegido}))
+    clase = (
+        pl.concat(sorteo)
+        if sorteo
+        else pl.DataFrame(schema={"k": pers.schema["k"], "_tm": pers.schema["tamano_municipio"]})
+    )
     pers = (
-        pers.join(clase, on=["provincia", "grado_urbanizacion"], how="left")
+        pers.join(clase.cast({"_tm": pers.schema["tamano_municipio"]}), on="k", how="left")
         .with_columns(
             pl.when(en_base)
             .then(pl.col("tamano_municipio"))

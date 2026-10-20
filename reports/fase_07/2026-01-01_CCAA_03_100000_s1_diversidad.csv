@@ -1,6 +1,6 @@
 atributo,grupos,proporcion_ok,ratio_mediano,ok
-nacionalidad_grupo,24,1.0,0.997915886777092,true
-pais_nacimiento_grupo,24,1.0,1.0024911792211046,true
+nacionalidad_grupo,24,1.0,0.9979158867770914,true
+pais_nacimiento_grupo,24,1.0,1.0024911792211042,true
 estado_civil,24,1.0,1.0002695154235086,true
 nivel_estudios,24,1.0,0.9988057868074507,true
 relacion_actividad,24,1.0,0.9974217034231863,true
@@ -8,5 +8,5 @@ ocupacion,24,1.0,0.9986001256773549,true
 situacion_profesional,24,1.0,0.9993984080240843,true
 tipo_hogar,24,1.0,0.9998774747175434,true
 tamano_hogar,24,1.0,1.0000126013761292,true
-grado_urbanizacion,24,1.0,0.9991444668201944,true
+grado_urbanizacion,24,1.0,0.9991444668201945,true
 tamano_municipio,24,1.0,0.990437939213785,true

@@ -255,6 +255,7 @@ def _semaforo() -> pl.Expr:
 
 # --------------------------------------------------------------------------- V-DIVERSIDAD
 
+TERRITORIALES_DIVERSIDAD = {"tamano_municipio"}
 ATRIBUTOS_DIVERSIDAD = [
     "nacionalidad_grupo",
     "pais_nacimiento_grupo",
@@ -308,7 +309,12 @@ def diversidad_grupos(
         if a not in p.columns or a not in referencia.columns:
             continue
         hs = _entropias(adultos, a, "peso").rename({"h": "h_sintetica"}).drop("_q")
-        hr = _entropias(ref, a, peso_ref).rename({"h": "h_referencia"})
+        r_a = ref
+        if a in TERRITORIALES_DIVERSIDAD and "nivel" in ref.columns:
+            # D-057: los donantes añadidos desde otra provincia no conservan su tamaño de
+            # municipio de origen en la población; la referencia es la de los locales
+            r_a = ref.filter(pl.col("nivel").is_in(["mismo_territorio", "misma_provincia"]))
+        hr = _entropias(r_a, a, peso_ref).rename({"h": "h_referencia"})
         j = tam.join(hs, on=GRUPO_DIVERSIDAD).join(hr, on=GRUPO_DIVERSIDAD)
         j = j.with_columns(
             pl.Series(

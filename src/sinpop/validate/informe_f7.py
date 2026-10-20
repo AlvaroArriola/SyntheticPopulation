@@ -133,8 +133,8 @@ def _tabla(filas: list[list[str]], cabecera: list[str]) -> str:
 def tabla_grupos(pob: dict) -> str:
     filas = []
     for g in pob["grupos"]:
-        perfil = g.get("perfil_tvd") or {}
-        peor = max(perfil.values()) if perfil else None
+        perfil = [v for v in (g.get("perfil_tvd") or {}).values() if v is not None]
+        peor = max(perfil) if perfil else None
         filas.append(
             [
                 g["nombre"],

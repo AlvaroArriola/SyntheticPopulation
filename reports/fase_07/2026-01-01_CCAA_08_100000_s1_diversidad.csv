@@ -3,9 +3,9 @@ nacionalidad_grupo,24,1.0,0.9984512052023656,true
 pais_nacimiento_grupo,24,1.0,0.9998576453336282,true
 estado_civil,24,1.0,1.0021610761990432,true
 nivel_estudios,24,1.0,1.000232289529917,true
-relacion_actividad,24,1.0,1.0025257472146758,true
-ocupacion,24,1.0,0.998769059186366,true
-situacion_profesional,24,1.0,1.0017944763383881,true
+relacion_actividad,24,1.0,1.0025257472146762,true
+ocupacion,24,1.0,0.9987690591863659,true
+situacion_profesional,24,1.0,1.001794476338388,true
 tipo_hogar,24,1.0,0.9996669784917149,true
 tamano_hogar,24,1.0,0.9999868682408257,true
 grado_urbanizacion,24,1.0,1.0000076465762078,true
