@@ -64,7 +64,7 @@ composición que las cifras oficiales:
 
 Los hogares donantes son los del Censo 2021. Lo que se calibra a 2026 refleja 2026:
 
-- edad, sexo, nacionalidad (también por edad), país de nacimiento, estudios, actividad (EPA,
+- edad, sexo, nacionalidad (también por edad y por sexo), país de nacimiento, estudios, actividad (EPA,
   también por nacionalidad), estado civil, tamaño y tipo de hogar, y territorio.
 
 El resto conserva la estructura de 2021 dentro de lo calibrado, por ejemplo la composición
@@ -340,6 +340,10 @@ def informe() -> str:
         " la ECV de la limitación grave y la carencia material y social severa.",
         "- D-056 (propuesta): un fallo aislado de V-MARG en N = 10.000 es azar si no se repite"
         " en otra población de la serie.",
+        "- D-057: tamaño de municipio sorteado (no la clase más frecuente) para los hogares"
+        " añadidos desde otra provincia; referencia local en V-DIVERSIDAD.",
+        "- D-058: el sexo de cada nacionalidad principal, calibrado al Censo Anual 2025 (los"
+        " donantes de 2021 tenían, p. ej., un 69 % de mujeres paraguayas frente al 61 %).",
         "- D-054: ampliación de los donantes de las celdas de extranjeros por edad y actividad, con"
         " vuelta atrás si el territorio no converge sin fundir nacionalidades. Se probó y descartó"
         " calibrar las nacionalidades desde 5 personas (empeoraba Teruel y Ceuta).",

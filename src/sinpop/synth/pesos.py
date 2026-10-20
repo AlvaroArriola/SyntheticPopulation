@@ -131,10 +131,12 @@ OBJETIVOS_INFRACOBERTURA = ("actividad_nacionalidad",)
 OBJETIVOS_SOBRECOBERTURA = (
     "estado_civil_edad",
     "nacionalidad_top_edad",
+    "nacionalidad_top_sexo",
     "actividad_nacionalidad",
     "nacionalidad",
 )
 MIN_NACIONALIDAD_EDAD = 2000  # por debajo, la nacionalidad se calibra sin la edad (D-050)
+MIN_NACIONALIDAD_SEXO = 200  # por debajo, sin el sexo (D-058): 2 celdas en lugar de 5
 MAX_PESO_IMPORTADA = 10.0  # × mediana del peso de los donantes locales (D-050)
 MAX_SIN_EDAD = 8  # intentos del último recurso (D-050)
 
@@ -179,42 +181,62 @@ def fusionar(
             "objetivo", "clave"
         )
         fusion = fusion | {"nacionalidad_top": mapa}
-    # Nacionalidad por edad (D-050): las nacionalidades fundidas y las celdas pequeñas de cada
-    # nacionalidad × edad van a otras_extranjeras de la misma edad.
-    te = obj.filter(pl.col("objetivo") == "nacionalidad_top_edad")
-    if te.height:
-        nac = pl.col("clave").str.extract(r"^(nacionalidad_top=[^;]+)")
-        resto = pl.col("clave").str.extract(r"^nacionalidad_top=[^;]+(;.*)$")
-        te = te.with_columns(nac.alias("_n"), resto.alias("_r"))
-        te = te.with_columns(pl.col("valor").sum().over("_n").alias("_tn"))
-        propia = ~pl.col("_n").is_in([otras, "nacionalidad_top=espanola"])
-        # Nacionalidad pequeña en el bloque: sin edad (todas sus edades en una celda, igual a
-        # su total de nacionalidad_top), porque con pocos donantes no se pueden cumplir a la vez
-        # el total y la edad dentro de las cotas
-        entera = te.filter(propia & ~pl.col("_n").is_in(list(mapa)))
-        entera = entera.filter(
-            (pl.col("_tn") < MIN_NACIONALIDAD_EDAD) | pl.col("_n").is_in(list(sin_edad))
-        )
-        pares_e = entera.select("clave", "_n").iter_rows()
-        mapa_e = {c: n + ";edad_nacionalidad=todas" for c, n in pares_e}
-        fundir = te.filter(
-            propia
-            & ~pl.col("clave").is_in(list(mapa_e))
-            & (pl.col("_n").is_in(list(mapa)) | (pl.col("valor") < MIN_CELDA_NACIONALIDAD))
-        )
-        mapa_e |= {c: otras + r for c, r in fundir.select("clave", "_r").iter_rows()}
+    # Nacionalidad por edad (D-050) y por sexo (D-058): las nacionalidades fundidas y las celdas
+    # pequeñas de cada nacionalidad × edad (o sexo) van a otras_extranjeras de la misma edad
+    # (o sexo).
+    for objetivo, variable, minimo in (
+        ("nacionalidad_top_edad", "edad_nacionalidad", MIN_NACIONALIDAD_EDAD),
+        ("nacionalidad_top_sexo", "sexo", MIN_NACIONALIDAD_SEXO),
+    ):
+        obj, mapa_e = _fundir_cruce_nacionalidad(obj, objetivo, variable, mapa, sin_edad, minimo)
         if mapa_e:
-            nuevo = (
-                te.with_columns(pl.col("clave").replace(mapa_e))
-                .group_by("clave", maintain_order=True)
-                .agg(pl.all().exclude("valor", "_n", "_r", "_tn").first(), pl.col("valor").sum())
-                .select(obj.columns)
-            )
-            obj = pl.concat(
-                [obj.filter(pl.col("objetivo") != "nacionalidad_top_edad"), nuevo]
-            ).sort("objetivo", "clave")
-            fusion = fusion | {"nacionalidad_top_edad": mapa_e}
+            fusion = fusion | {objetivo: mapa_e}
     return obj, fusion
+
+
+def _fundir_cruce_nacionalidad(
+    obj: pl.DataFrame,
+    objetivo: str,
+    variable: str,
+    mapa: dict[str, str],
+    sin_edad: frozenset[str],
+    minimo: int = MIN_NACIONALIDAD_EDAD,
+) -> tuple[pl.DataFrame, dict[str, str]]:
+    """Fusiones de un cruce nacionalidad_top × `variable` (D-050, D-058). Una nacionalidad
+    pequeña en el bloque (< `minimo` o en `sin_edad`) queda en una sola celda
+    (`variable`=todas, igual a su total): con pocos donantes no se pueden cumplir a la vez el
+    total y el cruce dentro de las cotas. Las nacionalidades fundidas y las celdas de menos de
+    `MIN_CELDA_NACIONALIDAD` personas van a otras_extranjeras con la misma `variable`."""
+    otras = "nacionalidad_top=otras_extranjeras"
+    te = obj.filter(pl.col("objetivo") == objetivo)
+    if not te.height:
+        return obj, {}
+    nac = pl.col("clave").str.extract(r"^(nacionalidad_top=[^;]+)")
+    resto = pl.col("clave").str.extract(r"^nacionalidad_top=[^;]+(;.*)$")
+    te = te.with_columns(nac.alias("_n"), resto.alias("_r"))
+    te = te.with_columns(pl.col("valor").sum().over("_n").alias("_tn"))
+    propia = ~pl.col("_n").is_in([otras, "nacionalidad_top=espanola"])
+    entera = te.filter(propia & ~pl.col("_n").is_in(list(mapa)))
+    entera = entera.filter((pl.col("_tn") < minimo) | pl.col("_n").is_in(list(sin_edad)))
+    pares_e = entera.select("clave", "_n").iter_rows()
+    mapa_e = {c: n + f";{variable}=todas" for c, n in pares_e}
+    fundir = te.filter(
+        propia
+        & ~pl.col("clave").is_in(list(mapa_e))
+        & (pl.col("_n").is_in(list(mapa)) | (pl.col("valor") < MIN_CELDA_NACIONALIDAD))
+    )
+    mapa_e |= {c: otras + r for c, r in fundir.select("clave", "_r").iter_rows()}
+    if mapa_e:
+        nuevo = (
+            te.with_columns(pl.col("clave").replace(mapa_e))
+            .group_by("clave", maintain_order=True)
+            .agg(pl.all().exclude("valor", "_n", "_r", "_tn").first(), pl.col("valor").sum())
+            .select(obj.columns)
+        )
+        obj = pl.concat([obj.filter(pl.col("objetivo") != objetivo), nuevo]).sort(
+            "objetivo", "clave"
+        )
+    return obj, mapa_e
 
 
 def cobertura_actividad(u: D.Unidades, provincias: list[str] | None = None) -> pl.DataFrame:
@@ -340,7 +362,7 @@ def _cruce(objetivo: str) -> pl.Expr:
     sola variable, todo el objetivo."""
     if objetivo in ("nacionalidad_top", "nacionalidad"):
         return pl.lit("")
-    if objetivo == "nacionalidad_top_edad":
+    if objetivo in ("nacionalidad_top_edad", "nacionalidad_top_sexo"):
         return pl.col("clave").str.extract(r"^([^;]+);")
     return pl.col("clave").str.extract(r"^[^;]+(;.*)$")
 
@@ -423,6 +445,7 @@ OBJETIVOS_SIN_VUELTA = (
     "nacionalidad",
     "nacionalidad_top",
     "nacionalidad_top_edad",
+    "nacionalidad_top_sexo",
 )
 OBJETIVOS_ULTIMO_RECURSO = (
     "actividad_tramo",
@@ -433,6 +456,7 @@ OBJETIVOS_ULTIMO_RECURSO = (
     "nacionalidad",
     "nacionalidad_top",
     "nacionalidad_top_edad",
+    "nacionalidad_top_sexo",
 )
 
 
@@ -971,7 +995,10 @@ def calibrar(
                 nuevas = (
                     set(
                         m.celdas.filter(
-                            pl.Series(dev > tol) & (pl.col("objetivo") == "nacionalidad_top_edad")
+                            pl.Series(dev > tol)
+                            & pl.col("objetivo").is_in(
+                                ["nacionalidad_top_edad", "nacionalidad_top_sexo"]
+                            )
                         )["clave"]
                         .str.extract(r"^(nacionalidad_top=[^;]+);")
                         .drop_nulls()

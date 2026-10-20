@@ -663,6 +663,7 @@ def provincias() -> pl.DataFrame:
             meta_nac,
         )
     )
+    out.append(_largo(top, ["nacionalidad_top", "sexo"], "nacionalidad_top_sexo", meta_nac))
     out.append(
         _largo(
             adultos_nacionalidad(nac),

@@ -49,6 +49,12 @@ calibrar:
       exhaustivo 2025 sobre los extranjeros ECP 2026); sin ella, el perfil de edad de cada
       nacionalidad era el de los donantes de 2021 (p. ej. paraguayos más jóvenes y rumanos más
       mayores en 2025; D-050). Las celdas pequeñas se funden con otras_extranjeras (D-041)
+  - id: nacionalidad_top_sexo
+    variables: [nacionalidad_top, sexo]
+    descripcion: Las 15 nacionalidades extranjeras más numerosas por sexo (Censo Anual exhaustivo
+      2025 sobre los extranjeros ECP 2026); sin ella, el sexo de cada nacionalidad era el de los
+      donantes de 2021 (p. ej. 69 % de mujeres paraguayas frente al 61 % de 2025; D-058). Mismas
+      fusiones que nacionalidad_top_edad
   - id: estado_civil_edad
     ambito: provincia
     variables: [estado_civil, edad_estado_civil]

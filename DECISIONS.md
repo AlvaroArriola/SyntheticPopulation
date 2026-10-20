@@ -1113,3 +1113,25 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   1. Cada hogar añadido recibe una clase de tamaño de municipio sorteada, con semilla, con la distribución ponderada de los donantes locales de su provincia y grado de urbanización. Se sigue marcando como `modelada`. Es un objetivo reservado (no calibrado), así que la calibración no cambia.
   2. En V-DIVERSIDAD, la entropía de referencia del tamaño de municipio se calcula con los donantes del propio territorio, que son los que conservan su clase. El resto de atributos no cambia.
 - **Consecuencias:** se repiten F4-F7. Las calibraciones no cambian, porque `poblacion.py` no forma parte de sus entradas.
+
+## D-058 · Calibrar el sexo de cada nacionalidad principal (2026-10-20)
+
+- **Fecha:** 2026-10-20
+- **Fase:** F3-F7 (detectado en la auditoría de F7)
+- **Estado:** aprobada por el agente. Medida correctora de docs/06 §4, punto 2: llevar un grupo a una cifra oficial fiable. No cambia ningún umbral.
+- **Contexto:**
+  - En la población nacional, el perfil por sexo de los paraguayos sale en rojo: 69,3 % de mujeres frente al 61,3 % del Censo Anual exhaustivo 2025 (TVD 0,080).
+  - Los hondureños tienen 69,3 % frente a 63,9 %. El resto de nacionalidades principales queda dentro de ±2,4 puntos.
+  - La causa son los donantes de 2021, más feminizados que la migración reciente. El sexo dentro de cada nacionalidad no se calibraba: solo estaba en el objetivo reservado `nacionalidad_top_sexo_edad`.
+- **Alternativas consideradas:**
+  1. Pasar a calibrado todo `nacionalidad_top_sexo_edad`. Se descarta: son 160 celdas por bloque, que no tienen solución en los territorios pequeños, y se perdería el objetivo de validación.
+  2. Declarar la limitación. Se descarta porque existe la cifra oficial.
+  3. **Elegida:** un objetivo calibrado nuevo, `nacionalidad_top_sexo`, de la misma fuente que `nacionalidad_top_edad`, con las mismas reglas de fusión. Se refactorizan en `_fundir_cruce_nacionalidad`:
+     - una nacionalidad con menos de 200 personas en el bloque queda en una sola celda (`sexo=todas`). Es un umbral propio, más bajo que el de la edad (2.000), porque el sexo son 2 celdas y no 5;
+     - las nacionalidades fundidas y las celdas de menos de 100 personas pasan a otras_extranjeras del mismo sexo;
+     - el último recurso puede soltar el sexo igual que la edad.
+- **Evidencia:**
+  - `tests/unit/test_fusion_sexo.py`.
+  - En la prueba de la copia aislada convergen Aragón, Madrid y Teruel. En Aragón, el perfil por sexo de los paraguayos pasa de una TVD de 0,135 a 0,013.
+  - `nacionalidad_top_sexo_edad` sigue reservado para validar.
+- **Consecuencias:** cambian los objetivos de F3 y todas las calibraciones. Se repiten F3-F7.
