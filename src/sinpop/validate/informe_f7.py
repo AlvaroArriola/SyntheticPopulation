@@ -64,8 +64,8 @@ composición que las cifras oficiales:
 
 Los hogares donantes son los del Censo 2021. Lo que se calibra a 2026 refleja 2026:
 
-- edad, sexo, nacionalidad (también por edad y por sexo), país de nacimiento, estudios, actividad (EPA,
-  también por nacionalidad), estado civil, tamaño y tipo de hogar, y territorio.
+- edad, sexo, nacionalidad (también por edad y por sexo), país de nacimiento, estudios,
+  actividad (EPA, también por nacionalidad), estado civil, tamaño y tipo de hogar, y territorio.
 
 El resto conserva la estructura de 2021 dentro de lo calibrado, por ejemplo la composición
 detallada de los hogares o la ocupación.
