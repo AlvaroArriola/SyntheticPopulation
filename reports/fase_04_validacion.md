@@ -1,78 +1,78 @@
 # Fase 04 · Tablas de validación
 
-Generado por `python -m sinpop.validate.fase4` (git:11206ad-dirty, 2026-10-20). Resumen en `fase_04_validacion.json`; detalle por población en `fase_04/`.
+Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). Resumen en `fase_04_validacion.json`; detalle por población en `fase_04/`.
 
 ## Curva de error frente a tamaño (España; media de 5 semillas)
 
 | n | tvd_media_calibradas | sd_calibradas | tvd_media_reservadas | sd_reservadas |
 | --- | --- | --- | --- | --- |
-| 10000 | 0.0185 | 0.0031 | 0.0166 | 0.0013 |
-| 50000 | 0.0056 | 0.0002 | 0.0103 | 0.0003 |
-| 100000 | 0.0030 | 0.0002 | 0.0094 | 0.0004 |
-| 500000 | 0.0012 | 0.0001 | 0.0083 | 0.0001 |
-| 1000000 | 0.0008 | 0.0000 | 0.0081 | 0.0000 |
+| 10000 | 0.0185 | 0.0031 | 0.0163 | 0.0015 |
+| 50000 | 0.0056 | 0.0002 | 0.0100 | 0.0004 |
+| 100000 | 0.0030 | 0.0002 | 0.0091 | 0.0004 |
+| 500000 | 0.0012 | 0.0001 | 0.0080 | 0.0001 |
+| 1000000 | 0.0008 | 0.0000 | 0.0078 | 0.0000 |
 
 ## TVD por marginal calibrada (España; media de 5 semillas)
 
-| objetivo | 100000 | 10000 | 1000000 | 50000 | 500000 |
+| objetivo | 500000 | 50000 | 10000 | 1000000 | 100000 |
 | --- | --- | --- | --- | --- | --- |
-| actividad_nacionalidad | 0.0020 | 0.0068 | 0.0009 | 0.0029 | 0.0011 |
-| actividad_tramo | 0.0023 | 0.0068 | 0.0009 | 0.0032 | 0.0013 |
-| edad5_sexo | 0.0016 | 0.0052 | 0.0006 | 0.0020 | 0.0009 |
-| edad5_sexo_colectivos | 0.0323 | 0.2486 | 0.0078 | 0.0699 | 0.0111 |
-| edad5_sexo_familiares | 0.0016 | 0.0054 | 0.0006 | 0.0022 | 0.0009 |
-| estado_civil_edad | 0.0020 | 0.0052 | 0.0006 | 0.0026 | 0.0009 |
-| estudios_edad | 0.0020 | 0.0059 | 0.0007 | 0.0025 | 0.0010 |
-| nacimiento_nacionalidad | 0.0007 | 0.0031 | 0.0004 | 0.0007 | 0.0005 |
-| nacionalidad | 0.0004 | 0.0012 | 0.0001 | 0.0003 | 0.0002 |
-| nacionalidad_edad | 0.0013 | 0.0056 | 0.0005 | 0.0023 | 0.0007 |
-| nacionalidad_top | 0.0001 | 0.0021 | 0.0001 | 0.0002 | 0.0002 |
-| nacionalidad_top_edad | 0.0007 | 0.0039 | 0.0003 | 0.0011 | 0.0004 |
-| sin_estudios_edad | 0.0007 | 0.0030 | 0.0003 | 0.0011 | 0.0004 |
-| tamano_hogar | 0.0010 | 0.0026 | 0.0002 | 0.0011 | 0.0003 |
-| tipo_hogar | 0.0017 | 0.0064 | 0.0004 | 0.0021 | 0.0007 |
-| tipo_residencia (implícito) | 0.0000 | 0.0009 | 0.0000 | 0.0003 | 0.0000 |
-| urbanizacion | 0.0006 | 0.0020 | 0.0001 | 0.0005 | 0.0003 |
+| actividad_nacionalidad | 0.0011 | 0.0029 | 0.0068 | 0.0009 | 0.0020 |
+| actividad_tramo | 0.0013 | 0.0032 | 0.0068 | 0.0009 | 0.0023 |
+| edad5_sexo | 0.0009 | 0.0020 | 0.0052 | 0.0006 | 0.0016 |
+| edad5_sexo_colectivos | 0.0111 | 0.0699 | 0.2486 | 0.0078 | 0.0323 |
+| edad5_sexo_familiares | 0.0009 | 0.0022 | 0.0054 | 0.0006 | 0.0016 |
+| estado_civil_edad | 0.0009 | 0.0026 | 0.0052 | 0.0006 | 0.0020 |
+| estudios_edad | 0.0010 | 0.0025 | 0.0059 | 0.0007 | 0.0020 |
+| nacimiento_nacionalidad | 0.0005 | 0.0007 | 0.0031 | 0.0004 | 0.0007 |
+| nacionalidad | 0.0002 | 0.0003 | 0.0012 | 0.0001 | 0.0004 |
+| nacionalidad_edad | 0.0007 | 0.0023 | 0.0056 | 0.0005 | 0.0013 |
+| nacionalidad_top | 0.0002 | 0.0002 | 0.0021 | 0.0001 | 0.0001 |
+| nacionalidad_top_edad | 0.0004 | 0.0011 | 0.0039 | 0.0003 | 0.0007 |
+| sin_estudios_edad | 0.0004 | 0.0011 | 0.0030 | 0.0003 | 0.0007 |
+| tamano_hogar | 0.0003 | 0.0011 | 0.0026 | 0.0002 | 0.0010 |
+| tipo_hogar | 0.0007 | 0.0021 | 0.0064 | 0.0004 | 0.0017 |
+| tipo_residencia (implícito) | 0.0000 | 0.0003 | 0.0009 | 0.0000 | 0.0000 |
+| urbanizacion | 0.0003 | 0.0005 | 0.0020 | 0.0001 | 0.0006 |
 
 ## TVD por cruce reservado (España; media de 5 semillas)
 
-| objetivo | 50000 | 1000000 | 10000 | 100000 | 500000 |
+| objetivo | 100000 | 50000 | 1000000 | 500000 | 10000 |
 | --- | --- | --- | --- | --- | --- |
-| actividad_edad | 0.0126 | 0.0103 | 0.0177 | 0.0114 | 0.0106 |
-| actividad_sexo | 0.0078 | 0.0061 | 0.0095 | 0.0071 | 0.0063 |
-| adultos_nacionalidad | 0.0014 | 0.0014 | 0.0023 | 0.0015 | 0.0015 |
-| estudios_sexo_edad | 0.0102 | 0.0069 | 0.0169 | 0.0085 | 0.0072 |
-| nacionalidad_top_sexo_edad | 0.0080 | 0.0047 | 0.0181 | 0.0069 | 0.0049 |
-| provincia_si_calibra_ccaa | 0.0118 | 0.0083 | 0.0246 | 0.0098 | 0.0085 |
-| tamano_municipio | 0.0139 | 0.0135 | 0.0180 | 0.0139 | 0.0133 |
-| tipo_hogar_edad4_ref | 0.0168 | 0.0136 | 0.0256 | 0.0158 | 0.0140 |
+| actividad_edad | 0.0114 | 0.0126 | 0.0103 | 0.0106 | 0.0177 |
+| actividad_sexo | 0.0071 | 0.0078 | 0.0061 | 0.0063 | 0.0095 |
+| adultos_nacionalidad | 0.0015 | 0.0014 | 0.0014 | 0.0015 | 0.0023 |
+| estudios_sexo_edad | 0.0085 | 0.0102 | 0.0069 | 0.0072 | 0.0169 |
+| nacionalidad_top_sexo_edad | 0.0069 | 0.0080 | 0.0047 | 0.0049 | 0.0181 |
+| provincia_si_calibra_ccaa | 0.0098 | 0.0118 | 0.0083 | 0.0085 | 0.0246 |
+| tamano_municipio | 0.0116 | 0.0110 | 0.0114 | 0.0112 | 0.0159 |
+| tipo_hogar_edad4_ref | 0.0158 | 0.0168 | 0.0136 | 0.0140 | 0.0256 |
 
 ## Fallos por tamaño
 
 | N | semilla | v_marg | v_cruce | v_cruce_excepciones | v_cruce_estricto | comprobaciones_cruce |
 | --- | --- | --- | --- | --- | --- | --- |
-| 10000 | 1 | 1 | 11 | 0 | 32 | 511 |
+| 10000 | 1 | 1 | 9 | 0 | 30 | 511 |
 | 10000 | 2 | 0 | 7 | 0 | 21 | 511 |
-| 10000 | 3 | 0 | 9 | 0 | 23 | 511 |
-| 10000 | 4 | 0 | 9 | 0 | 28 | 511 |
-| 10000 | 5 | 0 | 9 | 0 | 29 | 511 |
+| 10000 | 3 | 0 | 9 | 0 | 22 | 511 |
+| 10000 | 4 | 0 | 7 | 0 | 30 | 511 |
+| 10000 | 5 | 0 | 10 | 0 | 26 | 511 |
 | 50000 | 1 | 0 | 3 | 0 | 6 | 511 |
-| 50000 | 2 | 0 | 0 | 0 | 4 | 511 |
-| 50000 | 3 | 0 | 2 | 0 | 4 | 511 |
+| 50000 | 2 | 0 | 1 | 0 | 5 | 511 |
+| 50000 | 3 | 0 | 2 | 0 | 3 | 511 |
 | 50000 | 4 | 0 | 0 | 0 | 2 | 511 |
-| 50000 | 5 | 0 | 1 | 0 | 2 | 511 |
+| 50000 | 5 | 0 | 0 | 0 | 1 | 511 |
 | 100000 | 1 | 0 | 0 | 0 | 4 | 511 |
-| 100000 | 2 | 0 | 1 | 1 | 4 | 511 |
-| 100000 | 3 | 0 | 1 | 0 | 3 | 511 |
-| 100000 | 4 | 0 | 2 | 1 | 7 | 511 |
-| 100000 | 5 | 0 | 2 | 1 | 5 | 511 |
+| 100000 | 2 | 0 | 1 | 1 | 3 | 511 |
+| 100000 | 3 | 0 | 0 | 0 | 2 | 511 |
+| 100000 | 4 | 0 | 1 | 1 | 6 | 511 |
+| 100000 | 5 | 0 | 0 | 1 | 3 | 511 |
 | 500000 | 1 | 0 | 0 | 0 | 1 | 511 |
 | 500000 | 2 | 0 | 0 | 0 | 0 | 511 |
 | 500000 | 3 | 0 | 0 | 1 | 1 | 511 |
 | 500000 | 4 | 0 | 0 | 0 | 0 | 511 |
-| 500000 | 5 | 0 | 0 | 0 | 0 | 511 |
+| 500000 | 5 | 0 | 0 | 1 | 1 | 511 |
 | 1000000 | 1 | 0 | 0 | 0 | 0 | 511 |
-| 1000000 | 2 | 0 | 0 | 0 | 0 | 511 |
+| 1000000 | 2 | 0 | 0 | 1 | 1 | 511 |
 | 1000000 | 3 | 0 | 0 | 0 | 0 | 511 |
 | 1000000 | 4 | 0 | 0 | 0 | 1 | 511 |
 | 1000000 | 5 | 0 | 0 | 0 | 0 | 511 |
@@ -81,7 +81,9 @@ Generado por `python -m sinpop.validate.fase4` (git:11206ad-dirty, 2026-10-20). 
 
 | nivel | territorio | objetivo | tvd | umbral | excepcion | N | semilla |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| provincia | PROV:40 | tamano_municipio | 0.0811 | 0.0800 | ✅ | 500000 | 3 |
+| provincia | PROV:40 | tamano_municipio | 0.0890 | 0.0800 | ✅ | 500000 | 3 |
+| provincia | PROV:40 | tamano_municipio | 0.0811 | 0.0800 | ✅ | 500000 | 5 |
+| provincia | PROV:40 | tamano_municipio | 0.0804 | 0.0800 | ✅ | 1000000 | 2 |
 
 ## V-SEMILLAS
 
@@ -1686,7 +1688,7 @@ Generado por `python -m sinpop.validate.fase4` (git:11206ad-dirty, 2026-10-20). 
 | grupo | unidad | esperado | observado | ratio | ok_representacion | donantes_distintos | top5 | ok_concentracion |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | mayores_85 | persona | 32793.5365 | 32797.0000 | 1.0001 | ✅ | 29108 | 0.0020 | ✅ |
-| municipios_menos_2000 | persona | 54712.7072 | 55323.0000 | 1.0112 | ✅ | 24748 | 0.0018 | ✅ |
+| municipios_menos_2000 | persona | 54712.7072 | 56320.0000 | 1.0294 | ✅ | 24998 | 0.0017 | ✅ |
 | parados | persona | 50858.6743 | 50474.0000 | 0.9924 | ✅ | 42436 | 0.0012 | ✅ |
 | monoparentales | hogar | 46941.5071 | 46888.0000 | 0.9989 | ✅ | 45706 | 0.0009 | ✅ |
 | mayores_solos | persona | 49226.7723 | 48687.0000 | 0.9890 | ✅ | 48331 | 0.0003 | ✅ |
@@ -1918,6 +1920,6 @@ Miembros del grupo: 9902 (mínimo pedido 10000); α = 0.8690, β = 3.0490; suma 
 
 2026-01-01_ES_10000_s1 generado de nuevo en otro directorio: mismos hashes.
 
-- `persons.parquet`: `58dfb38288fa129521ef89d12f51d6bbc7baf89b8fa5a5ca8e2c662f93f77427`
-- `households.parquet`: `704bcff38d035512d480e9071fa0694becea71d8b6bc5e7d393b04c38f917563`
+- `persons.parquet`: `5491951cc5c1c553b3c4e71d83906db2837c480f6a9648f4b800e25fde0679bf`
+- `households.parquet`: `abdecd0663385f26febdd0be381c688463ec6bedc03e5cd5cf0faa35290f11f7`
 - `lineage.parquet`: `10c8f2f2df885593e174bd69f2afd2914b51b7ce76f6b82b6e5c50783a4a67ee`

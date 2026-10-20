@@ -1,7 +1,7 @@
 {
  "territorio": "ES",
  "fecha": "2026-10-20",
- "version_codigo": "git:11206ad-dirty",
+ "version_codigo": "git:9719cc7-dirty",
  "comando": "python -m sinpop.validate.fase4",
  "calibracion": {
   "metodo": "logit",
@@ -11129,8 +11129,8 @@
    "obtenido": 9965,
    "semilla": 1,
    "sha256": {
-    "persons.parquet": "58dfb38288fa129521ef89d12f51d6bbc7baf89b8fa5a5ca8e2c662f93f77427",
-    "households.parquet": "704bcff38d035512d480e9071fa0694becea71d8b6bc5e7d393b04c38f917563",
+    "persons.parquet": "5491951cc5c1c553b3c4e71d83906db2837c480f6a9648f4b800e25fde0679bf",
+    "households.parquet": "abdecd0663385f26febdd0be381c688463ec6bedc03e5cd5cf0faa35290f11f7",
     "lineage.parquet": "10c8f2f2df885593e174bd69f2afd2914b51b7ce76f6b82b6e5c50783a4a67ee"
    },
    "v_marg": {
@@ -11153,7 +11153,7 @@
       "nivel": "ccaa",
       "territorio": "CCAA:09",
       "objetivo": "tamano_municipio",
-      "tvd": 0.0742435342793126,
+      "tvd": 0.070607170642949,
       "umbral": 0.05,
       "excepcion": false
      },
@@ -11161,7 +11161,7 @@
       "nivel": "ccaa",
       "territorio": "CCAA:10",
       "objetivo": "tamano_municipio",
-      "tvd": 0.07896611231372812,
+      "tvd": 0.05571029836023975,
       "umbral": 0.05,
       "excepcion": false
      },
@@ -11177,7 +11177,7 @@
       "nivel": "provincia",
       "territorio": "PROV:08",
       "objetivo": "tamano_municipio",
-      "tvd": 0.09559875656225848,
+      "tvd": 0.08815458782776718,
       "umbral": 0.08,
       "excepcion": false
      },
@@ -11185,16 +11185,8 @@
       "nivel": "provincia",
       "territorio": "PROV:10",
       "objetivo": "tamano_municipio",
-      "tvd": 0.18204773177905037,
+      "tvd": 0.17041982480230625,
       "umbral": 0.15104119967238416,
-      "excepcion": false
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:11",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.11016152417610936,
-      "umbral": 0.09881044677278154,
       "excepcion": false
      },
      {
@@ -11207,17 +11199,9 @@
      },
      {
       "nivel": "provincia",
-      "territorio": "PROV:29",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.08347308746094187,
-      "umbral": 0.08,
-      "excepcion": false
-     },
-     {
-      "nivel": "provincia",
       "territorio": "PROV:35",
       "objetivo": "tamano_municipio",
-      "tvd": 0.0870229583438428,
+      "tvd": 0.10419034031809174,
       "umbral": 0.0848247572056236,
       "excepcion": false
      },
@@ -11233,7 +11217,7 @@
       "nivel": "provincia",
       "territorio": "PROV:46",
       "objetivo": "tamano_municipio",
-      "tvd": 0.12855760237690572,
+      "tvd": 0.09257275389205723,
       "umbral": 0.08,
       "excepcion": false
      }
@@ -11283,7 +11267,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.019217705520105394,
+      "tvd": 0.018314544456382382,
       "tvd_ref": 0.014285897754931689,
       "umbral": 0.03,
       "ok": true
@@ -11296,27 +11280,27 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.018092915565696147,
+    "tvd_media_espana": 0.01798002043273077,
     "fallos_estricto": [
      {
       "nivel": "ccaa",
       "territorio": "CCAA:05",
       "objetivo": "tamano_municipio",
-      "tvd": 0.05392759547957616,
+      "tvd": 0.06268033070933544,
       "umbral_estricto": 0.052139388634835374
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:09",
       "objetivo": "tamano_municipio",
-      "tvd": 0.0742435342793126,
+      "tvd": 0.070607170642949,
       "umbral_estricto": 0.05
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:10",
       "objetivo": "tamano_municipio",
-      "tvd": 0.07896611231372812,
+      "tvd": 0.05571029836023975,
       "umbral_estricto": 0.05
      },
      {
@@ -11370,16 +11354,9 @@
      },
      {
       "nivel": "provincia",
-      "territorio": "PROV:04",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.0991573292229822,
-      "umbral_estricto": 0.09745635392796646
-     },
-     {
-      "nivel": "provincia",
       "territorio": "PROV:08",
       "objetivo": "tamano_municipio",
-      "tvd": 0.09559875656225848,
+      "tvd": 0.08815458782776718,
       "umbral_estricto": 0.08
      },
      {
@@ -11393,14 +11370,14 @@
       "nivel": "provincia",
       "territorio": "PROV:10",
       "objetivo": "tamano_municipio",
-      "tvd": 0.18204773177905037,
+      "tvd": 0.17041982480230625,
       "umbral_estricto": 0.12420099972698681
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:11",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11016152417610936,
+      "tvd": 0.08069328819794996,
       "umbral_estricto": 0.08067537231065129
      },
      {
@@ -11442,7 +11419,7 @@
       "nivel": "provincia",
       "territorio": "PROV:18",
       "objetivo": "tamano_municipio",
-      "tvd": 0.09215494310898709,
+      "tvd": 0.09215494310898707,
       "umbral_estricto": 0.08567538190785387
      },
      {
@@ -11468,16 +11445,9 @@
      },
      {
       "nivel": "provincia",
-      "territorio": "PROV:29",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.08347308746094187,
-      "umbral_estricto": 0.08
-     },
-     {
-      "nivel": "provincia",
       "territorio": "PROV:35",
       "objetivo": "tamano_municipio",
-      "tvd": 0.0870229583438428,
+      "tvd": 0.10419034031809174,
       "umbral_estricto": 0.08
      },
      {
@@ -11512,7 +11482,7 @@
       "nivel": "provincia",
       "territorio": "PROV:46",
       "objetivo": "tamano_municipio",
-      "tvd": 0.12855760237690572,
+      "tvd": 0.09257275389205723,
       "umbral_estricto": 0.08
      },
      {
@@ -11639,8 +11609,8 @@
    "obtenido": 9966,
    "semilla": 2,
    "sha256": {
-    "persons.parquet": "fd65bb66b21607903e21d71b2b96fcf469b0a1ba077ae8be377a9086cbfd68f2",
-    "households.parquet": "7d55dc8e60c11cce645f38e2e080360627378e0e7aa83c1ce49c4b65ff067e00",
+    "persons.parquet": "57edae81f3f2d1846d10e777fbd327a1e36186f35e65da3fd50e7f6570dfedfc",
+    "households.parquet": "4488d2646df9693b692d2b18da1ba82e417cf0a4eb859fd86b075cde8c952128",
     "lineage.parquet": "75e2b1df5d20d1642d54d06867bacb29e0fac58cb45e7854d320f45e1ccec720"
    },
    "v_marg": {
@@ -11661,6 +11631,14 @@
       "excepcion": false
      },
      {
+      "nivel": "ccaa",
+      "territorio": "CCAA:11",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.11535630981641641,
+      "umbral": 0.11324925297397474,
+      "excepcion": false
+     },
+     {
       "nivel": "provincia",
       "territorio": "PROV:04",
       "objetivo": "adultos_nacionalidad",
@@ -11672,7 +11650,7 @@
       "nivel": "provincia",
       "territorio": "PROV:06",
       "objetivo": "tamano_municipio",
-      "tvd": 0.15548663961244777,
+      "tvd": 0.15548663961244774,
       "umbral": 0.14422469938226695,
       "excepcion": false
      },
@@ -11682,14 +11660,6 @@
       "objetivo": "adultos_nacionalidad",
       "tvd": 0.10413211419792887,
       "umbral": 0.10264191895454385,
-      "excepcion": false
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:29",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.0927485331734707,
-      "umbral": 0.08470219469298315,
       "excepcion": false
      },
      {
@@ -11754,7 +11724,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.023093049275426436,
+      "tvd": 0.02158793187626931,
       "tvd_ref": 0.013945497494690753,
       "umbral": 0.03,
       "ok": true
@@ -11767,7 +11737,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.017083990157506786,
+    "tvd_media_espana": 0.016895850482612145,
     "fallos_estricto": [
      {
       "nivel": "ccaa",
@@ -11775,6 +11745,13 @@
       "objetivo": "tamano_municipio",
       "tvd": 0.10331244980405407,
       "umbral_estricto": 0.0770687851171114
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:04",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.08673180053546467,
+      "umbral_estricto": 0.07612235416833237
      },
      {
       "nivel": "ccaa",
@@ -11787,14 +11764,14 @@
       "nivel": "ccaa",
       "territorio": "CCAA:11",
       "objetivo": "tamano_municipio",
-      "tvd": 0.10583250029260687,
+      "tvd": 0.11535630981641641,
       "umbral_estricto": 0.09270771081164562
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:15",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11211761712428431,
+      "tvd": 0.11211761712428432,
       "umbral_estricto": 0.10513034042613074
      },
      {
@@ -11815,8 +11792,15 @@
       "nivel": "provincia",
       "territorio": "PROV:06",
       "objetivo": "tamano_municipio",
-      "tvd": 0.15548663961244777,
+      "tvd": 0.15548663961244774,
       "umbral_estricto": 0.1185205828185558
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:07",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.08673180053546467,
+      "umbral_estricto": 0.08
      },
      {
       "nivel": "provincia",
@@ -11869,24 +11853,10 @@
      },
      {
       "nivel": "provincia",
-      "territorio": "PROV:29",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.0927485331734707,
-      "umbral_estricto": 0.08
-     },
-     {
-      "nivel": "provincia",
       "territorio": "PROV:31",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11211761712428431,
+      "tvd": 0.11211761712428432,
       "umbral_estricto": 0.10513034042613074
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:37",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.15713034559526098,
-      "umbral_estricto": 0.15466690871133085
      },
      {
       "nivel": "provincia",
@@ -12033,8 +12003,8 @@
    "obtenido": 9962,
    "semilla": 3,
    "sha256": {
-    "persons.parquet": "86f2a0d3f41cdee63e41eedc56a8754122c92a6c74055eb19d712875ef4d2c01",
-    "households.parquet": "c88361d8e3daff68577c8bac4e98edcd032275f66b6fcc862f35b3faf9dd696e",
+    "persons.parquet": "798b379159e284babc5deccf57f1bb378b12710e7eac58a1e488cc723030c648",
+    "households.parquet": "97ac825551377a7904eb126fa34fa3a68b0cd3689a34fc6c0e654494144d86ec",
     "lineage.parquet": "987771199329d03cc3b2d5fb6be7a265d2b269942290059dca35e38d284c4302"
    },
    "v_marg": {
@@ -12164,7 +12134,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.014223236991561396,
+      "tvd": 0.014624762789593921,
       "tvd_ref": 0.013098942214537342,
       "umbral": 0.03,
       "ok": true
@@ -12177,7 +12147,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.01698585735319903,
+    "tvd_media_espana": 0.017036048077953093,
     "fallos_estricto": [
      {
       "nivel": "espana",
@@ -12199,13 +12169,6 @@
       "objetivo": "provincia_si_calibra_ccaa",
       "tvd": 0.12346907789251937,
       "umbral_estricto": 0.07380430863703025
-     },
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:11",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.08292619902160907,
-      "umbral_estricto": 0.0813220621845695
      },
      {
       "nivel": "ccaa",
@@ -12457,8 +12420,8 @@
    "obtenido": 9966,
    "semilla": 4,
    "sha256": {
-    "persons.parquet": "eff61c87700b6d8752986fcb7bd6351658f40c8a1944417fb2d9c2bbf8c6d2a6",
-    "households.parquet": "d6744a9888c323a9b738d9d401198c35fabacf7dfbdcd1bbc3ef32b972f4be99",
+    "persons.parquet": "b9397ef962ceb19125b9dc7afc4ddc003501671c3a882ce342542ba88b15bfda",
+    "households.parquet": "d8c794d0114d3e0643b91f412441c7937e6de8d8d56831bc5a55395ce4e1d394",
     "lineage.parquet": "1b5f4cd15102bc7f90678c2b39d66fc630a04daf75e386fe1e2546783c1177fa"
    },
    "v_marg": {
@@ -12490,7 +12453,7 @@
       "nivel": "provincia",
       "territorio": "PROV:17",
       "objetivo": "tamano_municipio",
-      "tvd": 0.12670584982147992,
+      "tvd": 0.11500994338873137,
       "umbral": 0.11050136641795251,
       "excepcion": false
      },
@@ -12504,26 +12467,10 @@
      },
      {
       "nivel": "provincia",
-      "territorio": "PROV:29",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.0884049513538333,
-      "umbral": 0.08377547684486818,
-      "excepcion": false
-     },
-     {
-      "nivel": "provincia",
       "territorio": "PROV:30",
       "objetivo": "tamano_municipio",
       "tvd": 0.08733428186003021,
       "umbral": 0.08,
-      "excepcion": false
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:35",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.09781835043972717,
-      "umbral": 0.0974134037283615,
       "excepcion": false
      },
      {
@@ -12588,7 +12535,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.010886106418831504,
+      "tvd": 0.007426352274496159,
       "tvd_ref": 0.014200972821880948,
       "umbral": 0.03,
       "ok": true
@@ -12601,14 +12548,28 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.014642306888283987,
+    "tvd_media_espana": 0.014209837620242069,
     "fallos_estricto": [
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:04",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.09294539183863143,
+      "umbral_estricto": 0.08522700511212883
+     },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:06",
       "objetivo": "tamano_municipio",
-      "tvd": 0.1458243660034868,
+      "tvd": 0.13734978973230033,
       "umbral_estricto": 0.1203651516742358
+     },
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:07",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.060979206118339305,
+      "umbral_estricto": 0.060468814510645216
      },
      {
       "nivel": "ccaa",
@@ -12621,7 +12582,7 @@
       "nivel": "ccaa",
       "territorio": "CCAA:15",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11081939842517853,
+      "tvd": 0.11817233960164913,
       "umbral_estricto": 0.10741345798005958
      },
      {
@@ -12656,14 +12617,21 @@
       "nivel": "provincia",
       "territorio": "PROV:04",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11224819895078686,
+      "tvd": 0.11936093627412252,
       "umbral_estricto": 0.1050768217002015
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:07",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.09294539183863143,
+      "umbral_estricto": 0.08522700511212883
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:17",
       "objetivo": "tamano_municipio",
-      "tvd": 0.12670584982147992,
+      "tvd": 0.11500994338873137,
       "umbral_estricto": 0.09041780534829376
      },
      {
@@ -12677,7 +12645,7 @@
       "nivel": "provincia",
       "territorio": "PROV:21",
       "objetivo": "tamano_municipio",
-      "tvd": 0.12905140016438935,
+      "tvd": 0.12905140016438937,
       "umbral_estricto": 0.11235984321944395
      },
      {
@@ -12703,13 +12671,6 @@
      },
      {
       "nivel": "provincia",
-      "territorio": "PROV:29",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.0884049513538333,
-      "umbral_estricto": 0.08
-     },
-     {
-      "nivel": "provincia",
       "territorio": "PROV:30",
       "objetivo": "tamano_municipio",
       "tvd": 0.08733428186003021,
@@ -12719,21 +12680,21 @@
       "nivel": "provincia",
       "territorio": "PROV:31",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11081939842517853,
+      "tvd": 0.11817233960164913,
       "umbral_estricto": 0.10741345798005958
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:35",
       "objetivo": "tamano_municipio",
-      "tvd": 0.09781835043972717,
+      "tvd": 0.08399346564710043,
       "umbral_estricto": 0.08
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:39",
       "objetivo": "tamano_municipio",
-      "tvd": 0.1458243660034868,
+      "tvd": 0.13734978973230033,
       "umbral_estricto": 0.1203651516742358
      },
      {
@@ -12916,8 +12877,8 @@
    "obtenido": 9974,
    "semilla": 5,
    "sha256": {
-    "persons.parquet": "af534e98f615f1dc781d0ba458534136e5b56cb68ac5179d2f2bb2a08016305d",
-    "households.parquet": "8b3cb51b19968e11f109715cf196dc07e3275303386f7c8e8a383471e820f945",
+    "persons.parquet": "d2eeac84d024398862b0506a96991f090574ebe226ff133b4a605888905a3add",
+    "households.parquet": "a4b83ee88e68ed0ee37a5dcbee5d49e1fce776ecab8aff1f2f80b50264aed05e",
     "lineage.parquet": "8bfe960b394283f349953dd990f79dff77aa01799dc2639427b93c32ce12fe41"
    },
    "v_marg": {
@@ -12931,17 +12892,17 @@
     "fallos": [
      {
       "nivel": "ccaa",
-      "territorio": "CCAA:09",
+      "territorio": "CCAA:06",
       "objetivo": "tamano_municipio",
-      "tvd": 0.05194104698766058,
-      "umbral": 0.05,
+      "tvd": 0.1289233017493719,
+      "umbral": 0.12783380810918626,
       "excepcion": false
      },
      {
       "nivel": "ccaa",
-      "territorio": "CCAA:13",
+      "territorio": "CCAA:09",
       "objetivo": "tamano_municipio",
-      "tvd": 0.058501575410294895,
+      "tvd": 0.05164258993870569,
       "umbral": 0.05,
       "excepcion": false
      },
@@ -12955,17 +12916,17 @@
      },
      {
       "nivel": "provincia",
-      "territorio": "PROV:03",
+      "territorio": "PROV:04",
       "objetivo": "tamano_municipio",
-      "tvd": 0.09319095123947149,
-      "umbral": 0.08,
+      "tvd": 0.12662693153810792,
+      "umbral": 0.12337990141884436,
       "excepcion": false
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:16",
       "objetivo": "tamano_municipio",
-      "tvd": 0.25915997226045717,
+      "tvd": 0.2358907783987416,
       "umbral": 0.21503278303907927,
       "excepcion": false
      },
@@ -12973,7 +12934,7 @@
       "nivel": "provincia",
       "territorio": "PROV:17",
       "objetivo": "tamano_municipio",
-      "tvd": 0.15094412113776745,
+      "tvd": 0.11205523224887858,
       "umbral": 0.09747547792922684,
       "excepcion": false
      },
@@ -12983,6 +12944,14 @@
       "objetivo": "tamano_municipio",
       "tvd": 0.22144368326247735,
       "umbral": 0.17246029066693655,
+      "excepcion": false
+     },
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:39",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.1289233017493719,
+      "umbral": 0.12783380810918626,
       "excepcion": false
      },
      {
@@ -13047,7 +13016,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.02248571061232157,
+      "tvd": 0.017472676724212512,
       "tvd_ref": 0.013690932620778248,
       "umbral": 0.03,
       "ok": true
@@ -13060,20 +13029,20 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.016040311476250912,
+    "tvd_media_espana": 0.01541368224023728,
     "fallos_estricto": [
      {
       "nivel": "ccaa",
       "territorio": "CCAA:06",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11328144466701442,
+      "tvd": 0.1289233017493719,
       "umbral_estricto": 0.10486150675765522
      },
      {
       "nivel": "ccaa",
       "territorio": "CCAA:09",
       "objetivo": "tamano_municipio",
-      "tvd": 0.05194104698766058,
+      "tvd": 0.05164258993870569,
       "umbral_estricto": 0.05
      },
      {
@@ -13085,16 +13054,9 @@
      },
      {
       "nivel": "ccaa",
-      "territorio": "CCAA:13",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.058501575410294895,
-      "umbral_estricto": 0.05
-     },
-     {
-      "nivel": "ccaa",
       "territorio": "CCAA:15",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11729961939309867,
+      "tvd": 0.11005324258150445,
       "umbral_estricto": 0.10700300562939766
      },
      {
@@ -13106,16 +13068,9 @@
      },
      {
       "nivel": "provincia",
-      "territorio": "PROV:03",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.09319095123947149,
-      "umbral_estricto": 0.08
-     },
-     {
-      "nivel": "provincia",
       "territorio": "PROV:04",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11363991855109493,
+      "tvd": 0.12662693153810792,
       "umbral_estricto": 0.10114991784903697
      },
      {
@@ -13124,13 +13079,6 @@
       "objetivo": "actividad_edad",
       "tvd": 0.5419148259867318,
       "umbral_estricto": 0.5175804676704571
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:06",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.1330734136147482,
-      "umbral_estricto": 0.12441154002522259
      },
      {
       "nivel": "provincia",
@@ -13157,14 +13105,14 @@
       "nivel": "provincia",
       "territorio": "PROV:16",
       "objetivo": "tamano_municipio",
-      "tvd": 0.25915997226045717,
+      "tvd": 0.2358907783987416,
       "umbral_estricto": 0.17752731919923273
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:17",
       "objetivo": "tamano_municipio",
-      "tvd": 0.15094412113776745,
+      "tvd": 0.11205523224887858,
       "umbral_estricto": 0.08
      },
      {
@@ -13220,14 +13168,14 @@
       "nivel": "provincia",
       "territorio": "PROV:31",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11729961939309867,
+      "tvd": 0.11005324258150445,
       "umbral_estricto": 0.10700300562939766
      },
      {
       "nivel": "provincia",
       "territorio": "PROV:39",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11328144466701442,
+      "tvd": 0.1289233017493719,
       "umbral_estricto": 0.10486150675765522
      },
      {
@@ -13255,7 +13203,7 @@
       "nivel": "provincia",
       "territorio": "PROV:43",
       "objetivo": "tamano_municipio",
-      "tvd": 0.10901181682050297,
+      "tvd": 0.109011816820503,
       "umbral_estricto": 0.10070469096218253
      },
      {
@@ -13382,8 +13330,8 @@
    "obtenido": 49964,
    "semilla": 1,
    "sha256": {
-    "persons.parquet": "9b53c0557a37875ea8598ffcf20b71ddf53a65dd2c0898f358093b279748d332",
-    "households.parquet": "080ab9c6052b9e7e28b70bf7e0360d02a4d76bea13d29fc0fd690b2af835ff02",
+    "persons.parquet": "121103d09956abd854e8960e1efbd1fa6629186483f616ad5c4a5da8ee12b769",
+    "households.parquet": "30e4f2cce577561f05420f401bc09a2c1019f2d5692b742b4c2e96300cec75dd",
     "lineage.parquet": "5b0f22b6db50d4c19f1be1f67de544b6c5b7585fb273b7526fc520ab3f1e118d"
    },
    "v_marg": {
@@ -13465,7 +13413,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.013942166037849774,
+      "tvd": 0.011313572385980332,
       "tvd_ref": 0.005644874472120677,
       "umbral": 0.03,
       "ok": true
@@ -13478,7 +13426,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.010491782278898066,
+    "tvd_media_espana": 0.010163208072414387,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -13639,8 +13587,8 @@
    "obtenido": 49937,
    "semilla": 2,
    "sha256": {
-    "persons.parquet": "da4fa54b0b8fefa67179703d0e30413d992783086b7f0cea988565b6aa0fe85f",
-    "households.parquet": "74c6d3766aebd3ac308d6bbb452a1c019fb20be6529b5eee2b7a0bebbe23ba15",
+    "persons.parquet": "a6849aefd3203c638783e8c5bc56dca48790b6e4be1127fef067c452d901ddfc",
+    "households.parquet": "767b110e52ff9cbbe2ca0c36ed878384b5a22da9ca79907556240624794fb391",
     "lineage.parquet": "4904eaae497a6cc1719a7ce4e1c4801b33c4cf8b32b4709f72fc46272f084367"
    },
    "v_marg": {
@@ -13651,7 +13599,16 @@
    },
    "v_cruce": {
     "comprobaciones": 511,
-    "fallos": [],
+    "fallos": [
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:03",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.05084412689509546,
+      "umbral": 0.05,
+      "excepcion": false
+     }
+    ],
     "espana": [
      {
       "objetivo": "actividad_edad",
@@ -13697,7 +13654,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.012401671255718016,
+      "tvd": 0.011080005957442195,
       "tvd_ref": 0.006341152207677814,
       "umbral": 0.03,
       "ok": true
@@ -13710,8 +13667,15 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.010299021657695896,
+    "tvd_media_espana": 0.010133813495411419,
     "fallos_estricto": [
+     {
+      "nivel": "ccaa",
+      "territorio": "CCAA:03",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.05084412689509546,
+      "umbral_estricto": 0.05
+     },
      {
       "nivel": "provincia",
       "territorio": "PROV:22",
@@ -13857,8 +13821,8 @@
    "obtenido": 49959,
    "semilla": 3,
    "sha256": {
-    "persons.parquet": "3cd6dccd5da9690f2b88d784462894b80a3e7c0403bbf9e33e9887425505a0a2",
-    "households.parquet": "a7395502d98531dfe6847e794e8929141b8db05b6f137e626206f99cf521e0f9",
+    "persons.parquet": "2d01475cea1ead4e10bd6c265ce62a20f66cbf7b99659ae55d470eb12a5a3569",
+    "households.parquet": "6fc1689edd0b12099855ff0aa88d02a7acc05a1f1c32976599658860cb7274d6",
     "lineage.parquet": "37a150bc92660c64764cead509413f53d64ce4fc383177061dc060f0931aedba"
    },
    "v_marg": {
@@ -13932,7 +13896,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.014018283847428703,
+      "tvd": 0.00987488626140819,
       "tvd_ref": 0.006298873304705072,
       "umbral": 0.03,
       "ok": true
@@ -13945,15 +13909,8 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.009829893233663805,
+    "tvd_media_espana": 0.00931196853541124,
     "fallos_estricto": [
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:05",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.09970791872024654,
-      "umbral_estricto": 0.08807063738772154
-     },
      {
       "nivel": "provincia",
       "territorio": "PROV:16",
@@ -14092,8 +14049,8 @@
    "obtenido": 49955,
    "semilla": 4,
    "sha256": {
-    "persons.parquet": "6b53bee0170dc0eda7b6c4507b3abbe522d4a355abfe0ddb096f796e1e023343",
-    "households.parquet": "69f7c937f4fe79d0c60a7d4eac8084b7fae17e1aedf768382cd154c7c0a1a2a3",
+    "persons.parquet": "69fe1da99f03aed243dba96dc0fb64456482492b8b6274dbcdd93619f3d19338",
+    "households.parquet": "543189c17d54e4cd9cbdefce2eca7b331c66057557f5b774f947805abc765740",
     "lineage.parquet": "26595408d9d56607795ba14be3c50bf4ba2410332802c21874e7b3ba5c66157c"
    },
    "v_marg": {
@@ -14150,7 +14107,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.01477005988941411,
+      "tvd": 0.012588096122023443,
       "tvd_ref": 0.006358687883852042,
       "umbral": 0.03,
       "ok": true
@@ -14163,7 +14120,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.01039316814347736,
+    "tvd_media_espana": 0.010120422672553527,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -14296,8 +14253,8 @@
    "obtenido": 49972,
    "semilla": 5,
    "sha256": {
-    "persons.parquet": "13f04759a723d107155b3df156b52bc991b6613cefbc80a79a95640fd7f409e1",
-    "households.parquet": "4f088bd721d9630d62b7f163804064b0cb8691fe950e9ad35596e2ca765cb8f1",
+    "persons.parquet": "7c7f97e97b88210c8d366f09c06a1bfb8ad04c6a116521580585fc1c1d1ca65d",
+    "households.parquet": "64d15c3bddcb7657a874127a944d9ead8b851213a37b23db7fc6c315a29307ff",
     "lineage.parquet": "4b4d7789feae37d4c04de538859616c3855f658a0de98a4e205c6621828fa0bb"
    },
    "v_marg": {
@@ -14308,16 +14265,7 @@
    },
    "v_cruce": {
     "comprobaciones": 511,
-    "fallos": [
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:15",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.057879329538026214,
-      "umbral": 0.055379470118585204,
-      "excepcion": false
-     }
-    ],
+    "fallos": [],
     "espana": [
      {
       "objetivo": "actividad_edad",
@@ -14363,7 +14311,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.014278148341100187,
+      "tvd": 0.010375963117374914,
       "tvd_ref": 0.005846448683121219,
       "umbral": 0.03,
       "ok": true
@@ -14376,15 +14324,8 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.01057617055942655,
+    "tvd_media_espana": 0.01008839740646089,
     "fallos_estricto": [
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:15",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.057879329538026214,
-      "umbral_estricto": 0.05
-     },
      {
       "nivel": "provincia",
       "territorio": "PROV:04",
@@ -14509,8 +14450,8 @@
    "obtenido": 99880,
    "semilla": 1,
    "sha256": {
-    "persons.parquet": "64f87e83f277d1c172c215f4f24bbec907d01263d9daf41052bcc422aa16502e",
-    "households.parquet": "a4527edac7ee95eeb2abb39bcabb0cf7cc18ff86d1d512d85e3b343fe9496881",
+    "persons.parquet": "b04d7c3040da3a3a87bafd3e31f873c0d0a1f3d2a867c61644fc1217ec905747",
+    "households.parquet": "638d73c506ba66d25c5231fa9715bf95e048ba26c5dbd606eec87b20ca2ecd6c",
     "lineage.parquet": "f6a7e541cbb809a6f891e1938d98a4f028d55890ee51c59699ff86ef76e63cf4"
    },
    "v_marg": {
@@ -14567,7 +14508,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.013343793785793569,
+      "tvd": 0.011398176576090092,
       "tvd_ref": 0.004318764645750379,
       "umbral": 0.03,
       "ok": true
@@ -14580,7 +14521,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008810590898308275,
+    "tvd_media_espana": 0.008567388747095341,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -14727,8 +14668,8 @@
    "obtenido": 99941,
    "semilla": 2,
    "sha256": {
-    "persons.parquet": "fc65b901d30624fd4ebfe85b073c8c89f87b239e740036656980f024da39bafc",
-    "households.parquet": "2e50a5bdba362684e1317ed1b513734ef74ea9a385eb6b7d47119ed297950f0e",
+    "persons.parquet": "55c574a7dc44f94e99bf394d3cf1c89919e852cd45296f073a1fcd3e0569570f",
+    "households.parquet": "0ab33d45439f50e80c120b224ebedfc710971f6bd566bbb2916ab065327dd531",
     "lineage.parquet": "34e8428256d62a71cbe093d9e3c441f226f8979caea2d9c722a595c38bfb85ed"
    },
    "v_marg": {
@@ -14744,7 +14685,7 @@
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11909599834503504,
+      "tvd": 0.1298776695040647,
       "umbral": 0.08,
       "excepcion": true
      },
@@ -14802,7 +14743,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.013473393144494215,
+      "tvd": 0.011562265579230721,
       "tvd_ref": 0.0044081361791531585,
       "umbral": 0.03,
       "ok": true
@@ -14815,15 +14756,8 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.009165433444796766,
+    "tvd_media_espana": 0.00892654249913883,
     "fallos_estricto": [
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:17",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.0521454733274478,
-      "umbral_estricto": 0.05
-     },
      {
       "nivel": "provincia",
       "territorio": "PROV:16",
@@ -14835,7 +14769,7 @@
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
-      "tvd": 0.11909599834503504,
+      "tvd": 0.1298776695040647,
       "umbral_estricto": 0.08
      },
      {
@@ -14962,8 +14896,8 @@
    "obtenido": 99913,
    "semilla": 3,
    "sha256": {
-    "persons.parquet": "681bfe53eb6b47c16a17d854f0bc56c70e3ecd5d988c56b537bd5013a8f45459",
-    "households.parquet": "16278c55d475ce5b3daa1048fc16b5e55a5a9f083b99d25255f9be743fbf5d1f",
+    "persons.parquet": "66fc0b8943acbd93b3a6befcbde50b0fbf5aaa5c00a4ddcceade8bdb32d35abf",
+    "households.parquet": "a385e0d07fc96a6f421fc30ea5ba1a683b1d70466694bf9630f9f604506dc235",
     "lineage.parquet": "5e111c2716f16f5629431f4f1c7a00f646d0cb4ee9d8e8e781137038a86de612"
    },
    "v_marg": {
@@ -14974,16 +14908,7 @@
    },
    "v_cruce": {
     "comprobaciones": 511,
-    "fallos": [
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:15",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.05794188818675938,
-      "umbral": 0.05,
-      "excepcion": false
-     }
-    ],
+    "fallos": [],
     "espana": [
      {
       "objetivo": "actividad_edad",
@@ -15029,7 +14954,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.01312741449325423,
+      "tvd": 0.010455089570571507,
       "tvd_ref": 0.00441595312084335,
       "umbral": 0.03,
       "ok": true
@@ -15042,15 +14967,8 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.009894407635853489,
+    "tvd_media_espana": 0.009560367020518146,
     "fallos_estricto": [
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:15",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.05794188818675938,
-      "umbral_estricto": 0.05
-     },
      {
       "nivel": "provincia",
       "territorio": "PROV:21",
@@ -15182,8 +15100,8 @@
    "obtenido": 99977,
    "semilla": 4,
    "sha256": {
-    "persons.parquet": "2211df36b275f7fc3c7c9f567ea9757aef13a8741a7c60b099596368f6afd23a",
-    "households.parquet": "5fce43f7fcd32f0f748ec1195e3fdbaace48dcbffb8fb3a19424bc52dd853446",
+    "persons.parquet": "1fbb984121d7958a1be4ed11ac6eb1b3b4ec3e8275b8fd2fe1288a571e2be692",
+    "households.parquet": "ed4fd422684e4936a33378dbf6afd817a0a0554d3b4914fa4eaae4e9a6070cc5",
     "lineage.parquet": "21879e5f9e638f6f9010d92f0071491ebb3da41d1a4881f45aa7abc0179691e1"
    },
    "v_marg": {
@@ -15195,14 +15113,6 @@
    "v_cruce": {
     "comprobaciones": 511,
     "fallos": [
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:16",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.08357939520204767,
-      "umbral": 0.08,
-      "excepcion": false
-     },
      {
       "nivel": "provincia",
       "territorio": "PROV:22",
@@ -15265,7 +15175,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.013809341676702426,
+      "tvd": 0.011638842461882973,
       "tvd_ref": 0.004682120553328063,
       "umbral": 0.03,
       "ok": true
@@ -15278,21 +15188,14 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.009248856932743592,
+    "tvd_media_espana": 0.008977544530891161,
     "fallos_estricto": [
      {
       "nivel": "ccaa",
       "territorio": "CCAA:17",
       "objetivo": "tamano_municipio",
-      "tvd": 0.05516662136370161,
+      "tvd": 0.05214547332744783,
       "umbral_estricto": 0.05
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:16",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.08357939520204767,
-      "umbral_estricto": 0.08
      },
      {
       "nivel": "provincia",
@@ -15446,8 +15349,8 @@
    "obtenido": 99964,
    "semilla": 5,
    "sha256": {
-    "persons.parquet": "8850a50f7d5f1ea17a11ebd25eb41ace41d2163f4f9a7f41548ae7fbcf13036b",
-    "households.parquet": "8635030a444fe293e95ea47c6053099b853134aa1c3b21ec1b4db7d7ce7ce697",
+    "persons.parquet": "5b12d2f56672655f3ef1f641414258c2fa606647c5fc2ee2de0f7afe8df3d8d6",
+    "households.parquet": "a8cbda5aa3e0d514f94e01e3bcdaa2f370b1a89a071416c6ee460aafd4141266",
     "lineage.parquet": "49ea40c336e16eb9759116d39dccc5fe52b73abbfc83fe6f8adf2b2c0e0ee241"
    },
    "v_marg": {
@@ -15459,22 +15362,6 @@
    "v_cruce": {
     "comprobaciones": 511,
     "fallos": [
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:17",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.05879987401126313,
-      "umbral": 0.05678378590441511,
-      "excepcion": false
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:27",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.08027425765163129,
-      "umbral": 0.08,
-      "excepcion": false
-     },
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
@@ -15529,7 +15416,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.0159754142835985,
+      "tvd": 0.013177593297467413,
       "tvd_ref": 0.0041393486687499445,
       "umbral": 0.03,
       "ok": true
@@ -15542,27 +15429,13 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.00967077645622989,
+    "tvd_media_espana": 0.009321048832963506,
     "fallos_estricto": [
-     {
-      "nivel": "ccaa",
-      "territorio": "CCAA:17",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.05879987401126313,
-      "umbral_estricto": 0.05
-     },
      {
       "nivel": "provincia",
       "territorio": "PROV:23",
       "objetivo": "actividad_edad",
       "tvd": 0.08245559199260574,
-      "umbral_estricto": 0.08
-     },
-     {
-      "nivel": "provincia",
-      "territorio": "PROV:27",
-      "objetivo": "tamano_municipio",
-      "tvd": 0.08027425765163129,
       "umbral_estricto": 0.08
      },
      {
@@ -15696,8 +15569,8 @@
    "obtenido": 499875,
    "semilla": 1,
    "sha256": {
-    "persons.parquet": "832aaa05074aec0e77e27607adab742a0088f80ebee581a7de3fe31f10b3266c",
-    "households.parquet": "bd65dd1179c8130b5ae9e6644f94cfa4cd93077a8479ca0127cd3c95be456197",
+    "persons.parquet": "3978e738187160fe6b4b1f7f5224bfd59de04db29511862d6e23733c94a48ff2",
+    "households.parquet": "c51851763adfdacb09f9ac42d43aac8e9155d8e300a58f513984c6fe221d1f63",
     "lineage.parquet": "7eca9f1a7068135b013e387031bb000cae52aa4728fbd179671a1a065f223786"
    },
    "v_marg": {
@@ -15754,7 +15627,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.012524478776389857,
+      "tvd": 0.010111875625602163,
       "tvd_ref": 0.0018082051807684094,
       "umbral": 0.03,
       "ok": true
@@ -15767,7 +15640,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008161437976326253,
+    "tvd_media_espana": 0.00785986258247779,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -15893,8 +15766,8 @@
    "obtenido": 499930,
    "semilla": 2,
    "sha256": {
-    "persons.parquet": "cc4f5089e3501e985435bf7d067d2193fa0627ef75381fc246afe213fc2caa53",
-    "households.parquet": "e21333aff7ca8b890891e6e936407835bbf65eba22bbe8b34b3c9166b8ee939a",
+    "persons.parquet": "3ca573fff955e4ee95dc7aae2cfc7574dc3d35195564c5f67dd77602b2c829ee",
+    "households.parquet": "a302acae694569b71e5653873f7660e76dee702327d0ed47080629a0c518886d",
     "lineage.parquet": "30ffb9d0ec40d32d366316a21ce31fa29839f3572a0d8474907350404bd3df77"
    },
    "v_marg": {
@@ -15951,7 +15824,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.013417724430931546,
+      "tvd": 0.01128742618917769,
       "tvd_ref": 0.0020597197962318693,
       "umbral": 0.03,
       "ok": true
@@ -15964,7 +15837,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008449538106472098,
+    "tvd_media_espana": 0.008183250826252866,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -16082,8 +15955,8 @@
    "obtenido": 499925,
    "semilla": 3,
    "sha256": {
-    "persons.parquet": "94f91b3b41c304ff64261e6f0070fb3cac7da867249f9a960fad0cab45dfd3da",
-    "households.parquet": "def7be63d96cefa25b134dc9a2d32deb95a31fa86ff029f8bd5321051cf39cec",
+    "persons.parquet": "6f20b73e732b0b42e9f741fb8d5d9a2ca8286b9e2bbb3017893b3b6c1ca4dbb7",
+    "households.parquet": "153f172b38f7555977d81ac3bf005904c6920c37de67c101328bc5e5b7cb21ec",
     "lineage.parquet": "f040e1557dc73490949951b7c1c178e4d52c7c39208c4e738e96cfe48ca24afe"
    },
    "v_marg": {
@@ -16099,7 +15972,7 @@
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
-      "tvd": 0.08113417638567116,
+      "tvd": 0.08897494840014641,
       "umbral": 0.08,
       "excepcion": true
      }
@@ -16149,7 +16022,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.01298338452147893,
+      "tvd": 0.010919074875031968,
       "tvd_ref": 0.0020759854357284813,
       "umbral": 0.03,
       "ok": true
@@ -16162,13 +16035,13 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008118163864724918,
+    "tvd_media_espana": 0.007860125158919049,
     "fallos_estricto": [
      {
       "nivel": "provincia",
       "territorio": "PROV:40",
       "objetivo": "tamano_municipio",
-      "tvd": 0.08113417638567116,
+      "tvd": 0.08897494840014641,
       "umbral_estricto": 0.08
      }
     ]
@@ -16288,8 +16161,8 @@
    "obtenido": 499946,
    "semilla": 4,
    "sha256": {
-    "persons.parquet": "d4b7d932e6fc76c77ca5e0fad37214f1aa33bd4d8525c42697bd677ebf779223",
-    "households.parquet": "94ff1b7a40252e555758a9e7b495fe5e84f78cb828871e517de33c2e4c67975b",
+    "persons.parquet": "7077670e95d2544ac678220e126194bbd3b26820c8d0a8bab0605eed3a37e192",
+    "households.parquet": "662651587bac8b9041f2b08f53716e4a9deed9d67f1a14816c6e24a594bf84d7",
     "lineage.parquet": "f748e9db4b42e49ee474aec9cdbcf258f8c5f798ed1fbccffbb4522159769a09"
    },
    "v_marg": {
@@ -16346,7 +16219,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.013535816411957283,
+      "tvd": 0.01178162695949643,
       "tvd_ref": 0.002147133621786947,
       "umbral": 0.03,
       "ok": true
@@ -16359,7 +16232,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008266408050760198,
+    "tvd_media_espana": 0.008047134369202591,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -16477,8 +16350,8 @@
    "obtenido": 499873,
    "semilla": 5,
    "sha256": {
-    "persons.parquet": "91cd6a18f517f4135691ca3f1b851e4cf00dc125242950a3f281124a75f191e8",
-    "households.parquet": "13435b30eceb2a5e41e93c8c1f22e9af0e6520613d27d5ac6887d68dc9803d74",
+    "persons.parquet": "6a94a86efabf1a6852a7ad27456981e1a8a9836c0fc7d1ca79d8e4cb29f26404",
+    "households.parquet": "cebbb1168564a4e2676b71ee704d6d8e3f481f5e564243a9f4ecbf1d0b81aba5",
     "lineage.parquet": "391d61e6a94188d477afc83bd0fbe570a60e06495a5b996a3767b16a5bed4ca2"
    },
    "v_marg": {
@@ -16489,7 +16362,16 @@
    },
    "v_cruce": {
     "comprobaciones": 511,
-    "fallos": [],
+    "fallos": [
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:40",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.08112030279019014,
+      "umbral": 0.08,
+      "excepcion": true
+     }
+    ],
     "espana": [
      {
       "objetivo": "actividad_edad",
@@ -16535,7 +16417,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.014038349823266696,
+      "tvd": 0.011693754296002754,
       "tvd_ref": 0.0018617087484672046,
       "umbral": 0.03,
       "ok": true
@@ -16548,8 +16430,16 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008373962688516333,
-    "fallos_estricto": []
+    "tvd_media_espana": 0.008080888247608338,
+    "fallos_estricto": [
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:40",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.08112030279019014,
+      "umbral_estricto": 0.08
+     }
+    ]
    },
    "v_reglas_duras": [
     {
@@ -16666,8 +16556,8 @@
    "obtenido": 999886,
    "semilla": 1,
    "sha256": {
-    "persons.parquet": "1a40d11efdd410bb0343374558812b4c5c3a43e630889bb591a96ab94bf9fdf8",
-    "households.parquet": "ed7c26164bfd5e52535ffd2b20db219f553d709052eeb0424e0db45ca194bb6b",
+    "persons.parquet": "79bfca096206fc0e3e695231cdae03b7dbd73e8f3bf54c8ba21ddb85be47a7ad",
+    "households.parquet": "8e34246c1aa1b815de0f58c25f3f21ef3b74151d34791856778d490960a4fd39",
     "lineage.parquet": "c566b3e3b312956e1107dce50c02566e41c70512c575c6a236716597edd0c6e3"
    },
    "v_marg": {
@@ -16724,7 +16614,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.013654065745853521,
+      "tvd": 0.011640836237689602,
       "tvd_ref": 0.0013050802509069583,
       "umbral": 0.03,
       "ok": true
@@ -16737,7 +16627,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008122432147175652,
+    "tvd_media_espana": 0.007870778458655164,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -16947,11 +16837,11 @@
      "grupo": "municipios_menos_2000",
      "unidad": "persona",
      "esperado": 54712.707243542616,
-     "observado": 55323.0,
-     "ratio": 1.0111544975053197,
+     "observado": 56320.0,
+     "ratio": 1.0293769553259875,
      "ok_representacion": true,
-     "donantes_distintos": 24748,
-     "top5": 0.001771415143791913,
+     "donantes_distintos": 24998,
+     "top5": 0.0017400568181818181,
      "ok_concentracion": true,
      "fuente": "Padrón 2025 (tamano_municipio)"
     },
@@ -17192,8 +17082,8 @@
    "obtenido": 1000021,
    "semilla": 2,
    "sha256": {
-    "persons.parquet": "8b215a7957e78d4c6583da89c1a2dd6d8f9106328538fd420b41f43b782183ea",
-    "households.parquet": "8524ff83406a744be6760b083197f2ce1a2c0dcaf7702170813f6a5155c4efb1",
+    "persons.parquet": "c77655e2903636240b351d35711e766caf4ffde87514c258780607f6e099ddcf",
+    "households.parquet": "b047401fc6d7e0d5acb1b1657634445a621e4d7ffa9771a2839feac8e11f1e35",
     "lineage.parquet": "16b55667070674518499a04668609b50034ef1ae3f817f45a9ae1aa054c0ca8b"
    },
    "v_marg": {
@@ -17204,7 +17094,16 @@
    },
    "v_cruce": {
     "comprobaciones": 511,
-    "fallos": [],
+    "fallos": [
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:40",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.08044953517026998,
+      "umbral": 0.08,
+      "excepcion": true
+     }
+    ],
     "espana": [
      {
       "objetivo": "actividad_edad",
@@ -17250,7 +17149,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.013448747390754981,
+      "tvd": 0.011486788591889736,
       "tvd_ref": 0.0013699974342629294,
       "umbral": 0.03,
       "ok": true
@@ -17263,8 +17162,16 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008044818513486797,
-    "fallos_estricto": []
+    "tvd_media_espana": 0.007799573663628641,
+    "fallos_estricto": [
+     {
+      "nivel": "provincia",
+      "territorio": "PROV:40",
+      "objetivo": "tamano_municipio",
+      "tvd": 0.08044953517026998,
+      "umbral_estricto": 0.08
+     }
+    ]
    },
    "v_reglas_duras": [
     {
@@ -17381,8 +17288,8 @@
    "obtenido": 999966,
    "semilla": 3,
    "sha256": {
-    "persons.parquet": "540ce4c6b9a61167416e890c7f874521479147ec09ea335a1280393af0e3295f",
-    "households.parquet": "0abf9b7b3438d68dccebfa82ae1dbeac33f2d50824dbe9984b589800887f5a92",
+    "persons.parquet": "ea4e83e51d23314f9d01dc0bb839b28042042097bd4eea46015d5b2f1bf8dea0",
+    "households.parquet": "a6f10bd4ec10c1cceb73f681c740f796a50d36b35afff1567fa7aa353401d768",
     "lineage.parquet": "ca4b30eb4e9cfc04aee4ce0b4ee9c5594a0e63d312b9b77c54e8877a04dcf961"
    },
    "v_marg": {
@@ -17439,7 +17346,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.013584242532288567,
+      "tvd": 0.011383167695744136,
       "tvd_ref": 0.001457179889106728,
       "umbral": 0.03,
       "ok": true
@@ -17452,7 +17359,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008153567976388387,
+    "tvd_media_espana": 0.007878433621820332,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -17570,8 +17477,8 @@
    "obtenido": 999962,
    "semilla": 4,
    "sha256": {
-    "persons.parquet": "7a090fcf8d762717495ce2e12ca24c2e0a98e1bb6153db7005fdbb2d6a121130",
-    "households.parquet": "981e9e4ca3cd38dbcda6c23bb70bf9c7a0cd655d321874256158e865b47a06de",
+    "persons.parquet": "2c2ecd9ae26906cc72c1f6fd23c9fb3686bceda64d12750ec86733620d276bfb",
+    "households.parquet": "aa0a88c2fce2c24f348d390c137bcdfca8acf445f3388839a24bda42a858bbc7",
     "lineage.parquet": "0fa157f18213ee6e560311253d1acb2a29c25c24185f9f048d4acd2712b00b0f"
    },
    "v_marg": {
@@ -17628,7 +17535,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.013473729095463897,
+      "tvd": 0.011376649406435721,
       "tvd_ref": 0.0013696025950542202,
       "umbral": 0.03,
       "ok": true
@@ -17641,7 +17548,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008073934691208777,
+    "tvd_media_espana": 0.007811799730080256,
     "fallos_estricto": [
      {
       "nivel": "provincia",
@@ -17767,8 +17674,8 @@
    "obtenido": 999983,
    "semilla": 5,
    "sha256": {
-    "persons.parquet": "7181a6ae9200c3c1cb36ff0f1f5267d1cd9ef5c608acb375c2844d0b4a7cbfe0",
-    "households.parquet": "28763c8dae1128fe3f35dee59e72e3449d3a9512895a1274e679488dd422a094",
+    "persons.parquet": "134f5d3036edba6b3d520204ac266c9f543f955d12453458624f0ed7098cc1a1",
+    "households.parquet": "53a841baa6a35e366afa1a98b17e70608f6c3666f25b3340fb5af7b96d3dbda1",
     "lineage.parquet": "f9220d512727028cb5eca217963352900af5efc1768002f6810001e5316a8b80"
    },
    "v_marg": {
@@ -17825,7 +17732,7 @@
      },
      {
       "objetivo": "tamano_municipio",
-      "tvd": 0.013191900121052345,
+      "tvd": 0.01122886674948503,
       "tvd_ref": 0.0013185229957736863,
       "umbral": 0.03,
       "ok": true
@@ -17838,7 +17745,7 @@
       "ok": true
      }
     ],
-    "tvd_media_espana": 0.008106145866926604,
+    "tvd_media_espana": 0.00786076669548069,
     "fallos_estricto": []
    },
    "v_reglas_duras": [
@@ -17956,7 +17863,7 @@
    "n": 10000,
    "proporciones": 493,
    "fuera": 1,
-   "razon_media": 0.3132674531100407,
+   "razon_media": 0.31326745311004084,
    "razon_max": 1.5502320711105102,
    "peores": [
     {
@@ -17971,7 +17878,7 @@
    "n": 50000,
    "proporciones": 493,
    "fuera": 0,
-   "razon_media": 0.22523920583526247,
+   "razon_media": 0.2252392058352625,
    "razon_max": 0.8798323777273783,
    "peores": []
   },
@@ -17979,7 +17886,7 @@
    "n": 100000,
    "proporciones": 493,
    "fuera": 0,
-   "razon_media": 0.2055711701376715,
+   "razon_media": 0.20557117013767154,
    "razon_max": 0.5237909492828078,
    "peores": []
   },
@@ -17987,7 +17894,7 @@
    "n": 500000,
    "proporciones": 493,
    "fuera": 0,
-   "razon_media": 0.22496502954937972,
+   "razon_media": 0.2249650295493797,
    "razon_max": 0.5695096427290401,
    "peores": []
   },
@@ -18004,8 +17911,8 @@
   "run_id": "2026-01-01_ES_10000_s1",
   "hashes_iguales": true,
   "sha256": {
-   "persons.parquet": "58dfb38288fa129521ef89d12f51d6bbc7baf89b8fa5a5ca8e2c662f93f77427",
-   "households.parquet": "704bcff38d035512d480e9071fa0694becea71d8b6bc5e7d393b04c38f917563",
+   "persons.parquet": "5491951cc5c1c553b3c4e71d83906db2837c480f6a9648f4b800e25fde0679bf",
+   "households.parquet": "abdecd0663385f26febdd0be381c688463ec6bedc03e5cd5cf0faa35290f11f7",
    "lineage.parquet": "10c8f2f2df885593e174bd69f2afd2914b51b7ce76f6b82b6e5c50783a4a67ee"
   }
  },
