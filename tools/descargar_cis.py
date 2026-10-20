@@ -53,6 +53,8 @@ def _get(url: str, reintentos: int = 6) -> str:
             with urllib.request.urlopen(req, timeout=120) as r:
                 texto = r.read().decode("utf-8", errors="ignore")
             time.sleep(PAUSA)
+            if "Comprobación de acceso" in texto[:5000]:
+                raise RuntimeError("página de comprobación de acceso (anti-bots)")
             return texto
         except Exception as exc:  # 429, cortes de conexión, tiempo agotado
             print(f"  fallo ({exc}); reintento {i + 1} en {espera} s", flush=True)
@@ -102,10 +104,47 @@ def ficheros(estudio: dict) -> list[str]:
     return sorted({e if e.startswith("http") else BASE + e for e in utiles})
 
 
+MESES = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "septiembre", "octubre", "noviembre", "diciembre",
+]  # fmt: skip
+NUM_MES = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12]
+
+
+def barometros_por_ficha(desde: int, hasta: int) -> list[dict]:
+    """Barómetros mensuales leídos directamente de su ficha (`/en/surveys/barometro-de-<mes>-
+    <año>`), sin paginar el catálogo (la paginación cae en la comprobación anti-bots). El número
+    de estudio sale del nombre de sus ficheros; la fecha, del mes del título."""
+    out = []
+    for a in range(desde, hasta + 1):
+        for mes, nmes in zip(MESES, NUM_MES, strict=True):
+            url = f"{BASE}/en/surveys/barometro-de-{mes}-{a}"
+            try:
+                texto = _pagina(url, f"ficha_barometro_{a}_{nmes:02d}.html")
+            except RuntimeError as exc:
+                print(f"  sin ficha {mes} {a}: {exc}", flush=True)
+                continue
+            m = re.search(r"/MD(\d+)\.zip", texto, re.I)
+            if not m:
+                print(f"  {mes} {a}: sin microdatos publicados", flush=True)
+                continue
+            out.append(
+                {
+                    "estudio": m.group(1),
+                    "titulo": f"Barómetro de {mes} {a}",
+                    "url": url,
+                    "fecha": dt.date(a, nmes, 1).isoformat(),
+                }
+            )
+            print(f"  {mes} {a}: estudio {m.group(1)}", flush=True)
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--tipos", default="barometro,sanitario")
     ap.add_argument("--max-paginas", type=int, default=12)
+    ap.add_argument("--fichas-barometro", default="", help="años, p. ej. 2023-2025")
     args = ap.parse_args()
     tipos = [TIPOS[t] for t in args.tipos.split(",")]
     lista = [
@@ -113,6 +152,11 @@ def main() -> None:
         for e in catalogo(args.max_paginas)
         if dt.date.fromisoformat(e["fecha"]) >= DESDE and any(t.search(e["titulo"]) for t in tipos)
     ]
+    if args.fichas_barometro:
+        a, b = (int(x) for x in args.fichas_barometro.split("-"))
+        vistos = {e["estudio"] for e in lista}
+        lista += [e for e in barometros_por_ficha(a, b) if e["estudio"] not in vistos]
+        lista.sort(key=lambda e: e["fecha"])
     (CACHE / "seleccion.json").write_text(json.dumps(lista, ensure_ascii=False, indent=1), "utf-8")
     print(f"{len(lista)} estudios seleccionados", flush=True)
     for e in lista:
