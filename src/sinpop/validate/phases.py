@@ -1084,7 +1084,7 @@ def _g7_check(id_: str, desc: str, um: str, campo: str) -> Check:
         desc,
         not resto,
         f"{n} grupos × población; fuera en estricto: {len(malos)}; aceptados como limitación"
-        f" (D-059): {len(malos) - len(resto)}; fuera: {len(resto)} {resto[:8] if resto else ''}",
+        f" (D-059, D-061, D-062): {len(malos) - len(resto)}; fuera: {len(resto)} {resto[:8] if resto else ''}",
         um,
     )
 

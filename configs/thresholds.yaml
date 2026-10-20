@@ -98,6 +98,14 @@ V-MINORIAS:
     "PROV:28|municipios_menos_2000": clase de tamaño de municipio del Censo 2021 frente al Padrón 2025
     "PROV:42|nacidos_fuera_espanoles": perfil de edad 0,09 frente a 0,08 con cada donante copiado 5,5 veces
     "PROV:42|sin_estudios": concentración con cada donante copiado 5,5 veces (como las nacionalidades)
+    # D-062 (aprobada)
+    "PROV:42|jovenes_ni_ni": concentración con cada donante copiado 5,5 veces
+    "PROV:44|jovenes_ni_ni": concentración con cada donante copiado 3,7 veces
+    "MUNIS:configs/territorios/ejemplo_teruel_rural.yaml|jovenes_ni_ni": concentración (municipios rurales de Teruel)
+    "CCAA:07|limitacion_grave": perfil de edad 0,116 frente a 0,114, con la representación en 1,00
+    "PROV:42|limitacion_grave": perfil de edad 0,131 frente a 0,113, con la representación en 1,03
+    "PROV:04|jovenes_ni_ni": perfil de estudios 0,152 frente a 0,143
+    "MUNIS:configs/territorios/ejemplo_valencia_urbano.yaml|jovenes_ni_ni": 13,3 % frente al 10,4 % de la EPA de toda la Comunidad Valenciana; la EPA no es representativa por municipio
 V-MINORIAS-PERFIL:
   tvd_max: 0.08
   # D-051: margen de muestreo, como V-MARG (D-038 A): umbral = máx(0,08; 1,2 × TVD_ref(n) + 0,002)

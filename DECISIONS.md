@@ -1204,3 +1204,19 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
      - Perfil de edad de los nacidos fuera con nacionalidad española: TVD 0,09 frente a 0,08.
      - Concentración de donantes en «sin estudios».
      - La causa es la misma que la de las nacionalidades en territorios pequeños: con 50.000 personas sobre unos 90.000 habitantes, cada donante se copia unas 5,5 veces.
+
+## D-062 · Últimas excepciones aceptadas en G7 y aprobación de F7 (2026-10-20)
+
+- **Fecha:** 2026-10-20
+- **Fase:** F7 (G7.7)
+- **Estado:** aprobada por la persona responsable el 2026-10-20 («Apruebo todas las recomendaciones»).
+- **Contexto:** con D-060, los fallos de G7 que no cubrían D-059 y D-061 quedan en 7 casos.
+- **Decisiones:** se aceptan como limitación declarada, por territorio y grupo, en `V-MINORIAS.excepciones`; el resultado estricto se informa siempre.
+  1. **Concentración de donantes de los jóvenes ni-ni** en Soria, Teruel y la lista de municipios rurales de Teruel. Cada donante se copia entre 3,7 y 5,5 veces, la misma causa que las nacionalidades en territorios pequeños.
+  2. **Perfil por edad de la limitación grave** en Castilla y León (TVD 0,116 frente a 0,114) y Soria (0,131 frente a 0,113), con la representación en 1,00 y 1,03.
+  3. **Perfil por estudios de los jóvenes ni-ni** en Almería: 0,152 frente a 0,143.
+  4. **Jóvenes ni-ni en la lista de municipios de Valencia urbano**: 13,3 % frente al 10,4 % de la referencia. La referencia es la EPA de toda la Comunidad Valenciana, que no es representativa por municipio. Se declara expresamente en la ficha.
+
+### Aprobación de F7
+
+- **Estado:** aprobada por la persona responsable el 2026-10-20. Aprueba la población con las limitaciones declaradas (D-059, D-061 y D-062) y las decisiones D-049 a D-062.

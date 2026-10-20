@@ -1,7 +1,7 @@
 # Fase 07 · Auditoría de sesgos y minorías
 
-**Estado:** pendiente de revisión humana (G7.7)
-**Fecha:** 2026-10-20 · **Versión del código:** git:6162e0f-dirty
+**Estado:** superada. Revisión humana G7.7 aprobada el 2026-10-20, con las limitaciones declaradas de D-059, D-061 y D-062.
+**Fecha:** 2026-10-20 · **Versión del código:** git:a1ac669-dirty
 **Comando para reproducir:** `python -m sinpop.validate.fase7 && python -m sinpop.validate.informe_f7 && sinpop validate --phase 7` (tras la cadena F3-F6 de `reports/fase_06.md`)
 
 ## Resumen

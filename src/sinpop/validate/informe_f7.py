@@ -234,6 +234,19 @@ def ficha(run_id: str = F7.NACIONAL) -> str:
     return texto
 
 
+def _estado() -> str:
+    from sinpop import REPO_ROOT
+
+    texto = (REPO_ROOT / "DECISIONS.md").read_text("utf-8")
+    i = texto.find("### Aprobación de F7")
+    if i >= 0 and "**Estado:** aprobada" in texto[i : i + 400]:
+        return (
+            "**Estado:** superada. Revisión humana G7.7 aprobada el 2026-10-20, con las"
+            " limitaciones declaradas de D-059, D-061 y D-062."
+        )
+    return "**Estado:** pendiente de revisión humana (G7.7)"
+
+
 def informe() -> str:
     res = _resumen()
     nac = res["poblaciones"][0]
@@ -272,7 +285,7 @@ def informe() -> str:
     out = [
         "# Fase 07 · Auditoría de sesgos y minorías",
         "",
-        "**Estado:** pendiente de revisión humana (G7.7)",
+        _estado(),
         f"**Fecha:** {dt.date.today().isoformat()} · **Versión del código:** {code_version()}",
         "**Comando para reproducir:** `python -m sinpop.validate.fase7 && "
         "python -m sinpop.validate.informe_f7 && sinpop validate --phase 7` "
