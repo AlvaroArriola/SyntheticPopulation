@@ -258,7 +258,10 @@ def audit(run: Annotated[str, typer.Option(help="run_id de la población")]) -> 
 @app.command()
 def opinion(run: Annotated[str, typer.Option(help="run_id de la población")]) -> None:
     """Asigna la capa de opinión y valores (F8A)."""
-    _pendiente("opinion", "F8A")
+    from sinpop.opinion import run as OR
+
+    m = OR.construir(run)
+    typer.echo(f"{run}: opinion.parquet con {m['personas']} adultos · {list(m['variables'])}")
 
 
 @app.command()
