@@ -1162,3 +1162,29 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Lo que no cubre esta aprobación:**
   - Los fallos de G7 fuera de esas categorías: municipios de menos de 2.000 habitantes en Canarias y Madrid, jóvenes ni-ni en seis poblaciones, y nacidos fuera con nacionalidad española y «sin estudios» en Soria.
   - El agente los investiga antes de cerrar F7.
+
+## D-060 · Estudiantes e «otra inactividad» en los cruces fundidos (2026-10-20)
+
+- **Fecha:** 2026-10-20
+- **Fase:** F4-F7 (detectado al investigar los fallos de G7 que no cubre D-059)
+- **Estado:** aprobada por el agente. Corrige un sesgo de los datos de entrada que la calibración no podía resolver; no cambia ningún umbral.
+- **Contexto:**
+  - Los jóvenes ni-ni salen por encima de la EPA en varias poblaciones: Madrid 11,7 % frente a 9,1 % (ratio 1,28); también Castilla y León, Valencia urbano y Soria.
+  - **Causa:**
+    - Entre los inactivos de 20-24 años, el Censo 2021 (enero de 2021, de registros) tiene un 41 % en «otra situación»; la EPA del 2T 2026, un 16 %.
+    - Cuando la calibración no puede separar estudiante y «otra inactividad» (D-050), funde las dos categorías del cruce y solo calibra su total.
+    - Así, las personas conservan la categoría del Censo: en Madrid, 27,9 % de estudiantes de 20-24 frente al 33,8 % del objetivo, y 12,8 % de «otra inactividad» frente al 6,6 %.
+    - El enriquecimiento da «no cursa formación» a casi todos los de «otra inactividad», y eso infla los ni-ni.
+  - El Censo no permite reclasificar en origen: todos sus inactivos que cursan estudios (`ESCUR`) ya son estudiantes.
+- **Alternativas consideradas:**
+  1. Quitar la fusión. Se descarta porque la calibración acotada no tiene solución en esos cruces.
+  2. Declarar la limitación. Se descarta porque existe la cifra oficial (EPA).
+  3. **Elegida:** reparto posterior a la calibración.
+- **Decisión:** en cada bloque y cruce sexo × tramo de edad con estudiante fundido en «otra inactividad», el total de las dos categorías se reparte con las proporciones del objetivo de la EPA.
+  - Se mueven personas al azar, con la semilla, de la categoría que sobra a la que falta.
+  - Su `relacion_actividad__calidad` pasa a `modelada`.
+  - La calibración no cambia (`repartir_inactividad` en `poblacion.py`).
+- **Evidencia:**
+  - `tests/unit/test_repartir_inactividad.py`.
+  - Madrid, 100.000 personas: 20-24 con 33,8 % de estudiantes y 6,9 % de «otra inactividad»; ni-ni 8,5 %; 1.132 personas modeladas (1,1 %).
+- **Consecuencias:** se repiten F4-F7. Las calibraciones no cambian.

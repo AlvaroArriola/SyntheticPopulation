@@ -328,6 +328,74 @@ def _asignar_municipio(pers: pl.DataFrame, territorio: str, semilla: int) -> pl.
     )
 
 
+def repartir_inactividad(pers: pl.DataFrame, fusiones: pl.DataFrame, semilla: int) -> pl.DataFrame:
+    """D-060: en los cruces sexo × tramo de edad en los que la calibración fundió «estudiante»
+    con «otra_inactividad» (D-050), cada persona conservaba la categoría de su donante del Censo
+    2021, que tiene muchos más inactivos en «otra situación» que la EPA (20-24 años: 41 % frente
+    a 16 % de los inactivos). Dentro de cada bloque y cruce fundido, el total de las dos
+    categorías se reparte con las proporciones del objetivo de la EPA moviendo personas al azar
+    (con la semilla) de la categoría que sobra a la que falta (`modelada`). Columna
+    `_act_modelada`."""
+    from sinpop.targets import edades
+    from sinpop.targets import run as T
+
+    est, otra = "relacion_actividad=estudiante", "relacion_actividad=otra_inactividad"
+    cortes = edades.cortes()["edad_tramo_epa"]
+    pers = pers.with_columns(
+        edades.agrupar(pl.col("edad"), cortes, "_tramo"), pl.lit(False).alias("_act_modelada")
+    )
+    f = fusiones.filter(
+        (pl.col("objetivo") == "actividad_tramo")
+        & pl.col("clave").str.starts_with(est + ";")
+        & pl.col("fusionada_en").str.starts_with(otra + ";")
+    )
+    if f.is_empty():
+        return pers.drop("_tramo")
+    rng = make_rng(semilla)
+    cambios = []
+    for (b,), g in f.group_by("bloque", maintain_order=True):
+        obj = T.leer(b).filter(pl.col("objetivo") == "actividad_tramo")
+        obj = obj.group_by("clave").agg(pl.col("valor").sum())
+        valor = dict(obj.iter_rows())
+        for clave in sorted(g["clave"].to_list()):
+            resto = clave.removeprefix(est)
+            sexo = resto.split("sexo=")[1].split(";")[0]
+            tramo = resto.split("edad_tramo_epa=")[1].split(";")[0]
+            t_est, t_otra = valor.get(clave, 0.0), valor.get(otra + resto, 0.0)
+            if t_est + t_otra <= 0:
+                continue
+            sel = pers.filter(
+                (pl.col("bloque") == b)
+                & (pl.col("sexo") == sexo)
+                & (pl.col("_tramo") == tramo)
+                & pl.col("relacion_actividad").is_in(["estudiante", "otra_inactividad"])
+            ).sort("person_id")
+            n_est = int((sel["relacion_actividad"] == "estudiante").sum())
+            objetivo = round(sel.height * t_est / (t_est + t_otra))
+            mover = objetivo - n_est
+            if mover == 0:
+                continue
+            origen, destino = (
+                ("otra_inactividad", "estudiante")
+                if mover > 0
+                else ("estudiante", "otra_inactividad")
+            )
+            cand = sel.filter(pl.col("relacion_actividad") == origen)["person_id"].to_numpy()
+            elegidos = rng.choice(cand, size=min(abs(mover), len(cand)), replace=False)
+            cambios.append(pl.DataFrame({"person_id": elegidos, "_nueva": destino}))
+    if not cambios:
+        return pers.drop("_tramo")
+    c = pl.concat(cambios)
+    return (
+        pers.join(c, on="person_id", how="left")
+        .with_columns(
+            pl.coalesce("_nueva", "relacion_actividad").alias("relacion_actividad"),
+            pl.col("_nueva").is_not_null().alias("_act_modelada"),
+        )
+        .drop("_nueva", "_tramo")
+    )
+
+
 def run_id(territorio: str, n: int, semilla: int, sobremuestreo: str | None) -> str:
     from sinpop.config import load_config
     from sinpop.targets.run import nombre_fichero
@@ -467,12 +535,14 @@ def construir(
     if territorio.startswith("MUNIS:"):
         pers = _asignar_municipio(pers, territorio, int(rng.integers(0, 2**31)))
         municipio_modelado = pl.col("_mun_modelado")
+    pers = repartir_inactividad(pers, cal.fusiones, int(rng.integers(0, 2**31)))
     calidad = []
     for c in COLUMNAS_PERSONA:
         modelada = (
             (~familiar & pl.lit(c not in OBSERVADAS_COLECTIVO))
             | (~en_base & pl.lit(c in TERRITORIALES))
             | (municipio_modelado & pl.lit(c in ("municipio", "tamano_municipio")))
+            | (pl.col("_act_modelada") & pl.lit(c == "relacion_actividad"))
         )
         calidad.append(
             pl.when(modelada)
