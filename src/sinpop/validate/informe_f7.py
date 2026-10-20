@@ -338,6 +338,8 @@ def informe() -> str:
         " bootstrap).",
         "- D-053: inclinación del bloque personal de la ECV por comunidad hasta la prevalencia de"
         " la ECV de la limitación grave y la carencia material y social severa.",
+        "- D-056 (propuesta): un fallo aislado de V-MARG en N = 10.000 es azar si no se repite"
+        " en otra población de la serie.",
         "- D-054: ampliación de los donantes de las celdas de extranjeros por edad y actividad, con"
         " vuelta atrás si el territorio no converge sin fundir nacionalidades. Se probó y descartó"
         " calibrar las nacionalidades desde 5 personas (empeoraba Teruel y Ceuta).",
@@ -359,7 +361,10 @@ def informe() -> str:
         "3. ¿Se aprueba D-052 (umbral de perfil con el error de la encuesta de referencia)? Es un"
         " cambio de criterio aplicado de forma provisional: sin él, los grupos de encuesta vuelven"
         " a rojo en casi todas las comunidades por el ruido de la propia encuesta.",
-        "4. Si quedan grupos en rojo en territorios pequeños, ¿se aceptan como limitación"
+        "4. ¿Se aprueba D-056? G4.1 falla en 1 de 8.480 comprobaciones: el tipo de residencia"
+        " de Navarra (139 personas) en una de las cinco poblaciones de 10.000; no se repite en"
+        " otra semilla ni en otro tamaño.",
+        "5. Si quedan grupos en rojo en territorios pequeños, ¿se aceptan como limitación"
         " declarada o se exige otra medida correctora?",
     ]
     texto = "\n".join(out) + "\n"
