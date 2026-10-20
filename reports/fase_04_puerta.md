@@ -1,7 +1,7 @@
 # Puerta de la fase F4
 
 **Resultado:** superada  
-**Fecha:** 2026-10-20 · **Versión del código:** git:639d5a1-dirty  
+**Fecha:** 2026-10-20 · **Versión del código:** git:e911ae6  
 **Comando:** `sinpop validate --phase 4`
 
 | ID | Comprobación | Resultado | Valor | Umbral |

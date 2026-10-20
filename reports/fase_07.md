@@ -1,7 +1,7 @@
 # Fase 07 · Auditoría de sesgos y minorías
 
 **Estado:** pendiente de revisión humana (G7.7)
-**Fecha:** 2026-10-20 · **Versión del código:** git:402e437-dirty
+**Fecha:** 2026-10-20 · **Versión del código:** git:e911ae6-dirty
 **Comando para reproducir:** `python -m sinpop.validate.fase7 && python -m sinpop.validate.informe_f7 && sinpop validate --phase 7` (tras la cadena F3-F6 de `reports/fase_06.md`)
 
 ## Resumen
@@ -22,12 +22,12 @@ Ver `reports/fase_07_puerta.md` (`sinpop validate --phase 7`).
 | Residentes en municipios de menos de 2.000 habitantes | verde | 1,029 | 0,056 | 0,055 | 0,009 | 25124 | 0,00 | Padrón 2025 (población por tamaño de municipio) |
 | Residentes en islas no capitalinas | no_medible | — | — | — | — | None | — | Insularidad. No medible en la población base, porque los microdatos del Censo no identifican los municipios de menos de 10.000 habitantes; se puede construir como territorio por lista de municipios (F5) |
 | Hogares monoparentales | verde | 1,000 | 0,118 | 0,118 | — | 45810 | 0,00 | Censo 2021 (tipo de hogar por tamaño) sobre hogares ECP 2026 |
-| Personas de 16+ con limitación grave (GALI) | verde | 1,001 | 0,041 | 0,041 | 0,040 | 33664 | 0,00 | ECV 2025 (16+, viviendas familiares) |
-| Jóvenes de 20 a 24 que ni estudian ni trabajan | verde | 1,072 | 0,123 | 0,115 | 0,049 | 6339 | 0,00 | EPA 2T 2026 (20-24, viviendas familiares) |
+| Personas de 16+ con limitación grave (GALI) | verde | 1,000 | 0,041 | 0,041 | 0,042 | 33642 | 0,00 | ECV 2025 (16+, viviendas familiares) |
+| Jóvenes de 20 a 24 que ni estudian ni trabajan | verde | 1,002 | 0,115 | 0,115 | 0,031 | 5923 | 0,00 | EPA 2T 2026 (20-24, viviendas familiares) |
 | Personas en paro (16+) | verde | 0,993 | 0,058 | 0,059 | 0,024 | 42500 | 0,00 | EPA 2T 2026 con el reparto del Censo Anual 2024 (objetivo actividad_sexo, D-046) |
 | Personas de 15+ sin estudios (analfabetas o con primaria incompleta) | verde | 1,017 | 0,038 | 0,037 | 0,005 | 26776 | 0,00 | Censo Anual a 01/01/2024, tabla 66601 («Sin estudios», 15+) |
-| Personas de 16+ en carencia material y social severa | rojo | 1,004 | 0,077 | 0,077 | 0,083 | 58288 | 0,00 | ECV 2025 (16+, viviendas familiares; vrMATSOCDEP) |
-| Personas de 16+ que nunca usan internet | rojo | 1,115 | 0,092 | 0,083 | 0,015 | 69033 | 0,00 | TIC-H 2025 (16+, viviendas familiares) |
+| Personas de 16+ en carencia material y social severa | rojo | 1,004 | 0,077 | 0,077 | 0,083 | 58285 | 0,00 | ECV 2025 (16+, viviendas familiares; vrMATSOCDEP) |
+| Personas de 16+ que nunca usan internet | rojo | 1,115 | 0,092 | 0,083 | 0,015 | 69024 | 0,00 | TIC-H 2025 (16+, viviendas familiares) |
 | Abstencionistas en las generales de 2023 | pendiente | — | — | — | — | None | — | capa politica (F8) |
 | Votantes de partidos pequeños y regionalistas | pendiente | — | — | — | — | None | — | capa politica (F8) |
 | Residentes sin derecho a voto en generales | pendiente | — | — | — | — | None | — | capa politica (F8) |
@@ -51,11 +51,11 @@ Ver `reports/fase_07_puerta.md` (`sinpop validate --phase 7`).
 Diversidad dentro de grupos (V-DIVERSIDAD):
 | Atributo | Grupos | Proporción dentro | Ratio mediano |  |
 | --- | --- | --- | --- | --- |
-| nacionalidad_grupo | 410 | 0,990 | 0,996 | ✅ |
+| nacionalidad_grupo | 410 | 0,993 | 0,996 | ✅ |
 | pais_nacimiento_grupo | 410 | 0,998 | 0,996 | ✅ |
-| estado_civil | 410 | 0,995 | 0,998 | ✅ |
+| estado_civil | 410 | 0,998 | 0,998 | ✅ |
 | nivel_estudios | 410 | 0,998 | 1,000 | ✅ |
-| relacion_actividad | 410 | 1,000 | 0,999 | ✅ |
+| relacion_actividad | 410 | 0,998 | 1,000 | ✅ |
 | ocupacion | 410 | 1,000 | 0,997 | ✅ |
 | situacion_profesional | 410 | 0,995 | 1,000 | ✅ |
 | tipo_hogar | 410 | 1,000 | 0,999 | ✅ |
@@ -66,8 +66,8 @@ Diversidad dentro de grupos (V-DIVERSIDAD):
 Combinaciones sin donante (V-RAREZA):
 | Nivel | Combinaciones | Sin donante |
 | --- | --- | --- |
-| persona | 24616 | 0 |
-| persona_y_hogar | 153518 | 0 |
+| persona | 24713 | 94 |
+| persona_y_hogar | 153699 | 466 |
 
 ### Semáforo por población
 | Población | Verde | Ámbar | Rojo | Rojo por representación | Rojo por perfil | Rojo por concentración | Grupos en rojo (nacionalidades sin prefijo) |
@@ -79,22 +79,22 @@ Combinaciones sin donante (V-RAREZA):
 | CCAA:04 | 17 | 9 | 1 | 0 | 0 | 1 | honduras |
 | CCAA:05 | 21 | 1 | 5 | 1 | 1 | 4 | municipios_menos_2000, ecuador, honduras, paraguay, peru |
 | CCAA:06 | 13 | 7 | 7 | 0 | 2 | 7 | argentina, china, ecuador, francia, honduras, italia, paraguay |
-| CCAA:07 | 18 | 3 | 6 | 0 | 0 | 6 | alemania, argentina, francia, paraguay, reino_unido, ucrania |
+| CCAA:07 | 17 | 3 | 7 | 0 | 1 | 6 | limitacion_grave, alemania, argentina, francia, paraguay, reino_unido, ucrania |
 | CCAA:08 | 22 | 3 | 2 | 0 | 0 | 2 | francia, reino_unido |
 | CCAA:09 | 27 | 0 | 0 | 0 | 0 | 0 | — |
 | CCAA:10 | 20 | 6 | 1 | 0 | 1 | 0 | privacion_severa |
 | CCAA:11 | 15 | 6 | 6 | 0 | 0 | 6 | alemania, argentina, china, ecuador, honduras, paraguay |
 | CCAA:12 | 18 | 3 | 6 | 0 | 0 | 6 | alemania, china, ecuador, honduras, paraguay, ucrania |
-| CCAA:13 | 25 | 0 | 2 | 1 | 1 | 0 | municipios_menos_2000, jovenes_ni_ni |
+| CCAA:13 | 26 | 0 | 1 | 1 | 0 | 0 | municipios_menos_2000 |
 | CCAA:14 | 18 | 8 | 1 | 0 | 1 | 0 | nunca_internet |
-| CCAA:15 | 16 | 4 | 7 | 0 | 0 | 7 | alemania, argentina, honduras, italia, paraguay, reino_unido, ucrania |
+| CCAA:15 | 15 | 4 | 8 | 0 | 1 | 7 | alemania, argentina, francia, honduras, italia, paraguay, reino_unido, ucrania |
 | CCAA:16 | 23 | 1 | 3 | 0 | 0 | 3 | alemania, china, ucrania |
 | CCAA:17 | 14 | 3 | 10 | 0 | 4 | 10 | alemania, argentina, china, ecuador, francia, honduras, paraguay, peru, reino_unido, ucrania |
 | CCAA:18 | 13 | 0 | 14 | 11 | 10 | 10 | alemania, argentina, china, colombia, ecuador, francia, honduras, italia, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
-| CCAA:19 | 12 | 0 | 15 | 9 | 14 | 13 | privacion_severa, alemania, argentina, china, colombia, ecuador, francia, honduras, italia, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
-| PROV:28 | 26 | 0 | 1 | 0 | 1 | 0 | jovenes_ni_ni |
+| CCAA:19 | 12 | 0 | 15 | 9 | 13 | 13 | privacion_severa, alemania, argentina, china, colombia, ecuador, francia, honduras, italia, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
+| PROV:28 | 27 | 0 | 0 | 0 | 0 | 0 | — |
 | PROV:08 | 26 | 0 | 1 | 0 | 1 | 0 | privacion_severa |
-| PROV:42 | 8 | 0 | 19 | 1 | 13 | 16 | nacidos_fuera_espanoles, jovenes_ni_ni, sin_estudios, privacion_severa, alemania, argentina, china, colombia, ecuador, francia, honduras, italia, marruecos, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
+| PROV:42 | 7 | 0 | 20 | 1 | 14 | 16 | nacidos_fuera_espanoles, limitacion_grave, jovenes_ni_ni, sin_estudios, privacion_severa, alemania, argentina, china, colombia, ecuador, francia, honduras, italia, marruecos, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
 | PROV:44 | 12 | 0 | 15 | 1 | 9 | 14 | jovenes_ni_ni, alemania, argentina, china, colombia, ecuador, francia, honduras, italia, marruecos, paraguay, peru, reino_unido, ucrania, venezuela |
 | PROV:04 | 15 | 6 | 6 | 0 | 3 | 3 | jovenes_ni_ni, privacion_severa, nunca_internet, china, honduras, venezuela |
 | PROV:35 | 20 | 0 | 7 | 0 | 1 | 7 | china, ecuador, honduras, paraguay, peru, rumania, ucrania |
@@ -102,8 +102,6 @@ Combinaciones sin donante (V-RAREZA):
 | PROV:32 | 11 | 2 | 14 | 1 | 1 | 13 | nunca_internet, alemania, argentina, china, ecuador, francia, honduras, italia, marruecos, paraguay, peru, reino_unido, rumania, ucrania |
 | PROV:51 | 14 | 0 | 13 | 9 | 6 | 8 | alemania, argentina, china, colombia, ecuador, francia, italia, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
 | PROV:52 | 13 | 1 | 13 | 6 | 10 | 12 | alemania, argentina, china, colombia, ecuador, francia, italia, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
-| MUNIS:ejemplo_valencia_urbano | 25 | 0 | 2 | 0 | 1 | 1 | jovenes_ni_ni, paraguay |
-| MUNIS:ejemplo_teruel_rural | 1 | 9 | 17 | 8 | 0 | 13 | jovenes_ni_ni, nunca_internet, alemania, argentina, china, colombia, ecuador, francia, honduras, italia, marruecos, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
 
 Un grupo puede estar en rojo por más de un criterio.
 

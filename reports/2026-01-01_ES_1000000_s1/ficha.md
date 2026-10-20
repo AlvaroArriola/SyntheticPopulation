@@ -5,7 +5,7 @@
 - Tamaño: 999.974 personas. 398.469 hogares
 - Modo: representativo
 - Fecha de referencia: 2026-01-01 (datos con corte en junio de 2026)
-- Semilla: 1 · Versión del código: git:402e437-dirty
+- Semilla: 1 · Versión del código: git:e911ae6-dirty
 
 ## Fuentes
 | Fuente | Edición | Uso |
@@ -34,7 +34,7 @@ Objetivos de calibración: actividad_nacionalidad, actividad_tramo, edad5_sexo, 
 | estado_civil | P1 | censo_anual | observada 99.2 %, modelada 0.8 % |
 | nivel_estudios | P0 | censo_anual | observada 99.2 %, modelada 0.8 % |
 | estudios_3 | P0 | censo_anual | observada 99.2 %, modelada 0.8 % |
-| relacion_actividad | P0 | censo_anual / epa | observada 99.2 %, modelada 0.8 % |
+| relacion_actividad | P0 | censo_anual / epa | observada 99.1 %, modelada 0.9 % |
 | ocupacion | P1 | censo_anual / epa | observada 99.2 %, modelada 0.8 % |
 | sector_actividad | P2 | epa / censo | observada 99.2 %, modelada 0.8 % |
 | situacion_profesional | P1 | epa / censo | observada 99.2 %, modelada 0.8 % |
@@ -85,12 +85,12 @@ Objetivos de calibración: actividad_nacionalidad, actividad_tramo, edad5_sexo, 
 | Residentes en municipios de menos de 2.000 habitantes | verde | 1,029 | 0,056 | 0,055 | 0,009 | 25124 | 0,00 | Padrón 2025 (población por tamaño de municipio) |
 | Residentes en islas no capitalinas | no_medible | — | — | — | — | None | — | Insularidad. No medible en la población base, porque los microdatos del Censo no identifican los municipios de menos de 10.000 habitantes; se puede construir como territorio por lista de municipios (F5) |
 | Hogares monoparentales | verde | 1,000 | 0,118 | 0,118 | — | 45810 | 0,00 | Censo 2021 (tipo de hogar por tamaño) sobre hogares ECP 2026 |
-| Personas de 16+ con limitación grave (GALI) | verde | 1,001 | 0,041 | 0,041 | 0,040 | 33664 | 0,00 | ECV 2025 (16+, viviendas familiares) |
-| Jóvenes de 20 a 24 que ni estudian ni trabajan | verde | 1,072 | 0,123 | 0,115 | 0,049 | 6339 | 0,00 | EPA 2T 2026 (20-24, viviendas familiares) |
+| Personas de 16+ con limitación grave (GALI) | verde | 1,000 | 0,041 | 0,041 | 0,042 | 33642 | 0,00 | ECV 2025 (16+, viviendas familiares) |
+| Jóvenes de 20 a 24 que ni estudian ni trabajan | verde | 1,002 | 0,115 | 0,115 | 0,031 | 5923 | 0,00 | EPA 2T 2026 (20-24, viviendas familiares) |
 | Personas en paro (16+) | verde | 0,993 | 0,058 | 0,059 | 0,024 | 42500 | 0,00 | EPA 2T 2026 con el reparto del Censo Anual 2024 (objetivo actividad_sexo, D-046) |
 | Personas de 15+ sin estudios (analfabetas o con primaria incompleta) | verde | 1,017 | 0,038 | 0,037 | 0,005 | 26776 | 0,00 | Censo Anual a 01/01/2024, tabla 66601 («Sin estudios», 15+) |
-| Personas de 16+ en carencia material y social severa | rojo | 1,004 | 0,077 | 0,077 | 0,083 | 58288 | 0,00 | ECV 2025 (16+, viviendas familiares; vrMATSOCDEP) |
-| Personas de 16+ que nunca usan internet | rojo | 1,115 | 0,092 | 0,083 | 0,015 | 69033 | 0,00 | TIC-H 2025 (16+, viviendas familiares) |
+| Personas de 16+ en carencia material y social severa | rojo | 1,004 | 0,077 | 0,077 | 0,083 | 58285 | 0,00 | ECV 2025 (16+, viviendas familiares; vrMATSOCDEP) |
+| Personas de 16+ que nunca usan internet | rojo | 1,115 | 0,092 | 0,083 | 0,015 | 69024 | 0,00 | TIC-H 2025 (16+, viviendas familiares) |
 | Abstencionistas en las generales de 2023 | pendiente | — | — | — | — | None | — | capa politica (F8) |
 | Votantes de partidos pequeños y regionalistas | pendiente | — | — | — | — | None | — | capa politica (F8) |
 | Residentes sin derecho a voto en generales | pendiente | — | — | — | — | None | — | capa politica (F8) |

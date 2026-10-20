@@ -13,6 +13,7 @@ from __future__ import annotations
 import datetime as dt
 import gc
 import json
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
@@ -328,6 +329,34 @@ def _asignar_municipio(pers: pl.DataFrame, territorio: str, semilla: int) -> pl.
     )
 
 
+def _hash_perfil(cols: list[str]) -> pl.Expr:
+    return pl.struct([pl.col(c).cast(pl.Utf8) for c in cols]).hash().alias("_h")
+
+
+@lru_cache(maxsize=1)
+def _combinaciones_donantes() -> tuple[set[int], set[int]]:
+    """Hashes de las combinaciones de atributos P0 de los donantes (persona; persona y hogar),
+    las mismas que comprueba V-RAREZA (D-060: el reparto no crea perfiles sin donante)."""
+    from sinpop.validate.poblacion import P0_HOGAR, P0_PERSONA
+
+    don = (
+        pl.scan_parquet(D.PERSONAS)
+        .select(*P0_PERSONA, *P0_HOGAR)
+        .with_columns(
+            pl.when(pl.col("edad") < D.EDAD_MIN_ACTIVIDAD)
+            .then(pl.lit("NP"))
+            .otherwise(pl.col("relacion_actividad"))
+            .alias("relacion_actividad")
+        )
+        .select(
+            _hash_perfil(P0_PERSONA).alias("_hp"),
+            _hash_perfil([*P0_PERSONA, *P0_HOGAR]).alias("_hh"),
+        )
+        .collect()
+    )
+    return set(don["_hp"].unique().to_list()), set(don["_hh"].unique().to_list())
+
+
 def repartir_inactividad(pers: pl.DataFrame, fusiones: pl.DataFrame, semilla: int) -> pl.DataFrame:
     """D-060: en los cruces sexo × tramo de edad en los que la calibración fundió «estudiante»
     con «otra_inactividad» (D-050), cada persona conservaba la categoría de su donante del Censo
@@ -344,6 +373,8 @@ def repartir_inactividad(pers: pl.DataFrame, fusiones: pl.DataFrame, semilla: in
     pers = pers.with_columns(
         edades.agrupar(pl.col("edad"), cortes, "_tramo"), pl.lit(False).alias("_act_modelada")
     )
+    if fusiones.is_empty() or "objetivo" not in fusiones.columns:
+        return pers.drop("_tramo")
     f = fusiones.filter(
         (pl.col("objetivo") == "actividad_tramo")
         & pl.col("clave").str.starts_with(est + ";")
@@ -351,8 +382,11 @@ def repartir_inactividad(pers: pl.DataFrame, fusiones: pl.DataFrame, semilla: in
     )
     if f.is_empty():
         return pers.drop("_tramo")
+    from sinpop.validate.poblacion import P0_HOGAR, P0_PERSONA
+
     rng = make_rng(semilla)
     cambios = []
+    combos_p, combos_h = _combinaciones_donantes()
     for (b,), g in f.group_by("bloque", maintain_order=True):
         obj = T.leer(b).filter(pl.col("objetivo") == "actividad_tramo")
         obj = obj.group_by("clave").agg(pl.col("valor").sum())
@@ -380,9 +414,26 @@ def repartir_inactividad(pers: pl.DataFrame, fusiones: pl.DataFrame, semilla: in
                 if mover > 0
                 else ("estudiante", "otra_inactividad")
             )
-            cand = sel.filter(pl.col("relacion_actividad") == origen)["person_id"].to_numpy()
+            # Solo personas cuyo perfil con la categoría nueva existe en algún donante (V-RAREZA)
+            c = sel.filter(pl.col("relacion_actividad") == origen).with_columns(
+                pl.lit(destino).alias("relacion_actividad")
+            )
+            hp = c.select(_hash_perfil(P0_PERSONA))["_h"].to_list()
+            hh = c.select(_hash_perfil([*P0_PERSONA, *P0_HOGAR]))["_h"].to_list()
+            fam = (c["tipo_residencia"] == "vivienda_familiar").to_list()
+            valido = [
+                a in combos_p and (not f or b in combos_h)
+                for a, b, f in zip(hp, hh, fam, strict=True)
+            ]
+            cand = c.filter(pl.Series(valido))["person_id"].to_numpy()
             elegidos = rng.choice(cand, size=min(abs(mover), len(cand)), replace=False)
-            cambios.append(pl.DataFrame({"person_id": elegidos, "_nueva": destino}))
+            if len(elegidos):
+                cambios.append(
+                    pl.DataFrame(
+                        {"person_id": elegidos.astype(str), "_nueva": destino},
+                        schema={"person_id": pl.Utf8, "_nueva": pl.Utf8},
+                    )
+                )
     if not cambios:
         return pers.drop("_tramo")
     c = pl.concat(cambios)

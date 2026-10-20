@@ -1184,6 +1184,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - Se mueven personas al azar, con la semilla, de la categoría que sobra a la que falta.
   - Su `relacion_actividad__calidad` pasa a `modelada`.
   - La calibración no cambia (`repartir_inactividad` en `poblacion.py`).
+  - Solo se mueve a personas cuyo perfil P0 con la categoría nueva (persona y, en viviendas familiares, persona y hogar) existe en algún donante del Censo. En la primera vuelta sin esta condición, V-RAREZA detectó 110 personas con perfiles sin donante en la población nacional.
 - **Evidencia:**
   - `tests/unit/test_repartir_inactividad.py`.
   - Madrid, 100.000 personas: 20-24 con 33,8 % de estudiantes y 6,9 % de «otra inactividad»; ni-ni 8,5 %; 1.132 personas modeladas (1,1 %).

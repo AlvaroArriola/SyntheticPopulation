@@ -1,6 +1,6 @@
 {
  "fecha": "2026-10-20",
- "version_codigo": "git:402e437-dirty",
+ "version_codigo": "git:e911ae6-dirty",
  "comando": "python -m sinpop.validate.fase6",
  "semilla": 1,
  "run_id": "2026-01-01_ES_1000000_s1",
@@ -65,22 +65,22 @@
    "ocupados+estudios_max+extranjero+mayores_65": 9
   },
   "persona_ecv": {
-   "ccaa+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext+sexo": 587452,
-   "ccaa+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext": 80218,
-   "ccaa+edad_grupo+relacion_actividad+estudios_3+renta_quintil": 69869,
-   "ccaa+edad_grupo+relacion_actividad+estudios_3": 105113,
-   "ccaa+edad_grupo+relacion_actividad": 16294,
+   "ccaa+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext+sexo": 587865,
+   "ccaa+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext": 80379,
+   "ccaa+edad_grupo+relacion_actividad+estudios_3+renta_quintil": 70020,
+   "ccaa+edad_grupo+relacion_actividad+estudios_3": 104970,
+   "ccaa+edad_grupo+relacion_actividad": 15665,
    "nuts1+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext+sexo": 52,
    "nuts1+edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext": 71,
    "nuts1+edad_grupo+relacion_actividad+estudios_3+renta_quintil": 76,
-   "nuts1+edad_grupo+relacion_actividad+estudios_3": 1089,
-   "nuts1+edad_grupo+relacion_actividad": 853,
+   "nuts1+edad_grupo+relacion_actividad+estudios_3": 1080,
+   "nuts1+edad_grupo+relacion_actividad": 865,
    "edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext+sexo": 184,
-   "edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext": 279,
-   "edad_grupo+relacion_actividad+estudios_3+renta_quintil": 98,
-   "edad_grupo+relacion_actividad+estudios_3": 1529,
-   "edad_grupo+relacion_actividad": 248,
-   "ccaa+edad_grupo": 142
+   "edad_grupo+relacion_actividad+estudios_3+renta_quintil+nacionalidad_esp_ext": 275,
+   "edad_grupo+relacion_actividad+estudios_3+renta_quintil": 95,
+   "edad_grupo+relacion_actividad+estudios_3": 1523,
+   "edad_grupo+relacion_actividad": 316,
+   "ccaa+edad_grupo": 131
   },
   "empleo": {
    "ccaa+ocupacion+nacionalidad_esp_ext+sexo+edad_grupo_epa+estudios_3": 266492,
@@ -102,34 +102,33 @@
    "nuts1": 2
   },
   "formacion": {
-   "ccaa+edad_grupo_epa+sexo+estudios_3+nacionalidad_esp_ext": 328335,
-   "ccaa+edad_grupo_epa+sexo+estudios_3": 30407,
-   "ccaa+edad_grupo_epa+sexo": 32785,
-   "nuts1+edad_grupo_epa+sexo+estudios_3+nacionalidad_esp_ext": 3477,
-   "nuts1+edad_grupo_epa+sexo+estudios_3": 1319,
-   "nuts1+edad_grupo_epa+sexo": 2084,
-   "edad_grupo_epa+sexo+estudios_3+nacionalidad_esp_ext": 1479,
-   "edad_grupo_epa+sexo+estudios_3": 448,
-   "edad_grupo_epa+sexo": 640,
-   "ccaa+edad_grupo_epa": 8,
-   "nuts1+edad_grupo_epa": 3,
-   "edad_grupo_epa": 56,
+   "ccaa+edad_grupo_epa+sexo+estudios_3+nacionalidad_esp_ext": 328748,
+   "ccaa+edad_grupo_epa+sexo+estudios_3": 30609,
+   "ccaa+edad_grupo_epa+sexo": 32088,
+   "nuts1+edad_grupo_epa+sexo+estudios_3+nacionalidad_esp_ext": 3421,
+   "nuts1+edad_grupo_epa+sexo+estudios_3": 1309,
+   "nuts1+edad_grupo_epa+sexo": 2208,
+   "edad_grupo_epa+sexo+estudios_3+nacionalidad_esp_ext": 1495,
+   "edad_grupo_epa+sexo+estudios_3": 455,
+   "edad_grupo_epa+sexo": 660,
+   "ccaa+edad_grupo_epa": 6,
+   "edad_grupo_epa": 42,
    "ccaa": 1
   },
   "digital": {
-   "ccaa+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext+sexo": 608115,
-   "ccaa+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext": 75561,
-   "ccaa+edad_grupo+relacion_actividad+estudios_3": 82711,
-   "ccaa+edad_grupo+relacion_actividad": 72132,
-   "nuts1+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext+sexo": 1762,
-   "nuts1+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext": 2015,
-   "nuts1+edad_grupo+relacion_actividad+estudios_3": 1601,
-   "nuts1+edad_grupo+relacion_actividad": 9901,
-   "edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext+sexo": 1888,
-   "edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext": 2320,
-   "edad_grupo+relacion_actividad+estudios_3": 865,
-   "edad_grupo+relacion_actividad": 4481,
-   "ccaa+edad_grupo": 215
+   "ccaa+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext+sexo": 608502,
+   "ccaa+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext": 75640,
+   "ccaa+edad_grupo+relacion_actividad+estudios_3": 82980,
+   "ccaa+edad_grupo+relacion_actividad": 72162,
+   "nuts1+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext+sexo": 1764,
+   "nuts1+edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext": 2016,
+   "nuts1+edad_grupo+relacion_actividad+estudios_3": 1593,
+   "nuts1+edad_grupo+relacion_actividad": 9915,
+   "edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext+sexo": 1517,
+   "edad_grupo+relacion_actividad+estudios_3+nacionalidad_esp_ext": 2266,
+   "edad_grupo+relacion_actividad+estudios_3": 740,
+   "edad_grupo+relacion_actividad": 4268,
+   "ccaa+edad_grupo": 204
   }
  },
  "v_enriq_marg": {
@@ -168,7 +167,7 @@
    {
     "bloque": "formacion",
     "variable": "cursa_formacion",
-    "proporcion": 0.9731543624161074,
+    "proporcion": 0.9932885906040269,
     "celdas": 149
    },
    {
@@ -210,7 +209,7 @@
    {
     "bloque": "persona_ecv",
     "variable": "discapacidad_limitacion",
-    "proporcion": 0.9504950495049505,
+    "proporcion": 0.9537953795379538,
     "celdas": 303
    },
    {
@@ -222,11 +221,11 @@
    {
     "bloque": "persona_ecv",
     "variable": "salud_autopercibida",
-    "proporcion": 0.968609865470852,
+    "proporcion": 0.9708520179372198,
     "celdas": 446
    }
   ],
-  "global": 0.9292220113851992
+  "global": 0.9301707779886148
  },
  "tvd_nacional": {
   "umbral": 0.02,
@@ -249,32 +248,32 @@
    {
     "bloque": "hogar",
     "variable": "dificultad_fin_mes",
-    "tvd": 0.0037930522544155684
+    "tvd": 0.003793052254415548
    },
    {
     "bloque": "hogar",
     "variable": "vehiculo_hogar",
-    "tvd": 0.013724852114998794
+    "tvd": 0.013724852114998753
    },
    {
     "bloque": "persona_ecv",
     "variable": "salud_autopercibida",
-    "tvd": 0.007255754763811179
+    "tvd": 0.006889640389680717
    },
    {
     "bloque": "persona_ecv",
     "variable": "discapacidad_limitacion",
-    "tvd": 0.003755479224285865
+    "tvd": 0.0037386739743258263
    },
    {
     "bloque": "persona_ecv",
     "variable": "privacion_material",
-    "tvd": 0.00035839025076052616
+    "tvd": 0.00033798387580899264
    },
    {
     "bloque": "persona_ecv",
     "variable": "carencias",
-    "tvd": 0.006276883912607174
+    "tvd": 0.006012801413234391
    },
    {
     "bloque": "empleo",
@@ -289,22 +288,22 @@
    {
     "bloque": "formacion",
     "variable": "cursa_formacion",
-    "tvd": 0.0038738577836222726
+    "tvd": 0.0016151089901588617
    },
    {
     "bloque": "digital",
     "variable": "uso_internet",
-    "tvd": 0.012064088291351069
+    "tvd": 0.012053284916376722
    },
    {
     "bloque": "digital",
     "variable": "compra_online",
-    "tvd": 0.016104623322976602
+    "tvd": 0.016228261947682954
    },
    {
     "bloque": "digital",
     "variable": "teletrabajo",
-    "tvd": 0.037380798559458424
+    "tvd": 0.03738079855945842
    }
   ]
  },
@@ -317,8 +316,8 @@
  "v_enriq_bloque": {
   "umbral_max": 0.05,
   "umbral_media": 0.02,
-  "dif_max": 0.023867521918822243,
-  "dif_media": 0.006235751619179689,
+  "dif_max": 0.024127374773917354,
+  "dif_media": 0.00618029509456982,
   "pares": [
    {
     "bloque": "hogar",
@@ -387,36 +386,36 @@
     "bloque": "persona_ecv",
     "par": "salud_autopercibida × discapacidad_limitacion",
     "v_encuesta": 0.45997377724203714,
-    "v_sintetica": 0.46064113534058937,
-    "dif": 0.0006673580985522287
+    "v_sintetica": 0.46045884851976465,
+    "dif": 0.00048507127772751124
    },
    {
     "bloque": "persona_ecv",
     "par": "salud_autopercibida × privacion_material",
     "v_encuesta": 0.1493411191957404,
-    "v_sintetica": 0.12783537373560758,
-    "dif": 0.021505745460132814
+    "v_sintetica": 0.12800763684374017,
+    "dif": 0.02133348235200022
    },
    {
     "bloque": "persona_ecv",
     "par": "salud_autopercibida × carencias",
     "v_encuesta": 0.11799201307120223,
-    "v_sintetica": 0.10742352831293482,
-    "dif": 0.01056848475826741
+    "v_sintetica": 0.10758139275250991,
+    "dif": 0.010410620318692318
    },
    {
     "bloque": "persona_ecv",
     "par": "discapacidad_limitacion × privacion_material",
     "v_encuesta": 0.08803735707345597,
-    "v_sintetica": 0.07874993928831561,
-    "dif": 0.009287417785140362
+    "v_sintetica": 0.07904955159019299,
+    "dif": 0.008987805483262987
    },
    {
     "bloque": "persona_ecv",
     "par": "discapacidad_limitacion × carencias",
     "v_encuesta": 0.09536615072397876,
-    "v_sintetica": 0.08981663622110048,
-    "dif": 0.005549514502878286
+    "v_sintetica": 0.09017352698780137,
+    "dif": 0.00519262373617739
    },
    {
     "bloque": "persona_ecv",
@@ -436,22 +435,22 @@
     "bloque": "digital",
     "par": "uso_internet × compra_online",
     "v_encuesta": 0.4146195081969748,
-    "v_sintetica": 0.4179447610467307,
-    "dif": 0.0033252528497558775
+    "v_sintetica": 0.41781366715059637,
+    "dif": 0.003194158953621573
    },
    {
     "bloque": "digital",
     "par": "uso_internet × teletrabajo",
-    "v_encuesta": 0.1955534184034335,
-    "v_sintetica": 0.21512198281913408,
-    "dif": 0.019568564415700596
+    "v_encuesta": 0.19555341840343354,
+    "v_sintetica": 0.2151084673296965,
+    "dif": 0.019555048926262947
    },
    {
     "bloque": "digital",
     "par": "compra_online × teletrabajo",
     "v_encuesta": 0.34465550817596674,
-    "v_sintetica": 0.368523030094789,
-    "dif": 0.023867521918822243
+    "v_sintetica": 0.3687828829498841,
+    "dif": 0.024127374773917354
    }
   ]
  },
@@ -498,11 +497,11 @@
     "llave": "sexo",
     "bloque": "hogar",
     "variable": "dificultad_fin_mes",
-    "v_encuesta": 0.015650407899766086,
+    "v_encuesta": 0.015650407899766138,
     "v_sintetica": 0.006184316599558414,
-    "dif": 0.009466091300207672,
-    "dif_independencia": 0.015650407899766086,
-    "recuperada": 0.39515370073203304
+    "dif": 0.009466091300207724,
+    "dif_independencia": 0.015650407899766138,
+    "recuperada": 0.3951537007320317
    },
    {
     "llave": "sexo",
@@ -519,40 +518,40 @@
     "bloque": "persona_ecv",
     "variable": "salud_autopercibida",
     "v_encuesta": 0.06835274012815461,
-    "v_sintetica": 0.03569280199517073,
-    "dif": 0.03265993813298388,
+    "v_sintetica": 0.03616913850376296,
+    "dif": 0.03218360162439165,
     "dif_independencia": 0.06835274012815461,
-    "recuperada": 0.522185386105228
+    "recuperada": 0.5291541851277566
    },
    {
     "llave": "sexo",
     "bloque": "persona_ecv",
     "variable": "discapacidad_limitacion",
     "v_encuesta": 0.05134396496309455,
-    "v_sintetica": 0.03416372785418629,
-    "dif": 0.01718023710890826,
+    "v_sintetica": 0.034837655326701994,
+    "dif": 0.016506309636392553,
     "dif_independencia": 0.05134396496309455,
-    "recuperada": 0.6653893574199574
+    "recuperada": 0.6785150962093188
    },
    {
     "llave": "sexo",
     "bloque": "persona_ecv",
     "variable": "privacion_material",
     "v_encuesta": 0.014178023195008566,
-    "v_sintetica": 0.0033949403614363448,
-    "dif": 0.010783082833572221,
+    "v_sintetica": 0.003791918251000255,
+    "dif": 0.010386104944008311,
     "dif_independencia": 0.014178023195008566,
-    "recuperada": 0.2394508962738577
+    "recuperada": 0.2674504194869152
    },
    {
     "llave": "sexo",
     "bloque": "persona_ecv",
     "variable": "carencias",
     "v_encuesta": 0.028851671101712575,
-    "v_sintetica": 0.005744724810747631,
-    "dif": 0.023106946290964943,
+    "v_sintetica": 0.0059223890674876475,
+    "dif": 0.022929282034224927,
     "dif_independencia": 0.028851671101712575,
-    "recuperada": 0.19911237690515043
+    "recuperada": 0.2052702266918642
    },
    {
     "llave": "sexo",
@@ -578,31 +577,31 @@
     "llave": "sexo",
     "bloque": "formacion",
     "variable": "cursa_formacion",
-    "v_encuesta": 0.004107774854456767,
-    "v_sintetica": 0.017292873070002077,
-    "dif": 0.01318509821554531,
-    "dif_independencia": 0.004107774854456767,
-    "recuperada": 4.209790867978078
+    "v_encuesta": 0.004107774854456878,
+    "v_sintetica": 0.023101244481324324,
+    "dif": 0.018993469626867446,
+    "dif_independencia": 0.004107774854456878,
+    "recuperada": 5.623785455587907
    },
    {
     "llave": "sexo",
     "bloque": "digital",
     "variable": "uso_internet",
     "v_encuesta": 0.053308277079223865,
-    "v_sintetica": 0.05943372610435075,
-    "dif": 0.006125449025126885,
+    "v_sintetica": 0.05945207889102332,
+    "dif": 0.006143801811799458,
     "dif_independencia": 0.053308277079223865,
-    "recuperada": 1.1149061526791342
+    "recuperada": 1.1152504291719816
    },
    {
     "llave": "sexo",
     "bloque": "digital",
     "variable": "compra_online",
-    "v_encuesta": 0.01454755944667418,
-    "v_sintetica": 0.03089247801935404,
-    "dif": 0.016344918572679862,
-    "dif_independencia": 0.01454755944667418,
-    "recuperada": 2.123550560669239
+    "v_encuesta": 0.014547559446674083,
+    "v_sintetica": 0.030700903431645294,
+    "dif": 0.01615334398497121,
+    "dif_independencia": 0.014547559446674083,
+    "recuperada": 2.110381713453953
    },
    {
     "llave": "sexo",
@@ -669,40 +668,40 @@
     "bloque": "persona_ecv",
     "variable": "salud_autopercibida",
     "v_encuesta": 0.0727407930655126,
-    "v_sintetica": 0.056449076031206746,
-    "dif": 0.016291717034305847,
+    "v_sintetica": 0.05714212867090263,
+    "dif": 0.015598664394609961,
     "dif_independencia": 0.0727407930655126,
-    "recuperada": 0.7760305277448236
+    "recuperada": 0.7855582302964264
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "persona_ecv",
     "variable": "discapacidad_limitacion",
-    "v_encuesta": 0.07722904258306046,
-    "v_sintetica": 0.05833833756111733,
-    "dif": 0.01889070502194313,
-    "dif_independencia": 0.07722904258306046,
-    "recuperada": 0.7553937691040774
+    "v_encuesta": 0.07722904258306047,
+    "v_sintetica": 0.05863808490433593,
+    "dif": 0.01859095767872454,
+    "dif_independencia": 0.07722904258306047,
+    "recuperada": 0.7592750465768132
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "persona_ecv",
     "variable": "privacion_material",
-    "v_encuesta": 0.11832147520694597,
-    "v_sintetica": 0.06603658232232806,
-    "dif": 0.052284892884617906,
-    "dif_independencia": 0.11832147520694597,
-    "recuperada": 0.5581115533492895
+    "v_encuesta": 0.11832147520694603,
+    "v_sintetica": 0.06663240136431606,
+    "dif": 0.05168907384262997,
+    "dif_independencia": 0.11832147520694603,
+    "recuperada": 0.5631471484595252
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "persona_ecv",
     "variable": "carencias",
     "v_encuesta": 0.1792551088424935,
-    "v_sintetica": 0.11858157364872772,
-    "dif": 0.06067353519376577,
+    "v_sintetica": 0.11870674342195286,
+    "dif": 0.06054836542054062,
     "dif_independencia": 0.1792551088424935,
-    "recuperada": 0.6615240949864479
+    "recuperada": 0.6622223722853958
    },
    {
     "llave": "nacionalidad_esp_ext",
@@ -718,141 +717,141 @@
     "llave": "nacionalidad_esp_ext",
     "bloque": "empleo",
     "variable": "sector_publico",
-    "v_encuesta": 0.16826506940042574,
+    "v_encuesta": 0.16826506940042577,
     "v_sintetica": 0.0865970319332603,
-    "dif": 0.08166803746716544,
-    "dif_independencia": 0.16826506940042574,
+    "dif": 0.08166803746716547,
+    "dif_independencia": 0.16826506940042577,
     "recuperada": 0.5146465171994942
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "formacion",
     "variable": "cursa_formacion",
-    "v_encuesta": 0.02575216086238887,
-    "v_sintetica": 0.04120359536542555,
-    "dif": 0.015451434503036678,
-    "dif_independencia": 0.02575216086238887,
-    "recuperada": 1.6000053582145628
+    "v_encuesta": 0.025752160862388816,
+    "v_sintetica": 0.046851189366698444,
+    "dif": 0.021099028504309628,
+    "dif_independencia": 0.025752160862388816,
+    "recuperada": 1.8193109936310192
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "digital",
     "variable": "uso_internet",
     "v_encuesta": 0.10850524369614564,
-    "v_sintetica": 0.08753712021768513,
-    "dif": 0.020968123478460512,
+    "v_sintetica": 0.08762619111920253,
+    "dif": 0.020879052576943113,
     "dif_independencia": 0.10850524369614564,
-    "recuperada": 0.8067547450777686
+    "recuperada": 0.8075756353728665
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "digital",
     "variable": "compra_online",
     "v_encuesta": 0.0016797704746760803,
-    "v_sintetica": 0.05039351274972564,
-    "dif": 0.04871374227504956,
+    "v_sintetica": 0.050221724713909,
+    "dif": 0.048541954239232916,
     "dif_independencia": 0.0016797704746760803,
-    "recuperada": 30.000237240414233
+    "recuperada": 29.89796848500599
    },
    {
     "llave": "nacionalidad_esp_ext",
     "bloque": "digital",
     "variable": "teletrabajo",
-    "v_encuesta": 0.04968395432658863,
+    "v_encuesta": 0.049683954326588536,
     "v_sintetica": 0.06512225178595739,
-    "dif": 0.015438297459368762,
-    "dif_independencia": 0.04968395432658863,
-    "recuperada": 1.3107300469259726
+    "dif": 0.015438297459368852,
+    "dif_independencia": 0.049683954326588536,
+    "recuperada": 1.310730046925975
    },
    {
     "llave": "relacion_actividad",
     "bloque": "hogar",
     "variable": "renta_hogar_decil",
     "v_encuesta": 0.12746782453449962,
-    "v_sintetica": 0.09514569093119013,
-    "dif": 0.03232213360330949,
+    "v_sintetica": 0.09517103207145608,
+    "dif": 0.03229679246304354,
     "dif_independencia": 0.12746782453449962,
-    "recuperada": 0.7464290794845927
+    "recuperada": 0.7466278836954474
    },
    {
     "llave": "relacion_actividad",
     "bloque": "hogar",
     "variable": "renta_hogar_decil_ccaa",
     "v_encuesta": 0.12111406305188248,
-    "v_sintetica": 0.08960033526080763,
-    "dif": 0.03151372779107485,
+    "v_sintetica": 0.08932730275495726,
+    "dif": 0.03178676029692522,
     "dif_independencia": 0.12111406305188248,
-    "recuperada": 0.7398012501853307
+    "recuperada": 0.737546908294964
    },
    {
     "llave": "relacion_actividad",
     "bloque": "hogar",
     "variable": "tenencia_vivienda",
     "v_encuesta": 0.21578354854637602,
-    "v_sintetica": 0.1861517620836499,
-    "dif": 0.02963178646272613,
+    "v_sintetica": 0.18606491485453258,
+    "dif": 0.029718633691843438,
     "dif_independencia": 0.21578354854637602,
-    "recuperada": 0.862678194596667
+    "recuperada": 0.8622757207764783
    },
    {
     "llave": "relacion_actividad",
     "bloque": "hogar",
     "variable": "dificultad_fin_mes",
     "v_encuesta": 0.09490395190555709,
-    "v_sintetica": 0.05717386016368461,
-    "dif": 0.03773009174187248,
+    "v_sintetica": 0.05714400586907164,
+    "dif": 0.03775994603648545,
     "dif_independencia": 0.09490395190555709,
-    "recuperada": 0.6024391926332079
+    "recuperada": 0.6021246188561046
    },
    {
     "llave": "relacion_actividad",
     "bloque": "hogar",
     "variable": "vehiculo_hogar",
     "v_encuesta": 0.13618128416432732,
-    "v_sintetica": 0.15155478119421267,
-    "dif": 0.015373497029885358,
+    "v_sintetica": 0.1513548003311656,
+    "dif": 0.015173516166838291,
     "dif_independencia": 0.13618128416432732,
-    "recuperada": 1.1128899402309531
+    "recuperada": 1.1114214501643904
    },
    {
     "llave": "relacion_actividad",
     "bloque": "persona_ecv",
     "variable": "salud_autopercibida",
     "v_encuesta": 0.20344993628901958,
-    "v_sintetica": 0.1455477058231215,
-    "dif": 0.0579022304658981,
+    "v_sintetica": 0.1463106575859527,
+    "dif": 0.05713927870306687,
     "dif_independencia": 0.20344993628901958,
-    "recuperada": 0.7153981391095519
+    "recuperada": 0.7191482103887454
    },
    {
     "llave": "relacion_actividad",
     "bloque": "persona_ecv",
     "variable": "discapacidad_limitacion",
     "v_encuesta": 0.2486895113452722,
-    "v_sintetica": 0.14841112327004752,
-    "dif": 0.10027838807522468,
+    "v_sintetica": 0.1489415337798999,
+    "dif": 0.09974797756537229,
     "dif_independencia": 0.2486895113452722,
-    "recuperada": 0.5967727487469243
+    "recuperada": 0.5989055709434986
    },
    {
     "llave": "relacion_actividad",
     "bloque": "persona_ecv",
     "variable": "privacion_material",
-    "v_encuesta": 0.12883915612591462,
-    "v_sintetica": 0.04842275754809471,
-    "dif": 0.0804163985778199,
-    "dif_independencia": 0.12883915612591462,
-    "recuperada": 0.3758388288477387
+    "v_encuesta": 0.12883915612591465,
+    "v_sintetica": 0.04816690987664187,
+    "dif": 0.08067224624927277,
+    "dif_independencia": 0.12883915612591465,
+    "recuperada": 0.3738530375778641
    },
    {
     "llave": "relacion_actividad",
     "bloque": "persona_ecv",
     "variable": "carencias",
     "v_encuesta": 0.11791822113196308,
-    "v_sintetica": 0.05166884047013738,
-    "dif": 0.0662493806618257,
+    "v_sintetica": 0.05159527881417069,
+    "dif": 0.0663229423177924,
     "dif_independencia": 0.11791822113196308,
-    "recuperada": 0.4381752029002747
+    "recuperada": 0.4375513666919217
    },
    {
     "llave": "relacion_actividad",
@@ -879,30 +878,30 @@
     "bloque": "formacion",
     "variable": "cursa_formacion",
     "v_encuesta": 0.6784870870691794,
-    "v_sintetica": 0.6705698688160033,
-    "dif": 0.00791721825317604,
+    "v_sintetica": 0.6813591567941123,
+    "dif": 0.002872069724932924,
     "dif_independencia": 0.6784870870691794,
-    "recuperada": 0.9883310701057325
+    "recuperada": 1.004233049942541
    },
    {
     "llave": "relacion_actividad",
     "bloque": "digital",
     "variable": "uso_internet",
     "v_encuesta": 0.2717080598254331,
-    "v_sintetica": 0.2674795715046166,
-    "dif": 0.004228488320816515,
+    "v_sintetica": 0.268009580378161,
+    "dif": 0.003698479447272085,
     "dif_independencia": 0.2717080598254331,
-    "recuperada": 0.9844373835522832
+    "recuperada": 0.9863880392445911
    },
    {
     "llave": "relacion_actividad",
     "bloque": "digital",
     "variable": "compra_online",
     "v_encuesta": 0.4120718572407475,
-    "v_sintetica": 0.4081924649861675,
-    "dif": 0.0038793922545800053,
+    "v_sintetica": 0.40864762663928367,
+    "dif": 0.0034242306014638513,
     "dif_independencia": 0.4120718572407475,
-    "recuperada": 0.9905856413477091
+    "recuperada": 0.9916902099930031
    },
    {
     "llave": "relacion_actividad",
@@ -938,11 +937,11 @@
     "llave": "estudios_3",
     "bloque": "hogar",
     "variable": "tenencia_vivienda",
-    "v_encuesta": 0.09149069230775637,
+    "v_encuesta": 0.09149069230775644,
     "v_sintetica": 0.08755141418190743,
-    "dif": 0.003939278125848947,
-    "dif_independencia": 0.09149069230775637,
-    "recuperada": 0.9569434001811026
+    "dif": 0.003939278125849016,
+    "dif_independencia": 0.09149069230775644,
+    "recuperada": 0.9569434001811018
    },
    {
     "llave": "estudios_3",
@@ -969,50 +968,50 @@
     "bloque": "persona_ecv",
     "variable": "salud_autopercibida",
     "v_encuesta": 0.1839408127749135,
-    "v_sintetica": 0.11700159214348116,
-    "dif": 0.06693922063143234,
+    "v_sintetica": 0.11692354563783067,
+    "dif": 0.06701726713708284,
     "dif_independencia": 0.1839408127749135,
-    "recuperada": 0.6360828267441376
+    "recuperada": 0.6356585244673721
    },
    {
     "llave": "estudios_3",
     "bloque": "persona_ecv",
     "variable": "discapacidad_limitacion",
-    "v_encuesta": 0.12528903928842258,
-    "v_sintetica": 0.10222234223488419,
-    "dif": 0.023066697053538393,
-    "dif_independencia": 0.12528903928842258,
-    "recuperada": 0.8158921388132163
+    "v_encuesta": 0.12528903928842253,
+    "v_sintetica": 0.10226444211795156,
+    "dif": 0.023024597170470965,
+    "dif_independencia": 0.12528903928842253,
+    "recuperada": 0.816228160889102
    },
    {
     "llave": "estudios_3",
     "bloque": "persona_ecv",
     "variable": "privacion_material",
     "v_encuesta": 0.0966349092822164,
-    "v_sintetica": 0.01600318113510452,
-    "dif": 0.08063172814711188,
+    "v_sintetica": 0.015832529048315752,
+    "dif": 0.08080238023390064,
     "dif_independencia": 0.0966349092822164,
-    "recuperada": 0.16560455485468714
+    "recuperada": 0.16383860828262187
    },
    {
     "llave": "estudios_3",
     "bloque": "persona_ecv",
     "variable": "carencias",
     "v_encuesta": 0.1513231482875784,
-    "v_sintetica": 0.03589690565174593,
-    "dif": 0.11542624263583247,
+    "v_sintetica": 0.0358103556225647,
+    "dif": 0.11551279266501369,
     "dif_independencia": 0.1513231482875784,
-    "recuperada": 0.23722018777673412
+    "recuperada": 0.23664823279059582
    },
    {
     "llave": "estudios_3",
     "bloque": "empleo",
     "variable": "tipo_jornada",
-    "v_encuesta": 0.07803411155023283,
+    "v_encuesta": 0.07803411155023286,
     "v_sintetica": 0.039542864115478304,
-    "dif": 0.03849124743475453,
-    "dif_independencia": 0.07803411155023283,
-    "recuperada": 0.5067381857743508
+    "dif": 0.03849124743475456,
+    "dif_independencia": 0.07803411155023286,
+    "recuperada": 0.5067381857743507
    },
    {
     "llave": "estudios_3",
@@ -1029,30 +1028,30 @@
     "bloque": "formacion",
     "variable": "cursa_formacion",
     "v_encuesta": 0.33125618681381996,
-    "v_sintetica": 0.2345102172281889,
-    "dif": 0.09674596958563106,
+    "v_sintetica": 0.23488454021130728,
+    "dif": 0.09637164660251268,
     "dif_independencia": 0.33125618681381996,
-    "recuperada": 0.7079421504057631
+    "recuperada": 0.7090721609475097
    },
    {
     "llave": "estudios_3",
     "bloque": "digital",
     "variable": "uso_internet",
-    "v_encuesta": 0.21879524019236768,
-    "v_sintetica": 0.15109456250551506,
-    "dif": 0.06770067768685262,
-    "dif_independencia": 0.21879524019236768,
-    "recuperada": 0.6905751805782919
+    "v_encuesta": 0.21879524019236748,
+    "v_sintetica": 0.15114733849209092,
+    "dif": 0.06764790170027657,
+    "dif_independencia": 0.21879524019236748,
+    "recuperada": 0.6908163923456484
    },
    {
     "llave": "estudios_3",
     "bloque": "digital",
     "variable": "compra_online",
     "v_encuesta": 0.40863405024162275,
-    "v_sintetica": 0.195119844315287,
-    "dif": 0.21351420592633574,
+    "v_sintetica": 0.19519385619302249,
+    "dif": 0.21344019404860026,
     "dif_independencia": 0.40863405024162275,
-    "recuperada": 0.4774928672730867
+    "recuperada": 0.47767398746532647
    },
    {
     "llave": "estudios_3",
@@ -1085,7 +1084,7 @@
   {
    "bloque": "hogar",
    "variable": "dificultad_fin_mes",
-   "proporcion": 0.9434343434343434
+   "proporcion": 0.9454545454545454
   },
   {
    "bloque": "hogar",
@@ -1100,7 +1099,7 @@
   {
    "bloque": "persona_ecv",
    "variable": "discapacidad_limitacion",
-   "proporcion": 0.976897689768977
+   "proporcion": 0.9801980198019802
   },
   {
    "bloque": "persona_ecv",
@@ -1147,47 +1146,47 @@
   {
    "bloque": "hogar",
    "variable": "renta_hogar_decil",
-   "tvd": 0.005856097635311593
+   "tvd": 0.005604927219737925
   },
   {
    "bloque": "hogar",
    "variable": "renta_hogar_decil_ccaa",
-   "tvd": 0.007551785219345179
+   "tvd": 0.007409295140197933
   },
   {
    "bloque": "hogar",
    "variable": "tenencia_vivienda",
-   "tvd": 0.02059575329606029
+   "tvd": 0.020785966151243576
   },
   {
    "bloque": "hogar",
    "variable": "dificultad_fin_mes",
-   "tvd": 0.003276541717703998
+   "tvd": 0.003189266505268187
   },
   {
    "bloque": "hogar",
    "variable": "vehiculo_hogar",
-   "tvd": 0.011473745196422379
+   "tvd": 0.01173182219341442
   },
   {
    "bloque": "persona_ecv",
    "variable": "salud_autopercibida",
-   "tvd": 0.003014078812116511
+   "tvd": 0.0030424688157749532
   },
   {
    "bloque": "persona_ecv",
    "variable": "discapacidad_limitacion",
-   "tvd": 0.0034013110519496657
+   "tvd": 0.003495958480505561
   },
   {
    "bloque": "persona_ecv",
    "variable": "privacion_material",
-   "tvd": 0.0015847323371654355
+   "tvd": 0.0019772815290426135
   },
   {
    "bloque": "persona_ecv",
    "variable": "carencias",
-   "tvd": 0.004499567679011154
+   "tvd": 0.0048928220520727175
   },
   {
    "bloque": "empleo",
@@ -1202,22 +1201,22 @@
   {
    "bloque": "formacion",
    "variable": "cursa_formacion",
-   "tvd": 0.0006770112166964298
+   "tvd": 0.0006606154527136199
   },
   {
    "bloque": "digital",
    "variable": "uso_internet",
-   "tvd": 0.002300723897613771
+   "tvd": 0.002300061884388376
   },
   {
    "bloque": "digital",
    "variable": "compra_online",
-   "tvd": 0.004840335342192692
+   "tvd": 0.0047295890763802695
   },
   {
    "bloque": "digital",
    "variable": "teletrabajo",
-   "tvd": 0.001963780239553037
+   "tvd": 0.001966090675929599
   }
  ],
  "g65": {
@@ -2032,94 +2031,94 @@
   {
    "variable": "salud_autopercibida",
    "edad_4": "50-64",
-   "tvd": 0.04383040420985744
-  },
-  {
-   "variable": "salud_autopercibida",
-   "edad_4": "35-49",
-   "tvd": 0.07213184364826716
+   "tvd": 0.04384826610193937
   },
   {
    "variable": "salud_autopercibida",
    "edad_4": "65+",
-   "tvd": 0.037439095903794475
+   "tvd": 0.03764736163148952
   },
   {
    "variable": "salud_autopercibida",
    "edad_4": "18-34",
-   "tvd": 0.07841029640727104
+   "tvd": 0.07728870068723825
+  },
+  {
+   "variable": "salud_autopercibida",
+   "edad_4": "35-49",
+   "tvd": 0.07211404876099109
+  },
+  {
+   "variable": "discapacidad_limitacion",
+   "edad_4": "18-34",
+   "tvd": 0.05908356343413163
+  },
+  {
+   "variable": "discapacidad_limitacion",
+   "edad_4": "35-49",
+   "tvd": 0.08093497709681334
   },
   {
    "variable": "discapacidad_limitacion",
    "edad_4": "50-64",
-   "tvd": 0.08228079265668656
-  },
-  {
-   "variable": "discapacidad_limitacion",
-   "edad_4": "18-34",
-   "tvd": 0.05854005992364111
+   "tvd": 0.0820546233553261
   },
   {
    "variable": "discapacidad_limitacion",
    "edad_4": "65+",
-   "tvd": 0.0985191097925559
-  },
-  {
-   "variable": "discapacidad_limitacion",
-   "edad_4": "35-49",
-   "tvd": 0.08101099858391214
+   "tvd": 0.0985693113518163
   }
  ],
  "calidad": {
   "salud_autopercibida": {
+   "emparejada": 856224,
+   "observada": 136407,
+   "extrapolada": 7343
+  },
+  "discapacidad_limitacion": {
    "extrapolada": 7343,
    "observada": 136407,
    "emparejada": 856224
   },
-  "discapacidad_limitacion": {
-   "emparejada": 856224,
-   "observada": 136407,
-   "extrapolada": 7343
-  },
   "privacion_material": {
-   "observada": 136407,
+   "extrapolada": 7343,
    "emparejada": 856224,
-   "extrapolada": 7343
+   "observada": 136407
   },
   "privacion_material_n": {
    "emparejada": 856224,
-   "observada": 136407,
-   "extrapolada": 7343
+   "extrapolada": 7343,
+   "observada": 136407
   },
   "tipo_jornada": {
-   "extrapolada": 2633,
    "observada": 537449,
+   "extrapolada": 2633,
    "emparejada": 459892
   },
   "sector_publico": {
-   "emparejada": 459892,
    "extrapolada": 2633,
+   "emparejada": 459892,
    "observada": 537449
   },
   "cursa_formacion": {
-   "emparejada": 396332,
+   "extrapolada": 4710,
    "observada": 598932,
-   "extrapolada": 4710
+   "emparejada": 396332
   },
   "uso_internet": {
    "extrapolada": 7343,
-   "emparejada": 856224,
-   "observada": 136407
+   "observada": 136407,
+   "emparejada": 856224
   },
   "compra_online": {
    "emparejada": 856224,
-   "extrapolada": 7343,
-   "observada": 136407
+   "observada": 136407,
+   "extrapolada": 7343
   },
   "teletrabajo": {
-   "extrapolada": 7343,
    "emparejada": 856224,
-   "observada": 136407
+   "observada": 136407,
+   "extrapolada": 7343
   },
   "renta_hogar_decil": {
    "observada": 7772,
@@ -2134,8 +2133,8 @@
    "emparejada": 992202
   },
   "dificultad_fin_mes": {
-   "emparejada": 992202,
-   "observada": 7772
+   "observada": 7772,
+   "emparejada": 992202
   },
   "vehiculo_hogar": {
    "observada": 7772,
@@ -2146,8 +2145,8 @@
    "modelada": 252782
   },
   "ctx_envejecimiento": {
-   "observada": 746584,
-   "modelada": 253390
+   "modelada": 253390,
+   "observada": 746584
   }
  },
  "contexto": {
@@ -2163,8 +2162,8 @@
    "media": 0.2077260287673639,
    "nulos": 0,
    "calidad": {
-    "modelada": 253390,
-    "observada": 746584
+    "observada": 746584,
+    "modelada": 253390
    }
   }
  }
