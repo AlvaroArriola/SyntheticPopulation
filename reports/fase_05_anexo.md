@@ -4,32 +4,32 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 ## CCAA:01
 
-- Población `2026-01-01_CCAA_01_100000_s1`: 99.988 personas (pedidas 100.000) de 8.751.219 residentes (1 por 87,5).
-- Donantes: 97,7 % locales; personas por nivel: ccaa_parecidas 2.196, espana 110, mismo_territorio 97.682; 39.774 unidades donantes, Kish 30.515 (mínimo 200).
+- Población `2026-01-01_CCAA_01_100000_s1`: 100.008 personas (pedidas 100.000) de 8.751.219 residentes (1 por 87,5).
+- Donantes: 91,2 % locales; personas por nivel: ccaa_parecidas 7.227, espana 1.562, mismo_territorio 91.219; 39.793 unidades donantes, Kish 30.547 (mínimo 200).
 - Confianza esperada: media-alta.
-- V-MARG: 0 fallos de 17 (TVD media 0,0030). Reglas duras: 0 violaciones.
+- V-MARG: 0 fallos de 17 (TVD media 0,0029). Reglas duras: 0 violaciones.
 - V-CRUCE: 0 fallos de 64 (todos los niveles); excepciones 0.
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0136 | 0,0092 | 0,050 | ✅ |
-| actividad_sexo | 0,0074 | 0,0056 | 0,050 | ✅ |
-| adultos_nacionalidad | 0,0012 | 0,0029 | 0,050 | ✅ |
-| estudios_sexo_edad | 0,0093 | 0,0107 | 0,050 | ✅ |
-| nacionalidad_top_sexo_edad | 0,0051 | 0,0093 | 0,050 | ✅ |
-| provincia_si_calibra_ccaa | 0,0183 | 0,0048 | 0,050 | ✅ |
-| tamano_municipio | 0,0145 | 0,0042 | 0,050 | ✅ |
-| tipo_hogar_edad4_ref | 0,0176 | 0,0108 | 0,050 | ✅ |
+| actividad_edad | 0,0142 | 0,0092 | 0,050 | ✅ |
+| actividad_sexo | 0,0077 | 0,0056 | 0,050 | ✅ |
+| adultos_nacionalidad | 0,0017 | 0,0029 | 0,050 | ✅ |
+| estudios_sexo_edad | 0,0095 | 0,0108 | 0,050 | ✅ |
+| nacionalidad_top_sexo_edad | 0,0063 | 0,0095 | 0,050 | ✅ |
+| provincia_si_calibra_ccaa | 0,0164 | 0,0046 | 0,050 | ✅ |
+| tamano_municipio | 0,0187 | 0,0042 | 0,050 | ✅ |
+| tipo_hogar_edad4_ref | 0,0174 | 0,0114 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,612 | 0,616 | 0,004 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,251 | 0,249 | 0,002 | ✅ |
-| nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,015 | 0,018 | 0,003 | ✅ |
-| estudios_3 × sexo (estudios_sexo_edad) | 0,043 | 0,041 | 0,002 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,612 | 0,615 | 0,004 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,251 | 0,250 | 0,001 | ✅ |
+| nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,015 | 0,019 | 0,004 | ✅ |
+| estudios_3 × sexo (estudios_sexo_edad) | 0,043 | 0,042 | 0,001 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,615 | 0,615 | 0,000 | ✅ |
-| sexo × edad_estudios (estudios_sexo_edad) | 0,065 | 0,065 | 0,000 | ✅ |
-| nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,039 | 0,040 | 0,001 | ✅ |
+| sexo × edad_estudios (estudios_sexo_edad) | 0,065 | 0,066 | 0,001 | ✅ |
+| nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,039 | 0,044 | 0,005 | ✅ |
 | nacionalidad_top × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,086 | 0,086 | 0,000 | ✅ |
 | sexo × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,053 | 0,052 | 0,001 | ✅ |
 | tipo_hogar × edad_4 (tipo_hogar_edad4_ref) | 0,187 | 0,188 | 0,001 | ✅ |
@@ -99,34 +99,34 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 ## CCAA:04
 
-- Población `2026-01-01_CCAA_04_100000_s1`: 99.988 personas (pedidas 100.000) de 1.260.336 residentes (1 por 12,6).
-- Donantes: 96,5 % locales; personas por nivel: ccaa_parecidas 3.546, mismo_territorio 96.442; 29.280 unidades donantes, Kish 15.214 (mínimo 200).
+- Población `2026-01-01_CCAA_04_100000_s1`: 100.025 personas (pedidas 100.000) de 1.260.336 residentes (1 por 12,6).
+- Donantes: 81,2 % locales; personas por nivel: ccaa_parecidas 18.783, mismo_territorio 81.242; 32.395 unidades donantes, Kish 18.826 (mínimo 200).
 - Confianza esperada: media-alta.
-- V-MARG: 0 fallos de 17 (TVD media 0,0023). Reglas duras: 0 violaciones.
+- V-MARG: 0 fallos de 17 (TVD media 0,0026). Reglas duras: 0 violaciones.
 - V-CRUCE: 0 fallos de 14 (todos los niveles); excepciones 0.
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0093 | 0,0089 | 0,050 | ✅ |
-| actividad_sexo | 0,0051 | 0,0055 | 0,050 | ✅ |
-| adultos_nacionalidad | 0,0013 | 0,0032 | 0,050 | ✅ |
-| estudios_sexo_edad | 0,0078 | 0,0109 | 0,050 | ✅ |
-| nacionalidad_top_sexo_edad | 0,0089 | 0,0112 | 0,050 | ✅ |
-| tamano_municipio | 0,0194 | 0,0039 | 0,050 | ✅ |
-| tipo_hogar_edad4_ref | 0,0200 | 0,0120 | 0,050 | ✅ |
+| actividad_edad | 0,0084 | 0,0087 | 0,050 | ✅ |
+| actividad_sexo | 0,0050 | 0,0055 | 0,050 | ✅ |
+| adultos_nacionalidad | 0,0015 | 0,0032 | 0,050 | ✅ |
+| estudios_sexo_edad | 0,0090 | 0,0108 | 0,050 | ✅ |
+| nacionalidad_top_sexo_edad | 0,0075 | 0,0112 | 0,050 | ✅ |
+| tamano_municipio | 0,0244 | 0,0038 | 0,050 | ✅ |
+| tipo_hogar_edad4_ref | 0,0201 | 0,0123 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
 | relacion_actividad × edad_actividad (actividad_edad) | 0,601 | 0,600 | 0,000 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,167 | 0,174 | 0,007 | ✅ |
-| nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,034 | 0,037 | 0,002 | ✅ |
-| estudios_3 × sexo (estudios_sexo_edad) | 0,058 | 0,051 | 0,006 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,167 | 0,171 | 0,004 | ✅ |
+| nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,034 | 0,037 | 0,003 | ✅ |
+| estudios_3 × sexo (estudios_sexo_edad) | 0,058 | 0,050 | 0,008 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,611 | 0,611 | 0,000 | ✅ |
 | sexo × edad_estudios (estudios_sexo_edad) | 0,060 | 0,061 | 0,001 | ✅ |
 | nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,046 | 0,058 | 0,012 | ✅ |
 | nacionalidad_top × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,106 | 0,106 | 0,000 | ✅ |
 | sexo × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,048 | 0,048 | 0,000 | ✅ |
-| tipo_hogar × edad_4 (tipo_hogar_edad4_ref) | 0,162 | 0,153 | 0,009 | ✅ |
+| tipo_hogar × edad_4 (tipo_hogar_edad4_ref) | 0,162 | 0,157 | 0,005 | ✅ |
 
 ## CCAA:05
 
@@ -162,34 +162,34 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 ## CCAA:06
 
-- Población `2026-01-01_CCAA_06_100000_s1`: 99.991 personas (pedidas 100.000) de 597.088 residentes (1 por 6,0).
-- Donantes: 96,8 % locales; personas por nivel: ccaa_parecidas 3.161, mismo_territorio 96.830; 22.439 unidades donantes, Kish 12.934 (mínimo 200).
+- Población `2026-01-01_CCAA_06_100000_s1`: 100.003 personas (pedidas 100.000) de 597.088 residentes (1 por 6,0).
+- Donantes: 90,6 % locales; personas por nivel: ccaa_parecidas 9.435, mismo_territorio 90.568; 23.724 unidades donantes, Kish 14.886 (mínimo 200).
 - Confianza esperada: media-alta.
-- V-MARG: 0 fallos de 17 (TVD media 0,0016). Reglas duras: 0 violaciones.
+- V-MARG: 0 fallos de 17 (TVD media 0,0019). Reglas duras: 0 violaciones.
 - V-CRUCE: 0 fallos de 14 (todos los niveles); excepciones 0.
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0085 | 0,0090 | 0,050 | ✅ |
-| actividad_sexo | 0,0045 | 0,0055 | 0,050 | ✅ |
-| adultos_nacionalidad | 0,0015 | 0,0027 | 0,050 | ✅ |
-| estudios_sexo_edad | 0,0113 | 0,0110 | 0,050 | ✅ |
-| nacionalidad_top_sexo_edad | 0,0076 | 0,0090 | 0,050 | ✅ |
-| tamano_municipio | 0,0080 | 0,0039 | 0,050 | ✅ |
-| tipo_hogar_edad4_ref | 0,0185 | 0,0105 | 0,050 | ✅ |
+| actividad_edad | 0,0090 | 0,0090 | 0,050 | ✅ |
+| actividad_sexo | 0,0050 | 0,0053 | 0,050 | ✅ |
+| adultos_nacionalidad | 0,0016 | 0,0028 | 0,050 | ✅ |
+| estudios_sexo_edad | 0,0106 | 0,0111 | 0,050 | ✅ |
+| nacionalidad_top_sexo_edad | 0,0050 | 0,0089 | 0,050 | ✅ |
+| tamano_municipio | 0,0148 | 0,0040 | 0,050 | ✅ |
+| tipo_hogar_edad4_ref | 0,0197 | 0,0105 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,621 | 0,623 | 0,002 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,621 | 0,623 | 0,003 | ✅ |
 | relacion_actividad × sexo (actividad_sexo) | 0,265 | 0,255 | 0,010 | ✅ |
-| nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,017 | 0,013 | 0,004 | ✅ |
-| estudios_3 × sexo (estudios_sexo_edad) | 0,040 | 0,036 | 0,003 | ✅ |
+| nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,017 | 0,012 | 0,005 | ✅ |
+| estudios_3 × sexo (estudios_sexo_edad) | 0,040 | 0,037 | 0,002 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,633 | 0,633 | 0,000 | ✅ |
-| sexo × edad_estudios (estudios_sexo_edad) | 0,081 | 0,082 | 0,001 | ✅ |
-| nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,030 | 0,034 | 0,004 | ✅ |
-| nacionalidad_top × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,095 | 0,099 | 0,004 | ✅ |
+| sexo × edad_estudios (estudios_sexo_edad) | 0,081 | 0,082 | 0,000 | ✅ |
+| nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,030 | 0,032 | 0,002 | ✅ |
+| nacionalidad_top × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,095 | 0,098 | 0,003 | ✅ |
 | sexo × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,059 | 0,059 | 0,000 | ✅ |
-| tipo_hogar × edad_4 (tipo_hogar_edad4_ref) | 0,166 | 0,170 | 0,004 | ✅ |
+| tipo_hogar × edad_4 (tipo_hogar_edad4_ref) | 0,166 | 0,169 | 0,003 | ✅ |
 
 ## CCAA:07
 
@@ -321,34 +321,34 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 ## CCAA:11
 
-- Población `2026-01-01_CCAA_11_100000_s1`: 100.018 personas (pedidas 100.000) de 1.055.386 residentes (1 por 10,6).
-- Donantes: 98,7 % locales; personas por nivel: ccaa_parecidas 1.297, mismo_territorio 98.721; 35.406 unidades donantes, Kish 22.825 (mínimo 200).
+- Población `2026-01-01_CCAA_11_100000_s1`: 100.026 personas (pedidas 100.000) de 1.055.386 residentes (1 por 10,6).
+- Donantes: 94,6 % locales; personas por nivel: ccaa_parecidas 5.365, mismo_territorio 94.661; 36.248 unidades donantes, Kish 25.031 (mínimo 200).
 - Confianza esperada: media-alta.
-- V-MARG: 0 fallos de 17 (TVD media 0,0021). Reglas duras: 0 violaciones.
+- V-MARG: 0 fallos de 17 (TVD media 0,0025). Reglas duras: 0 violaciones.
 - V-CRUCE: 0 fallos de 22 (todos los niveles); excepciones 0.
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0106 | 0,0090 | 0,050 | ✅ |
-| actividad_sexo | 0,0057 | 0,0058 | 0,050 | ✅ |
-| adultos_nacionalidad | 0,0012 | 0,0026 | 0,050 | ✅ |
-| estudios_sexo_edad | 0,0105 | 0,0105 | 0,050 | ✅ |
-| nacionalidad_top_sexo_edad | 0,0049 | 0,0078 | 0,050 | ✅ |
-| provincia_si_calibra_ccaa | 0,0100 | 0,0028 | 0,050 | ✅ |
-| tamano_municipio | 0,0103 | 0,0042 | 0,050 | ✅ |
-| tipo_hogar_edad4_ref | 0,0206 | 0,0105 | 0,050 | ✅ |
+| actividad_edad | 0,0104 | 0,0091 | 0,050 | ✅ |
+| actividad_sexo | 0,0055 | 0,0054 | 0,050 | ✅ |
+| adultos_nacionalidad | 0,0010 | 0,0028 | 0,050 | ✅ |
+| estudios_sexo_edad | 0,0081 | 0,0105 | 0,050 | ✅ |
+| nacionalidad_top_sexo_edad | 0,0035 | 0,0081 | 0,050 | ✅ |
+| provincia_si_calibra_ccaa | 0,0124 | 0,0028 | 0,050 | ✅ |
+| tamano_municipio | 0,0096 | 0,0042 | 0,050 | ✅ |
+| tipo_hogar_edad4_ref | 0,0220 | 0,0105 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
 | relacion_actividad × edad_actividad (actividad_edad) | 0,616 | 0,619 | 0,003 | ✅ |
 | relacion_actividad × sexo (actividad_sexo) | 0,285 | 0,283 | 0,002 | ✅ |
-| nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,019 | 0,017 | 0,002 | ✅ |
-| estudios_3 × sexo (estudios_sexo_edad) | 0,061 | 0,058 | 0,003 | ✅ |
+| nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,019 | 0,018 | 0,001 | ✅ |
+| estudios_3 × sexo (estudios_sexo_edad) | 0,061 | 0,056 | 0,005 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,629 | 0,629 | 0,000 | ✅ |
-| sexo × edad_estudios (estudios_sexo_edad) | 0,071 | 0,072 | 0,000 | ✅ |
-| nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,028 | 0,036 | 0,008 | ✅ |
-| nacionalidad_top × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,067 | 0,068 | 0,002 | ✅ |
-| sexo × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,048 | 0,048 | 0,001 | ✅ |
+| sexo × edad_estudios (estudios_sexo_edad) | 0,071 | 0,071 | 0,001 | ✅ |
+| nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,028 | 0,030 | 0,003 | ✅ |
+| nacionalidad_top × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,067 | 0,068 | 0,001 | ✅ |
+| sexo × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,048 | 0,047 | 0,001 | ✅ |
 | tipo_hogar × edad_4 (tipo_hogar_edad4_ref) | 0,196 | 0,197 | 0,001 | ✅ |
 
 ## CCAA:12
@@ -416,65 +416,65 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 ## CCAA:14
 
-- Población `2026-01-01_CCAA_14_100000_s1`: 100.036 personas (pedidas 100.000) de 1.605.913 residentes (1 por 16,1).
-- Donantes: 97,9 % locales; personas por nivel: ccaa_parecidas 2.132, mismo_territorio 97.904; 33.590 unidades donantes, Kish 21.641 (mínimo 200).
+- Población `2026-01-01_CCAA_14_100000_s1`: 100.005 personas (pedidas 100.000) de 1.605.913 residentes (1 por 16,1).
+- Donantes: 90,4 % locales; personas por nivel: ccaa_parecidas 9.612, mismo_territorio 90.393; 34.682 unidades donantes, Kish 23.464 (mínimo 200).
 - Confianza esperada: media-alta.
-- V-MARG: 0 fallos de 17 (TVD media 0,0023). Reglas duras: 0 violaciones.
+- V-MARG: 0 fallos de 17 (TVD media 0,0027). Reglas duras: 0 violaciones.
 - V-CRUCE: 0 fallos de 14 (todos los niveles); excepciones 0.
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0075 | 0,0090 | 0,050 | ✅ |
-| actividad_sexo | 0,0046 | 0,0054 | 0,050 | ✅ |
-| adultos_nacionalidad | 0,0029 | 0,0030 | 0,050 | ✅ |
-| estudios_sexo_edad | 0,0091 | 0,0106 | 0,050 | ✅ |
-| nacionalidad_top_sexo_edad | 0,0155 | 0,0102 | 0,050 | ✅ |
-| tamano_municipio | 0,0083 | 0,0037 | 0,050 | ✅ |
-| tipo_hogar_edad4_ref | 0,0141 | 0,0120 | 0,050 | ✅ |
+| actividad_edad | 0,0084 | 0,0090 | 0,050 | ✅ |
+| actividad_sexo | 0,0041 | 0,0054 | 0,050 | ✅ |
+| adultos_nacionalidad | 0,0026 | 0,0031 | 0,050 | ✅ |
+| estudios_sexo_edad | 0,0088 | 0,0106 | 0,050 | ✅ |
+| nacionalidad_top_sexo_edad | 0,0135 | 0,0102 | 0,050 | ✅ |
+| tamano_municipio | 0,0076 | 0,0034 | 0,050 | ✅ |
+| tipo_hogar_edad4_ref | 0,0149 | 0,0120 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
 | relacion_actividad × edad_actividad (actividad_edad) | 0,604 | 0,607 | 0,003 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,229 | 0,219 | 0,009 | ✅ |
-| nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,020 | 0,026 | 0,005 | ✅ |
-| estudios_3 × sexo (estudios_sexo_edad) | 0,049 | 0,043 | 0,005 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,229 | 0,221 | 0,008 | ✅ |
+| nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,020 | 0,026 | 0,006 | ✅ |
+| estudios_3 × sexo (estudios_sexo_edad) | 0,049 | 0,038 | 0,011 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,614 | 0,614 | 0,000 | ✅ |
-| sexo × edad_estudios (estudios_sexo_edad) | 0,062 | 0,063 | 0,000 | ✅ |
-| nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,061 | 0,090 | 0,029 | ✅ |
-| nacionalidad_top × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,110 | 0,111 | 0,001 | ✅ |
-| sexo × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,052 | 0,052 | 0,000 | ✅ |
-| tipo_hogar × edad_4 (tipo_hogar_edad4_ref) | 0,187 | 0,191 | 0,004 | ✅ |
+| sexo × edad_estudios (estudios_sexo_edad) | 0,062 | 0,063 | 0,001 | ✅ |
+| nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,061 | 0,079 | 0,018 | ✅ |
+| nacionalidad_top × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,110 | 0,111 | 0,000 | ✅ |
+| sexo × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,052 | 0,054 | 0,001 | ✅ |
+| tipo_hogar × edad_4 (tipo_hogar_edad4_ref) | 0,187 | 0,190 | 0,004 | ✅ |
 
 ## CCAA:15
 
-- Población `2026-01-01_CCAA_15_100000_s1`: 100.029 personas (pedidas 100.000) de 690.044 residentes (1 por 6,9).
-- Donantes: 97,5 % locales; personas por nivel: ccaa_parecidas 2.459, mismo_territorio 97.570; 23.368 unidades donantes, Kish 12.281 (mínimo 200).
+- Población `2026-01-01_CCAA_15_100000_s1`: 99.998 personas (pedidas 100.000) de 690.044 residentes (1 por 6,9).
+- Donantes: 90,1 % locales; personas por nivel: ccaa_parecidas 9.931, mismo_territorio 90.067; 24.899 unidades donantes, Kish 14.718 (mínimo 200).
 - Confianza esperada: media-alta.
-- V-MARG: 0 fallos de 17 (TVD media 0,0017). Reglas duras: 0 violaciones.
+- V-MARG: 0 fallos de 17 (TVD media 0,0018). Reglas duras: 0 violaciones.
 - V-CRUCE: 0 fallos de 14 (todos los niveles); excepciones 0.
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0106 | 0,0090 | 0,050 | ✅ |
-| actividad_sexo | 0,0061 | 0,0056 | 0,050 | ✅ |
-| adultos_nacionalidad | 0,0016 | 0,0030 | 0,050 | ✅ |
-| estudios_sexo_edad | 0,0088 | 0,0109 | 0,050 | ✅ |
-| nacionalidad_top_sexo_edad | 0,0093 | 0,0099 | 0,050 | ✅ |
-| tamano_municipio | 0,0153 | 0,0039 | 0,050 | ✅ |
-| tipo_hogar_edad4_ref | 0,0240 | 0,0112 | 0,050 | ✅ |
+| actividad_edad | 0,0095 | 0,0088 | 0,050 | ✅ |
+| actividad_sexo | 0,0056 | 0,0056 | 0,050 | ✅ |
+| adultos_nacionalidad | 0,0015 | 0,0032 | 0,050 | ✅ |
+| estudios_sexo_edad | 0,0101 | 0,0108 | 0,050 | ✅ |
+| nacionalidad_top_sexo_edad | 0,0079 | 0,0098 | 0,050 | ✅ |
+| tamano_municipio | 0,0249 | 0,0038 | 0,050 | ✅ |
+| tipo_hogar_edad4_ref | 0,0236 | 0,0112 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,620 | 0,621 | 0,001 | ✅ |
-| relacion_actividad × sexo (actividad_sexo) | 0,220 | 0,211 | 0,009 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,620 | 0,621 | 0,002 | ✅ |
+| relacion_actividad × sexo (actividad_sexo) | 0,220 | 0,208 | 0,012 | ✅ |
 | nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,016 | 0,013 | 0,003 | ✅ |
-| estudios_3 × sexo (estudios_sexo_edad) | 0,049 | 0,044 | 0,004 | ✅ |
+| estudios_3 × sexo (estudios_sexo_edad) | 0,049 | 0,043 | 0,005 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,630 | 0,630 | 0,000 | ✅ |
-| sexo × edad_estudios (estudios_sexo_edad) | 0,071 | 0,072 | 0,002 | ✅ |
-| nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,041 | 0,048 | 0,007 | ✅ |
-| nacionalidad_top × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,108 | 0,109 | 0,000 | ✅ |
-| sexo × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,052 | 0,053 | 0,001 | ✅ |
-| tipo_hogar × edad_4 (tipo_hogar_edad4_ref) | 0,177 | 0,189 | 0,012 | ✅ |
+| sexo × edad_estudios (estudios_sexo_edad) | 0,071 | 0,072 | 0,001 | ✅ |
+| nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,041 | 0,050 | 0,009 | ✅ |
+| nacionalidad_top × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,108 | 0,109 | 0,001 | ✅ |
+| sexo × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,052 | 0,052 | 0,000 | ✅ |
+| tipo_hogar × edad_4 (tipo_hogar_edad4_ref) | 0,177 | 0,185 | 0,008 | ✅ |
 
 ## CCAA:16
 
@@ -510,34 +510,34 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 ## CCAA:17
 
-- Población `2026-01-01_CCAA_17_100000_s1`: 99.979 personas (pedidas 100.000) de 329.550 residentes (1 por 3,3).
-- Donantes: 96,7 % locales; personas por nivel: ccaa_parecidas 3.259, mismo_territorio 96.720; 13.242 unidades donantes, Kish 7.268 (mínimo 200).
+- Población `2026-01-01_CCAA_17_100000_s1`: 99.978 personas (pedidas 100.000) de 329.550 residentes (1 por 3,3).
+- Donantes: 87,9 % locales; personas por nivel: ccaa_parecidas 12.094, mismo_territorio 87.884; 14.487 unidades donantes, Kish 8.627 (mínimo 200).
 - Confianza esperada: media-alta.
 - V-MARG: 0 fallos de 17 (TVD media 0,0016). Reglas duras: 0 violaciones.
 - V-CRUCE: 0 fallos de 14 (todos los niveles); excepciones 0.
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0088 | 0,0086 | 0,050 | ✅ |
-| actividad_sexo | 0,0045 | 0,0051 | 0,050 | ✅ |
-| adultos_nacionalidad | 0,0018 | 0,0029 | 0,050 | ✅ |
-| estudios_sexo_edad | 0,0136 | 0,0109 | 0,050 | ✅ |
-| nacionalidad_top_sexo_edad | 0,0111 | 0,0095 | 0,050 | ✅ |
-| tamano_municipio | 0,0030 | 0,0036 | 0,050 | ✅ |
-| tipo_hogar_edad4_ref | 0,0208 | 0,0101 | 0,050 | ✅ |
+| actividad_edad | 0,0083 | 0,0086 | 0,050 | ✅ |
+| actividad_sexo | 0,0041 | 0,0052 | 0,050 | ✅ |
+| adultos_nacionalidad | 0,0026 | 0,0029 | 0,050 | ✅ |
+| estudios_sexo_edad | 0,0125 | 0,0109 | 0,050 | ✅ |
+| nacionalidad_top_sexo_edad | 0,0103 | 0,0095 | 0,050 | ✅ |
+| tamano_municipio | 0,0197 | 0,0036 | 0,050 | ✅ |
+| tipo_hogar_edad4_ref | 0,0194 | 0,0106 | 0,050 | ✅ |
 
 | V de Cramér | Oficial | Sintética | Δ | |
 | --- | ---: | ---: | ---: | --- |
-| relacion_actividad × edad_actividad (actividad_edad) | 0,619 | 0,622 | 0,003 | ✅ |
+| relacion_actividad × edad_actividad (actividad_edad) | 0,619 | 0,622 | 0,002 | ✅ |
 | relacion_actividad × sexo (actividad_sexo) | 0,233 | 0,223 | 0,010 | ✅ |
-| nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,041 | 0,038 | 0,003 | ✅ |
-| estudios_3 × sexo (estudios_sexo_edad) | 0,046 | 0,042 | 0,005 | ✅ |
+| nacionalidad_esp_ext × es_adulto (adultos_nacionalidad) | 0,041 | 0,036 | 0,005 | ✅ |
+| estudios_3 × sexo (estudios_sexo_edad) | 0,046 | 0,042 | 0,004 | ✅ |
 | estudios_3 × edad_estudios (estudios_sexo_edad) | 0,624 | 0,624 | 0,000 | ✅ |
-| sexo × edad_estudios (estudios_sexo_edad) | 0,070 | 0,071 | 0,001 | ✅ |
-| nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,038 | 0,042 | 0,004 | ✅ |
+| sexo × edad_estudios (estudios_sexo_edad) | 0,070 | 0,070 | 0,000 | ✅ |
+| nacionalidad_top × sexo (nacionalidad_top_sexo_edad) | 0,038 | 0,040 | 0,002 | ✅ |
 | nacionalidad_top × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,116 | 0,118 | 0,001 | ✅ |
-| sexo × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,049 | 0,049 | 0,001 | ✅ |
-| tipo_hogar × edad_4 (tipo_hogar_edad4_ref) | 0,189 | 0,194 | 0,005 | ✅ |
+| sexo × edad_nacionalidad (nacionalidad_top_sexo_edad) | 0,049 | 0,048 | 0,000 | ✅ |
+| tipo_hogar × edad_4 (tipo_hogar_edad4_ref) | 0,189 | 0,192 | 0,002 | ✅ |
 
 ## CCAA:18
 
@@ -673,21 +673,21 @@ Generado desde `fase_05_validacion.json` (`python -m sinpop.validate.fase5 --ane
 
 ## PROV:04
 
-- Población `2026-01-01_PROV_04_50000_s1`: 50.000 personas (pedidas 50.000) de 782.945 residentes (1 por 15,7).
-- Donantes: 96,6 % locales; personas por nivel: ccaa_parecidas 413, misma_ccaa_mismo_grado_urbanizacion 1.302, mismo_territorio 48.285; 17.445 unidades donantes, Kish 10.456 (mínimo 200).
+- Población `2026-01-01_PROV_04_50000_s1`: 50.004 personas (pedidas 50.000) de 782.945 residentes (1 por 15,7).
+- Donantes: 88,2 % locales; personas por nivel: ccaa_parecidas 899, misma_ccaa_mismo_grado_urbanizacion 5.011, mismo_territorio 44.094; 18.094 unidades donantes, Kish 11.666 (mínimo 200).
 - Confianza esperada: media.
-- V-MARG: 0 fallos de 17 (TVD media 0,0037). Reglas duras: 0 violaciones.
+- V-MARG: 0 fallos de 17 (TVD media 0,0045). Reglas duras: 0 violaciones.
 - V-CRUCE: 0 fallos de 7 (todos los niveles); excepciones 0.
 
 | Cruce reservado (nivel del territorio) | TVD | TVD_ref | Umbral | |
 | --- | ---: | ---: | ---: | --- |
-| actividad_edad | 0,0139 | 0,0130 | 0,080 | ✅ |
-| actividad_sexo | 0,0044 | 0,0075 | 0,080 | ✅ |
-| adultos_nacionalidad | 0,0014 | 0,0047 | 0,080 | ✅ |
-| estudios_sexo_edad | 0,0071 | 0,0148 | 0,080 | ✅ |
-| nacionalidad_top_sexo_edad | 0,0100 | 0,0145 | 0,080 | ✅ |
-| tamano_municipio | 0,0206 | 0,0052 | 0,080 | ✅ |
-| tipo_hogar_edad4_ref | 0,0181 | 0,0161 | 0,080 | ✅ |
+| actividad_edad | 0,0130 | 0,0128 | 0,080 | ✅ |
+| actividad_sexo | 0,0057 | 0,0075 | 0,080 | ✅ |
+| adultos_nacionalidad | 0,0017 | 0,0047 | 0,080 | ✅ |
+| estudios_sexo_edad | 0,0085 | 0,0152 | 0,080 | ✅ |
+| nacionalidad_top_sexo_edad | 0,0129 | 0,0149 | 0,080 | ✅ |
+| tamano_municipio | 0,0554 | 0,0054 | 0,080 | ✅ |
+| tipo_hogar_edad4_ref | 0,0150 | 0,0160 | 0,080 | ✅ |
 
 ## PROV:35
 
