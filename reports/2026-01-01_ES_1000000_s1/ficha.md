@@ -2,10 +2,10 @@
 
 ## Identificación
 - Territorio: ES (pais)
-- Tamaño: 999.886 personas. 398.456 hogares
+- Tamaño: 999.974 personas. 398.469 hogares
 - Modo: representativo
 - Fecha de referencia: 2026-01-01 (datos con corte en junio de 2026)
-- Semilla: 1 · Versión del código: git:3392568-dirty
+- Semilla: 1 · Versión del código: git:402e437-dirty
 
 ## Fuentes
 | Fuente | Edición | Uso |
@@ -17,7 +17,7 @@
 | atlas_renta | Atlas de distribución de renta de los hogares 2023 (INE) | enriquecimiento |
 | censo_anual | Censo Anual exhaustivo 2025 (INE) | enriquecimiento |
 
-Objetivos de calibración: actividad_nacionalidad, actividad_tramo, edad5_sexo, edad5_sexo_colectivos, edad5_sexo_familiares, estado_civil_edad, estudios_edad, nacimiento_nacionalidad, nacionalidad, nacionalidad_edad, nacionalidad_top, nacionalidad_top_edad, sin_estudios_edad, tamano_hogar, tipo_hogar, urbanizacion.
+Objetivos de calibración: actividad_nacionalidad, actividad_tramo, edad5_sexo, edad5_sexo_colectivos, edad5_sexo_familiares, estado_civil_edad, estudios_edad, nacimiento_nacionalidad, nacionalidad, nacionalidad_edad, nacionalidad_top, nacionalidad_top_edad, nacionalidad_top_sexo, sin_estudios_edad, tamano_hogar, tipo_hogar, urbanizacion.
 
 ## Variables
 | Variable | Prioridad | Fuente | % de valores por método |
@@ -47,8 +47,8 @@ Objetivos de calibración: actividad_nacionalidad, actividad_tramo, edad5_sexo, 
 | n_menores_hogar | P1 | censo2021 | observada 99.2 %, modelada 0.8 % |
 | n_mayores_65_hogar | P1 | censo2021 | observada 99.2 %, modelada 0.8 % |
 | n_mayores_80_hogar | P1 | censo2021 | observada 99.2 %, modelada 0.8 % |
-| ccaa | P0 | censo | observada 94.6 %, modelada 5.4 % |
-| provincia | P0 | censo | observada 94.6 %, modelada 5.4 % |
+| ccaa | P0 | censo | observada 94.5 %, modelada 5.5 % |
+| provincia | P0 | censo | observada 94.5 %, modelada 5.5 % |
 | municipio | P2 | padron_continuo | observada 93.8 %, modelada 6.2 % |
 | tamano_municipio | P0 | censo / padron_continuo | observada 93.8 %, modelada 6.2 % |
 | grado_urbanizacion | P0 | censo | observada 93.8 %, modelada 6.2 % |
@@ -56,9 +56,9 @@ Objetivos de calibración: actividad_nacionalidad, actividad_tramo, edad5_sexo, 
 | discapacidad_limitacion | P1 | ecv / encuesta_salud | emparejada 85.6 %, observada 13.6 %, extrapolada 0.7 % |
 | privacion_material | P1 | ecv | emparejada 85.6 %, observada 13.6 %, extrapolada 0.7 % |
 | privacion_material_n | P1 | ecv | emparejada 85.6 %, observada 13.6 %, extrapolada 0.7 % |
-| tipo_jornada | P2 | epa | observada 53.8 %, emparejada 46.0 %, extrapolada 0.3 % |
-| sector_publico | P2 | epa | observada 53.8 %, emparejada 46.0 %, extrapolada 0.3 % |
-| cursa_formacion | P2 | epa | observada 59.9 %, emparejada 39.7 %, extrapolada 0.5 % |
+| tipo_jornada | P2 | epa | observada 53.7 %, emparejada 46.0 %, extrapolada 0.3 % |
+| sector_publico | P2 | epa | observada 53.7 %, emparejada 46.0 %, extrapolada 0.3 % |
+| cursa_formacion | P2 | epa | observada 59.9 %, emparejada 39.6 %, extrapolada 0.5 % |
 | uso_internet | P1 | tic_h | emparejada 85.6 %, observada 13.6 %, extrapolada 0.7 % |
 | compra_online | P2 | tic_h | emparejada 85.6 %, observada 13.6 %, extrapolada 0.7 % |
 | teletrabajo | P2 | epa / tic_h | emparejada 85.6 %, observada 13.6 %, extrapolada 0.7 % |
@@ -68,48 +68,48 @@ Objetivos de calibración: actividad_nacionalidad, actividad_tramo, edad5_sexo, 
 | dificultad_fin_mes | P2 | ecv | emparejada 99.2 %, observada 0.8 % |
 | vehiculo_hogar | P2 | ecv / censo2021 | emparejada 99.2 %, observada 0.8 % |
 | ctx_renta_municipio | P1 | atlas_renta | observada 74.7 %, modelada 25.3 % |
-| ctx_envejecimiento | P1 | padron_continuo | observada 74.6 %, modelada 25.4 % |
+| ctx_envejecimiento | P1 | padron_continuo | observada 74.7 %, modelada 25.3 % |
 
 ## Calidad
 - Validación: F4, F5 y F6 superadas (`reports/fase_04.md`, `fase_05.md`, `fase_06.md`); auditoría de F7 en `reports/fase_07.md`.
-- Donantes locales: 94.6 %
+- Donantes locales: 94.5 %
 - Confianza esperada del territorio: alta (país)
 
 ## Grupos vigilados
 | Grupo | Semáforo | Ratio | Sintética | Oficial | Peor TVD de perfil | Donantes | Top 5 | Referencia |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Personas de 85 años o más | verde | 1,000 | 0,033 | 0,033 | 0,001 | 29506 | 0,00 | ECP 2026 (residentes por edad y sexo) |
-| Personas de 65+ que viven solas | verde | 0,989 | 0,049 | 0,050 | — | 48331 | 0,00 | Censo 2021 (hogares unipersonales de 65+) sobre residentes en viviendas familiares ECP 2026 |
-| Nacidos fuera de España con nacionalidad española | verde | 0,992 | 0,062 | 0,062 | 0,022 | 38687 | 0,00 | Censo Anual exhaustivo a 01/01/2025 (microdatos) |
-| Residentes en Ceuta y Melilla | verde | 0,995 | 0,003 | 0,003 | — | 1081 | 0,02 | ECP 2026 (residentes por provincia) |
-| Residentes en municipios de menos de 2.000 habitantes | verde | 1,029 | 0,056 | 0,055 | 0,011 | 25115 | 0,00 | Padrón 2025 (población por tamaño de municipio) |
+| Personas de 85 años o más | verde | 1,001 | 0,033 | 0,033 | 0,001 | 29393 | 0,00 | ECP 2026 (residentes por edad y sexo) |
+| Personas de 65+ que viven solas | verde | 0,989 | 0,049 | 0,050 | — | 48352 | 0,00 | Censo 2021 (hogares unipersonales de 65+) sobre residentes en viviendas familiares ECP 2026 |
+| Nacidos fuera de España con nacionalidad española | verde | 0,991 | 0,062 | 0,062 | 0,022 | 38635 | 0,00 | Censo Anual exhaustivo a 01/01/2025 (microdatos) |
+| Residentes en Ceuta y Melilla | verde | 0,997 | 0,003 | 0,003 | — | 1102 | 0,02 | ECP 2026 (residentes por provincia) |
+| Residentes en municipios de menos de 2.000 habitantes | verde | 1,029 | 0,056 | 0,055 | 0,009 | 25124 | 0,00 | Padrón 2025 (población por tamaño de municipio) |
 | Residentes en islas no capitalinas | no_medible | — | — | — | — | None | — | Insularidad. No medible en la población base, porque los microdatos del Censo no identifican los municipios de menos de 10.000 habitantes; se puede construir como territorio por lista de municipios (F5) |
-| Hogares monoparentales | verde | 0,999 | 0,118 | 0,118 | — | 45706 | 0,00 | Censo 2021 (tipo de hogar por tamaño) sobre hogares ECP 2026 |
-| Personas de 16+ con limitación grave (GALI) | verde | 1,001 | 0,041 | 0,041 | 0,040 | 33694 | 0,00 | ECV 2025 (16+, viviendas familiares) |
-| Jóvenes de 20 a 24 que ni estudian ni trabajan | verde | 1,066 | 0,122 | 0,115 | 0,044 | 6276 | 0,00 | EPA 2T 2026 (20-24, viviendas familiares) |
-| Personas en paro (16+) | verde | 0,992 | 0,058 | 0,059 | 0,022 | 42501 | 0,00 | EPA 2T 2026 con el reparto del Censo Anual 2024 (objetivo actividad_sexo, D-046) |
-| Personas de 15+ sin estudios (analfabetas o con primaria incompleta) | verde | 1,014 | 0,037 | 0,037 | 0,004 | 26679 | 0,00 | Censo Anual a 01/01/2024, tabla 66601 («Sin estudios», 15+) |
-| Personas de 16+ en carencia material y social severa | rojo | 0,998 | 0,076 | 0,077 | 0,082 | 58013 | 0,00 | ECV 2025 (16+, viviendas familiares; vrMATSOCDEP) |
-| Personas de 16+ que nunca usan internet | rojo | 1,117 | 0,092 | 0,083 | 0,016 | 69328 | 0,00 | TIC-H 2025 (16+, viviendas familiares) |
+| Hogares monoparentales | verde | 1,000 | 0,118 | 0,118 | — | 45810 | 0,00 | Censo 2021 (tipo de hogar por tamaño) sobre hogares ECP 2026 |
+| Personas de 16+ con limitación grave (GALI) | verde | 1,001 | 0,041 | 0,041 | 0,040 | 33664 | 0,00 | ECV 2025 (16+, viviendas familiares) |
+| Jóvenes de 20 a 24 que ni estudian ni trabajan | verde | 1,072 | 0,123 | 0,115 | 0,049 | 6339 | 0,00 | EPA 2T 2026 (20-24, viviendas familiares) |
+| Personas en paro (16+) | verde | 0,993 | 0,058 | 0,059 | 0,024 | 42500 | 0,00 | EPA 2T 2026 con el reparto del Censo Anual 2024 (objetivo actividad_sexo, D-046) |
+| Personas de 15+ sin estudios (analfabetas o con primaria incompleta) | verde | 1,017 | 0,038 | 0,037 | 0,005 | 26776 | 0,00 | Censo Anual a 01/01/2024, tabla 66601 («Sin estudios», 15+) |
+| Personas de 16+ en carencia material y social severa | rojo | 1,004 | 0,077 | 0,077 | 0,083 | 58288 | 0,00 | ECV 2025 (16+, viviendas familiares; vrMATSOCDEP) |
+| Personas de 16+ que nunca usan internet | rojo | 1,115 | 0,092 | 0,083 | 0,015 | 69033 | 0,00 | TIC-H 2025 (16+, viviendas familiares) |
 | Abstencionistas en las generales de 2023 | pendiente | — | — | — | — | None | — | capa politica (F8) |
 | Votantes de partidos pequeños y regionalistas | pendiente | — | — | — | — | None | — | capa politica (F8) |
 | Residentes sin derecho a voto en generales | pendiente | — | — | — | — | None | — | capa politica (F8) |
 | Personas sin ubicación ideológica | pendiente | — | — | — | — | None | — | capa politica (F8) |
-| Nacionalidad alemania | verde | 0,999 | 0,003 | 0,003 | 0,006 | 1885 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad argentina | verde | 1,002 | 0,003 | 0,003 | 0,024 | 1791 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad china | verde | 1,001 | 0,005 | 0,005 | 0,014 | 1557 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad colombia | ambar | 0,998 | 0,014 | 0,014 | 0,002 | 5851 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad ecuador | verde | 1,000 | 0,003 | 0,003 | 0,017 | 1732 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad francia | verde | 0,994 | 0,003 | 0,003 | 0,017 | 1804 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad honduras | verde | 0,997 | 0,004 | 0,004 | 0,055 | 1664 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad italia | verde | 0,999 | 0,007 | 0,007 | 0,018 | 4318 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad marruecos | verde | 0,999 | 0,020 | 0,020 | 0,002 | 8405 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad paraguay | rojo | 0,998 | 0,003 | 0,003 | 0,080 | 1272 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad peru | ambar | 1,002 | 0,005 | 0,005 | 0,006 | 2260 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad reino_unido | verde | 0,995 | 0,006 | 0,006 | 0,005 | 3392 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad rumania | verde | 1,001 | 0,013 | 0,013 | 0,002 | 5524 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad ucrania | verde | 0,994 | 0,004 | 0,004 | 0,004 | 1594 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad venezuela | verde | 1,000 | 0,008 | 0,008 | 0,006 | 3423 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad alemania | verde | 0,998 | 0,003 | 0,003 | 0,004 | 1867 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad argentina | verde | 1,000 | 0,003 | 0,003 | 0,006 | 1800 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad china | verde | 1,000 | 0,005 | 0,005 | 0,004 | 1553 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad colombia | ambar | 0,997 | 0,014 | 0,014 | 0,003 | 5849 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad ecuador | verde | 1,003 | 0,003 | 0,003 | 0,003 | 1737 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad francia | verde | 1,000 | 0,003 | 0,003 | 0,008 | 1821 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad honduras | verde | 0,998 | 0,004 | 0,004 | 0,003 | 1645 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad italia | verde | 0,999 | 0,007 | 0,007 | 0,003 | 4394 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad marruecos | verde | 0,997 | 0,020 | 0,020 | 0,003 | 8453 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad paraguay | verde | 0,995 | 0,003 | 0,003 | 0,010 | 1261 | 0,03 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad peru | ambar | 1,000 | 0,005 | 0,005 | 0,006 | 2274 | 0,03 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad reino_unido | verde | 1,002 | 0,006 | 0,006 | 0,004 | 3369 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad rumania | verde | 1,001 | 0,013 | 0,013 | 0,004 | 5382 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad ucrania | verde | 1,000 | 0,004 | 0,004 | 0,006 | 1601 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad venezuela | verde | 1,000 | 0,008 | 0,008 | 0,003 | 3458 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
 
 ## Limitaciones conocidas
 ### Grupos no observables (docs/06 §2)
@@ -155,8 +155,8 @@ composición que las cifras oficiales:
 
 Los hogares donantes son los del Censo 2021. Lo que se calibra a 2026 refleja 2026:
 
-- edad, sexo, nacionalidad (también por edad), país de nacimiento, estudios, actividad (EPA,
-  también por nacionalidad), estado civil, tamaño y tipo de hogar, y territorio.
+- edad, sexo, nacionalidad (también por edad y por sexo), país de nacimiento, estudios,
+  actividad (EPA, también por nacionalidad), estado civil, tamaño y tipo de hogar, y territorio.
 
 El resto conserva la estructura de 2021 dentro de lo calibrado, por ejemplo la composición
 detallada de los hogares o la ocupación.

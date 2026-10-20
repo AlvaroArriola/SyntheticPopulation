@@ -1135,3 +1135,9 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - En la prueba de la copia aislada convergen Aragón, Madrid y Teruel. En Aragón, el perfil por sexo de los paraguayos pasa de una TVD de 0,135 a 0,013.
   - `nacionalidad_top_sexo_edad` sigue reservado para validar.
 - **Consecuencias:** cambian los objetivos de F3 y todas las calibraciones. Se repiten F3-F7.
+- **Efecto en G6.1 (pendiente de decisión humana):**
+  - Con D-058, la tenencia de la vivienda, ya aceptada como limitación regional en D-048, pasa de una TVD de 0,0189 a 0,0206 con la composición de la encuesta. El criterio de aceptación de D-048 es ≤ 0,02, así que G6.1 queda fallida en estricto por 0,0006.
+  - La causa: la tenencia de los hogares con algún adulto extranjero sale de la ECV (D-045), y calibrar el sexo de las nacionalidades cambia algo la composición de esos hogares.
+  - No se relaja el umbral. Se pide decidir entre:
+    1. aceptar la tenencia como limitación con esa TVD;
+    2. volver a la versión sin D-058 (commit `b9ec7a2`), que supera G6.1 pero deja el sexo de paraguayos y hondureños desviado (+8 y +5,5 puntos de mujeres).

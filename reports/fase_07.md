@@ -1,7 +1,7 @@
 # Fase 07 · Auditoría de sesgos y minorías
 
 **Estado:** pendiente de revisión humana (G7.7)
-**Fecha:** 2026-10-20 · **Versión del código:** git:3392568-dirty
+**Fecha:** 2026-10-20 · **Versión del código:** git:402e437-dirty
 **Comando para reproducir:** `python -m sinpop.validate.fase7 && python -m sinpop.validate.informe_f7 && sinpop validate --phase 7` (tras la cadena F3-F6 de `reports/fase_06.md`)
 
 ## Resumen
@@ -15,93 +15,93 @@ Ver `reports/fase_07_puerta.md` (`sinpop validate --phase 7`).
 ### Población nacional (2026-01-01_ES_1000000_s1)
 | Grupo | Semáforo | Ratio | Sintética | Oficial | Peor TVD de perfil | Donantes | Top 5 | Referencia |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Personas de 85 años o más | verde | 1,000 | 0,033 | 0,033 | 0,001 | 29506 | 0,00 | ECP 2026 (residentes por edad y sexo) |
-| Personas de 65+ que viven solas | verde | 0,989 | 0,049 | 0,050 | — | 48331 | 0,00 | Censo 2021 (hogares unipersonales de 65+) sobre residentes en viviendas familiares ECP 2026 |
-| Nacidos fuera de España con nacionalidad española | verde | 0,992 | 0,062 | 0,062 | 0,022 | 38687 | 0,00 | Censo Anual exhaustivo a 01/01/2025 (microdatos) |
-| Residentes en Ceuta y Melilla | verde | 0,995 | 0,003 | 0,003 | — | 1081 | 0,02 | ECP 2026 (residentes por provincia) |
-| Residentes en municipios de menos de 2.000 habitantes | verde | 1,029 | 0,056 | 0,055 | 0,011 | 25115 | 0,00 | Padrón 2025 (población por tamaño de municipio) |
+| Personas de 85 años o más | verde | 1,001 | 0,033 | 0,033 | 0,001 | 29393 | 0,00 | ECP 2026 (residentes por edad y sexo) |
+| Personas de 65+ que viven solas | verde | 0,989 | 0,049 | 0,050 | — | 48352 | 0,00 | Censo 2021 (hogares unipersonales de 65+) sobre residentes en viviendas familiares ECP 2026 |
+| Nacidos fuera de España con nacionalidad española | verde | 0,991 | 0,062 | 0,062 | 0,022 | 38635 | 0,00 | Censo Anual exhaustivo a 01/01/2025 (microdatos) |
+| Residentes en Ceuta y Melilla | verde | 0,997 | 0,003 | 0,003 | — | 1102 | 0,02 | ECP 2026 (residentes por provincia) |
+| Residentes en municipios de menos de 2.000 habitantes | verde | 1,029 | 0,056 | 0,055 | 0,009 | 25124 | 0,00 | Padrón 2025 (población por tamaño de municipio) |
 | Residentes en islas no capitalinas | no_medible | — | — | — | — | None | — | Insularidad. No medible en la población base, porque los microdatos del Censo no identifican los municipios de menos de 10.000 habitantes; se puede construir como territorio por lista de municipios (F5) |
-| Hogares monoparentales | verde | 0,999 | 0,118 | 0,118 | — | 45706 | 0,00 | Censo 2021 (tipo de hogar por tamaño) sobre hogares ECP 2026 |
-| Personas de 16+ con limitación grave (GALI) | verde | 1,001 | 0,041 | 0,041 | 0,040 | 33694 | 0,00 | ECV 2025 (16+, viviendas familiares) |
-| Jóvenes de 20 a 24 que ni estudian ni trabajan | verde | 1,066 | 0,122 | 0,115 | 0,044 | 6276 | 0,00 | EPA 2T 2026 (20-24, viviendas familiares) |
-| Personas en paro (16+) | verde | 0,992 | 0,058 | 0,059 | 0,022 | 42501 | 0,00 | EPA 2T 2026 con el reparto del Censo Anual 2024 (objetivo actividad_sexo, D-046) |
-| Personas de 15+ sin estudios (analfabetas o con primaria incompleta) | verde | 1,014 | 0,037 | 0,037 | 0,004 | 26679 | 0,00 | Censo Anual a 01/01/2024, tabla 66601 («Sin estudios», 15+) |
-| Personas de 16+ en carencia material y social severa | rojo | 0,998 | 0,076 | 0,077 | 0,082 | 58013 | 0,00 | ECV 2025 (16+, viviendas familiares; vrMATSOCDEP) |
-| Personas de 16+ que nunca usan internet | rojo | 1,117 | 0,092 | 0,083 | 0,016 | 69328 | 0,00 | TIC-H 2025 (16+, viviendas familiares) |
+| Hogares monoparentales | verde | 1,000 | 0,118 | 0,118 | — | 45810 | 0,00 | Censo 2021 (tipo de hogar por tamaño) sobre hogares ECP 2026 |
+| Personas de 16+ con limitación grave (GALI) | verde | 1,001 | 0,041 | 0,041 | 0,040 | 33664 | 0,00 | ECV 2025 (16+, viviendas familiares) |
+| Jóvenes de 20 a 24 que ni estudian ni trabajan | verde | 1,072 | 0,123 | 0,115 | 0,049 | 6339 | 0,00 | EPA 2T 2026 (20-24, viviendas familiares) |
+| Personas en paro (16+) | verde | 0,993 | 0,058 | 0,059 | 0,024 | 42500 | 0,00 | EPA 2T 2026 con el reparto del Censo Anual 2024 (objetivo actividad_sexo, D-046) |
+| Personas de 15+ sin estudios (analfabetas o con primaria incompleta) | verde | 1,017 | 0,038 | 0,037 | 0,005 | 26776 | 0,00 | Censo Anual a 01/01/2024, tabla 66601 («Sin estudios», 15+) |
+| Personas de 16+ en carencia material y social severa | rojo | 1,004 | 0,077 | 0,077 | 0,083 | 58288 | 0,00 | ECV 2025 (16+, viviendas familiares; vrMATSOCDEP) |
+| Personas de 16+ que nunca usan internet | rojo | 1,115 | 0,092 | 0,083 | 0,015 | 69033 | 0,00 | TIC-H 2025 (16+, viviendas familiares) |
 | Abstencionistas en las generales de 2023 | pendiente | — | — | — | — | None | — | capa politica (F8) |
 | Votantes de partidos pequeños y regionalistas | pendiente | — | — | — | — | None | — | capa politica (F8) |
 | Residentes sin derecho a voto en generales | pendiente | — | — | — | — | None | — | capa politica (F8) |
 | Personas sin ubicación ideológica | pendiente | — | — | — | — | None | — | capa politica (F8) |
-| Nacionalidad alemania | verde | 0,999 | 0,003 | 0,003 | 0,006 | 1885 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad argentina | verde | 1,002 | 0,003 | 0,003 | 0,024 | 1791 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad china | verde | 1,001 | 0,005 | 0,005 | 0,014 | 1557 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad colombia | ambar | 0,998 | 0,014 | 0,014 | 0,002 | 5851 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad ecuador | verde | 1,000 | 0,003 | 0,003 | 0,017 | 1732 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad francia | verde | 0,994 | 0,003 | 0,003 | 0,017 | 1804 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad honduras | verde | 0,997 | 0,004 | 0,004 | 0,055 | 1664 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad italia | verde | 0,999 | 0,007 | 0,007 | 0,018 | 4318 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad marruecos | verde | 0,999 | 0,020 | 0,020 | 0,002 | 8405 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad paraguay | rojo | 0,998 | 0,003 | 0,003 | 0,080 | 1272 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad peru | ambar | 1,002 | 0,005 | 0,005 | 0,006 | 2260 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad reino_unido | verde | 0,995 | 0,006 | 0,006 | 0,005 | 3392 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad rumania | verde | 1,001 | 0,013 | 0,013 | 0,002 | 5524 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad ucrania | verde | 0,994 | 0,004 | 0,004 | 0,004 | 1594 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
-| Nacionalidad venezuela | verde | 1,000 | 0,008 | 0,008 | 0,006 | 3423 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad alemania | verde | 0,998 | 0,003 | 0,003 | 0,004 | 1867 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad argentina | verde | 1,000 | 0,003 | 0,003 | 0,006 | 1800 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad china | verde | 1,000 | 0,005 | 0,005 | 0,004 | 1553 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad colombia | ambar | 0,997 | 0,014 | 0,014 | 0,003 | 5849 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad ecuador | verde | 1,003 | 0,003 | 0,003 | 0,003 | 1737 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad francia | verde | 1,000 | 0,003 | 0,003 | 0,008 | 1821 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad honduras | verde | 0,998 | 0,004 | 0,004 | 0,003 | 1645 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad italia | verde | 0,999 | 0,007 | 0,007 | 0,003 | 4394 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad marruecos | verde | 0,997 | 0,020 | 0,020 | 0,003 | 8453 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad paraguay | verde | 0,995 | 0,003 | 0,003 | 0,010 | 1261 | 0,03 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad peru | ambar | 1,000 | 0,005 | 0,005 | 0,006 | 2274 | 0,03 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad reino_unido | verde | 1,002 | 0,006 | 0,006 | 0,004 | 3369 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad rumania | verde | 1,001 | 0,013 | 0,013 | 0,004 | 5382 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad ucrania | verde | 1,000 | 0,004 | 0,004 | 0,006 | 1601 | 0,02 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
+| Nacionalidad venezuela | verde | 1,000 | 0,008 | 0,008 | 0,003 | 3458 | 0,01 | Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top) |
 
 Diversidad dentro de grupos (V-DIVERSIDAD):
 | Atributo | Grupos | Proporción dentro | Ratio mediano |  |
 | --- | --- | --- | --- | --- |
-| nacionalidad_grupo | 410 | 0,993 | 0,996 | ✅ |
-| pais_nacimiento_grupo | 410 | 0,995 | 0,997 | ✅ |
-| estado_civil | 410 | 0,985 | 0,999 | ✅ |
-| nivel_estudios | 410 | 1,000 | 1,000 | ✅ |
-| relacion_actividad | 410 | 0,995 | 1,000 | ✅ |
-| ocupacion | 410 | 0,998 | 0,997 | ✅ |
-| situacion_profesional | 410 | 1,000 | 0,998 | ✅ |
+| nacionalidad_grupo | 410 | 0,990 | 0,996 | ✅ |
+| pais_nacimiento_grupo | 410 | 0,998 | 0,996 | ✅ |
+| estado_civil | 410 | 0,995 | 0,998 | ✅ |
+| nivel_estudios | 410 | 0,998 | 1,000 | ✅ |
+| relacion_actividad | 410 | 1,000 | 0,999 | ✅ |
+| ocupacion | 410 | 1,000 | 0,997 | ✅ |
+| situacion_profesional | 410 | 0,995 | 1,000 | ✅ |
 | tipo_hogar | 410 | 1,000 | 0,999 | ✅ |
 | tamano_hogar | 410 | 1,000 | 0,999 | ✅ |
-| grado_urbanizacion | 408 | 1,000 | 1,000 | ✅ |
-| tamano_municipio | 408 | 1,000 | 1,001 | ✅ |
+| grado_urbanizacion | 408 | 1,000 | 0,999 | ✅ |
+| tamano_municipio | 408 | 0,998 | 0,999 | ✅ |
 
 Combinaciones sin donante (V-RAREZA):
 | Nivel | Combinaciones | Sin donante |
 | --- | --- | --- |
-| persona | 24709 | 0 |
-| persona_y_hogar | 153450 | 0 |
+| persona | 24616 | 0 |
+| persona_y_hogar | 153518 | 0 |
 
 ### Semáforo por población
 | Población | Verde | Ámbar | Rojo | Rojo por representación | Rojo por perfil | Rojo por concentración | Grupos en rojo (nacionalidades sin prefijo) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| ES | 22 | 2 | 3 | 1 | 2 | 0 | privacion_severa, nunca_internet, paraguay |
-| CCAA:01 | 14 | 11 | 2 | 1 | 1 | 0 | privacion_severa, nunca_internet |
+| ES | 23 | 2 | 2 | 1 | 1 | 0 | privacion_severa, nunca_internet |
+| CCAA:01 | 15 | 10 | 2 | 1 | 1 | 0 | privacion_severa, nunca_internet |
 | CCAA:02 | 21 | 2 | 4 | 0 | 1 | 4 | argentina, honduras, paraguay, reino_unido |
-| CCAA:03 | 17 | 2 | 8 | 0 | 1 | 8 | alemania, argentina, china, ecuador, honduras, peru, reino_unido, ucrania |
-| CCAA:04 | 17 | 7 | 3 | 0 | 2 | 1 | honduras, paraguay, peru |
-| CCAA:05 | 21 | 0 | 6 | 1 | 1 | 5 | municipios_menos_2000, ecuador, honduras, paraguay, peru, ucrania |
-| CCAA:06 | 14 | 6 | 7 | 0 | 3 | 7 | argentina, ecuador, francia, honduras, italia, paraguay, ucrania |
-| CCAA:07 | 17 | 4 | 6 | 0 | 2 | 5 | alemania, argentina, francia, honduras, reino_unido, ucrania |
-| CCAA:08 | 21 | 3 | 3 | 0 | 1 | 2 | francia, honduras, reino_unido |
-| CCAA:09 | 26 | 0 | 1 | 0 | 1 | 0 | privacion_severa |
-| CCAA:10 | 22 | 4 | 1 | 0 | 1 | 0 | privacion_severa |
-| CCAA:11 | 12 | 6 | 9 | 0 | 1 | 9 | argentina, china, ecuador, francia, honduras, italia, paraguay, reino_unido, ucrania |
-| CCAA:12 | 17 | 3 | 7 | 0 | 0 | 7 | alemania, china, francia, honduras, paraguay, reino_unido, ucrania |
+| CCAA:03 | 17 | 3 | 7 | 0 | 1 | 7 | alemania, argentina, china, ecuador, honduras, reino_unido, ucrania |
+| CCAA:04 | 17 | 9 | 1 | 0 | 0 | 1 | honduras |
+| CCAA:05 | 21 | 1 | 5 | 1 | 1 | 4 | municipios_menos_2000, ecuador, honduras, paraguay, peru |
+| CCAA:06 | 13 | 7 | 7 | 0 | 2 | 7 | argentina, china, ecuador, francia, honduras, italia, paraguay |
+| CCAA:07 | 18 | 3 | 6 | 0 | 0 | 6 | alemania, argentina, francia, paraguay, reino_unido, ucrania |
+| CCAA:08 | 22 | 3 | 2 | 0 | 0 | 2 | francia, reino_unido |
+| CCAA:09 | 27 | 0 | 0 | 0 | 0 | 0 | — |
+| CCAA:10 | 20 | 6 | 1 | 0 | 1 | 0 | privacion_severa |
+| CCAA:11 | 15 | 6 | 6 | 0 | 0 | 6 | alemania, argentina, china, ecuador, honduras, paraguay |
+| CCAA:12 | 18 | 3 | 6 | 0 | 0 | 6 | alemania, china, ecuador, honduras, paraguay, ucrania |
 | CCAA:13 | 25 | 0 | 2 | 1 | 1 | 0 | municipios_menos_2000, jovenes_ni_ni |
-| CCAA:14 | 18 | 8 | 1 | 1 | 0 | 0 | municipios_menos_2000 |
-| CCAA:15 | 14 | 6 | 7 | 0 | 1 | 6 | alemania, argentina, francia, honduras, paraguay, reino_unido, ucrania |
-| CCAA:16 | 22 | 2 | 3 | 0 | 1 | 2 | alemania, argentina, ecuador |
-| CCAA:17 | 14 | 3 | 10 | 0 | 3 | 10 | alemania, argentina, china, ecuador, francia, honduras, paraguay, peru, reino_unido, ucrania |
-| CCAA:18 | 13 | 0 | 14 | 11 | 9 | 10 | alemania, argentina, china, colombia, ecuador, francia, honduras, italia, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
-| CCAA:19 | 12 | 0 | 15 | 8 | 14 | 13 | alemania, argentina, china, colombia, ecuador, francia, honduras, italia, marruecos, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
-| PROV:28 | 25 | 0 | 2 | 2 | 1 | 0 | municipios_menos_2000, jovenes_ni_ni |
+| CCAA:14 | 18 | 8 | 1 | 0 | 1 | 0 | nunca_internet |
+| CCAA:15 | 16 | 4 | 7 | 0 | 0 | 7 | alemania, argentina, honduras, italia, paraguay, reino_unido, ucrania |
+| CCAA:16 | 23 | 1 | 3 | 0 | 0 | 3 | alemania, china, ucrania |
+| CCAA:17 | 14 | 3 | 10 | 0 | 4 | 10 | alemania, argentina, china, ecuador, francia, honduras, paraguay, peru, reino_unido, ucrania |
+| CCAA:18 | 13 | 0 | 14 | 11 | 10 | 10 | alemania, argentina, china, colombia, ecuador, francia, honduras, italia, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
+| CCAA:19 | 12 | 0 | 15 | 9 | 14 | 13 | privacion_severa, alemania, argentina, china, colombia, ecuador, francia, honduras, italia, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
+| PROV:28 | 26 | 0 | 1 | 0 | 1 | 0 | jovenes_ni_ni |
 | PROV:08 | 26 | 0 | 1 | 0 | 1 | 0 | privacion_severa |
-| PROV:42 | 8 | 0 | 19 | 1 | 14 | 16 | nacidos_fuera_espanoles, jovenes_ni_ni, sin_estudios, privacion_severa, alemania, argentina, china, colombia, ecuador, francia, honduras, italia, marruecos, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
-| PROV:44 | 13 | 0 | 14 | 1 | 6 | 13 | jovenes_ni_ni, alemania, argentina, china, colombia, ecuador, francia, honduras, italia, paraguay, peru, reino_unido, ucrania, venezuela |
-| PROV:04 | 15 | 6 | 6 | 0 | 4 | 2 | limitacion_grave, jovenes_ni_ni, privacion_severa, nunca_internet, china, honduras |
-| PROV:35 | 21 | 0 | 6 | 0 | 0 | 6 | municipios_menos_2000, ecuador, honduras, paraguay, peru, ucrania |
-| PROV:20 | 15 | 0 | 12 | 0 | 2 | 12 | alemania, argentina, china, ecuador, francia, honduras, italia, paraguay, peru, reino_unido, ucrania, venezuela |
-| PROV:32 | 11 | 2 | 14 | 1 | 4 | 13 | nunca_internet, alemania, argentina, china, ecuador, francia, honduras, italia, marruecos, paraguay, peru, reino_unido, rumania, ucrania |
+| PROV:42 | 8 | 0 | 19 | 1 | 13 | 16 | nacidos_fuera_espanoles, jovenes_ni_ni, sin_estudios, privacion_severa, alemania, argentina, china, colombia, ecuador, francia, honduras, italia, marruecos, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
+| PROV:44 | 12 | 0 | 15 | 1 | 9 | 14 | jovenes_ni_ni, alemania, argentina, china, colombia, ecuador, francia, honduras, italia, marruecos, paraguay, peru, reino_unido, ucrania, venezuela |
+| PROV:04 | 15 | 6 | 6 | 0 | 3 | 3 | jovenes_ni_ni, privacion_severa, nunca_internet, china, honduras, venezuela |
+| PROV:35 | 20 | 0 | 7 | 0 | 1 | 7 | china, ecuador, honduras, paraguay, peru, rumania, ucrania |
+| PROV:20 | 16 | 0 | 11 | 0 | 0 | 11 | alemania, argentina, china, ecuador, francia, italia, paraguay, peru, reino_unido, ucrania, venezuela |
+| PROV:32 | 11 | 2 | 14 | 1 | 1 | 13 | nunca_internet, alemania, argentina, china, ecuador, francia, honduras, italia, marruecos, paraguay, peru, reino_unido, rumania, ucrania |
 | PROV:51 | 14 | 0 | 13 | 9 | 6 | 8 | alemania, argentina, china, colombia, ecuador, francia, italia, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
-| PROV:52 | 12 | 1 | 14 | 5 | 12 | 12 | alemania, argentina, china, colombia, ecuador, francia, italia, marruecos, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
+| PROV:52 | 13 | 1 | 13 | 6 | 10 | 12 | alemania, argentina, china, colombia, ecuador, francia, italia, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
 | MUNIS:ejemplo_valencia_urbano | 25 | 0 | 2 | 0 | 1 | 1 | jovenes_ni_ni, paraguay |
 | MUNIS:ejemplo_teruel_rural | 1 | 9 | 17 | 8 | 0 | 13 | jovenes_ni_ni, nunca_internet, alemania, argentina, china, colombia, ecuador, francia, honduras, italia, marruecos, paraguay, peru, reino_unido, rumania, ucrania, venezuela |
 
@@ -116,6 +116,8 @@ Detalle por población en `reports/fase_07/` y ficha de datos de la población n
 - D-052 (propuesta, pendiente de aprobación): en V-MINORIAS-PERFIL con referencia de encuesta, el margen cuenta también el error de muestreo de la encuesta (réplicas bootstrap).
 - D-053: inclinación del bloque personal de la ECV por comunidad hasta la prevalencia de la ECV de la limitación grave y la carencia material y social severa.
 - D-056 (propuesta): un fallo aislado de V-MARG en N = 10.000 es azar si no se repite en otra población de la serie.
+- D-057: tamaño de municipio sorteado (no la clase más frecuente) para los hogares añadidos desde otra provincia; referencia local en V-DIVERSIDAD.
+- D-058: el sexo de cada nacionalidad principal, calibrado al Censo Anual 2025 (los donantes de 2021 tenían, p. ej., un 69 % de mujeres paraguayas frente al 61 %).
 - D-054: ampliación de los donantes de las celdas de extranjeros por edad y actividad, con vuelta atrás si el territorio no converge sin fundir nacionalidades. Se probó y descartó calibrar las nacionalidades desde 5 personas (empeoraba Teruel y Ceuta).
 
 ## Limitaciones
@@ -162,8 +164,8 @@ composición que las cifras oficiales:
 
 Los hogares donantes son los del Censo 2021. Lo que se calibra a 2026 refleja 2026:
 
-- edad, sexo, nacionalidad (también por edad), país de nacimiento, estudios, actividad (EPA,
-  también por nacionalidad), estado civil, tamaño y tipo de hogar, y territorio.
+- edad, sexo, nacionalidad (también por edad y por sexo), país de nacimiento, estudios,
+  actividad (EPA, también por nacionalidad), estado civil, tamaño y tipo de hogar, y territorio.
 
 El resto conserva la estructura de 2021 dentro de lo calibrado, por ejemplo la composición
 detallada de los hogares o la ocupación.
@@ -220,4 +222,5 @@ que dependen de ellas figuran como `pendiente`.
 2. ¿Se aprueban D-049 y D-050, en vigor y pendientes de aprobación expresa en esta revisión?
 3. ¿Se aprueba D-052 (umbral de perfil con el error de la encuesta de referencia)? Es un cambio de criterio aplicado de forma provisional: sin él, los grupos de encuesta vuelven a rojo en casi todas las comunidades por el ruido de la propia encuesta.
 4. ¿Se aprueba D-056? G4.1 falla en 1 de 8.480 comprobaciones: el tipo de residencia de Navarra (139 personas) en una de las cinco poblaciones de 10.000; no se repite en otra semilla ni en otro tamaño.
-5. Si quedan grupos en rojo en territorios pequeños, ¿se aceptan como limitación declarada o se exige otra medida correctora?
+5. Con D-058, G6.1 falla en estricto por la tenencia de la vivienda (TVD con la composición de la encuesta 0,0206, criterio de D-048 ≤ 0,02). ¿Se acepta como limitación o se vuelve a la versión sin D-058 (commit b9ec7a2)?
+6. Si quedan grupos en rojo en territorios pequeños, ¿se aceptan como limitación declarada o se exige otra medida correctora?

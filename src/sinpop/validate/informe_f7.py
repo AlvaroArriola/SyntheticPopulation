@@ -368,7 +368,10 @@ def informe() -> str:
         "4. ¿Se aprueba D-056? G4.1 falla en 1 de 8.480 comprobaciones: el tipo de residencia"
         " de Navarra (139 personas) en una de las cinco poblaciones de 10.000; no se repite en"
         " otra semilla ni en otro tamaño.",
-        "5. Si quedan grupos en rojo en territorios pequeños, ¿se aceptan como limitación"
+        "5. Con D-058, G6.1 falla en estricto por la tenencia de la vivienda (TVD con la"
+        " composición de la encuesta 0,0206, criterio de D-048 ≤ 0,02). ¿Se acepta como"
+        " limitación o se vuelve a la versión sin D-058 (commit b9ec7a2)?",
+        "6. Si quedan grupos en rojo en territorios pequeños, ¿se aceptan como limitación"
         " declarada o se exige otra medida correctora?",
     ]
     texto = "\n".join(out) + "\n"

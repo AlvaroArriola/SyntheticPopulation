@@ -1,123 +1,123 @@
 # Fase 04 · Tablas de validación
 
-Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). Resumen en `fase_04_validacion.json`; detalle por población en `fase_04/`.
+Generado por `python -m sinpop.validate.fase4` (git:402e437-dirty, 2026-10-20). Resumen en `fase_04_validacion.json`; detalle por población en `fase_04/`.
 
 ## Curva de error frente a tamaño (España; media de 5 semillas)
 
 | n | tvd_media_calibradas | sd_calibradas | tvd_media_reservadas | sd_reservadas |
 | --- | --- | --- | --- | --- |
-| 10000 | 0.0185 | 0.0031 | 0.0163 | 0.0015 |
-| 50000 | 0.0056 | 0.0002 | 0.0100 | 0.0004 |
-| 100000 | 0.0030 | 0.0002 | 0.0091 | 0.0004 |
-| 500000 | 0.0012 | 0.0001 | 0.0080 | 0.0001 |
-| 1000000 | 0.0008 | 0.0000 | 0.0078 | 0.0000 |
+| 10000 | 0.0178 | 0.0025 | 0.0158 | 0.0014 |
+| 50000 | 0.0054 | 0.0004 | 0.0097 | 0.0006 |
+| 100000 | 0.0030 | 0.0001 | 0.0087 | 0.0004 |
+| 500000 | 0.0011 | 0.0001 | 0.0079 | 0.0001 |
+| 1000000 | 0.0008 | 0.0001 | 0.0079 | 0.0001 |
 
 ## TVD por marginal calibrada (España; media de 5 semillas)
 
-| objetivo | 500000 | 50000 | 10000 | 1000000 | 100000 |
+| objetivo | 500000 | 100000 | 1000000 | 50000 | 10000 |
 | --- | --- | --- | --- | --- | --- |
-| actividad_nacionalidad | 0.0011 | 0.0029 | 0.0068 | 0.0009 | 0.0020 |
-| actividad_tramo | 0.0013 | 0.0032 | 0.0068 | 0.0009 | 0.0023 |
-| edad5_sexo | 0.0009 | 0.0020 | 0.0052 | 0.0006 | 0.0016 |
-| edad5_sexo_colectivos | 0.0111 | 0.0699 | 0.2486 | 0.0078 | 0.0323 |
-| edad5_sexo_familiares | 0.0009 | 0.0022 | 0.0054 | 0.0006 | 0.0016 |
-| estado_civil_edad | 0.0009 | 0.0026 | 0.0052 | 0.0006 | 0.0020 |
-| estudios_edad | 0.0010 | 0.0025 | 0.0059 | 0.0007 | 0.0020 |
-| nacimiento_nacionalidad | 0.0005 | 0.0007 | 0.0031 | 0.0004 | 0.0007 |
-| nacionalidad | 0.0002 | 0.0003 | 0.0012 | 0.0001 | 0.0004 |
-| nacionalidad_edad | 0.0007 | 0.0023 | 0.0056 | 0.0005 | 0.0013 |
-| nacionalidad_top | 0.0002 | 0.0002 | 0.0021 | 0.0001 | 0.0001 |
-| nacionalidad_top_edad | 0.0004 | 0.0011 | 0.0039 | 0.0003 | 0.0007 |
-| sin_estudios_edad | 0.0004 | 0.0011 | 0.0030 | 0.0003 | 0.0007 |
-| tamano_hogar | 0.0003 | 0.0011 | 0.0026 | 0.0002 | 0.0010 |
-| tipo_hogar | 0.0007 | 0.0021 | 0.0064 | 0.0004 | 0.0017 |
-| tipo_residencia (implícito) | 0.0000 | 0.0003 | 0.0009 | 0.0000 | 0.0000 |
-| urbanizacion | 0.0003 | 0.0005 | 0.0020 | 0.0001 | 0.0006 |
+| actividad_nacionalidad | 0.0012 | 0.0020 | 0.0008 | 0.0030 | 0.0070 |
+| actividad_tramo | 0.0013 | 0.0020 | 0.0008 | 0.0032 | 0.0063 |
+| edad5_sexo | 0.0007 | 0.0015 | 0.0006 | 0.0019 | 0.0044 |
+| edad5_sexo_colectivos | 0.0099 | 0.0354 | 0.0075 | 0.0713 | 0.2524 |
+| edad5_sexo_familiares | 0.0007 | 0.0016 | 0.0006 | 0.0020 | 0.0049 |
+| estado_civil_edad | 0.0009 | 0.0020 | 0.0006 | 0.0024 | 0.0062 |
+| estudios_edad | 0.0008 | 0.0017 | 0.0006 | 0.0027 | 0.0062 |
+| nacimiento_nacionalidad | 0.0004 | 0.0005 | 0.0003 | 0.0009 | 0.0027 |
+| nacionalidad | 0.0002 | 0.0004 | 0.0001 | 0.0006 | 0.0016 |
+| nacionalidad_edad | 0.0007 | 0.0013 | 0.0005 | 0.0020 | 0.0058 |
+| nacionalidad_top | 0.0001 | 0.0001 | 0.0001 | 0.0003 | 0.0020 |
+| nacionalidad_top_edad | 0.0004 | 0.0007 | 0.0002 | 0.0011 | 0.0038 |
+| nacionalidad_top_sexo | 0.0003 | 0.0005 | 0.0002 | 0.0006 | 0.0027 |
+| sin_estudios_edad | 0.0004 | 0.0008 | 0.0003 | 0.0013 | 0.0030 |
+| tamano_hogar | 0.0004 | 0.0009 | 0.0001 | 0.0008 | 0.0027 |
+| tipo_hogar | 0.0007 | 0.0020 | 0.0004 | 0.0024 | 0.0057 |
+| tipo_residencia (implícito) | 0.0000 | 0.0001 | 0.0000 | 0.0002 | 0.0008 |
+| urbanizacion | 0.0003 | 0.0005 | 0.0002 | 0.0008 | 0.0021 |
 
 ## TVD por cruce reservado (España; media de 5 semillas)
 
-| objetivo | 100000 | 50000 | 1000000 | 500000 | 10000 |
+| objetivo | 1000000 | 50000 | 100000 | 10000 | 500000 |
 | --- | --- | --- | --- | --- | --- |
-| actividad_edad | 0.0114 | 0.0126 | 0.0103 | 0.0106 | 0.0177 |
-| actividad_sexo | 0.0071 | 0.0078 | 0.0061 | 0.0063 | 0.0095 |
-| adultos_nacionalidad | 0.0015 | 0.0014 | 0.0014 | 0.0015 | 0.0023 |
-| estudios_sexo_edad | 0.0085 | 0.0102 | 0.0069 | 0.0072 | 0.0169 |
-| nacionalidad_top_sexo_edad | 0.0069 | 0.0080 | 0.0047 | 0.0049 | 0.0181 |
-| provincia_si_calibra_ccaa | 0.0098 | 0.0118 | 0.0083 | 0.0085 | 0.0246 |
-| tamano_municipio | 0.0116 | 0.0110 | 0.0114 | 0.0112 | 0.0159 |
-| tipo_hogar_edad4_ref | 0.0158 | 0.0168 | 0.0136 | 0.0140 | 0.0256 |
+| actividad_edad | 0.0105 | 0.0131 | 0.0120 | 0.0194 | 0.0104 |
+| actividad_sexo | 0.0061 | 0.0074 | 0.0068 | 0.0102 | 0.0063 |
+| adultos_nacionalidad | 0.0015 | 0.0015 | 0.0016 | 0.0026 | 0.0014 |
+| estudios_sexo_edad | 0.0073 | 0.0097 | 0.0081 | 0.0172 | 0.0072 |
+| nacionalidad_top_sexo_edad | 0.0043 | 0.0073 | 0.0061 | 0.0163 | 0.0044 |
+| provincia_si_calibra_ccaa | 0.0083 | 0.0118 | 0.0097 | 0.0246 | 0.0085 |
+| tamano_municipio | 0.0111 | 0.0121 | 0.0110 | 0.0125 | 0.0114 |
+| tipo_hogar_edad4_ref | 0.0138 | 0.0144 | 0.0143 | 0.0238 | 0.0137 |
 
 ## Fallos por tamaño
 
 | N | semilla | v_marg | v_cruce | v_cruce_excepciones | v_cruce_estricto | comprobaciones_cruce |
 | --- | --- | --- | --- | --- | --- | --- |
-| 10000 | 1 | 1 | 9 | 0 | 30 | 511 |
-| 10000 | 2 | 0 | 7 | 0 | 21 | 511 |
-| 10000 | 3 | 0 | 9 | 0 | 22 | 511 |
-| 10000 | 4 | 0 | 7 | 0 | 30 | 511 |
-| 10000 | 5 | 0 | 10 | 0 | 26 | 511 |
-| 50000 | 1 | 0 | 3 | 0 | 6 | 511 |
-| 50000 | 2 | 0 | 1 | 0 | 5 | 511 |
-| 50000 | 3 | 0 | 2 | 0 | 3 | 511 |
-| 50000 | 4 | 0 | 0 | 0 | 2 | 511 |
-| 50000 | 5 | 0 | 0 | 0 | 1 | 511 |
-| 100000 | 1 | 0 | 0 | 0 | 4 | 511 |
-| 100000 | 2 | 0 | 1 | 1 | 3 | 511 |
-| 100000 | 3 | 0 | 0 | 0 | 2 | 511 |
-| 100000 | 4 | 0 | 1 | 1 | 6 | 511 |
-| 100000 | 5 | 0 | 0 | 1 | 3 | 511 |
-| 500000 | 1 | 0 | 0 | 0 | 1 | 511 |
+| 10000 | 1 | 1 | 14 | 1 | 26 | 511 |
+| 10000 | 2 | 0 | 7 | 0 | 17 | 511 |
+| 10000 | 3 | 0 | 14 | 0 | 24 | 511 |
+| 10000 | 4 | 0 | 7 | 0 | 23 | 511 |
+| 10000 | 5 | 0 | 6 | 0 | 15 | 511 |
+| 50000 | 1 | 0 | 4 | 0 | 9 | 511 |
+| 50000 | 2 | 0 | 1 | 0 | 2 | 511 |
+| 50000 | 3 | 0 | 2 | 1 | 8 | 511 |
+| 50000 | 4 | 0 | 2 | 1 | 5 | 511 |
+| 50000 | 5 | 0 | 1 | 0 | 6 | 511 |
+| 100000 | 1 | 0 | 1 | 1 | 2 | 511 |
+| 100000 | 2 | 0 | 1 | 1 | 6 | 511 |
+| 100000 | 3 | 0 | 1 | 1 | 2 | 511 |
+| 100000 | 4 | 0 | 1 | 0 | 4 | 511 |
+| 100000 | 5 | 0 | 1 | 0 | 2 | 511 |
+| 500000 | 1 | 0 | 0 | 0 | 0 | 511 |
 | 500000 | 2 | 0 | 0 | 0 | 0 | 511 |
-| 500000 | 3 | 0 | 0 | 1 | 1 | 511 |
+| 500000 | 3 | 0 | 0 | 0 | 0 | 511 |
 | 500000 | 4 | 0 | 0 | 0 | 0 | 511 |
-| 500000 | 5 | 0 | 0 | 1 | 1 | 511 |
-| 1000000 | 1 | 0 | 0 | 0 | 0 | 511 |
-| 1000000 | 2 | 0 | 0 | 1 | 1 | 511 |
+| 500000 | 5 | 0 | 0 | 0 | 0 | 511 |
+| 1000000 | 1 | 0 | 0 | 1 | 1 | 511 |
+| 1000000 | 2 | 0 | 0 | 0 | 0 | 511 |
 | 1000000 | 3 | 0 | 0 | 0 | 0 | 511 |
-| 1000000 | 4 | 0 | 0 | 0 | 1 | 511 |
-| 1000000 | 5 | 0 | 0 | 0 | 0 | 511 |
+| 1000000 | 4 | 0 | 0 | 0 | 0 | 511 |
+| 1000000 | 5 | 0 | 0 | 1 | 1 | 511 |
 
 ### Fallos de V-CRUCE con 500.000 y 1.000.000 de personas
 
 | nivel | territorio | objetivo | tvd | umbral | excepcion | N | semilla |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| provincia | PROV:40 | tamano_municipio | 0.0890 | 0.0800 | ✅ | 500000 | 3 |
-| provincia | PROV:40 | tamano_municipio | 0.0811 | 0.0800 | ✅ | 500000 | 5 |
-| provincia | PROV:40 | tamano_municipio | 0.0804 | 0.0800 | ✅ | 1000000 | 2 |
+| provincia | PROV:40 | tamano_municipio | 0.0815 | 0.0800 | ✅ | 1000000 | 1 |
+| provincia | PROV:40 | tamano_municipio | 0.0815 | 0.0800 | ✅ | 1000000 | 5 |
 
 ## V-SEMILLAS
 
 | n | proporciones | fuera | razon_media | razon_max |
 | --- | --- | --- | --- | --- |
-| 10000 | 493 | 1 | 0.3133 | 1.5502 |
-| 50000 | 493 | 0 | 0.2252 | 0.8798 |
-| 100000 | 493 | 0 | 0.2056 | 0.5238 |
-| 500000 | 493 | 0 | 0.2250 | 0.5695 |
-| 1000000 | 493 | 0 | 0.2369 | 0.6884 |
+| 10000 | 527 | 2 | 0.3093 | 2.3106 |
+| 50000 | 527 | 0 | 0.2353 | 1.0330 |
+| 100000 | 527 | 0 | 0.2124 | 0.5651 |
+| 500000 | 527 | 0 | 0.2206 | 0.7251 |
+| 1000000 | 527 | 0 | 0.2247 | 0.5560 |
 
 ## V-PESOS (calibración por comunidades)
 
 | bloque | desviacion_max | proporcion_en_rango | kish_ratio | no_positivos | factor_min | factor_max | proporcion_local | ok |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| CCAA:01 | 0.0000 | 1.0000 | 0.7911 | 0 | 0.2000 | 4.9930 | 0.9064 | ✅ |
-| CCAA:02 | 0.0000 | 1.0000 | 0.7930 | 0 | 0.2000 | 4.9999 | 0.9792 | ✅ |
-| CCAA:03 | 0.0000 | 1.0000 | 0.7979 | 0 | 0.2000 | 4.9855 | 0.9739 | ✅ |
-| CCAA:04 | 0.0000 | 1.0000 | 0.6551 | 0 | 0.2000 | 4.9807 | 0.8345 | ✅ |
-| CCAA:05 | 0.0000 | 1.0000 | 0.6914 | 0 | 0.2000 | 4.9968 | 0.9892 | ✅ |
-| CCAA:06 | 0.0000 | 1.0000 | 0.7886 | 0 | 0.2000 | 4.9725 | 0.8956 | ✅ |
-| CCAA:07 | 0.0000 | 1.0000 | 0.8097 | 0 | 0.2000 | 4.9942 | 0.9763 | ✅ |
-| CCAA:08 | 0.0000 | 1.0000 | 0.7623 | 0 | 0.2000 | 5.0000 | 0.9761 | ✅ |
-| CCAA:09 | 0.0000 | 1.0000 | 0.6968 | 0 | 0.2000 | 5.0000 | 0.9825 | ✅ |
-| CCAA:10 | 0.0000 | 1.0000 | 0.7282 | 0 | 0.2000 | 5.0000 | 0.9541 | ✅ |
-| CCAA:11 | 0.0000 | 1.0000 | 0.8143 | 0 | 0.2000 | 4.8241 | 0.9410 | ✅ |
-| CCAA:12 | 0.0000 | 1.0000 | 0.7978 | 0 | 0.2000 | 4.9978 | 0.9778 | ✅ |
-| CCAA:13 | 0.0000 | 1.0000 | 0.7402 | 0 | 0.2000 | 5.0000 | 0.9703 | ✅ |
-| CCAA:14 | 0.0000 | 1.0000 | 0.7448 | 0 | 0.2000 | 4.9869 | 0.8987 | ✅ |
-| CCAA:15 | 0.0000 | 1.0000 | 0.7790 | 0 | 0.2000 | 4.9537 | 0.9012 | ✅ |
-| CCAA:16 | 0.0000 | 1.0000 | 0.7841 | 0 | 0.2000 | 5.0000 | 0.9869 | ✅ |
-| CCAA:17 | 0.0000 | 1.0000 | 0.7940 | 0 | 0.2000 | 4.9282 | 0.8798 | ✅ |
-| CCAA:18 | 0.0000 | 1.0000 | 0.5936 | 0 | 0.2000 | 4.9999 | 0.9818 | ✅ |
-| CCAA:19 | 0.0000 | 1.0000 | 0.6334 | 0 | 0.2000 | 4.9986 | 0.9560 | ✅ |
+| CCAA:01 | 0.0000 | 1.0000 | 0.7902 | 0 | 0.2000 | 4.9934 | 0.9058 | ✅ |
+| CCAA:02 | 0.0000 | 1.0000 | 0.7915 | 0 | 0.2000 | 5.0000 | 0.9788 | ✅ |
+| CCAA:03 | 0.0000 | 1.0000 | 0.7964 | 0 | 0.2000 | 4.9871 | 0.9725 | ✅ |
+| CCAA:04 | 0.0000 | 1.0000 | 0.6538 | 0 | 0.2000 | 4.9812 | 0.8345 | ✅ |
+| CCAA:05 | 0.0000 | 1.0000 | 0.6914 | 0 | 0.2000 | 4.9971 | 0.9890 | ✅ |
+| CCAA:06 | 0.0000 | 1.0000 | 0.7877 | 0 | 0.2000 | 4.8772 | 0.8955 | ✅ |
+| CCAA:07 | 0.0000 | 1.0000 | 0.8089 | 0 | 0.2000 | 4.9945 | 0.9739 | ✅ |
+| CCAA:08 | 0.0000 | 1.0000 | 0.7612 | 0 | 0.2000 | 5.0000 | 0.9761 | ✅ |
+| CCAA:09 | 0.0000 | 1.0000 | 0.6956 | 0 | 0.2000 | 5.0000 | 0.9825 | ✅ |
+| CCAA:10 | 0.0000 | 1.0000 | 0.7278 | 0 | 0.2000 | 5.0000 | 0.9541 | ✅ |
+| CCAA:11 | 0.0000 | 1.0000 | 0.8129 | 0 | 0.2000 | 4.9004 | 0.9403 | ✅ |
+| CCAA:12 | 0.0000 | 1.0000 | 0.7973 | 0 | 0.2000 | 4.9983 | 0.9763 | ✅ |
+| CCAA:13 | 0.0000 | 1.0000 | 0.7394 | 0 | 0.2000 | 5.0000 | 0.9703 | ✅ |
+| CCAA:14 | 0.0000 | 1.0000 | 0.7431 | 0 | 0.2000 | 4.9896 | 0.8987 | ✅ |
+| CCAA:15 | 0.0000 | 1.0000 | 0.7781 | 0 | 0.2000 | 4.9556 | 0.9010 | ✅ |
+| CCAA:16 | 0.0000 | 1.0000 | 0.7831 | 0 | 0.2000 | 5.0000 | 0.9869 | ✅ |
+| CCAA:17 | 0.0000 | 1.0000 | 0.7927 | 0 | 0.2000 | 4.9442 | 0.8796 | ✅ |
+| CCAA:18 | 0.0000 | 1.0000 | 0.5888 | 0 | 0.2000 | 5.0000 | 0.9804 | ✅ |
+| CCAA:19 | 0.0000 | 1.0000 | 0.6033 | 0 | 0.2000 | 4.9988 | 0.9518 | ✅ |
 
 ## Ampliación de donantes
 
@@ -186,6 +186,8 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:01 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=35-49 | 336 | 2.1636 | 288 | None |
 | CCAA:01 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=50-64 | 162 | 2.2762 | 150 | None |
 | CCAA:01 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=65+ | 92 | 2.1010 | 70 | None |
+| CCAA:01 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=hombre | 156 | 4.2344 | 133 | None |
+| CCAA:01 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=mujer | 228 | 3.7476 | 125 | None |
 | CCAA:02 | nacionalidad_top | nacionalidad_top=argentina | 93 | 1.9503 | 65 | None |
 | CCAA:02 | nacionalidad_top | nacionalidad_top=colombia | 446 | 2.6595 | 547 | None |
 | CCAA:02 | nacionalidad_top | nacionalidad_top=italia | 148 | 1.7720 | 65 | None |
@@ -195,6 +197,7 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:02 | nacionalidad_top_edad | nacionalidad_top=peru;edad_nacionalidad=00-19 | 24 | 3.6771 | 10 | None |
 | CCAA:02 | nacionalidad_top_edad | nacionalidad_top=peru;edad_nacionalidad=20-34 | 31 | 4.4712 | 27 | None |
 | CCAA:02 | nacionalidad_top_edad | nacionalidad_top=peru;edad_nacionalidad=65+ | 6 | 4.7396 | 6 | None |
+| CCAA:02 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=hombre | 56 | 3.6143 | 24 | None |
 | CCAA:03 | actividad_nacionalidad | actividad_3=parado;nacionalidad_esp_ext=extranjera;edad_tramo_epa=16-19 | 11 | 3.8003 | 6 | None |
 | CCAA:03 | estado_civil_edad | estado_civil=viudo;edad_estado_civil=16-34 | 4 | 3.4299 | 1 | None |
 | CCAA:03 | nacionalidad_top | nacionalidad_top=alemania | 29 | 2.1481 | 1 | None |
@@ -214,6 +217,9 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:03 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=00-19 | 4 | 19.8492 | 1 | None |
 | CCAA:03 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=35-49 | 16 | 5.7400 | 17 | None |
 | CCAA:03 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=65+ | 4 | 6.8324 | 1 | None |
+| CCAA:03 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=hombre | 23 | 4.2668 | 18 | None |
+| CCAA:03 | nacionalidad_top_sexo | nacionalidad_top=ucrania;sexo=hombre | 15 | 8.2163 | 25 | None |
+| CCAA:03 | nacionalidad_top_sexo | nacionalidad_top=ucrania;sexo=mujer | 35 | 4.3964 | 25 | None |
 | CCAA:04 | actividad_nacionalidad | actividad_3=ocupado;nacionalidad_esp_ext=espanola;edad_tramo_epa=16-19 | 195 | 2.6553 | 237 | None |
 | CCAA:04 | actividad_nacionalidad | actividad_3=ocupado;nacionalidad_esp_ext=espanola;edad_tramo_epa=20-24 | 1569 | 1.7069 | 661 | None |
 | CCAA:04 | actividad_nacionalidad | actividad_3=ocupado;nacionalidad_esp_ext=espanola;edad_tramo_epa=65+ | 664 | 1.7447 | 300 | None |
@@ -272,6 +278,7 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:05 | nacionalidad_top_edad | nacionalidad_top=peru;edad_nacionalidad=00-19 | 14 | 3.5343 | 6 | None |
 | CCAA:05 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=00-19 | 15 | 4.5170 | 12 | None |
 | CCAA:05 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=50-64 | 17 | 3.6002 | 8 | None |
+| CCAA:05 | nacionalidad_top_sexo | nacionalidad_top=ucrania;sexo=hombre | 37 | 3.8523 | 18 | None |
 | CCAA:06 | actividad_nacionalidad | actividad_3=inactivo;nacionalidad_esp_ext=extranjera;edad_tramo_epa=65+ | 152 | 1.7986 | 76 | None |
 | CCAA:06 | actividad_nacionalidad | actividad_3=ocupado;nacionalidad_esp_ext=espanola;edad_tramo_epa=16-19 | 61 | 2.3087 | 56 | None |
 | CCAA:06 | actividad_nacionalidad | actividad_3=ocupado;nacionalidad_esp_ext=espanola;edad_tramo_epa=65+ | 328 | 1.8038 | 164 | None |
@@ -322,6 +329,7 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:06 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=35-49 | 33 | 1.6872 | 17 | None |
 | CCAA:06 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=50-64 | 23 | 1.5468 | 7 | None |
 | CCAA:06 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=65+ | 6 | 3.0991 | 11 | None |
+| CCAA:06 | nacionalidad_top_sexo | nacionalidad_top=honduras;sexo=hombre | 2 | 5.0070 | 3 | None |
 | CCAA:07 | nacionalidad_top | nacionalidad_top=argentina | 111 | 2.3310 | 114 | None |
 | CCAA:07 | nacionalidad_top | nacionalidad_top=colombia | 587 | 3.0045 | 910 | None |
 | CCAA:07 | nacionalidad_top | nacionalidad_top=ecuador | 156 | 1.5292 | 49 | None |
@@ -340,6 +348,9 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:07 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=65+ | 6 | 5.8690 | 8 | None |
 | CCAA:07 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=00-19 | 71 | 3.7543 | 42 | None |
 | CCAA:07 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=20-34 | 129 | 3.5244 | 56 | None |
+| CCAA:07 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=hombre | 106 | 4.0322 | 81 | None |
+| CCAA:07 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=mujer | 133 | 3.6485 | 79 | None |
+| CCAA:07 | nacionalidad_top_sexo | nacionalidad_top=venezuela;sexo=hombre | 148 | 3.9853 | 101 | None |
 | CCAA:08 | actividad_nacionalidad | actividad_3=parado;nacionalidad_esp_ext=extranjera;edad_tramo_epa=16-19 | 35 | 3.8319 | 19 | None |
 | CCAA:08 | nacionalidad_top | nacionalidad_top=argentina | 144 | 1.5455 | 43 | None |
 | CCAA:08 | nacionalidad_top | nacionalidad_top=colombia | 714 | 2.5418 | 873 | None |
@@ -420,6 +431,8 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:11 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=35-49 | 23 | 2.0035 | 18 | None |
 | CCAA:11 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=50-64 | 13 | 1.7694 | 8 | None |
 | CCAA:11 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=65+ | 6 | 1.9327 | 5 | None |
+| CCAA:11 | nacionalidad_top_sexo | nacionalidad_top=colombia;sexo=hombre | 48 | 3.6308 | 22 | None |
+| CCAA:11 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=hombre | 16 | 4.5943 | 12 | None |
 | CCAA:12 | actividad_nacionalidad | actividad_3=ocupado;nacionalidad_esp_ext=extranjera;edad_tramo_epa=20-24 | 188 | 3.9202 | 107 | None |
 | CCAA:12 | actividad_tramo | relacion_actividad=parado;sexo=mujer;edad_tramo_epa=65+ | 4 | 3.5585 | 1 | None |
 | CCAA:12 | nacionalidad_top | nacionalidad_top=argentina | 189 | 2.1464 | 133 | None |
@@ -437,6 +450,9 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:12 | nacionalidad_top_edad | nacionalidad_top=peru;edad_nacionalidad=20-34 | 78 | 3.7693 | 47 | None |
 | CCAA:12 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=00-19 | 14 | 4.4851 | 9 | None |
 | CCAA:12 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=65+ | 2 | 11.0122 | 3 | None |
+| CCAA:12 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=hombre | 120 | 3.8204 | 80 | None |
+| CCAA:12 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=mujer | 139 | 3.6166 | 77 | None |
+| CCAA:12 | nacionalidad_top_sexo | nacionalidad_top=ucrania;sexo=mujer | 34 | 3.5832 | 20 | None |
 | CCAA:13 | actividad_nacionalidad | actividad_3=parado;nacionalidad_esp_ext=extranjera;edad_tramo_epa=16-19 | 96 | 3.7782 | 49 | None |
 | CCAA:13 | nacionalidad_top | nacionalidad_top=argentina | 846 | 1.7598 | 392 | None |
 | CCAA:13 | nacionalidad_top | nacionalidad_top=colombia | 3680 | 2.1594 | 2986 | None |
@@ -542,6 +558,7 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:15 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=65+ | 8 | 2.6002 | 11 | None |
 | CCAA:15 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=20-34 | 32 | 2.2667 | 28 | None |
 | CCAA:15 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=65+ | 6 | 3.6824 | 14 | None |
+| CCAA:15 | nacionalidad_top_sexo | nacionalidad_top=paraguay;sexo=hombre | 1 | 14.2829 | 4 | None |
 | CCAA:16 | actividad_nacionalidad | actividad_3=parado;nacionalidad_esp_ext=extranjera;edad_tramo_epa=65+ | 4 | 4.1474 | 1 | None |
 | CCAA:16 | estado_civil_edad | estado_civil=viudo;edad_estado_civil=16-34 | 4 | 4.5891 | 1 | None |
 | CCAA:16 | nacionalidad_edad | nacionalidad_esp_ext=extranjera;edad_5=85-89 | 8 | 4.4910 | 7 | None |
@@ -606,12 +623,15 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:17 | nacionalidad_top_edad | nacionalidad_top=rumania;edad_nacionalidad=65+ | 24 | 2.2476 | 25 | None |
 | CCAA:17 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=todas | 14 | 2.4412 | 16 | None |
 | CCAA:17 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=todas | 42 | 2.3450 | 36 | None |
+| CCAA:17 | nacionalidad_top_sexo | nacionalidad_top=honduras;sexo=hombre | 5 | 3.6159 | 3 | None |
+| CCAA:17 | nacionalidad_top_sexo | nacionalidad_top=paraguay;sexo=todas | 4 | 4.3333 | 1 | None |
 | CCAA:18 | actividad_nacionalidad | actividad_3=ocupado;nacionalidad_esp_ext=extranjera;edad_tramo_epa=55-64 | 11 | 4.1869 | 7 | None |
 | CCAA:18 | estudios_edad | estudios_3=superior;edad_estudios=90+ | 3 | 2.0488 | 2 | None |
 | CCAA:18 | nacionalidad_edad | nacionalidad_esp_ext=extranjera;edad_5=85-89 | 1 | 1.9579 | 4 | None |
 | CCAA:18 | nacionalidad_edad | nacionalidad_esp_ext=extranjera;edad_5=90+ | 2 | 0.3251 | 3 | None |
 | CCAA:18 | nacionalidad_top | nacionalidad_top=china | 1 | 2.3948 | 29 | None |
 | CCAA:18 | nacionalidad_top_edad | nacionalidad_top=china;edad_nacionalidad=todas | 1 | 2.3948 | 4 | None |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=china;sexo=todas | 1 | 2.3948 | 4 | None |
 | CCAA:18 | actividad_tramo | relacion_actividad=ocupado;sexo=hombre;edad_tramo_epa=16-19 | 10 | 1.0337 | 1 | reparacion 1 |
 | CCAA:18 | actividad_tramo | relacion_actividad=ocupado;sexo=mujer;edad_tramo_epa=16-19 | 5 | 0.9539 | 1 | reparacion 1 |
 | CCAA:19 | estudios_edad | estudios_3=secundaria_2a_etapa;edad_estudios=90+ | 2 | 1.3648 | 3 | None |
@@ -624,6 +644,10 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:19 | nacionalidad_top | nacionalidad_top=venezuela | 5 | 4.2542 | 25 | None |
 | CCAA:19 | nacionalidad_top_edad | nacionalidad_top=colombia;edad_nacionalidad=todas | 1 | 17.6844 | 4 | None |
 | CCAA:19 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=todas | 5 | 4.2542 | 5 | None |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=colombia;sexo=hombre | 0 | None | 5 | None |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=colombia;sexo=mujer | 1 | 6.0078 | 4 | None |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=venezuela;sexo=hombre | 3 | 4.9342 | 2 | None |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=venezuela;sexo=mujer | 3 | 3.5767 | 2 | None |
 
 ## Nacionalidades fusionadas con «otras extranjeras»
 
@@ -1429,6 +1453,11 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:17 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=35-49 | nacionalidad_top=venezuela;edad_nacionalidad=todas |
 | CCAA:17 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=50-64 | nacionalidad_top=venezuela;edad_nacionalidad=todas |
 | CCAA:17 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=65+ | nacionalidad_top=venezuela;edad_nacionalidad=todas |
+| CCAA:17 | nacionalidad_top_sexo | nacionalidad_top=alemania;sexo=hombre | nacionalidad_top=alemania;sexo=todas |
+| CCAA:17 | nacionalidad_top_sexo | nacionalidad_top=alemania;sexo=mujer | nacionalidad_top=alemania;sexo=todas |
+| CCAA:17 | nacionalidad_top_sexo | nacionalidad_top=paraguay;sexo=hombre | nacionalidad_top=paraguay;sexo=todas |
+| CCAA:17 | nacionalidad_top_sexo | nacionalidad_top=paraguay;sexo=mujer | nacionalidad_top=paraguay;sexo=todas |
+| CCAA:17 | nacionalidad_top_sexo | nacionalidad_top=reino_unido;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
 | CCAA:17 | estado_civil_edad | estado_civil=viudo;edad_estado_civil=16-34 | estado_civil=soltero;edad_estado_civil=16-34 |
 | CCAA:17 | actividad_nacionalidad | actividad_3=parado;nacionalidad_esp_ext=espanola;edad_tramo_epa=65+ | actividad_3=inactivo;nacionalidad_esp_ext=espanola;edad_tramo_epa=65+ |
 | CCAA:17 | actividad_nacionalidad | actividad_3=parado;nacionalidad_esp_ext=extranjera;edad_tramo_epa=65+ | actividad_3=inactivo;nacionalidad_esp_ext=extranjera;edad_tramo_epa=65+ |
@@ -1541,6 +1570,34 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:18 | nacionalidad_top_edad | nacionalidad_top=venezuela;edad_nacionalidad=65+ | nacionalidad_top=otras_extranjeras;edad_nacionalidad=20-34 |
 | CCAA:18 | nacionalidad_top_edad | nacionalidad_top=otras_extranjeras;edad_nacionalidad=00-19 | nacionalidad_top=otras_extranjeras;edad_nacionalidad=20-34 |
 | CCAA:18 | nacionalidad_top_edad | nacionalidad_top=otras_extranjeras;edad_nacionalidad=65+ | nacionalidad_top=otras_extranjeras;edad_nacionalidad=20-34 |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=china;sexo=hombre | nacionalidad_top=china;sexo=todas |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=china;sexo=mujer | nacionalidad_top=china;sexo=todas |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=alemania;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=alemania;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=argentina;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=argentina;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=colombia;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=colombia;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=ecuador;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=ecuador;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=francia;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=francia;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=honduras;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=honduras;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=italia;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=italia;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=paraguay;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=paraguay;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=reino_unido;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=reino_unido;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=rumania;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=rumania;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=ucrania;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=ucrania;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=venezuela;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:18 | nacionalidad_top_sexo | nacionalidad_top=venezuela;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
 | CCAA:18 | estado_civil_edad | estado_civil=NC;edad_estado_civil=35-54 | estado_civil=casado;edad_estado_civil=35-54 |
 | CCAA:18 | estado_civil_edad | estado_civil=NC;edad_estado_civil=75+ | estado_civil=casado;edad_estado_civil=75+ |
 | CCAA:18 | estado_civil_edad | estado_civil=viudo;edad_estado_civil=16-34 | estado_civil=soltero;edad_estado_civil=16-34 |
@@ -1660,6 +1717,30 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 | CCAA:19 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=20-34 | nacionalidad_top=otras_extranjeras;edad_nacionalidad=20-34 |
 | CCAA:19 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=35-49 | nacionalidad_top=otras_extranjeras;edad_nacionalidad=35-49 |
 | CCAA:19 | nacionalidad_top_edad | nacionalidad_top=ucrania;edad_nacionalidad=50-64 | nacionalidad_top=otras_extranjeras;edad_nacionalidad=50-64 |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=alemania;sexo=hombre | nacionalidad_top=alemania;sexo=todas |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=alemania;sexo=mujer | nacionalidad_top=alemania;sexo=todas |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=francia;sexo=hombre | nacionalidad_top=francia;sexo=todas |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=francia;sexo=mujer | nacionalidad_top=francia;sexo=todas |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=argentina;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=argentina;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=china;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=china;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=ecuador;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=ecuador;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=honduras;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=honduras;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=italia;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=italia;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=paraguay;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=paraguay;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=peru;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=reino_unido;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=reino_unido;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=rumania;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=rumania;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=ucrania;sexo=hombre | nacionalidad_top=otras_extranjeras;sexo=hombre |
+| CCAA:19 | nacionalidad_top_sexo | nacionalidad_top=ucrania;sexo=mujer | nacionalidad_top=otras_extranjeras;sexo=mujer |
 | CCAA:19 | estado_civil_edad | estado_civil=viudo;edad_estado_civil=16-34 | estado_civil=soltero;edad_estado_civil=16-34 |
 | CCAA:19 | actividad_nacionalidad | actividad_3=ocupado;nacionalidad_esp_ext=extranjera;edad_tramo_epa=16-19 | actividad_3=inactivo;nacionalidad_esp_ext=extranjera;edad_tramo_epa=16-19 |
 | CCAA:19 | actividad_nacionalidad | actividad_3=parado;nacionalidad_esp_ext=espanola;edad_tramo_epa=65+ | actividad_3=inactivo;nacionalidad_esp_ext=espanola;edad_tramo_epa=65+ |
@@ -1672,142 +1753,143 @@ Generado por `python -m sinpop.validate.fase4` (git:9719cc7-dirty, 2026-10-20). 
 
 | objetivo | par | v_oficial | v_sintetica | dif | ok |
 | --- | --- | --- | --- | --- | --- |
-| actividad_edad | relacion_actividad × edad_actividad | 0.6114 | 0.6137 | 0.0023 | ✅ |
-| actividad_sexo | relacion_actividad × sexo | 0.2209 | 0.2170 | 0.0040 | ✅ |
-| adultos_nacionalidad | nacionalidad_esp_ext × es_adulto | 0.0028 | 0.0055 | 0.0028 | ✅ |
-| estudios_sexo_edad | estudios_3 × sexo | 0.0391 | 0.0348 | 0.0043 | ✅ |
-| estudios_sexo_edad | estudios_3 × edad_estudios | 0.6228 | 0.6228 | 0.0000 | ✅ |
-| estudios_sexo_edad | sexo × edad_estudios | 0.0713 | 0.0713 | 0.0001 | ✅ |
-| nacionalidad_top_sexo_edad | nacionalidad_top × sexo | 0.0420 | 0.0479 | 0.0059 | ✅ |
-| nacionalidad_top_sexo_edad | nacionalidad_top × edad_nacionalidad | 0.1056 | 0.1055 | 0.0002 | ✅ |
-| nacionalidad_top_sexo_edad | sexo × edad_nacionalidad | 0.0575 | 0.0573 | 0.0002 | ✅ |
-| tipo_hogar_edad4_ref | tipo_hogar × edad_4 | 0.1814 | 0.1800 | 0.0014 | ✅ |
+| actividad_edad | relacion_actividad × edad_actividad | 0.6114 | 0.6138 | 0.0024 | ✅ |
+| actividad_sexo | relacion_actividad × sexo | 0.2209 | 0.2174 | 0.0036 | ✅ |
+| adultos_nacionalidad | nacionalidad_esp_ext × es_adulto | 0.0028 | 0.0056 | 0.0029 | ✅ |
+| estudios_sexo_edad | estudios_3 × sexo | 0.0391 | 0.0347 | 0.0044 | ✅ |
+| estudios_sexo_edad | estudios_3 × edad_estudios | 0.6228 | 0.6228 | 0.0001 | ✅ |
+| estudios_sexo_edad | sexo × edad_estudios | 0.0713 | 0.0712 | 0.0002 | ✅ |
+| nacionalidad_top_sexo_edad | nacionalidad_top × sexo | 0.0420 | 0.0427 | 0.0007 | ✅ |
+| nacionalidad_top_sexo_edad | nacionalidad_top × edad_nacionalidad | 0.1056 | 0.1055 | 0.0001 | ✅ |
+| nacionalidad_top_sexo_edad | sexo × edad_nacionalidad | 0.0575 | 0.0572 | 0.0003 | ✅ |
+| tipo_hogar_edad4_ref | tipo_hogar × edad_4 | 0.1814 | 0.1795 | 0.0019 | ✅ |
 
 ## Minorías, primera pasada (2026-01-01_ES_1000000_s1)
 
 | grupo | unidad | esperado | observado | ratio | ok_representacion | donantes_distintos | top5 | ok_concentracion |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| mayores_85 | persona | 32793.5365 | 32797.0000 | 1.0001 | ✅ | 29108 | 0.0020 | ✅ |
-| municipios_menos_2000 | persona | 54712.7072 | 56320.0000 | 1.0294 | ✅ | 24998 | 0.0017 | ✅ |
-| parados | persona | 50858.6743 | 50474.0000 | 0.9924 | ✅ | 42436 | 0.0012 | ✅ |
-| monoparentales | hogar | 46941.5071 | 46888.0000 | 0.9989 | ✅ | 45706 | 0.0009 | ✅ |
-| mayores_solos | persona | 49226.7723 | 48687.0000 | 0.9890 | ✅ | 48331 | 0.0003 | ✅ |
-| ceuta_melilla | persona | 3449.5362 | 3434.0000 | 0.9955 | ✅ | 1070 | 0.0224 | ✅ |
-| nacionalidad_alemania | persona | 2750.1366 | 2747.0000 | 0.9989 | ✅ | 1880 | 0.0164 | ✅ |
-| nacionalidad_argentina | persona | 3114.7211 | 3121.0000 | 1.0020 | ✅ | 1781 | 0.0211 | ✅ |
-| nacionalidad_china | persona | 4967.9399 | 4975.0000 | 1.0014 | ✅ | 1541 | 0.0133 | ✅ |
-| nacionalidad_colombia | persona | 14241.4163 | 14207.0000 | 0.9976 | ✅ | 5830 | 0.0094 | ✅ |
-| nacionalidad_ecuador | persona | 2768.0194 | 2768.0000 | 1.0000 | ✅ | 1728 | 0.0159 | ✅ |
-| nacionalidad_francia | persona | 2656.6611 | 2641.0000 | 0.9941 | ✅ | 1799 | 0.0174 | ✅ |
-| nacionalidad_honduras | persona | 3667.2784 | 3657.0000 | 0.9972 | ✅ | 1655 | 0.0180 | ✅ |
-| nacionalidad_italia | persona | 7186.9884 | 7182.0000 | 0.9993 | ✅ | 4300 | 0.0086 | ✅ |
-| nacionalidad_marruecos | persona | 20300.6108 | 20283.0000 | 0.9991 | ✅ | 8349 | 0.0063 | ✅ |
-| nacionalidad_paraguay | persona | 2554.8342 | 2550.0000 | 0.9981 | ✅ | 1267 | 0.0247 | ✅ |
-| nacionalidad_peru | persona | 5438.7391 | 5448.0000 | 1.0017 | ✅ | 2252 | 0.0211 | ✅ |
-| nacionalidad_reino_unido | persona | 5615.7234 | 5590.0000 | 0.9954 | ✅ | 3378 | 0.0111 | ✅ |
-| nacionalidad_rumania | persona | 12831.3232 | 12849.0000 | 1.0014 | ✅ | 5502 | 0.0062 | ✅ |
-| nacionalidad_ucrania | persona | 4259.3326 | 4235.0000 | 0.9943 | ✅ | 1589 | 0.0231 | ✅ |
-| nacionalidad_venezuela | persona | 7937.5646 | 7939.0000 | 1.0002 | ✅ | 3410 | 0.0131 | ✅ |
+| mayores_85 | persona | 32796.4226 | 32824.0000 | 1.0008 | ✅ | 28983 | 0.0027 | ✅ |
+| municipios_menos_2000 | persona | 54717.5225 | 56309.0000 | 1.0291 | ✅ | 24999 | 0.0020 | ✅ |
+| parados | persona | 50863.1504 | 50503.0000 | 0.9929 | ✅ | 42445 | 0.0011 | ✅ |
+| monoparentales | hogar | 46943.0386 | 46954.0000 | 1.0002 | ✅ | 45810 | 0.0009 | ✅ |
+| mayores_solos | persona | 49231.1047 | 48694.0000 | 0.9891 | ✅ | 48352 | 0.0003 | ✅ |
+| ceuta_melilla | persona | 3449.8398 | 3441.0000 | 0.9974 | ✅ | 1090 | 0.0183 | ✅ |
+| nacionalidad_alemania | persona | 2750.3786 | 2745.0000 | 0.9980 | ✅ | 1864 | 0.0175 | ✅ |
+| nacionalidad_argentina | persona | 3114.9952 | 3114.0000 | 0.9997 | ✅ | 1792 | 0.0250 | ✅ |
+| nacionalidad_china | persona | 4968.3772 | 4966.0000 | 0.9995 | ✅ | 1542 | 0.0117 | ✅ |
+| nacionalidad_colombia | persona | 14242.6697 | 14199.0000 | 0.9969 | ✅ | 5831 | 0.0095 | ✅ |
+| nacionalidad_ecuador | persona | 2768.2630 | 2776.0000 | 1.0028 | ✅ | 1730 | 0.0173 | ✅ |
+| nacionalidad_francia | persona | 2656.8949 | 2658.0000 | 1.0004 | ✅ | 1816 | 0.0162 | ✅ |
+| nacionalidad_honduras | persona | 3667.6011 | 3662.0000 | 0.9985 | ✅ | 1634 | 0.0180 | ✅ |
+| nacionalidad_italia | persona | 7187.6209 | 7178.0000 | 0.9987 | ✅ | 4379 | 0.0092 | ✅ |
+| nacionalidad_marruecos | persona | 20302.3975 | 20250.0000 | 0.9974 | ✅ | 8387 | 0.0064 | ✅ |
+| nacionalidad_paraguay | persona | 2555.0591 | 2542.0000 | 0.9949 | ✅ | 1257 | 0.0319 | ✅ |
+| nacionalidad_peru | persona | 5439.2177 | 5439.0000 | 1.0000 | ✅ | 2266 | 0.0283 | ✅ |
+| nacionalidad_reino_unido | persona | 5616.2176 | 5625.0000 | 1.0016 | ✅ | 3357 | 0.0116 | ✅ |
+| nacionalidad_rumania | persona | 12832.4525 | 12846.0000 | 1.0011 | ✅ | 5369 | 0.0056 | ✅ |
+| nacionalidad_ucrania | persona | 4259.7074 | 4261.0000 | 1.0003 | ✅ | 1599 | 0.0225 | ✅ |
+| nacionalidad_venezuela | persona | 7938.2632 | 7941.0000 | 1.0003 | ✅ | 3437 | 0.0120 | ✅ |
 
 ## Reglas blandas (media de 5 semillas; nº de semillas dentro)
 
 | regla | N | frecuencia_donantes | exceso_relativo | ok_estricto | ok |
 | --- | --- | --- | --- | --- | --- |
-| casado_menor_20 | 10000 | 0.000057 | -0.300403 | 3 | 5 |
-| casado_menor_20 | 50000 | 0.000057 | 0.185985 | 3 | 5 |
-| casado_menor_20 | 100000 | 0.000057 | -0.093268 | 4 | 5 |
-| casado_menor_20 | 500000 | 0.000057 | -0.149411 | 5 | 5 |
-| casado_menor_20 | 1000000 | 0.000057 | 0.031712 | 5 | 5 |
-| estudiante_50_o_mas | 10000 | 0.000575 | -0.581096 | 5 | 5 |
-| estudiante_50_o_mas | 50000 | 0.000575 | -0.192155 | 5 | 5 |
-| estudiante_50_o_mas | 100000 | 0.000575 | -0.122682 | 5 | 5 |
-| estudiante_50_o_mas | 500000 | 0.000575 | -0.024962 | 5 | 5 |
-| estudiante_50_o_mas | 1000000 | 0.000575 | -0.008401 | 5 | 5 |
-| hogar_8_o_mas | 10000 | 0.016004 | -0.252703 | 5 | 5 |
-| hogar_8_o_mas | 50000 | 0.016004 | -0.066444 | 5 | 5 |
-| hogar_8_o_mas | 100000 | 0.016004 | -0.107303 | 5 | 5 |
-| hogar_8_o_mas | 500000 | 0.016004 | -0.024521 | 5 | 5 |
-| hogar_8_o_mas | 1000000 | 0.016004 | -0.008153 | 5 | 5 |
-| incapacidad_menor_25 | 10000 | 0.000077 | -0.480640 | 3 | 5 |
-| incapacidad_menor_25 | 50000 | 0.000077 | -0.896371 | 5 | 5 |
-| incapacidad_menor_25 | 100000 | 0.000077 | -0.300939 | 5 | 5 |
-| incapacidad_menor_25 | 500000 | 0.000077 | -0.120108 | 5 | 5 |
-| incapacidad_menor_25 | 1000000 | 0.000077 | -0.058134 | 5 | 5 |
+| casado_menor_20 | 10000 | 0.000057 | -0.647528 | 4 | 5 |
+| casado_menor_20 | 50000 | 0.000057 | 0.055998 | 3 | 5 |
+| casado_menor_20 | 100000 | 0.000057 | 0.161459 | 2 | 5 |
+| casado_menor_20 | 500000 | 0.000057 | -0.008024 | 5 | 5 |
+| casado_menor_20 | 1000000 | 0.000057 | -0.004775 | 4 | 5 |
+| estudiante_50_o_mas | 10000 | 0.000574 | -0.511174 | 5 | 5 |
+| estudiante_50_o_mas | 50000 | 0.000574 | -0.156688 | 5 | 5 |
+| estudiante_50_o_mas | 100000 | 0.000574 | -0.080039 | 5 | 5 |
+| estudiante_50_o_mas | 500000 | 0.000574 | 0.012030 | 5 | 5 |
+| estudiante_50_o_mas | 1000000 | 0.000574 | 0.001665 | 5 | 5 |
+| hogar_8_o_mas | 10000 | 0.015992 | -0.244804 | 5 | 5 |
+| hogar_8_o_mas | 50000 | 0.015992 | -0.048668 | 5 | 5 |
+| hogar_8_o_mas | 100000 | 0.015992 | -0.110633 | 5 | 5 |
+| hogar_8_o_mas | 500000 | 0.015992 | -0.036544 | 5 | 5 |
+| hogar_8_o_mas | 1000000 | 0.015992 | 0.004357 | 5 | 5 |
+| incapacidad_menor_25 | 10000 | 0.000077 | -0.740254 | 4 | 5 |
+| incapacidad_menor_25 | 50000 | 0.000077 | -0.948158 | 5 | 5 |
+| incapacidad_menor_25 | 100000 | 0.000077 | -0.352187 | 5 | 5 |
+| incapacidad_menor_25 | 500000 | 0.000077 | -0.078086 | 5 | 5 |
+| incapacidad_menor_25 | 1000000 | 0.000077 | -0.047262 | 5 | 5 |
 | jubilado_menor_50 | 10000 | 0.000009 | -1.000000 | 5 | 5 |
 | jubilado_menor_50 | 50000 | 0.000009 | -1.000000 | 5 | 5 |
 | jubilado_menor_50 | 100000 | 0.000009 | -1.000000 | 5 | 5 |
-| jubilado_menor_50 | 500000 | 0.000009 | -0.642452 | 5 | 5 |
-| jubilado_menor_50 | 1000000 | 0.000009 | -0.329710 | 5 | 5 |
-| ocupado_75_o_mas | 10000 | 0.001511 | -0.189802 | 4 | 5 |
-| ocupado_75_o_mas | 50000 | 0.001511 | 0.009596 | 4 | 5 |
-| ocupado_75_o_mas | 100000 | 0.001511 | 0.051764 | 3 | 5 |
-| ocupado_75_o_mas | 500000 | 0.001511 | -0.011479 | 5 | 5 |
-| ocupado_75_o_mas | 1000000 | 0.001511 | -0.001426 | 5 | 5 |
-| superior_20_21 | 10000 | 0.003512 | -0.045883 | 4 | 5 |
-| superior_20_21 | 50000 | 0.003512 | -0.045959 | 5 | 5 |
-| superior_20_21 | 100000 | 0.003512 | -0.003431 | 5 | 5 |
-| superior_20_21 | 500000 | 0.003512 | -0.025654 | 5 | 5 |
-| superior_20_21 | 1000000 | 0.003512 | -0.000055 | 5 | 5 |
-| viudo_menor_30 | 10000 | 0.000064 | -0.687428 | 4 | 5 |
-| viudo_menor_30 | 50000 | 0.000064 | -0.002408 | 3 | 5 |
-| viudo_menor_30 | 100000 | 0.000064 | -0.345401 | 5 | 5 |
-| viudo_menor_30 | 500000 | 0.000064 | 0.028061 | 3 | 5 |
-| viudo_menor_30 | 1000000 | 0.000064 | -0.031270 | 5 | 5 |
+| jubilado_menor_50 | 500000 | 0.000009 | -0.641746 | 5 | 5 |
+| jubilado_menor_50 | 1000000 | 0.000009 | -0.328464 | 5 | 5 |
+| ocupado_75_o_mas | 10000 | 0.001510 | 0.102367 | 2 | 5 |
+| ocupado_75_o_mas | 50000 | 0.001510 | 0.057595 | 3 | 5 |
+| ocupado_75_o_mas | 100000 | 0.001510 | -0.028548 | 5 | 5 |
+| ocupado_75_o_mas | 500000 | 0.001510 | -0.004786 | 5 | 5 |
+| ocupado_75_o_mas | 1000000 | 0.001510 | -0.012069 | 5 | 5 |
+| superior_20_21 | 10000 | 0.003514 | -0.137880 | 5 | 5 |
+| superior_20_21 | 50000 | 0.003514 | -0.036023 | 5 | 5 |
+| superior_20_21 | 100000 | 0.003514 | 0.016385 | 5 | 5 |
+| superior_20_21 | 500000 | 0.003514 | 0.007894 | 5 | 5 |
+| superior_20_21 | 1000000 | 0.003514 | -0.010418 | 5 | 5 |
+| viudo_menor_30 | 10000 | 0.000064 | -0.373204 | 4 | 5 |
+| viudo_menor_30 | 50000 | 0.000064 | 0.063021 | 2 | 5 |
+| viudo_menor_30 | 100000 | 0.000064 | -0.030749 | 4 | 5 |
+| viudo_menor_30 | 500000 | 0.000064 | -0.087631 | 5 | 5 |
+| viudo_menor_30 | 1000000 | 0.000064 | 0.018331 | 4 | 5 |
 
 ## G4.7 · Sobremuestreo (edad>=85:10000, 2026-01-01_ES_100000_s1_sm7d9288)
 
-Miembros del grupo: 9902 (mínimo pedido 10000); α = 0.8690, β = 3.0490; suma de pesos 100260.
+Miembros del grupo: 9907 (mínimo pedido 10000); α = 0.8691, β = 3.0490; suma de pesos 100192.
 
 | objetivo | tvd | n_efectivo | umbral | ok |
 | --- | --- | --- | --- | --- |
-| actividad_nacionalidad | 0.0027 | 90936.0139 | 0.0118 | ✅ |
-| actividad_tramo | 0.0096 | 90936.0139 | 0.0141 | ✅ |
-| edad5_sexo | 0.0027 | 90936.0139 | 0.0134 | ✅ |
-| edad5_sexo_colectivos | 0.0388 | 816.8646 | 0.1211 | ✅ |
-| edad5_sexo_familiares | 0.0027 | 90135.3314 | 0.0134 | ✅ |
-| estado_civil_edad | 0.0024 | 90936.0139 | 0.0099 | ✅ |
-| estudios_edad | 0.0026 | 90936.0139 | 0.0121 | ✅ |
-| nacimiento_nacionalidad | 0.0013 | 90936.0139 | 0.0053 | ✅ |
-| nacionalidad | 0.0011 | 90936.0139 | 0.0054 | ✅ |
-| nacionalidad_edad | 0.0025 | 90936.0139 | 0.0125 | ✅ |
-| nacionalidad_top | 0.0011 | 90936.0139 | 0.0059 | ✅ |
-| nacionalidad_top_edad | 0.0025 | 90936.0139 | 0.0115 | ✅ |
-| sin_estudios_edad | 0.0017 | 90936.0139 | 0.0098 | ✅ |
-| tamano_hogar | 0.0008 | 36516.1304 | 0.0096 | ✅ |
-| tipo_hogar | 0.0017 | 36516.1304 | 0.0124 | ✅ |
-| urbanizacion | 0.0004 | 90936.0139 | 0.0058 | ✅ |
+| actividad_nacionalidad | 0.0035 | 90900.9648 | 0.0119 | ✅ |
+| actividad_tramo | 0.0103 | 90900.9648 | 0.0141 | ✅ |
+| edad5_sexo | 0.0025 | 90900.9648 | 0.0132 | ✅ |
+| edad5_sexo_colectivos | 0.0388 | 812.6729 | 0.1205 | ✅ |
+| edad5_sexo_familiares | 0.0025 | 90104.2457 | 0.0134 | ✅ |
+| estado_civil_edad | 0.0016 | 90900.9648 | 0.0100 | ✅ |
+| estudios_edad | 0.0029 | 90900.9648 | 0.0122 | ✅ |
+| nacimiento_nacionalidad | 0.0007 | 90900.9648 | 0.0050 | ✅ |
+| nacionalidad | 0.0007 | 90900.9648 | 0.0055 | ✅ |
+| nacionalidad_edad | 0.0025 | 90900.9648 | 0.0123 | ✅ |
+| nacionalidad_top | 0.0005 | 90900.9648 | 0.0058 | ✅ |
+| nacionalidad_top_edad | 0.0019 | 90900.9648 | 0.0117 | ✅ |
+| nacionalidad_top_sexo | 0.0009 | 90900.9648 | 0.0088 | ✅ |
+| sin_estudios_edad | 0.0015 | 90900.9648 | 0.0098 | ✅ |
+| tamano_hogar | 0.0012 | 36513.4370 | 0.0095 | ✅ |
+| tipo_hogar | 0.0024 | 36513.4370 | 0.0124 | ✅ |
+| urbanizacion | 0.0006 | 90900.9648 | 0.0061 | ✅ |
 
 ## V-DONANTES (2026-01-01_ES_1000000_s1)
 
 | territorio | personas | hogares_donantes | kish | proporcion_local | ok | confianza_reducida |
 | --- | --- | --- | --- | --- | --- | --- |
-| CCAA:01 | 176426 | 70103 | 53696.113 | 0.912 | ✅ | ❌ |
-| CCAA:02 | 27831 | 11694 | 8859.355 | 0.971 | ✅ | ❌ |
-| CCAA:03 | 20603 | 9308 | 7061.428 | 0.954 | ✅ | ❌ |
-| CCAA:04 | 25386 | 9543 | 7113.124 | 0.808 | ✅ | ❌ |
-| CCAA:05 | 45890 | 17597 | 12982.025 | 0.985 | ✅ | ❌ |
-| CCAA:06 | 12040 | 5054 | 3793.019 | 0.908 | ✅ | ❌ |
-| CCAA:07 | 48776 | 21799 | 16186.984 | 0.965 | ✅ | ❌ |
-| CCAA:08 | 43453 | 17335 | 13063.167 | 0.968 | ✅ | ❌ |
-| CCAA:09 | 165369 | 65463 | 49278.766 | 0.974 | ✅ | ❌ |
-| CCAA:10 | 111457 | 45042 | 34049.339 | 0.931 | ✅ | ❌ |
-| CCAA:11 | 21269 | 9077 | 6956.654 | 0.945 | ✅ | ❌ |
-| CCAA:12 | 55025 | 23089 | 17400.166 | 0.966 | ✅ | ❌ |
-| CCAA:13 | 144557 | 56078 | 42452.744 | 0.959 | ✅ | ❌ |
-| CCAA:14 | 32380 | 11933 | 9011.762 | 0.905 | ✅ | ❌ |
-| CCAA:15 | 13921 | 5505 | 4113.567 | 0.903 | ✅ | ❌ |
-| CCAA:16 | 45419 | 19535 | 14784.001 | 0.979 | ✅ | ❌ |
-| CCAA:17 | 6650 | 2800 | 2064.350 | 0.882 | ✅ | ❌ |
-| CCAA:18 | 1689 | 535 | 364.379 | 0.996 | ✅ | ❌ |
-| CCAA:19 | 1745 | 535 | 383.940 | 0.983 | ✅ | ❌ |
-| ES | 999886 | 393991 | 278993.478 | 0.946 | ✅ | ❌ |
+| CCAA:01 | 176470 | 70162 | 53839.743 | 0.911 | ✅ | ❌ |
+| CCAA:02 | 27869 | 11692 | 8825.621 | 0.970 | ✅ | ❌ |
+| CCAA:03 | 20605 | 9327 | 7044.985 | 0.956 | ✅ | ❌ |
+| CCAA:04 | 25393 | 9550 | 7069.682 | 0.812 | ✅ | ❌ |
+| CCAA:05 | 45911 | 17629 | 12914.376 | 0.983 | ✅ | ❌ |
+| CCAA:06 | 12030 | 5056 | 3821.518 | 0.909 | ✅ | ❌ |
+| CCAA:07 | 48766 | 21823 | 16274.021 | 0.964 | ✅ | ❌ |
+| CCAA:08 | 43438 | 17340 | 13085.020 | 0.966 | ✅ | ❌ |
+| CCAA:09 | 165384 | 65445 | 49241.654 | 0.974 | ✅ | ❌ |
+| CCAA:10 | 111434 | 44986 | 33888.806 | 0.932 | ✅ | ❌ |
+| CCAA:11 | 21274 | 9056 | 6930.404 | 0.947 | ✅ | ❌ |
+| CCAA:12 | 55009 | 23119 | 17424.094 | 0.966 | ✅ | ❌ |
+| CCAA:13 | 144567 | 56021 | 42235.357 | 0.960 | ✅ | ❌ |
+| CCAA:14 | 32388 | 11934 | 9068.438 | 0.906 | ✅ | ❌ |
+| CCAA:15 | 13912 | 5511 | 4112.177 | 0.899 | ✅ | ❌ |
+| CCAA:16 | 45439 | 19519 | 14801.267 | 0.979 | ✅ | ❌ |
+| CCAA:17 | 6644 | 2802 | 2064.481 | 0.870 | ✅ | ❌ |
+| CCAA:18 | 1696 | 537 | 377.185 | 0.996 | ✅ | ❌ |
+| CCAA:19 | 1745 | 553 | 407.579 | 0.968 | ✅ | ❌ |
+| ES | 999974 | 393962 | 277613.268 | 0.945 | ✅ | ❌ |
 
 ## V-RAREZA
 
 | nivel | combinaciones | sin_donante | personas_afectadas | ok |
 | --- | --- | --- | --- | --- |
-| persona | 24709 | 0 | 0 | ✅ |
-| persona_y_hogar | 153450 | 0 | 0 | ✅ |
+| persona | 24616 | 0 | 0 | ✅ |
+| persona_y_hogar | 153518 | 0 | 0 | ✅ |
 
 ## Validación externa (no es puerta; se investiga si TVD > 2 × V-CRUCE)
 
@@ -1815,111 +1897,111 @@ Miembros del grupo: 9902 (mínimo pedido 10000); α = 0.8690, β = 3.0490; suma 
 
 | ccaa | sint_ocupado | ref_ocupado | sint_parado | ref_parado | paro_sint | paro_epa | tvd | dentro |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 01 | 0.4967 | 0.4935 | 0.0852 | 0.0841 | 0.1464 | 0.1456 | 0.0044 | ✅ |
-| 02 | 0.5501 | 0.5414 | 0.0448 | 0.0482 | 0.0754 | 0.0817 | 0.0086 | ✅ |
-| 03 | 0.4753 | 0.4763 | 0.0520 | 0.0478 | 0.0986 | 0.0912 | 0.0042 | ✅ |
-| 04 | 0.5926 | 0.6297 | 0.0377 | 0.0410 | 0.0598 | 0.0611 | 0.0403 | ✅ |
-| 05 | 0.5304 | 0.5206 | 0.0712 | 0.0683 | 0.1184 | 0.1160 | 0.0128 | ✅ |
-| 06 | 0.5122 | 0.5149 | 0.0477 | 0.0408 | 0.0852 | 0.0734 | 0.0069 | ✅ |
-| 07 | 0.5019 | 0.4991 | 0.0466 | 0.0456 | 0.0849 | 0.0837 | 0.0037 | ✅ |
-| 08 | 0.5295 | 0.5227 | 0.0692 | 0.0700 | 0.1156 | 0.1181 | 0.0068 | ✅ |
-| 09 | 0.5738 | 0.5717 | 0.0476 | 0.0490 | 0.0766 | 0.0790 | 0.0021 | ✅ |
-| 10 | 0.5268 | 0.5245 | 0.0634 | 0.0640 | 0.1074 | 0.1088 | 0.0023 | ✅ |
-| 11 | 0.4860 | 0.4761 | 0.0764 | 0.0725 | 0.1358 | 0.1322 | 0.0138 | ✅ |
-| 12 | 0.4947 | 0.4881 | 0.0424 | 0.0421 | 0.0789 | 0.0794 | 0.0069 | ✅ |
-| 13 | 0.5917 | 0.5908 | 0.0467 | 0.0485 | 0.0731 | 0.0758 | 0.0018 | ✅ |
-| 14 | 0.5482 | 0.5530 | 0.0653 | 0.0672 | 0.1065 | 0.1083 | 0.0067 | ✅ |
-| 15 | 0.5468 | 0.5368 | 0.0490 | 0.0471 | 0.0823 | 0.0807 | 0.0118 | ✅ |
-| 16 | 0.5241 | 0.5170 | 0.0447 | 0.0396 | 0.0785 | 0.0711 | 0.0122 | ✅ |
-| 17 | 0.5491 | 0.5373 | 0.0455 | 0.0516 | 0.0766 | 0.0877 | 0.0119 | ✅ |
-| 18 | 0.4860 | 0.5361 | 0.1522 | 0.1548 | 0.2385 | 0.2241 | 0.0527 | ✅ |
-| 19 | 0.4985 | 0.4116 | 0.1283 | 0.1077 | 0.2047 | 0.2074 | 0.1075 | ❌ |
+| 01 | 0.4968 | 0.4935 | 0.0854 | 0.0841 | 0.1467 | 0.1456 | 0.0047 | ✅ |
+| 02 | 0.5499 | 0.5414 | 0.0450 | 0.0482 | 0.0757 | 0.0817 | 0.0085 | ✅ |
+| 03 | 0.4756 | 0.4763 | 0.0529 | 0.0478 | 0.1000 | 0.0912 | 0.0050 | ✅ |
+| 04 | 0.5935 | 0.6297 | 0.0377 | 0.0410 | 0.0597 | 0.0611 | 0.0394 | ✅ |
+| 05 | 0.5303 | 0.5206 | 0.0709 | 0.0683 | 0.1180 | 0.1160 | 0.0124 | ✅ |
+| 06 | 0.5133 | 0.5149 | 0.0482 | 0.0408 | 0.0858 | 0.0734 | 0.0074 | ✅ |
+| 07 | 0.5022 | 0.4991 | 0.0465 | 0.0456 | 0.0847 | 0.0837 | 0.0040 | ✅ |
+| 08 | 0.5305 | 0.5227 | 0.0690 | 0.0700 | 0.1151 | 0.1181 | 0.0078 | ✅ |
+| 09 | 0.5742 | 0.5717 | 0.0476 | 0.0490 | 0.0766 | 0.0790 | 0.0026 | ✅ |
+| 10 | 0.5272 | 0.5245 | 0.0635 | 0.0640 | 0.1075 | 0.1088 | 0.0027 | ✅ |
+| 11 | 0.4863 | 0.4761 | 0.0759 | 0.0725 | 0.1349 | 0.1322 | 0.0135 | ✅ |
+| 12 | 0.4950 | 0.4881 | 0.0427 | 0.0421 | 0.0794 | 0.0794 | 0.0075 | ✅ |
+| 13 | 0.5918 | 0.5908 | 0.0467 | 0.0485 | 0.0732 | 0.0758 | 0.0017 | ✅ |
+| 14 | 0.5481 | 0.5530 | 0.0652 | 0.0672 | 0.1062 | 0.1083 | 0.0069 | ✅ |
+| 15 | 0.5486 | 0.5368 | 0.0481 | 0.0471 | 0.0806 | 0.0807 | 0.0127 | ✅ |
+| 16 | 0.5242 | 0.5170 | 0.0442 | 0.0396 | 0.0777 | 0.0711 | 0.0118 | ✅ |
+| 17 | 0.5472 | 0.5373 | 0.0456 | 0.0516 | 0.0769 | 0.0877 | 0.0100 | ✅ |
+| 18 | 0.4835 | 0.5361 | 0.1546 | 0.1548 | 0.2423 | 0.2241 | 0.0528 | ✅ |
+| 19 | 0.4967 | 0.4116 | 0.1222 | 0.1077 | 0.1974 | 0.2074 | 0.0996 | ✅ |
 
 ### ECV 2025: personas por tamaño del hogar
 
 | ccaa | sint_1 | sint_2 | sint_3 | sint_4 | sint_5+ | ref_1 | ref_2 | ref_3 | ref_4 | ref_5+ | tvd | dentro |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 01 | 0.1085 | 0.2258 | 0.2404 | 0.2641 | 0.1612 | 0.1071 | 0.2233 | 0.2409 | 0.2579 | 0.1708 | 0.0102 | ✅ |
-| 02 | 0.1304 | 0.2455 | 0.2411 | 0.2511 | 0.1319 | 0.1283 | 0.2440 | 0.2449 | 0.2330 | 0.1499 | 0.0217 | ✅ |
-| 03 | 0.1551 | 0.2914 | 0.2645 | 0.1896 | 0.0995 | 0.1546 | 0.2897 | 0.2655 | 0.1834 | 0.1068 | 0.0084 | ✅ |
-| 04 | 0.0967 | 0.2055 | 0.2326 | 0.2388 | 0.2264 | 0.0970 | 0.2062 | 0.2313 | 0.2235 | 0.2420 | 0.0167 | ✅ |
-| 05 | 0.1057 | 0.2100 | 0.2433 | 0.2202 | 0.2209 | 0.1053 | 0.2082 | 0.2429 | 0.1773 | 0.2663 | 0.0455 | ✅ |
-| 06 | 0.1311 | 0.2486 | 0.2512 | 0.2307 | 0.1383 | 0.1295 | 0.2462 | 0.2512 | 0.2192 | 0.1539 | 0.0156 | ✅ |
-| 07 | 0.1588 | 0.2629 | 0.2440 | 0.2191 | 0.1151 | 0.1573 | 0.2606 | 0.2455 | 0.2055 | 0.1311 | 0.0175 | ✅ |
-| 08 | 0.1156 | 0.2221 | 0.2348 | 0.2562 | 0.1713 | 0.1150 | 0.2211 | 0.2357 | 0.2707 | 0.1574 | 0.0154 | ✅ |
-| 09 | 0.1047 | 0.2352 | 0.2365 | 0.2386 | 0.1851 | 0.1040 | 0.2350 | 0.2371 | 0.2288 | 0.1951 | 0.0106 | ✅ |
-| 10 | 0.1147 | 0.2363 | 0.2413 | 0.2434 | 0.1642 | 0.1147 | 0.2369 | 0.2428 | 0.2297 | 0.1760 | 0.0138 | ✅ |
-| 11 | 0.1356 | 0.2528 | 0.2473 | 0.2557 | 0.1087 | 0.1335 | 0.2483 | 0.2488 | 0.2437 | 0.1257 | 0.0186 | ✅ |
-| 12 | 0.1303 | 0.2444 | 0.2537 | 0.2217 | 0.1499 | 0.1296 | 0.2435 | 0.2530 | 0.2226 | 0.1513 | 0.0022 | ✅ |
-| 13 | 0.1006 | 0.2224 | 0.2333 | 0.2521 | 0.1916 | 0.0985 | 0.2196 | 0.2330 | 0.2468 | 0.2020 | 0.0104 | ✅ |
-| 14 | 0.0901 | 0.1965 | 0.2217 | 0.2742 | 0.2175 | 0.0888 | 0.1939 | 0.2219 | 0.2586 | 0.2368 | 0.0195 | ✅ |
-| 15 | 0.1158 | 0.2226 | 0.2244 | 0.2497 | 0.1875 | 0.1152 | 0.2216 | 0.2264 | 0.2519 | 0.1848 | 0.0043 | ✅ |
-| 16 | 0.1360 | 0.2673 | 0.2340 | 0.2379 | 0.1249 | 0.1337 | 0.2655 | 0.2360 | 0.2353 | 0.1295 | 0.0067 | ✅ |
-| 17 | 0.1379 | 0.2511 | 0.2380 | 0.2453 | 0.1276 | 0.1364 | 0.2489 | 0.2398 | 0.2354 | 0.1396 | 0.0136 | ✅ |
-| 18 | 0.0699 | 0.1495 | 0.1935 | 0.2291 | 0.3580 | 0.0587 | 0.1663 | 0.2109 | 0.2097 | 0.3543 | 0.0342 | ✅ |
-| 19 | 0.0610 | 0.1453 | 0.1883 | 0.2278 | 0.3777 | 0.0733 | 0.1110 | 0.1503 | 0.2119 | 0.4536 | 0.0882 | ✅ |
+| 01 | 0.1083 | 0.2258 | 0.2402 | 0.2639 | 0.1618 | 0.1071 | 0.2233 | 0.2409 | 0.2579 | 0.1708 | 0.0098 | ✅ |
+| 02 | 0.1306 | 0.2440 | 0.2424 | 0.2498 | 0.1331 | 0.1283 | 0.2440 | 0.2449 | 0.2330 | 0.1499 | 0.0192 | ✅ |
+| 03 | 0.1553 | 0.2916 | 0.2642 | 0.1882 | 0.1006 | 0.1546 | 0.2897 | 0.2655 | 0.1834 | 0.1068 | 0.0075 | ✅ |
+| 04 | 0.0966 | 0.2071 | 0.2301 | 0.2384 | 0.2278 | 0.0970 | 0.2062 | 0.2313 | 0.2235 | 0.2420 | 0.0159 | ✅ |
+| 05 | 0.1061 | 0.2090 | 0.2436 | 0.2209 | 0.2204 | 0.1053 | 0.2082 | 0.2429 | 0.1773 | 0.2663 | 0.0459 | ✅ |
+| 06 | 0.1311 | 0.2489 | 0.2512 | 0.2336 | 0.1352 | 0.1295 | 0.2462 | 0.2512 | 0.2192 | 0.1539 | 0.0187 | ✅ |
+| 07 | 0.1589 | 0.2630 | 0.2445 | 0.2171 | 0.1166 | 0.1573 | 0.2606 | 0.2455 | 0.2055 | 0.1311 | 0.0156 | ✅ |
+| 08 | 0.1157 | 0.2227 | 0.2345 | 0.2547 | 0.1724 | 0.1150 | 0.2211 | 0.2357 | 0.2707 | 0.1574 | 0.0172 | ✅ |
+| 09 | 0.1046 | 0.2359 | 0.2360 | 0.2386 | 0.1849 | 0.1040 | 0.2350 | 0.2371 | 0.2288 | 0.1951 | 0.0113 | ✅ |
+| 10 | 0.1149 | 0.2365 | 0.2412 | 0.2432 | 0.1642 | 0.1147 | 0.2369 | 0.2428 | 0.2297 | 0.1760 | 0.0137 | ✅ |
+| 11 | 0.1359 | 0.2517 | 0.2490 | 0.2554 | 0.1080 | 0.1335 | 0.2483 | 0.2488 | 0.2437 | 0.1257 | 0.0177 | ✅ |
+| 12 | 0.1304 | 0.2445 | 0.2528 | 0.2225 | 0.1498 | 0.1296 | 0.2435 | 0.2530 | 0.2226 | 0.1513 | 0.0018 | ✅ |
+| 13 | 0.1008 | 0.2223 | 0.2332 | 0.2517 | 0.1920 | 0.0985 | 0.2196 | 0.2330 | 0.2468 | 0.2020 | 0.0101 | ✅ |
+| 14 | 0.0900 | 0.1961 | 0.2228 | 0.2735 | 0.2176 | 0.0888 | 0.1939 | 0.2219 | 0.2586 | 0.2368 | 0.0192 | ✅ |
+| 15 | 0.1152 | 0.2238 | 0.2261 | 0.2513 | 0.1836 | 0.1152 | 0.2216 | 0.2264 | 0.2519 | 0.1848 | 0.0022 | ✅ |
+| 16 | 0.1359 | 0.2667 | 0.2341 | 0.2385 | 0.1247 | 0.1337 | 0.2655 | 0.2360 | 0.2353 | 0.1295 | 0.0067 | ✅ |
+| 17 | 0.1392 | 0.2512 | 0.2359 | 0.2382 | 0.1355 | 0.1364 | 0.2489 | 0.2398 | 0.2354 | 0.1396 | 0.0080 | ✅ |
+| 18 | 0.0697 | 0.1477 | 0.1856 | 0.2306 | 0.3664 | 0.0587 | 0.1663 | 0.2109 | 0.2097 | 0.3543 | 0.0439 | ✅ |
+| 19 | 0.0645 | 0.1440 | 0.1829 | 0.2091 | 0.3995 | 0.0733 | 0.1110 | 0.1503 | 0.2119 | 0.4536 | 0.0657 | ✅ |
 
 ### Padrón 01/01/2022: proporción de extranjeros por provincia
 
 | provincia | sint_extranjera | ref_extranjera | tvd | dentro |
 | --- | --- | --- | --- | --- |
-| 01 | 0.1208 | 0.0987 | 0.0221 | ✅ |
-| 02 | 0.0930 | 0.0714 | 0.0215 | ✅ |
-| 03 | 0.2526 | 0.2044 | 0.0482 | ✅ |
-| 04 | 0.2313 | 0.2189 | 0.0124 | ✅ |
-| 05 | 0.0948 | 0.0663 | 0.0285 | ✅ |
-| 06 | 0.0441 | 0.0319 | 0.0121 | ✅ |
+| 01 | 0.1204 | 0.0987 | 0.0217 | ✅ |
+| 02 | 0.0993 | 0.0714 | 0.0279 | ✅ |
+| 03 | 0.2529 | 0.2044 | 0.0485 | ✅ |
+| 04 | 0.2238 | 0.2189 | 0.0049 | ✅ |
+| 05 | 0.0940 | 0.0663 | 0.0277 | ✅ |
+| 06 | 0.0403 | 0.0319 | 0.0084 | ✅ |
 | 07 | 0.2167 | 0.1887 | 0.0280 | ✅ |
-| 08 | 0.1814 | 0.1548 | 0.0266 | ✅ |
-| 09 | 0.1095 | 0.0835 | 0.0260 | ✅ |
-| 10 | 0.0547 | 0.0357 | 0.0190 | ✅ |
-| 11 | 0.0550 | 0.0419 | 0.0131 | ✅ |
-| 12 | 0.2131 | 0.1540 | 0.0591 | ✅ |
-| 13 | 0.0771 | 0.0644 | 0.0127 | ✅ |
-| 14 | 0.0369 | 0.0279 | 0.0090 | ✅ |
-| 15 | 0.0646 | 0.0416 | 0.0230 | ✅ |
-| 16 | 0.1436 | 0.1164 | 0.0272 | ✅ |
-| 17 | 0.2256 | 0.2046 | 0.0210 | ✅ |
-| 18 | 0.0977 | 0.0750 | 0.0227 | ✅ |
-| 19 | 0.1894 | 0.1388 | 0.0505 | ✅ |
-| 20 | 0.0988 | 0.0847 | 0.0141 | ✅ |
-| 21 | 0.1053 | 0.0968 | 0.0086 | ✅ |
-| 22 | 0.1676 | 0.1321 | 0.0355 | ✅ |
-| 23 | 0.0458 | 0.0283 | 0.0175 | ✅ |
-| 24 | 0.0685 | 0.0456 | 0.0229 | ✅ |
-| 25 | 0.2060 | 0.1887 | 0.0173 | ✅ |
-| 26 | 0.1531 | 0.1305 | 0.0226 | ✅ |
-| 27 | 0.0782 | 0.0520 | 0.0261 | ✅ |
-| 28 | 0.1670 | 0.1407 | 0.0262 | ✅ |
-| 29 | 0.1925 | 0.1673 | 0.0252 | ✅ |
-| 30 | 0.1632 | 0.1480 | 0.0152 | ✅ |
-| 31 | 0.1348 | 0.1106 | 0.0242 | ✅ |
-| 32 | 0.0850 | 0.0543 | 0.0307 | ✅ |
-| 33 | 0.0749 | 0.0454 | 0.0295 | ✅ |
-| 34 | 0.0798 | 0.0473 | 0.0325 | ✅ |
-| 35 | 0.1478 | 0.1265 | 0.0213 | ✅ |
-| 36 | 0.0671 | 0.0412 | 0.0259 | ✅ |
-| 37 | 0.0792 | 0.0487 | 0.0306 | ✅ |
-| 38 | 0.1550 | 0.1389 | 0.0160 | ✅ |
-| 39 | 0.0850 | 0.0636 | 0.0215 | ✅ |
-| 40 | 0.1434 | 0.1185 | 0.0250 | ✅ |
-| 41 | 0.0685 | 0.0411 | 0.0274 | ✅ |
-| 42 | 0.1387 | 0.0996 | 0.0392 | ✅ |
-| 43 | 0.1932 | 0.1681 | 0.0251 | ✅ |
-| 44 | 0.1337 | 0.1161 | 0.0177 | ✅ |
-| 45 | 0.1456 | 0.1042 | 0.0414 | ✅ |
-| 46 | 0.1681 | 0.1170 | 0.0511 | ✅ |
-| 47 | 0.0912 | 0.0568 | 0.0343 | ✅ |
-| 48 | 0.1020 | 0.0785 | 0.0234 | ✅ |
-| 49 | 0.0629 | 0.0379 | 0.0250 | ✅ |
-| 50 | 0.1567 | 0.1235 | 0.0332 | ✅ |
-| 51 | 0.0663 | 0.0591 | 0.0072 | ✅ |
-| 52 | 0.1324 | 0.1371 | 0.0047 | ✅ |
+| 08 | 0.1811 | 0.1548 | 0.0263 | ✅ |
+| 09 | 0.1108 | 0.0835 | 0.0273 | ✅ |
+| 10 | 0.0610 | 0.0357 | 0.0254 | ✅ |
+| 11 | 0.0547 | 0.0419 | 0.0128 | ✅ |
+| 12 | 0.2115 | 0.1540 | 0.0575 | ✅ |
+| 13 | 0.0789 | 0.0644 | 0.0145 | ✅ |
+| 14 | 0.0358 | 0.0279 | 0.0078 | ✅ |
+| 15 | 0.0664 | 0.0416 | 0.0248 | ✅ |
+| 16 | 0.1411 | 0.1164 | 0.0247 | ✅ |
+| 17 | 0.2268 | 0.2046 | 0.0222 | ✅ |
+| 18 | 0.0983 | 0.0750 | 0.0232 | ✅ |
+| 19 | 0.1887 | 0.1388 | 0.0498 | ✅ |
+| 20 | 0.0968 | 0.0847 | 0.0121 | ✅ |
+| 21 | 0.1125 | 0.0968 | 0.0157 | ✅ |
+| 22 | 0.1642 | 0.1321 | 0.0321 | ✅ |
+| 23 | 0.0451 | 0.0283 | 0.0168 | ✅ |
+| 24 | 0.0714 | 0.0456 | 0.0258 | ✅ |
+| 25 | 0.2093 | 0.1887 | 0.0206 | ✅ |
+| 26 | 0.1529 | 0.1305 | 0.0224 | ✅ |
+| 27 | 0.0770 | 0.0520 | 0.0250 | ✅ |
+| 28 | 0.1669 | 0.1407 | 0.0262 | ✅ |
+| 29 | 0.1941 | 0.1673 | 0.0268 | ✅ |
+| 30 | 0.1633 | 0.1480 | 0.0152 | ✅ |
+| 31 | 0.1351 | 0.1106 | 0.0245 | ✅ |
+| 32 | 0.0834 | 0.0543 | 0.0291 | ✅ |
+| 33 | 0.0753 | 0.0454 | 0.0299 | ✅ |
+| 34 | 0.0823 | 0.0473 | 0.0350 | ✅ |
+| 35 | 0.1481 | 0.1265 | 0.0216 | ✅ |
+| 36 | 0.0656 | 0.0412 | 0.0245 | ✅ |
+| 37 | 0.0806 | 0.0487 | 0.0320 | ✅ |
+| 38 | 0.1556 | 0.1389 | 0.0166 | ✅ |
+| 39 | 0.0854 | 0.0636 | 0.0218 | ✅ |
+| 40 | 0.1417 | 0.1185 | 0.0232 | ✅ |
+| 41 | 0.0696 | 0.0411 | 0.0284 | ✅ |
+| 42 | 0.1268 | 0.0996 | 0.0273 | ✅ |
+| 43 | 0.1935 | 0.1681 | 0.0254 | ✅ |
+| 44 | 0.1215 | 0.1161 | 0.0055 | ✅ |
+| 45 | 0.1418 | 0.1042 | 0.0375 | ✅ |
+| 46 | 0.1683 | 0.1170 | 0.0514 | ✅ |
+| 47 | 0.0915 | 0.0568 | 0.0347 | ✅ |
+| 48 | 0.1032 | 0.0785 | 0.0247 | ✅ |
+| 49 | 0.0585 | 0.0379 | 0.0206 | ✅ |
+| 50 | 0.1587 | 0.1235 | 0.0352 | ✅ |
+| 51 | 0.0678 | 0.0591 | 0.0087 | ✅ |
+| 52 | 0.1330 | 0.1371 | 0.0041 | ✅ |
 
 ## V-REPRO
 
 2026-01-01_ES_10000_s1 generado de nuevo en otro directorio: mismos hashes.
 
-- `persons.parquet`: `5491951cc5c1c553b3c4e71d83906db2837c480f6a9648f4b800e25fde0679bf`
-- `households.parquet`: `abdecd0663385f26febdd0be381c688463ec6bedc03e5cd5cf0faa35290f11f7`
-- `lineage.parquet`: `10c8f2f2df885593e174bd69f2afd2914b51b7ce76f6b82b6e5c50783a4a67ee`
+- `persons.parquet`: `e42f0ded05c3cdae791e1a8ef2d31c840d98ca8a4bdcdf2318df919fdd886e1f`
+- `households.parquet`: `45a7b1626838b7b32e89b93ad1acd3b8a3ed0fc0e51656dd56fc53bfea44e9b8`
+- `lineage.parquet`: `85c0a499044874700c2e3fbd631d22770dc184b2b285c4054e387359008c633c`
