@@ -106,8 +106,12 @@ def catalogo(max_paginas: int) -> list[dict]:
 def ficheros(estudio: dict) -> list[str]:
     texto = _pagina(estudio["url"], f"estudio_{estudio['estudio']}.html")
     n = estudio["estudio"]
-    enlaces = re.findall(r'href="([^"]*documents/20117/[^"]+)"', texto)
-    utiles = [e for e in enlaces if re.search(rf"/(MD{n}\.zip|cues{n}\.pdf|FT{n}\.pdf)$", e, re.I)]
+    enlaces = re.findall(r"(?:https://www\.cis\.es)?/documents/20117/\d+/[\w.%-]+", texto)
+    utiles = [
+        e
+        for e in enlaces
+        if re.search(rf"/(MD{n}\.zip|cues{n}(pdf)?\.pdf|FT{n}(pdf)?\.pdf)$", e, re.I)
+    ]
     return sorted({e if e.startswith("http") else BASE + e for e in utiles})
 
 
@@ -202,7 +206,10 @@ def main() -> None:
         raw = DATA_DIR / "eval" if posterior else RAW_DIR
         fuente = "cis" if posterior else "cis_barometros"
         destino = raw / fuente / e["estudio"]
-        for url in ficheros(e):
+        urls = ficheros(e)
+        if not urls:
+            print(f"  {e['estudio']} {e['titulo']}: sin ficheros en la ficha", flush=True)
+        for url in urls:
             nombre = url.rsplit("/", 1)[-1]
             if (destino / nombre).exists():
                 continue
