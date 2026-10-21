@@ -3801,6 +3801,16 @@ ficheros:
   condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
   via: automatica
 - fuente: cis_barometros
+  fichero: cis_barometros/3402/FT3402pdf.pdf
+  tipo: metodologia
+  edicion: '3402'
+  url_oficial: https://www.cis.es/documents/20117/1544721/FT3402pdf.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: d8d92963bdec2385beaa496fe168fabb943293eb924a29d6c60e6973f193e442
+  bytes: 101990
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
   fichero: cis_barometros/3403/FT3403pdf.pdf
   tipo: metodologia
   edicion: '3403'
