@@ -47,6 +47,7 @@ UMBRAL_RELATIVO = 0.6
 SIMILITUD_MIN = 0.15
 C_MODELO = 0.1
 C_ESCALA = 0.0025
+S_MIN = 0.01  # suelo de σ: sin él, una opción con p ≈ 0 en todas las análogas da cuantiles absurdos
 # El voto y la ideología empeoran la predicción fuera de la muestra (backtest, D-069): los
 # coeficientes se estiman con el voto **recordado** de los encuestados (sesgado hacia el PSOE y
 # con menos abstención) y se aplicarían al voto **real** calibrado de la población. Solo se usan
@@ -228,7 +229,7 @@ def intervalos(
     q = cal
     if similitud is not None and tramo(similitud) in cal.get("por_tramo", {}):
         q = cal["por_tramo"][tramo(similitud)]
-    s = np.sqrt(sd**2 + cal["c_escala"] * np.clip(mu * (1 - mu), 0, None))
+    s = np.maximum(np.sqrt(sd**2 + cal["c_escala"] * np.clip(mu * (1 - mu), 0, None)), S_MIN)
     i80 = np.column_stack([np.clip(mu - q["q80"] * s, 0, 1), np.clip(mu + q["q80"] * s, 0, 1)])
     i95 = np.column_stack([np.clip(mu - q["q95"] * s, 0, 1), np.clip(mu + q["q95"] * s, 0, 1)])
     return i80, i95
@@ -289,5 +290,11 @@ def predecir(q: Pregunta, excluir: pl.Expr | None = None, run_id: str = P.NACION
     scis, sdcis = _combinar([sis_cis[i] for i in validas], pesos)
     b1c, _ = _combinar(b1, pesos)
     b0c = (np.array(b0) * (pesos / pesos.sum())[:, None]).sum(0)
+    # combinación de estimadores para la medición del CIS (pesos aprendidos en el backtest de
+    # construcción, `calibracion.combinar`)
+    w = calibracion().get("combinacion")
+    if w:
+        scis = dict(scis)
+        scis["total"] = w["sistema_cis"] * scis["total"] + w["b0"] * b0c + w["b1"] * b1c["total"]
     seg = (dt.datetime.now() - t0).total_seconds()
     return Resultado(q, an, sistema, sd, b0c, b1c, seg, scis, sdcis)

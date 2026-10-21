@@ -7,54 +7,63 @@
  "estudios_reservados_f11": {
   "3582": "2026-10-01"
  },
- "preguntas": 1,
+ "preguntas": 107,
  "sin_analogas": [
   "CIS-3571-P2",
   "CIS-3571-P3",
+  "CIS-3571-P6",
   "CIS-3577-P1",
   "CIS-3577-P2",
-  "CIS-3577-P3"
+  "CIS-3577-P3",
+  "CIS-3577-P4",
+  "CIS-3577-P5",
+  "CIS-3577-P6",
+  "CIS-3577-P7A",
+  "CIS-3577-P7A_1",
+  "CIS-3577-P7A_2",
+  "CIS-3577-P11",
+  "CIS-3577-P12"
  ],
  "g9_1": {
-  "salidas": 1,
-  "validas": 1
+  "salidas": 107,
+  "validas": 107
  },
  "g9_2": {
   "todas": {
-   "sistema_cis": 0.3567713064671064,
-   "sistema": 0.37976581808647925,
-   "b0": 0.36280750098025316,
-   "b1": 0.36137845637403043,
-   "preguntas": 1
+   "sistema_cis": 0.06816262274727161,
+   "sistema": 0.0680083498612985,
+   "b0": 0.06703584844618088,
+   "b1": 0.06606059644166706,
+   "preguntas": 107
   },
   "recurrentes": {
-   "sistema_cis": 0.3567713064671064,
-   "sistema": 0.37976581808647925,
-   "b0": 0.36280750098025316,
-   "b1": 0.36137845637403043,
-   "preguntas": 1
+   "sistema_cis": 0.050722474362681895,
+   "sistema": 0.049717950098660715,
+   "b0": 0.048561541705196526,
+   "b1": 0.04795669356339756,
+   "preguntas": 86
   },
   "nuevas": {
-   "sistema_cis": null,
-   "sistema": null,
-   "b0": null,
-   "b1": null,
-   "preguntas": 0
+   "sistema_cis": 0.13958418279844859,
+   "sistema": 0.14291189174638652,
+   "b0": 0.142692533194974,
+   "b1": 0.14020038918124694,
+   "preguntas": 21
   },
   "politicas": {
-   "sistema_cis": null,
-   "sistema": null,
-   "b0": null,
-   "b1": null,
-   "preguntas": 0
+   "sistema_cis": 0.05836682450127312,
+   "sistema": 0.05772839915650056,
+   "b0": 0.05694143382823046,
+   "b1": 0.0561748916921668,
+   "preguntas": 32
   },
   "subgrupos": {
-   "sistema": 0.37746173637079994,
-   "b1": 0.3605282043879866
+   "sistema": 0.07681782249714067,
+   "b1": 0.07436920991902825
   },
   "ccaa": {
-   "sistema": 0.38345935820332455,
-   "b1": 0.3658335471613201
+   "sistema": 0.08695823849715363,
+   "b1": 0.08581220950428335
   },
   "b2": "no ejecutado: necesita un modelo de lenguaje (D-069)"
  },
@@ -65,15 +74,15 @@
   "segundos_por_pregunta": null
  },
  "g9_4": {
-  "preguntas": 1,
-  "tvd_media": 0.0025973129901192015,
-  "tvd_max": 0.0025973129901192015,
+  "preguntas": 107,
+  "tvd_media": 0.000129339518989553,
+  "tvd_max": 0.002635466165487993,
   "por_encima_umbral": 0
  },
  "g9_5": {
-  "cobertura80": 0.5,
-  "cobertura95": 0.5,
-  "casos": 4
+  "cobertura80": 0.7737341772151899,
+  "cobertura95": 0.9556962025316456,
+  "casos": 632
  },
  "g9_6": {
   "pares": 26,

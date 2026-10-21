@@ -147,7 +147,8 @@ def construir(r: E.Resultado, run_id: str) -> dict:
                 }
                 for a in r.analogas
             ],
-            "calibracion": cal,
+            "calibracion": {k: v for k, v in cal.items() if k != "combinacion"},
+            "combinacion_medicion_cis": cal.get("combinacion"),
         },
         "preguntas_similares": [a["id"] for a in r.analogas],
         "coste": {"llamadas": 0, "tokens": 0, "eur": 0.0, "segundos": round(r.segundos, 2)},

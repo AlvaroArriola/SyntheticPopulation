@@ -1498,3 +1498,52 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - **G8C.1** (*backtest* con 11 orígenes, de t + 1 a t + 3, solo información hasta t): error medio del modelo 1,90 puntos frente a 2,29 de la persistencia. Gana en 8 de los 9 indicadores; en vivienda, con tendencia sostenida, pierde (4,61 frente a 4,44).
   - **G8C.2:** diferencia media de 1,57 puntos entre las series de la población y las del CIS. La mayor parte es **composición**: la población está calibrada al voto oficial (D-067), mientras que la muestra del CIS sobrerrepresenta el recuerdo del PSOE (30,9 % frente al 22,1 % oficial) e infrarrepresenta la abstención (15,8 % frente al 29,6 %). Por eso la población tiene menos «izquierda» (36 % frente a 43-47 %) y algo menos de optimismo económico. Octubre de 2025 es un mes atípico del CIS (3,6 puntos de media) que el nivel suavizado no sigue.
   - **G8C.3:** 16/16 eventos con efecto e intervalo.
+
+## D-069 · Capa de predicción sin modelo de lenguaje (F9) y ventana de validación (2026-10-21)
+
+- **Fecha:** 2026-10-21
+- **Fase:** F9 (sin revisión humana obligatoria en `docs/04`)
+- **Estado:** decisión de la persona responsable sobre el LLM; el resto, del agente.
+- **Decisión de la persona responsable:**
+  - «Haz todo lo que puedas sin el LLM. Me gustaría incorporar un LLM pero al final, o cuando aporte una ventaja real».
+  - Se usa un modelo de lenguaje solo cuando no haya una opción gratuita que haga lo mismo.
+  - Queda fuera del plan la simulación de 1.000 personas con un LLM: es lo más caro y lo más expuesto a estereotipos (`docs/06` §5).
+  - Sin modelo declarado en `configs/llm.yaml`, el coste es 0 €.
+- **Ventana de datos posteriores al corte** (`data/eval/cis/`, regla 5):
+  - **Validación:** barómetros de julio (3571) y septiembre (3577) de 2026, para F9 y F10.
+  - **Evaluación final:** octubre de 2026 (3582) y los que se añadan. No se lee hasta F11.
+  - Solo `src/sinpop/evaluate/validacion.py` lee la ventana. El predictor recibe únicamente el enunciado, las opciones y el mes.
+- **Predictor** (`src/sinpop/predict/`):
+  - **Banco:** 2.738 preguntas cerradas de los estudios nacionales del CIS anteriores al corte (sin variables de perfil, control de campo ni recodificaciones).
+  - **Recuperación:** TF-IDF de n-gramas de caracteres (3-5) y de palabras (1-2) del enunciado y las opciones. El entorno no puede descargar *embeddings* neuronales (Hugging Face está bloqueado); serían la mejora natural.
+  - **Alineación de opciones sin inventar:** por etiqueta normalizada, NS/NC por tipo, escalas numéricas por posición relativa y ordinales del mismo tamaño por posición. Si una opción sustantiva no se puede alinear, la análoga se descarta.
+  - **Análogas:** hasta 5, con peso similitud² · 0,5^(meses / 12), y con similitud de al menos el 60 % de la mejor.
+- **Estimadores:**
+  - **Sistema:** regresión multinomial ponderada con los encuestados de cada análoga, aplicada a una muestra fija de 100.000 adultos sintéticos.
+    - Predictores: perfil (los de F8A) más valores (religiosidad y clase subjetiva).
+    - El desglose por recuerdo de voto usa además el voto y la autoubicación.
+  - **B0:** distribución histórica de las análogas.
+  - **B1:** el mismo modelo solo con perfil, posestratificado a los españoles sintéticos.
+  - **B2:** necesita un LLM y no se ejecuta.
+- **Hallazgo 1 (backtest de construcción, 167 preguntas de abril a junio de 2026):**
+  - Añadir el voto y la ideología **empeora** la predicción, incluso en preguntas políticas: TVD 0,060 frente a 0,050 sin ellos; con todo, 0,041 frente a 0,034 con solo los valores.
+  - Causa: los coeficientes se estiman con el voto **recordado** de los encuestados (más PSOE, menos abstención) y se aplicarían al voto **real** calibrado de la población.
+  - Por eso solo se usan para el desglose por voto.
+- **Hallazgo 2:** la población sintética está calibrada a la realidad (D-067), pero lo que se valida es lo que mide el CIS. Hay dos salidas:
+  - `total`: lo que piensa la población.
+  - `medicion_cis`: los españoles con *raking* a la composición de las muestras del CIS (recuerdo de voto, edad × sexo, estudios y comunidad).
+- **Hallazgo 3:** la combinación de estimadores con pesos aprendidos en el backtest (rejilla convexa, `docs/03` §2.7) da todo el peso a B0. Para el total nacional que mide el CIS en una pregunta parecida a otras del banco, el mejor predictor es su propio historial reciente; el modelo con la población no lo mejora.
+  - `medicion_cis` usa esa combinación (se ve en `parametros.combinacion_medicion_cis`).
+  - La población aporta el modo `total`, los subgrupos y los territorios sin muestra propia.
+- **Incertidumbre:**
+  - σ = desacuerdo entre análogas más un término de escala, con un suelo de 0,01.
+  - Intervalo = p ± q·σ, con q conformal por tramo de similitud de la mejor análoga (0-0,4 / 0,4-0,7 / 0,7-1), calibrado en el backtest de construcción.
+- **Confianza:** provisional, la similitud rebajada por el desacuerdo entre análogas. La sustituye F10.
+- **Modo evento:**
+  - El tipo de evento y el indicador los da quien pregunta; el cambio es la media de los eventos del banco del mismo tipo y ámbito.
+  - Falla V-EVENTO (6/15 eventos): la analogía por tipo no sabe quién gana o pierde en cada elección.
+  - Es el primer caso en que un modelo de lenguaje (o un analista) aportaría información que el método gratuito no tiene.
+- **Preguntas sin precedentes:** cuando la mejor análoga tiene similitud < 0,4, ningún método acierta (TVD ≈ 0,24-0,29). Hay 14 preguntas de la validación sin ninguna análoga alineable. Es el segundo caso candidato a un LLM.
+- **Pendiente:**
+  - B2 y G9.7 quedan para cuando se incorpore un modelo de lenguaje.
+  - Antes, un piloto pequeño (menos de 5 $ o con un modelo local) medirá si mejora el modo evento y las preguntas sin precedentes frente a lo actual.
