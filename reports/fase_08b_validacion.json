@@ -1,6 +1,6 @@
 {
  "fecha": "2026-10-21",
- "version_codigo": "git:8eb0b2c-dirty",
+ "version_codigo": "git:5886aac-dirty",
  "run_id": "2026-01-01_ES_1000000_s1",
  "g8b1": {
   "provincias": 52,
@@ -15,19 +15,19 @@
   "ccaa_dentro": 47,
   "ccaa_fuera": [
    {
-    "ccaa": "06",
-    "tamano_municipio": "hasta_2000",
-    "tvd": 0.06254543392296469,
-    "error_participacion_pp": 5.270689512948349
-   },
-   {
     "ccaa": "15",
     "tamano_municipio": "de_10001_a_50000",
     "tvd": 0.0823861017324996,
     "error_participacion_pp": 4.448959742372799
+   },
+   {
+    "ccaa": "06",
+    "tamano_municipio": "hasta_2000",
+    "tvd": 0.06254543392296469,
+    "error_participacion_pp": 5.270689512948349
    }
   ],
-  "tvd_media_ccaa": 0.035488250197808074,
+  "tvd_media_ccaa": 0.03548825019780807,
   "error_participacion_max_pp": 5.270689512948349
  },
  "g8b3": {
@@ -35,7 +35,7 @@
   "comparaciones": 24,
   "dentro": 24,
   "fuera": [],
-  "tvd_max": 0.07678981690027475
+  "tvd_max": 0.0767898169002748
  },
  "g8b4": {
   "electorados": 9,
@@ -59,7 +59,7 @@
  "g8b7": {
   "diversidad_comparaciones": 63,
   "diversidad_dentro": 63,
-  "diversidad_razon_min": 0.9445127250534615,
+  "diversidad_razon_min": 0.9445127250534614,
   "diversidad_fuera": [],
   "contrafactual_dentro": 9,
   "contrafactual_electorados": 9,

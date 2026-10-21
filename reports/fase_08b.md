@@ -53,7 +53,7 @@ Ver `reports/fase_08b_puerta.md` (`sinpop validate --phase 8b`).
 | V-LATENTE (tarea 6) | ✅ | Izquierda-derecha CFI 0,966 / RMSEA 0,064 / omega 0,72; desafección 0,991 / 0,059 / 0,85; implicación 0,971 / 0,066 / 0,75 (conjunto); eje territorial 0,999 / 0,030 / 0,72 |
 | G8B.9 Revisión humana | ⏸️ | Pendiente |
 
-**Reproducibilidad:** ver la sección «Reproducibilidad» al final.
+**Reproducibilidad:** dos construcciones seguidas de `politics.parquet` con la misma semilla dan el mismo SHA-256 (`d2e34eeb…`) y ninguna columna distinta.
 
 ## Decisiones que necesitan aprobación (D-067)
 
@@ -76,4 +76,8 @@ Los cambios de los puntos 2 a 4 se hicieron después de ver el primer resultado;
 
 ## Reproducibilidad
 
-Se reporta tras la comprobación de dos construcciones con la misma semilla.
+- La primera comprobación falló: dos construcciones daban hashes distintos.
+- Causas:
+  - el orden de iteración de `group_by` en el emparejamiento ESS y en las celdas de tamaño de la calibración;
+  - joins que no conservan el orden en los datos de entrenamiento (la validación cruzada y el sorteo de residuos dependen del orden).
+- Corregido con orden explícito. Ahora dos construcciones dan `d2e34eeb…` las dos veces.

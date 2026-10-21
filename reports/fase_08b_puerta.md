@@ -1,13 +1,13 @@
 # Puerta de la fase F8b
 
 **Resultado:** fallida  
-**Fecha:** 2026-10-21 · **Versión del código:** git:8eb0b2c-dirty  
+**Fecha:** 2026-10-21 · **Versión del código:** git:5886aac-dirty  
 **Comando:** `sinpop validate --phase 8b`
 
 | ID | Comprobación | Resultado | Valor | Umbral |
 | --- | --- | --- | --- | --- |
 | G8B.1 | Recuerdo de generales por provincia frente al oficial (V-POL-RECUERDO) | ✅ | 52/52 provincias; TVD máx. 0.026 | TVD ≤ 1,2 × TVD_ref + 0,005 en cada provincia |
-| G8B.2 | Mitad reservada de municipios frente al oficial (V-POL-RESERVADA) | ❌ | España 6/6; CCAA × tamaño 47/49 evaluables; fuera: ['06 hasta_2000', '15 de_10001_a_50000'] | TVD ≤ 0,04 España y ≤ 0,06 CCAA (+ ruido de muestreo); participación ≤ 3 puntos |
+| G8B.2 | Mitad reservada de municipios frente al oficial (V-POL-RESERVADA) | ❌ | España 6/6; CCAA × tamaño 47/49 evaluables; fuera: ['15 de_10001_a_50000', '06 hasta_2000'] | TVD ≤ 0,04 España y ≤ 0,06 CCAA (+ ruido de muestreo); participación ≤ 3 puntos |
 | G8B.3 | Perfil de cada electorado frente al postelectoral 3420 (V-POL-PERFIL) | ✅ | 24/24; TVD máx. 0.077 | TVD ≤ 0,08 por variable en electorados con ≥ 300 casos |
 | G8B.4 | Ideología dentro de cada electorado frente al CIS (V-POL-COHERENCIA) | ✅ | 9/9 electorados; fuera: 0 | media ± 0,3; razón de desviaciones en [0,8; 1,2] |
 | G8B.5 | Transferencia generales → autonómicas frente al CIS (V-POL-TRANSFERENCIA) | ✅ | 28/28 filas; TVD media 0.027 | TVD ≤ 0,10 por fila con ≥ 200 casos (CIS ajustado por IPF a los márgenes oficiales) |
