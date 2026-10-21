@@ -1665,7 +1665,8 @@ def _f10() -> dict | None:
     ruta = REPO_ROOT / "reports" / "fase_10_validacion.json"
     if not ruta.exists():
         return None
-    return json.loads(ruta.read_text(encoding="utf-8"))["calibrado_en_validacion"]
+    d = json.loads(ruta.read_text(encoding="utf-8"))
+    return d[d.get("publicada", "calibrado_en_validacion")] | {"publicada": d.get("publicada")}
 
 
 def _sin_f10(id_: str, desc: str, um: str) -> Check:
@@ -1682,7 +1683,8 @@ def _g10_1() -> Check:
     if d is None:
         return _sin_f10("G10.1", desc, um)
     r = d["spearman_confianza"]
-    return Check("G10.1", desc, r >= rmin, f"{r:.3f} ({d['casos']} casos)", um)
+    valor = f"{r:.3f} ({d['casos']} casos; confianza publicada: {d['publicada']})"
+    return Check("G10.1", desc, r >= rmin, valor, um)
 
 
 def _g10_2() -> Check:

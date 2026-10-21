@@ -6,8 +6,11 @@ compara con la confianza del modelo entrenado en el *backtest* histórico:
 
 - **sin recalibrar:** el modelo tal como sale del *backtest*;
 - **calibrado en validación** (`docs/04`, F10, tarea 3), sin ver la misma pregunta: isotónica
-  ajustada en un barómetro y evaluada en el otro (y al revés). La que se publica
-  (`confidence.modelo.RECALIBRACION`) se ajusta con los dos; sus métricas son las cruzadas.
+  ajustada en un barómetro y evaluada en el otro (y al revés).
+
+Se publica la recalibración (`confidence.modelo.RECALIBRACION`, ajustada con los dos barómetros)
+solo si mejora el ECE cruzado; si no, la confianza publicada es la del modelo tal cual. La puerta
+F10 evalúa la variante publicada (`publicada`).
 
 Comando: `python -m sinpop.evaluate.confianza`
 """
@@ -81,16 +84,21 @@ def ejecutar(limite: int | None = None) -> dict:
     dc = pl.concat(cal)
     con = M.metricas(dc)
     dc.write_csv(FILAS)
-    # la que se publica: isotónica con los dos barómetros (sus métricas son las cruzadas de arriba)
-    final = IsotonicRegression(out_of_bounds="clip", y_min=0, y_max=1).fit(
-        d["confianza"].to_numpy(), (d["tvd"].to_numpy() <= M.UMBRAL_TVD).astype(float)
-    )
-    M.RECALIBRACION.parent.mkdir(parents=True, exist_ok=True)
-    M.RECALIBRACION.write_bytes(pickle.dumps(final))
+    # se publica la recalibración solo si mejora la calibración cruzada; si no, el modelo tal cual
+    recalibrar = con["ece"] < sin["ece"]
+    if recalibrar:
+        final = IsotonicRegression(out_of_bounds="clip", y_min=0, y_max=1).fit(
+            d["confianza"].to_numpy(), (d["tvd"].to_numpy() <= M.UMBRAL_TVD).astype(float)
+        )
+        M.RECALIBRACION.parent.mkdir(parents=True, exist_ok=True)
+        M.RECALIBRACION.write_bytes(pickle.dumps(final))
+    else:
+        M.RECALIBRACION.unlink(missing_ok=True)
     res = {
         "estudios": estudios,
         "sin_recalibrar": sin,
         "calibrado_en_validacion": con,
+        "publicada": "calibrado_en_validacion" if recalibrar else "sin_recalibrar",
         "tvd_umbral": M.UMBRAL_TVD,
     }
     DESTINO.write_text(json.dumps(res, ensure_ascii=False, indent=1), "utf-8")

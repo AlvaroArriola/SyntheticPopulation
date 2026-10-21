@@ -1,0 +1,76 @@
+{
+ "filas": 9511,
+ "preguntas": 384,
+ "validacion_cruzada_backtest": {
+  "casos": 9511,
+  "spearman_error": 0.7638391764278648,
+  "spearman_confianza": 0.7663442910411793,
+  "ece": 0.018029544775169052,
+  "spearman_confianza_n_subgrupo": 0.32498823641803437,
+  "spearman_confianza_n_ccaa": 0.24552516898858343,
+  "confianza_media_total": 0.6934303454492031,
+  "confianza_media_subgrupos": 0.5487799717157521,
+  "diagrama_calibracion": [
+   {
+    "bin": "0.0-0.1",
+    "casos": 1695,
+    "confianza_media": 0.06375121065075774,
+    "acierto": 0.08672566371681416
+   },
+   {
+    "bin": "0.1-0.2",
+    "casos": 1241,
+    "confianza_media": 0.1373172503426265,
+    "acierto": 0.1232876712328767
+   },
+   {
+    "bin": "0.2-0.3",
+    "casos": 601,
+    "confianza_media": 0.2467258222733301,
+    "acierto": 0.24958402662229617
+   },
+   {
+    "bin": "0.3-0.4",
+    "casos": 384,
+    "confianza_media": 0.34009939102317494,
+    "acierto": 0.3046875
+   },
+   {
+    "bin": "0.4-0.5",
+    "casos": 286,
+    "confianza_media": 0.4495519195169166,
+    "acierto": 0.3916083916083916
+   },
+   {
+    "bin": "0.5-0.6",
+    "casos": 363,
+    "confianza_media": 0.5538003992595391,
+    "acierto": 0.5261707988980716
+   },
+   {
+    "bin": "0.6-0.7",
+    "casos": 436,
+    "confianza_media": 0.6485333608791308,
+    "acierto": 0.7247706422018348
+   },
+   {
+    "bin": "0.7-0.8",
+    "casos": 612,
+    "confianza_media": 0.7511334177777073,
+    "acierto": 0.7777777777777778
+   },
+   {
+    "bin": "0.8-0.9",
+    "casos": 945,
+    "confianza_media": 0.8546299044320088,
+    "acierto": 0.8391534391534392
+   },
+   {
+    "bin": "0.9-1.0",
+    "casos": 2948,
+    "confianza_media": 0.9626736122151294,
+    "acierto": 0.9657394843962008
+   }
+  ]
+ }
+}

@@ -1553,3 +1553,42 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
     2. contar en V-EVENTO solo los efectos observados significativos (cuatro de los fallos tienen un IC 95 % que incluye 0).
   - La segunda cambia la definición de una puerta y necesita aprobación.
   - Mientras tanto se sigue con F10, que no depende del modo evento.
+
+## D-070 · Modelo de confianza (F10) (2026-10-21)
+
+- **Fecha:** 2026-10-21
+- **Fase:** F10 (sin revisión humana obligatoria en `docs/04`)
+- **Estado:** decisión del agente, bajo la instrucción de la persona responsable de avanzar sin preguntar durante la noche. Revisable.
+- **Qué significa la confianza:** la probabilidad de que el error de la predicción (TVD frente a la medición del CIS) sea ≤ 0,10, la definición de acierto de V-CONF-ECE (`configs/thresholds.yaml`). Se da para el total y para cada subgrupo. Junto a ella se publica el error predicho (TVD esperada).
+- ***Backtest*** (`src/sinpop/confidence/backtest.py`, tarea 1):
+  - Universo: una de cada dos preguntas del banco con campo entre julio de 2025 y junio de 2026 (384 preguntas con análogas y al menos 200 encuestados).
+  - Cada una se predice con un banco limitado a los estudios anteriores a su fecha y solo con el componente estadístico (no hay LLM).
+  - El error se mide en el total y en cada subgrupo con al menos 50 encuestados (edad en cuatro grupos, sexo, estudios, comunidad): 9.511 filas.
+  - Alternativa descartada: todas las preguntas desde 2023. El banco anterior a 2024 es pequeño y daría análogas peores que las de un uso real; un año de preguntas basta para 9.500 casos.
+- **Señales** (`docs/03` §2.7; `senales.py`):
+  - similitud de la mejor análoga y media;
+  - número de análogas y desacuerdo entre ellas;
+  - distancia del sistema a B0 y a B1;
+  - anchura del IC80;
+  - datos del subgrupo (encuestados de las análogas en ese subgrupo);
+  - número de opciones y si la escala es ordinal;
+  - antigüedad de la análoga más reciente;
+  - si la pregunta es recurrente y si la fila es de un subgrupo.
+  - La sensibilidad a reformulaciones no se usa: en F9 fue prácticamente nula (G9.4) y no discrimina.
+- **Modelo** (`modelo.py`):
+  - *Gradient boosting* con **restricciones de monotonía**: más similitud y más datos del subgrupo nunca bajan la confianza; más desacuerdo, más distancia entre estimadores, un intervalo más ancho o una análoga más antigua nunca la suben.
+  - Calibración isotónica con validación cruzada agrupada por pregunta.
+  - Las restricciones hacen que G10.3 se cumpla por construcción y evitan relaciones espurias de un *backtest* finito.
+  - Alternativa descartada: regresión logística con las mismas señales estandarizadas y los mismos pliegues. Da Spearman 0,73 y ECE 0,055, peor que el modelo elegido (0,77 y 0,018) y por encima del umbral de ECE.
+- **Resultado en el *backtest*** (validación cruzada por pregunta, cinco pliegues):
+  - Spearman entre confianza y −error: 0,77.
+  - ECE: 0,018.
+  - Señales más útiles (importancia por permutación): número de opciones, datos del subgrupo, antigüedad de la análoga, anchura del intervalo y similitud.
+- **Calibración en la ventana de validación** (tarea 3; julio y septiembre de 2026; `src/sinpop/evaluate/confianza.py`):
+  - Sin recalibrar, el modelo ya está calibrado: ECE 0,018 y Spearman 0,76 en 2.588 casos.
+  - Una isotónica ajustada en un barómetro y evaluada en el otro **empeora** el ECE (0,047): con dos barómetros se sobreajusta.
+  - Regla: la recalibración solo se publica si mejora el ECE cruzado. Hoy no lo mejora, así que la confianza publicada es la del modelo del *backtest*, y la puerta evalúa esa variante (`publicada` en `reports/fase_10_validacion.json`).
+- **Salidas:** `predict/salida.py` usa este modelo (`confianza.metodo` lo indica). La confianza provisional de F9 queda solo como reserva si el modelo no está construido.
+- **Límites:**
+  - La calibración de los intervalos de F9 (tramos conformales) se aprendió con preguntas de abril a junio de 2026, que están dentro del periodo del *backtest*. Afecta solo a la señal «anchura del IC80», no a los errores medidos. En validación (julio-septiembre) no hay solapamiento, y los resultados son iguales.
+  - Sin LLM, la confianza describe el componente estadístico. Si se incorpora un LLM, hay que repetir el *backtest* con él.
