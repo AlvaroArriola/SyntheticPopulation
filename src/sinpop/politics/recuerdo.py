@@ -260,7 +260,7 @@ def asignar(
         if not len(sel):
             continue
         formas = {}
-        for c in formas_df.filter(pl.col("provincia") == p)["tamano_municipio"].unique():
+        for c in formas_df.filter(pl.col("provincia") == p)["tamano_municipio"].unique().sort():
             rr = dict(
                 formas_df.filter((pl.col("provincia") == p) & (pl.col("tamano_municipio") == c))
                 .select("opcion", "r")

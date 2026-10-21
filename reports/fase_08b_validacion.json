@@ -1,6 +1,6 @@
 {
  "fecha": "2026-10-21",
- "version_codigo": "git:84fbfe8-dirty",
+ "version_codigo": "git:8eb0b2c-dirty",
  "run_id": "2026-01-01_ES_1000000_s1",
  "g8b1": {
   "provincias": 52,
@@ -27,71 +27,27 @@
     "error_participacion_pp": 4.448959742372799
    }
   ],
-  "tvd_media_ccaa": 0.03548825019780807,
+  "tvd_media_ccaa": 0.035488250197808074,
   "error_participacion_max_pp": 5.270689512948349
  },
  "g8b3": {
   "estudio_cis": "3420",
   "comparaciones": 24,
-  "dentro": 14,
-  "fuera": [
-   {
-    "electorado": "izquierda_estatal",
-    "variable": "edad_4",
-    "tvd": 0.0961818024270983
-   },
-   {
-    "electorado": "izquierda_estatal",
-    "variable": "estudios_3",
-    "tvd": 0.16688352303634504
-   },
-   {
-    "electorado": "socialdemocrata",
-    "variable": "edad_4",
-    "tvd": 0.08456059158699251
-   },
-   {
-    "electorado": "socialdemocrata",
-    "variable": "estudios_3",
-    "tvd": 0.22506652361124924
-   },
-   {
-    "electorado": "centro_derecha_estatal",
-    "variable": "estudios_3",
-    "tvd": 0.22266056606755016
-   },
-   {
-    "electorado": "derecha_radical",
-    "variable": "estudios_3",
-    "tvd": 0.2172528590803054
-   },
-   {
-    "electorado": "nacionalista_regionalista",
-    "variable": "edad_4",
-    "tvd": 0.08436837384714942
-   },
-   {
-    "electorado": "nacionalista_regionalista",
-    "variable": "estudios_3",
-    "tvd": 0.16243883498961142
-   },
-   {
-    "electorado": "abstencion",
-    "variable": "edad_4",
-    "tvd": 0.08947595430287508
-   },
-   {
-    "electorado": "abstencion",
-    "variable": "estudios_3",
-    "tvd": 0.21167002255611808
-   }
-  ],
-  "tvd_max": 0.22506652361124924
+  "dentro": 24,
+  "fuera": [],
+  "tvd_max": 0.07678981690027475
  },
  "g8b4": {
   "electorados": 9,
   "dentro": 9,
   "fuera": []
+ },
+ "g8b5": {
+  "filas": 165,
+  "evaluables": 28,
+  "dentro": 28,
+  "fuera": [],
+  "tvd_media": 0.027473238906796708
  },
  "g8b6": {
   "base_con_politica": [],
@@ -105,29 +61,141 @@
   "diversidad_dentro": 63,
   "diversidad_razon_min": 0.9445127250534615,
   "diversidad_fuera": [],
-  "contrafactual_dentro": 7,
+  "contrafactual_dentro": 9,
   "contrafactual_electorados": 9,
-  "contrafactual_fuera": [
-   {
-    "electorado": "centro_derecha_estatal",
-    "diferencia_contrafactual": 3.1757381585231474,
-    "diferencia_datos": 3.4782218879014986,
-    "celdas": 24,
-    "ok": false
-   },
-   {
-    "electorado": "derecha_radical",
-    "diferencia_contrafactual": 3.969930944252506,
-    "diferencia_datos": 4.3597198910023325,
-    "celdas": 24,
-    "ok": false
-   }
-  ]
+  "contrafactual_fuera": []
  },
  "g8b8": {
   "sin_derecho": 144533,
   "sin_derecho_con_recuerdo": 0,
   "con_derecho_sin_recuerdo": 0,
+  "autonomicas": {
+   "sin_derecho": 136913,
+   "sin_derecho_con_recuerdo": 0,
+   "con_derecho_sin_recuerdo": 0
+  },
   "ok": true
- }
+ },
+ "latentes": [
+  {
+   "rasgo": "rasgo_izquierda_derecha",
+   "items": [
+    "atchctr",
+    "gincdif",
+    "hmsacld",
+    "imdfetn",
+    "lrscale",
+    "posicion_partido_votado",
+    "rlgdgr"
+   ],
+   "estudios": [
+    "ESS11"
+   ],
+   "n_completos": 982,
+   "cargas": {
+    "atchctr": 0.488,
+    "gincdif": 0.366,
+    "hmsacld": 0.482,
+    "imdfetn": 0.449,
+    "lrscale": 0.724,
+    "posicion_partido_votado": 0.643,
+    "rlgdgr": 0.563
+   },
+   "cfi": 0.9661025193409711,
+   "rmsea": 0.06445589050897467,
+   "omega": 0.7161991909098789,
+   "residuos_correlacionados": [
+    [
+     "lrscale",
+     "posicion_partido_votado"
+    ]
+   ],
+   "chi2": 65.98312690710179,
+   "gl": 13,
+   "ajuste_de": "propio"
+  },
+  {
+   "rasgo": "rasgo_desafeccion",
+   "items": [
+    "confianza_justicia",
+    "confianza_parlamento",
+    "confianza_parlamento_europeo",
+    "confianza_politicos",
+    "satisfaccion_democracia"
+   ],
+   "estudios": [
+    "ESS11"
+   ],
+   "n_completos": 1635,
+   "cargas": {
+    "confianza_justicia": 0.616,
+    "confianza_parlamento": 0.835,
+    "confianza_parlamento_europeo": 0.771,
+    "confianza_politicos": 0.768,
+    "satisfaccion_democracia": 0.655
+   },
+   "cfi": 0.9913827116309838,
+   "rmsea": 0.058924231604974175,
+   "omega": 0.8517830124170537,
+   "residuos_correlacionados": [],
+   "chi2": 33.36677162383333,
+   "gl": 5,
+   "ajuste_de": "propio"
+  },
+  {
+   "rasgo": "rasgo_implicacion_politica",
+   "items": [
+    "actrolga",
+    "cptppola",
+    "interes_politica_puntos"
+   ],
+   "estudios": [
+    "ESS11"
+   ],
+   "n_completos": 1781,
+   "cargas": {
+    "actrolga": 0.845,
+    "cptppola": 0.777,
+    "interes_politica_puntos": 0.462
+   },
+   "cfi": 0.9707144002467728,
+   "rmsea": 0.06603610008786326,
+   "omega": 0.747133121985469,
+   "residuos_correlacionados": [],
+   "chi2": 6.277192099446438e-09,
+   "gl": 0,
+   "ajuste_de": "conjunto ['rasgo_desafeccion', 'rasgo_implicacion_politica']"
+  },
+  {
+   "rasgo": "rasgo_eje_territorial",
+   "items": [
+    "P10",
+    "P11",
+    "P13",
+    "P7_3"
+   ],
+   "estudios": [
+    "3409"
+   ],
+   "n_completos": 7065,
+   "cargas": {
+    "P10": 0.664,
+    "P11": 0.649,
+    "P13": 0.683,
+    "P7_3": 0.674
+   },
+   "cfi": 0.9993135913404025,
+   "rmsea": 0.030071490285947588,
+   "omega": 0.7205537982255192,
+   "residuos_correlacionados": [
+    [
+     "P7_3",
+     "P11"
+    ]
+   ],
+   "chi2": 7.3879365459180235,
+   "gl": 1,
+   "ajuste_de": "propio"
+  }
+ ]
 }

@@ -1370,3 +1370,94 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
     - **Excepción aprobada** por la persona responsable (`thresholds.yaml`, `V-LATENTE.excepciones_omega`); el umbral general no cambia.
   - **`estilo_aquiescencia`** (ESS): media de los 21 ítems de valores de Schwartz (MRAT), con al menos 16 respondidos. Es un estilo de respuesta, como `estilo_ns_nc`, y no pasa por el análisis factorial.
   - Los rasgos de la ESS se modelan con sexo, edad, estudios, actividad, comunidad y nacionalidad. La ESS no trae el tamaño de municipio en clases comparables. Los extranjeros son `modelada`, porque la ESS los entrevista.
+
+## D-067 · Capa política (F8B): recuerdo de voto, voto dual, ideología, rasgos políticos y validación (2026-10-21)
+
+- **Fecha:** 2026-10-21
+- **Fase:** F8B (reabre F3 en un punto: los electores autonómicos)
+- **Estado:** propuesta del agente; pendiente de la revisión humana G8B.9. Los puntos marcados con **[decisión humana]** necesitan aprobación expresa.
+- **Fuentes nuevas** (todas anteriores al corte):
+  - **CIS:**
+    - postelectorales 3410 (junio de 2023, municipales y autonómicas) y 3420 (septiembre de 2023, generales);
+    - postelectorales autonómicos 3541 (Extremadura 2025), 3548 (Aragón 2026), 3550 (Castilla y León 2026) y 3566 (Andalucía 2026), además de 3446, 3459 y 3464 (D-066);
+    - 3409 (Identidades culturales, nacionales y europeas, junio de 2023).
+  - **ESS ronda 11:** nuevos ítems puntuados por etiqueta:
+    - `rlgdgr` (religiosidad) y `atchctr` (apego a España);
+    - `hmsacld` (adopción por parejas homosexuales), `gincdif` (redistribución) e `imdfetn` (inmigración);
+    - `actrolga` y `cptppola` (eficacia política) y `polintr` en puntos.
+  - Sus vacíos (rechazo, no sabe, no contesta, no procede) se documentan en G2.1.
+- **Derecho a voto** (`politics/derecho.py`):
+  - **Actual** (30/06/2026):
+    - generales y autonómicas: españoles de 18 años o más;
+    - europeas y municipales: derecho **potencial** (UE y reciprocidad identificables; la inscripción en el censo no se conoce).
+  - **En una elección pasada:** la edad se lleva a la fecha de esa elección. Cuando el cumpleaños puede caer a uno u otro lado de la fecha, se sortea con la fracción de días.
+  - **Limitación:** la nacionalidad y la residencia son las actuales.
+- **Recuerdo de generales 2023** (`politics/recuerdo.py`):
+  - **Modelo:** multinomial ponderado con 49 estudios del CIS posteriores al 23J (200.195 encuestados, ahora con el 3420; su variable de 2023 es `RECUERDO1`, y «No recuerda» = NS).
+  - **Calibración** en el espacio logit, exacta por provincia, a los resultados oficiales de residentes con la abstención incluida.
+    - Dentro de cada provincia, la forma por tamaño de municipio sale de la **mitad A de los municipios**, un reparto fijo por hash del código INE.
+    - La mitad B queda reservada para G8B.2.
+    - Esta solución la eligió la persona responsable: el CIS no reproduce el gradiente de abstención por tamaño.
+  - **NS/NC:** la propensión a no recordar o no contestar se modela aparte (`recuerdo_voto_generales_ns_nc`) y no altera el voto calibrado.
+- **Recuerdo autonómico** (`politics/autonomicas.py`, voto dual):
+  - Se asigna la última elección de cada comunidad, **condicionada al voto de generales**. El modelo de cada comunidad se ajusta con su postelectoral.
+  - **Comunidades del 28/05/2023:** no hay estudio con el recuerdo de esas autonómicas y el de las generales de 2023. Se usa el 3410 con la **intención de voto** de generales de julio como aproximación, en un modelo conjunto con la comunidad.
+  - **Calibración** exacta por circunscripción a los resultados oficiales.
+  - **Derecho a voto** en la fecha de cada elección.
+  - **Correspondencia de siglas:** etiqueta del CIS → familia en `partidos.yaml` (`recuerdo_cis_autonomicas`, `intencion_cis_generales_2023_3410`), con la misma familia que la candidatura oficial en `tools/familias_autonomicas.py`.
+- **Reapertura de F3: CERA en los electores autonómicos:**
+  - **El problema:** los boletines autonómicos dan el censo con los residentes en el extranjero (CERA), mientras que la población y los objetivos de generales son de residentes (regla 2 de `docs/02`, §3.5). La abstención de residentes salía inflada (Galicia: 44 % frente a 33 %).
+  - **Descuento:** el CERA de cada provincia es el de las generales de 2023 (electores del BOE menos censo de residentes de Interior). Se descuenta donde el exceso del censo autonómico explica al menos el 90 % de ese CERA: todas las comunidades salvo Andalucía 2026, con un 41 % explicable por el crecimiento del censo. Aragón no publica electores.
+  - **Sesgo residual:** los votos del CERA (1-5 % de su censo) no se publican aparte y quedan dentro de los votos, así que la abstención de residentes queda algo por debajo de la real.
+  - **Alcance:** solo cambia `voto_autonomicas` (comprobado fichero a fichero). La puerta F3 se vuelve a superar.
+- **Ideología** (`ESCIDEOL`, 1-10 más NS y NC):
+  - Multinomial con perfil, religiosidad, clase subjetiva y **recuerdo**; sin el recuerdo para quien no lo tiene.
+  - Votar a un partido no fija la ideología (G8B.4 comprueba la dispersión).
+- **Cercanía a partido** (`CERCANIA`, 19 estudios de los 12 meses anteriores al corte):
+  - Opciones: las familias, «ninguno», NS y NC.
+  - Etiquetas resueltas con las familias ya registradas en `partidos.yaml`; solo 4 añadidas (`cercania_cis_adicionales`).
+- **Interés, participación, confianza institucional y satisfacción con la democracia** (ESS, `politics/ess_donantes.py`):
+  - Se asignan juntos por emparejamiento: el vector de un encuestado sorteado con su peso en la celda voto × edad × estudios (se relaja a voto × edad y a voto con menos de 10 donantes).
+  - Conservan la relación entre ellas. Se marcan `emparejada`.
+- **Rasgos políticos latentes** (`configs/rasgos.yaml`, `rasgos_politicos`; van a `politics.parquet`):
+  - **Residuos correlacionados declarados a priori** en el factorial (`factorial.py`, `residuos`), solo entre ítems que comparten contenido además del rasgo. Es práctica estándar del AFC; no se buscaron con índices de modificación.
+  - **`rasgo_izquierda_derecha`** (ESS):
+    - Ítems: autoubicación, **posición del partido votado** (autoubicación media de su electorado en el CIS, por comunidad en la familia nacionalista), religiosidad, apego a España, rechazo a la adopción homoparental y a la redistribución, y menos inmigración.
+    - Residuo correlacionado: autoubicación–posición del partido.
+    - CFI 0,966, RMSEA 0,064, omega 0,72.
+    - Sin el voto, las actitudes solas dan omega 0,63.
+  - **`rasgo_desafeccion`** (ESS):
+    - Ítems: desconfianza en políticos, Parlamento, justicia y Parlamento Europeo, e insatisfacción con la democracia.
+    - CFI 0,991, RMSEA 0,059, omega 0,85.
+    - La confianza en los partidos se descarta: es casi la misma pregunta que la de los políticos (RMSEA 0,19 con las dos).
+  - **`rasgo_implicacion_politica`** (ESS):
+    - Ítems: interés y eficacia interna (dos ítems).
+    - Omega 0,75; su ajuste se contrasta en el factorial conjunto con la desafección: CFI 0,971, RMSEA 0,066.
+    - Con los tres rasgos de la ESS juntos: CFI 0,88, por cargas cruzadas ideología–confianza, no por la implicación.
+    - Participación (cargas 0,33-0,45) y haber votado (0,16) no forman factor y quedan como variables observadas.
+  - **`rasgo_eje_territorial`** (CIS 3409):
+    - Ítems: identificación con España (invertida), sentimiento Linz-Moreno, orgullo de ser español (invertido) y organización territorial preferida.
+    - Residuo correlacionado: identificación–orgullo.
+    - CFI 0,999, RMSEA 0,030, omega 0,72.
+    - Su predictor político es la autoubicación en bloques: el recuerdo del 3409 es de 2019.
+    - Cubre también `ideologia_eje_territorial` de `docs/02`: no hay una escala de nacionalismo común a las comunidades.
+  - **Asignación:** la misma extracción que en F8A (predicción + residuo real), con el grupo de voto y, en izquierda-derecha y eje territorial, la autoubicación en tres bloques.
+  - **Bloques de autoubicación:** las escalas de la ESS (0-10) y del CIS (1-10) se cortan por la posición relativa: ESS 0-3 / 4-6 / 7-10 y CIS 1-4 / 5-6 / 7-10.
+- **Validación** (`validate/fase8b.py`). Puntos de método **[decisión humana]**:
+  1. **G8B.3 (perfil):**
+     - El 3420 solo se pondera por comunidad (ficha técnica) y su muestra telefónica tiene un 48 % de titulados superiores (59 % entre quienes votaron), frente al 38 % de la población y del CIS apilado.
+     - Se repondera a edad × sexo × estudios del universo antes de comparar los electorados.
+     - Sin reponderar: 14/24 dentro (TVD de estudios ≈ 0,2 en todos los electorados). Reponderado: 24/24, TVD máx. 0,077.
+  2. **G8B.5 (transferencia):**
+     - Los encuestados declaran un 10-14 % de abstención autonómica frente al 30-45 % real, y la población está calibrada a los resultados oficiales.
+     - La tabla cruzada del CIS se ajusta por **IPF** a los márgenes oficiales de las dos elecciones en la comunidad. Así conserva su asociación (las razones de odds) y quita el sesgo de los márgenes; `docs/05` dice que contra el CIS solo se comparan relaciones.
+     - Sin ajustar: 5/28 filas dentro. Ajustada: 28/28, TVD media 0,027.
+  3. **G8B.7 (contrafactual):**
+     - `docs/06` no da umbral; se usa ± 0,3 puntos de ideología media, el de V-POL-COHERENCIA.
+     - La primera versión comparaba con los datos dentro de edad × sexo × estudios, mientras que el modelo también descuenta la religiosidad: el PP y Vox quedaban 0,30 y 0,39 puntos por debajo, es decir, el modelo atenúa y no exagera.
+     - Con la religiosidad también en las celdas de los datos: 9/9.
+     - Estos cambios se hicieron **después de ver el primer resultado**. Se dejan aquí las dos cifras para que la persona responsable decida si los acepta.
+  4. **G8B.2:** dos celdas comunidad × tamaño fuera de 49 evaluables:
+     - Cantabria, municipios de hasta 2.000 habitantes: TVD 0,063 y participación 5,3 puntos;
+     - Navarra, de 10.001 a 50.000: TVD 0,082 y participación 4,4 puntos.
+     - España y las otras 47 cumplen. Se propone aceptarlas como excepciones documentadas sin cambiar el umbral, porque la calibración es por provincia y la forma por tamaño sale de la otra mitad de los municipios.
