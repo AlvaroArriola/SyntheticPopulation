@@ -332,7 +332,11 @@ def armonizar() -> dict:
         if f is None or dt.date.fromisoformat(f) >= CORTE:
             info[e] = "sin fecha o posterior al corte: no se usa"
             continue
-        p = personas(e)
+        try:
+            p = personas(e)
+        except FileNotFoundError:
+            info[e] = "sin microdatos (descarga pendiente)"
+            continue
         lg, bq = largo(e)
         pers.append(p)
         largos.append(lg)
