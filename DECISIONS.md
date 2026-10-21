@@ -1311,3 +1311,8 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - **`identidad_territorial` y `lengua_habitual`:** los barómetros nacionales de 2023-2026 no preguntan la escala Linz-Moreno ni la lengua, y los postelectorales autonómicos solo cubren cuatro comunidades. Propuesta: estudios autonómicos o de los centros autonómicos (CEO, Euskobarómetro, etc.) para las comunidades con lengua cooficial.
   - **`medio_informacion_principal`:** no está en los barómetros descargados.
   - Ningún hueco se rellena con suposiciones (CLAUDE.md, regla 3).
+
+### Aprobación de F8A
+
+- **Estado:** aprobada por la persona responsable el 2026-10-21. Aprueba la capa de opinión, los tres rasgos construidos y las decisiones D-063 a D-065, incluido que la confianza en partidos, sindicatos, Gobierno y Parlamento pase a `rasgo_desafeccion` (F8B).
+- **Encargo adicional:** completar los rasgos y variables de docs/02 §3.4 que quedaron como huecos (D-065) con las fuentes pertinentes, y después pasar a F8B. Se registra en D-066.
