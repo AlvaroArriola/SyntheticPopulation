@@ -1,6 +1,6 @@
 {
  "fecha": "2026-10-21",
- "version_codigo": "git:1120158-dirty",
+ "version_codigo": "git:4ad609e-dirty",
  "run_id": "2026-01-01_ES_1000000_s1",
  "g8a4": {
   "umbral_celdas": 0.9,
@@ -45,23 +45,23 @@
    },
    {
     "variable": "clase_subjetiva",
-    "tvd": 0.005992971295187994
+    "tvd": 0.005992971295187991
    },
    {
     "variable": "situacion_economica_personal",
-    "tvd": 0.01064943777490896
+    "tvd": 0.010649437774908909
    },
    {
     "variable": "lengua_habitual",
-    "tvd": 0.003712793563415136
+    "tvd": 0.0037127935634150805
    },
    {
     "variable": "medio_informacion_principal",
-    "tvd": 0.0076999385453960945
+    "tvd": 0.007699938545396123
    },
    {
     "variable": "identidad_territorial",
-    "tvd": 0.05283721366244865
+    "tvd": 0.009986172416545463
    }
   ]
  },
@@ -305,7 +305,7 @@
  "g8a2": {
   "preguntas": 21,
   "tvd_media_modelo": 0.11614079310050578,
-  "tvd_media_b0": 0.16869331966757445,
+  "tvd_media_b0": 0.16869331966757448,
   "ok": true
  },
  "g8a5": {
