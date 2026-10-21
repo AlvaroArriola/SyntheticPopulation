@@ -19,6 +19,7 @@ import numpy as np
 import polars as pl
 
 from sinpop import INTERIM_DIR
+from sinpop.opinion import latentes as L
 from sinpop.opinion.cis import CORTE
 from sinpop.opinion.valores import PREDICTORES, VENTANA_MESES, _edad_grupo, perfil_sintetico
 from sinpop.repro import make_rng
@@ -50,6 +51,8 @@ def estilo_ns_nc() -> pl.DataFrame:
 
 
 def datos_rasgo(rasgo: str = "estilo_ns_nc") -> pl.DataFrame:
+    if rasgo != "estilo_ns_nc":
+        return L.datos(rasgo)
     p = pl.read_parquet(INTERIM_DIR / "cis_personas.parquet")
     r = estilo_ns_nc()
     desde = dt.date(CORTE.year - (VENTANA_MESES // 12), CORTE.month, 1)
@@ -86,7 +89,10 @@ class ModeloRasgo:
         from sklearn.linear_model import Ridge
 
         self.cats = {
-            v: {c: i for i, c in enumerate(sorted(d[v].cast(pl.Utf8).unique().to_list()))}
+            v: {
+                c: i
+                for i, c in enumerate(sorted(d[v].cast(pl.Utf8).drop_nulls().unique().to_list()))
+            }
             for v in PREDICTORES
         }
         y = d[self.rasgo].to_numpy()
@@ -111,16 +117,21 @@ class ModeloRasgo:
 
 
 def asignar(persons: pl.DataFrame, semilla: int) -> tuple[pl.DataFrame, dict]:
+    """El estilo NS/NC y los rasgos latentes de `configs/rasgos.yaml`, con su `__calidad`."""
     perfil = perfil_sintetico(persons)
-    d = datos_rasgo()
-    m = ModeloRasgo("estilo_ns_nc").ajustar(d)
     rng = make_rng(semilla)
-    valor = np.clip(m.extraer(perfil, rng), 0.0, 1.0)
     extrapolada = (perfil["nacionalidad_esp_ext"] != "espanola") | (
         perfil["tipo_residencia"] != "vivienda_familiar"
     )
-    out = perfil.select("person_id").with_columns(
-        pl.Series("estilo_ns_nc", valor),
-        pl.Series("estilo_ns_nc__calidad", np.where(extrapolada, "extrapolada", "modelada")),
-    )
-    return out, {"estilo_ns_nc": {"encuestados": m.n, "estudios": sorted(d["estudio"].unique())}}
+    calidad = np.where(extrapolada, "extrapolada", "modelada")
+    out = perfil.select("person_id")
+    meta = {}
+    for r in ["estilo_ns_nc", *L.rasgos()]:
+        d = datos_rasgo(r)
+        m = ModeloRasgo(r).ajustar(d)
+        valor = m.extraer(perfil, rng)
+        if r == "estilo_ns_nc":  # proporción
+            valor = np.clip(valor, 0.0, 1.0)
+        out = out.with_columns(pl.Series(r, valor), pl.Series(f"{r}__calidad", calidad))
+        meta[r] = {"encuestados": m.n, "estudios": sorted(d["estudio"].unique())}
+    return out, meta

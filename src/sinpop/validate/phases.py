@@ -1200,14 +1200,21 @@ def _g8a_1() -> Check:
     um = f"CFI ≥ {c.cfi_min}, RMSEA ≤ {c.rmsea_max}, omega ≥ {c.omega_min} por rasgo"
     if d is None or "g8a1" not in d:
         return _sin_f8a("G8A.1", desc, um)
-    g = d["g8a1"]
-    ok = g["cfi"] >= c.cfi_min and g["rmsea"] <= c.rmsea_max and min(g["omega"]) >= c.omega_min
+    rs = d["g8a1"]["rasgos"]
+    malos = [
+        r["rasgo"]
+        for r in rs
+        if r["cfi"] < c.cfi_min or r["rmsea"] > c.rmsea_max or r["omega"] < c.omega_min
+    ]
     return Check(
         "G8A.1",
         desc,
-        ok,
-        f"{g['rasgos']}; CFI {g['cfi']:.3f}; RMSEA {g['rmsea']:.3f}; "
-        f"omega {[round(x, 2) for x in g['omega']]}",
+        bool(rs) and not malos,
+        "; ".join(
+            f"{r['rasgo']}: CFI {r['cfi']:.3f}, RMSEA {r['rmsea']:.3f}, omega {r['omega']:.2f}"
+            for r in rs
+        )
+        + f"; fuera: {malos or 0}",
         um,
     )
 

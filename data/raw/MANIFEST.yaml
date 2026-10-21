@@ -3811,6 +3811,106 @@ ficheros:
   condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
   via: automatica
 - fuente: cis_barometros
+  fichero: cis_barometros/3403/MD3403.zip
+  tipo: datos
+  edicion: '3403'
+  url_oficial: https://www.cis.es/documents/20117/1557681/MD3403.zip
+  fecha_descarga: '2026-10-21'
+  sha256: 170ba014cfa0ec6314f8b05740daff7cbffc9dc4ae6eef7436e8f8acd0dbab00
+  bytes: 2318941
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3403/cues3403pdf.pdf
+  tipo: cuestionario
+  edicion: '3403'
+  url_oficial: https://www.cis.es/documents/20117/1557681/cues3403pdf.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 832216e9c267a174b8831ed095765d9094cfea37ef1448354093e91766b7f181
+  bytes: 115949
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3405/FT3405pdf.pdf
+  tipo: metodologia
+  edicion: '3405'
+  url_oficial: https://www.cis.es/documents/20117/1557691/FT3405pdf.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: b79af5a707ab50f689babdde0a3c1ec53e53575c7aa4acd2e57931c33917054f
+  bytes: 22211
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3405/MD3405.zip
+  tipo: datos
+  edicion: '3405'
+  url_oficial: https://www.cis.es/documents/20117/1557691/MD3405.zip
+  fecha_descarga: '2026-10-21'
+  sha256: f6403f06c09ea75fb3b518002d3bdd7e9a53678e442b60adbadeb97420dc2220
+  bytes: 2112148
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3405/cues3405pdf.pdf
+  tipo: cuestionario
+  edicion: '3405'
+  url_oficial: https://www.cis.es/documents/20117/1557691/cues3405pdf.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: f8c201ef8121a5251c55f7d138d2144d0a49c5f17fe4c1e0c5ee9fe1a370edef
+  bytes: 107150
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3413/FT3413pdf.pdf
+  tipo: metodologia
+  edicion: '3413'
+  url_oficial: https://www.cis.es/documents/20117/1557991/FT3413pdf.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 4259317cb16d4082e029ad2e71289431f51e5363a55b815a3f8fdc645fbc6d77
+  bytes: 24656
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3413/MD3413.zip
+  tipo: datos
+  edicion: '3413'
+  url_oficial: https://www.cis.es/documents/20117/1557991/MD3413.zip
+  fecha_descarga: '2026-10-21'
+  sha256: cafa1b97b02e6b979f11c5bac051221173b6328c37b92406f3a510a399156207
+  bytes: 2234223
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3413/cues3413pdf.pdf
+  tipo: cuestionario
+  edicion: '3413'
+  url_oficial: https://www.cis.es/documents/20117/1557991/cues3413pdf.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 373de815e42caa9fc5021645368476aaf4b1103b574a358ddd5e1d8555b697d0
+  bytes: 116708
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3423/FT3423.pdf
+  tipo: metodologia
+  edicion: '3423'
+  url_oficial: https://www.cis.es/documents/20117/1558256/FT3423.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: c30feba526915679df1954a03bb96a40e0611d2ec807389c681e0c66fbb5c64c
+  bytes: 24082
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3423/MD3423.zip
+  tipo: datos
+  edicion: '3423'
+  url_oficial: https://www.cis.es/documents/20117/1558256/MD3423.zip
+  fecha_descarga: '2026-10-21'
+  sha256: fce7484328255bbe93dfc74c3461943071a6a89878ec257005183a957b4ad3b1
+  bytes: 2398171
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
   fichero: cis_barometros/3567/FT3567.pdf
   tipo: metodologia
   edicion: '3567'

@@ -86,7 +86,10 @@ class Modelo:
         from sklearn.linear_model import LogisticRegression
 
         self.cats = {
-            v: {c: i for i, c in enumerate(sorted(df[v].cast(pl.Utf8).unique().to_list()))}
+            v: {
+                c: i
+                for i, c in enumerate(sorted(df[v].cast(pl.Utf8).drop_nulls().unique().to_list()))
+            }
             for v in PREDICTORES
         }
         self.clases = sorted(df[self.variable].unique().to_list())

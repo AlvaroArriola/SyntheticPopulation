@@ -16,12 +16,15 @@ import json
 import polars as pl
 
 from sinpop import POPULATIONS_DIR, REPORTS_DIR
+from sinpop.opinion import cv as CV
+from sinpop.opinion import latentes as L
 from sinpop.opinion import rasgos as R
 from sinpop.opinion import run as OR
 from sinpop.opinion import valores as V
 from sinpop.opinion.cis import VALORES
 from sinpop.repro import code_version
 from sinpop.validate import metrics as M
+from sinpop.validate import sanitario as SAN
 from sinpop.validate.enriquecimiento import _props, bootstrap_ic
 
 NACIONAL = "2026-01-01_ES_1000000_s1"
@@ -107,7 +110,6 @@ def tvd_nacional(s: pl.DataFrame) -> list[dict]:
     return out
 
 
-RASGOS = ["estilo_ns_nc"]
 MIN_GRUPO = 200  # encuestados del CIS por grupo para comparar varianzas
 
 
@@ -119,7 +121,7 @@ def v_diversidad_rasgos(run_id: str, s: pl.DataFrame) -> pl.DataFrame:
     s = s.join(extra, on="person_id").with_columns(V._edad_grupo(pl.col("edad")))
     grupo = ["edad_grupo", "estudios_3", "sexo"]
     filas = []
-    for r in RASGOS:
+    for r in ["estilo_ns_nc", *L.rasgos()]:
         e = R.datos_rasgo(r)
 
         def var_pond(df: pl.DataFrame, peso: str, r: str = r) -> pl.DataFrame:
@@ -175,6 +177,24 @@ def ejecutar(run_id: str = NACIONAL) -> dict:
         "ratio_min": float(dv["ratio"].min()) if dv.height else None,
         "ratio_max": float(dv["ratio"].max()) if dv.height else None,
     }
+    res["g8a1"] = {"rasgos": [L.ajuste(r)[1] for r in L.rasgos()]}
+    cv = CV.v_opinion_cv()
+    pl.DataFrame(cv.pop("detalle")).write_csv(DETALLE / "v_opinion_cv.csv")
+    res["g8a2"] = cv
+    meta = json.loads((POPULATIONS_DIR / run_id / "metadata.json").read_text("utf-8"))
+    persons = pl.read_parquet(POPULATIONS_DIR / run_id / "persons.parquet")
+    t, g5 = SAN.g8a5(persons, OR.semilla_capa(int(meta["semilla"]), "g8a5"))
+    if not t.is_empty():
+        t.write_csv(DETALLE / f"{run_id}_g8a5_sanitario.csv")
+        g5["resumen"] = (
+            f"oleada {g5['oleada_contraste']} frente a {g5['oleadas_ajuste']}; "
+            f"{len(g5['preguntas'])} preguntas, {g5['celdas']} celdas pregunta × CCAA; TVD media "
+            f"simulada {g5['tvd_media_simulada']:.3f}, B0 nacional {g5['tvd_media_b0']:.3f}, "
+            f"B1 directa {g5['tvd_media_b1']:.3f}, ruido muestral {g5['ruido_muestral_medio']:.3f}"
+        )
+    else:
+        g5["resumen"] = g5.get("motivo", "")
+    res["g8a5"] = g5
     RESUMEN.write_text(json.dumps(res, ensure_ascii=False, indent=1), "utf-8")
     return res
 
