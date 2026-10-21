@@ -104,6 +104,8 @@ SITLAB = {
     "Trabaja": "ocupado",
     "En paro y ha trabajado antes": "parado",
     "En paro y busca su primer empleo": "parado",
+    "Parado/a y ha trabajado antes": "parado",  # redacción de 2023
+    "Parado/a y busca su primer empleo": "parado",
     "Jubilado/a o pensionista (anteriormente ha trabajado)": "inactivo",
     "Pensionista (anteriormente no ha trabajado)": "inactivo",
     "Estudiante": "inactivo",

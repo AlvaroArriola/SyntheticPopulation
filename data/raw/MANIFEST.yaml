@@ -3911,6 +3911,16 @@ ficheros:
   condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
   via: automatica
 - fuente: cis_barometros
+  fichero: cis_barometros/3423/cues3423.pdf
+  tipo: cuestionario
+  edicion: '3423'
+  url_oficial: https://www.cis.es/documents/20117/1558256/cues3423.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 078698569d060800e112f67510c64bd691186f38b3c761cf8fc9b2cdb99d8649
+  bytes: 267467
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
   fichero: cis_barometros/3567/FT3567.pdf
   tipo: metodologia
   edicion: '3567'
