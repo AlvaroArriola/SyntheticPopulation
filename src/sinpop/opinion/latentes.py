@@ -97,7 +97,13 @@ def _base(rasgo: str) -> pl.DataFrame:
     return (
         items(rasgo)
         .join(p, on=["estudio", "encuestado"])
-        .filter(pl.col("edad") >= 18)
+        .filter(
+            (pl.col("edad") >= 18)
+            & (
+                pl.col("nacionalidad_esp_ext").is_null()
+                | (pl.col("nacionalidad_esp_ext") == "espanola")
+            )
+        )
         .with_columns((pl.col("peso") / pl.col("peso").mean().over("estudio")).alias("peso"))
     )
 

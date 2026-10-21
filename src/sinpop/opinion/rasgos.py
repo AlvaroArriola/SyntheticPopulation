@@ -68,6 +68,10 @@ def datos_rasgo(rasgo: str = "estilo_ns_nc") -> pl.DataFrame:
         (pl.col("fecha").str.to_date() >= desde)
         & (pl.col("fecha").str.to_date() < CORTE)
         & (pl.col("edad") >= 18)
+        & (
+            pl.col("nacionalidad_esp_ext").is_null()
+            | (pl.col("nacionalidad_esp_ext") == "espanola")
+        )
         & ~pl.col("estudios_3").is_in(["NC", "NS"])
         & ~pl.col("actividad_3").is_in(["NC", "NS"])
     )

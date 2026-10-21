@@ -54,6 +54,12 @@ def datos(variable: str) -> pl.DataFrame:
         & (pl.col("fecha").str.to_date() >= desde)
         & (pl.col("fecha").str.to_date() < CORTE)
         & (pl.col("edad") >= 18)
+        # universo de los barómetros (D-063): el Barómetro Sanitario también entrevista a
+        # extranjeros, que aquí no entran porque el modelo no tiene la nacionalidad
+        & (
+            pl.col("nacionalidad_esp_ext").is_null()
+            | (pl.col("nacionalidad_esp_ext") == "espanola")
+        )
     )
     return p.with_columns(
         _edad_grupo(pl.col("edad")),

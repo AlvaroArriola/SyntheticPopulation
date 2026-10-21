@@ -47,12 +47,22 @@ NO_OPINION = (
 
 
 def preguntas_repetidas() -> pl.DataFrame:
+    """Una versión por pregunta (la que aparece en más estudios): las listas de opciones
+    cambian con el tiempo (por ejemplo, los problemas codificados) y cada lista es una
+    pregunta distinta en el banco."""
     banco = pl.read_parquet(INTERIM_DIR / "cis_preguntas.parquet")
-    return banco.filter(
-        (pl.col("estudios").list.len() >= MIN_ESTUDIOS)
-        & ~pl.col("variable").is_in(list(EXCLUIR))
-        & ~pl.col("variable").str.contains(NO_OPINION)
-        & ~pl.col("enunciado").str.contains(r"(?i)^nacionalidad|^edad|^sexo|^provincia|^municipio")
+    return (
+        banco.filter(
+            (pl.col("estudios").list.len() >= MIN_ESTUDIOS)
+            & ~pl.col("variable").is_in(list(EXCLUIR))
+            & ~pl.col("variable").str.contains(NO_OPINION)
+            & ~pl.col("enunciado").str.contains(
+                r"(?i)^nacionalidad|^edad|^sexo|^provincia|^municipio"
+            )
+        )
+        .sort(pl.col("estudios").list.len(), "variable", descending=[True, False])
+        .unique(["variable", "enunciado"], keep="first", maintain_order=True)
+        .sort("variable")
     )
 
 

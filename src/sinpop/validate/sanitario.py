@@ -4,10 +4,11 @@ Para cada pregunta de opinión que se repite, con las mismas opciones, en la úl
 Barómetro Sanitario anterior al corte y en alguna oleada previa:
 
 - el modelo de opinión (el multinomial ponderado de las variables de valores) se ajusta con las
-  oleadas previas y la población sintética **responde**: a cada adulto de nacionalidad española
-  en vivienda familiar (el universo del CIS) se le sortea una respuesta con la semilla;
+  oleadas previas y la población sintética **responde**: a cada adulto en vivienda familiar (el
+  universo del Barómetro Sanitario, que incluye extranjeros) se le sortea una respuesta con la
+  semilla;
 - la distribución simulada de cada comunidad se compara con la observada en la última oleada,
-  ponderada, por la TVD;
+  ponderada con `PESO`, por la TVD;
 - referencias para leer el error: **B0**, la distribución nacional de las oleadas previas, igual
   para todas las comunidades; **B1**, la distribución observada de cada comunidad en las oleadas
   previas (estimación directa); y el **ruido muestral** de la oleada de contraste (TVD media entre
@@ -135,10 +136,9 @@ def g8a5(persons: pl.DataFrame, semilla: int, max_preguntas: int = 30) -> tuple[
     if len(ol) < 2:
         return pl.DataFrame(), {"ok": False, "motivo": f"oleadas disponibles: {ol}"}
     test, entreno = ol[-1], ol[:-1]
-    perfil = V.perfil_sintetico(persons.filter(pl.col("edad") >= 18)).filter(
-        (pl.col("nacionalidad_esp_ext") == "espanola")
-        & (pl.col("tipo_residencia") == "vivienda_familiar")
-    )
+    # El Barómetro Sanitario entrevista a residentes de 18 y más años de cualquier
+    # nacionalidad (en 3531 y 3551 hay extranjeros), en viviendas familiares
+    perfil = V.perfil_sintetico(persons).filter(pl.col("tipo_residencia") == "vivienda_familiar")
     peso = (
         perfil.select("person_id")
         .join(persons.select("person_id", "peso"), on="person_id", how="left")["peso"]
