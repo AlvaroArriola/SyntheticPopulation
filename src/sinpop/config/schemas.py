@@ -462,6 +462,7 @@ class VPolReservada(_Th):
     tvd_espana: float
     tvd_ccaa: float
     error_participacion_max: float
+    excepciones_ccaa: list[str] = Field(default_factory=list)
 
 
 class VPolPerfil(_Th):

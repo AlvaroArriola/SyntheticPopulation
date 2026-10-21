@@ -1334,14 +1334,19 @@ def _g8b_2() -> Check:
     um = "TVD ≤ 0,04 España y ≤ 0,06 CCAA (+ ruido de muestreo); participación ≤ 3 puntos"
     if d is None:
         return _sin_f8b("G8B.2", desc, um)
+    from sinpop.config import load_config
+
+    exc = load_config("thresholds.yaml").v_pol_reservada.excepciones_ccaa  # type: ignore[attr-defined]
     g = d["g8b2"]
     fuera = [f"{x['ccaa']} {x['tamano_municipio']}" for x in g["ccaa_fuera"]]
+    sin_aprobar = [f for f in fuera if f not in exc]
     return Check(
         "G8B.2",
         desc,
-        g["espana_dentro"] == g["espana_celdas"] and not fuera,
+        g["espana_dentro"] == g["espana_celdas"] and not sin_aprobar,
         f"España {g['espana_dentro']}/{g['espana_celdas']}; CCAA × tamaño "
-        f"{g['ccaa_dentro']}/{g['ccaa_evaluables']} evaluables; fuera: {fuera or 0}",
+        f"{g['ccaa_dentro']}/{g['ccaa_evaluables']} evaluables; fuera: {sin_aprobar or 0}"
+        + (f"; excepciones aprobadas: {sorted(set(fuera) & set(exc))}" if exc else ""),
         um,
     )
 

@@ -1,2 +1,120 @@
-# Eventos fechados para la dimensión temporal (F8C). Se completa en F8C con fecha y fuente.
-eventos: []
+# Eventos fechados para la dimensión temporal (F8C; docs/03 §2.6; D-068).
+#
+# Solo eventos con fecha cierta y fuente oficial o primaria verificable. El efecto de cada uno
+# (`temporal/eventos.py`) es el cambio observado en los barómetros de antes y de después, por
+# grupo: describe lo que cambió en torno al evento, no prueba que lo causara.
+# Los incendios forestales de agosto de 2025 no se incluyen: no tienen una fecha única (los
+# grandes fuegos se sucedieron durante semanas) y en agosto no hay barómetro.
+eventos:
+  - id: e001
+    fecha: 2023-05-28
+    descripcion: Elecciones municipales y autonómicas (doce comunidades, Ceuta y Melilla)
+    tipo: politico
+    ambito: ES
+    fuente: "Resultados oficiales de las juntas electorales (configs/elecciones.yaml, D-023)"
+    indicadores_afectados: [cercania_partido, problema_politica]
+  - id: e002
+    fecha: 2023-05-30
+    descripcion: Disolución de las Cortes y convocatoria de elecciones generales anticipadas
+    tipo: politico
+    ambito: ES
+    fuente: "Real Decreto 400/2023, de 29 de mayo (BOE de 30/05/2023; ELI /eli/es/rd/2023/05/29/400)"
+    indicadores_afectados: [cercania_partido, problema_politica, ideologia_bloque]
+  - id: e003
+    fecha: 2023-07-23
+    descripcion: Elecciones generales
+    tipo: politico
+    ambito: ES
+    fuente: "Junta Electoral Central, escrutinio general (BOE-A-2023-18907; configs/elecciones.yaml)"
+    indicadores_afectados: [cercania_partido, problema_politica, ideologia_bloque]
+  - id: e004
+    fecha: 2023-11-16
+    descripcion: Investidura de Pedro Sánchez como presidente del Gobierno (179 votos a favor, 171 en contra)
+    tipo: politico
+    ambito: ES
+    fuente: "Congreso de los Diputados, votación de investidura del 16/11/2023"
+    indicadores_afectados: [cercania_partido, problema_politica, economia_espana]
+  - id: e005
+    fecha: 2024-02-18
+    descripcion: Elecciones autonómicas de Galicia
+    tipo: politico
+    ambito: CCAA:12
+    fuente: "DOG nº 47, 06/03/2024 (Junta Electoral de Galicia; configs/elecciones.yaml)"
+    indicadores_afectados: [cercania_partido]
+  - id: e006
+    fecha: 2024-04-21
+    descripcion: Elecciones autonómicas del País Vasco
+    tipo: politico
+    ambito: CCAA:16
+    fuente: "BOPV nº 90, 09/05/2024 (Junta Electoral de la CA del País Vasco; configs/elecciones.yaml)"
+    indicadores_afectados: [cercania_partido]
+  - id: e007
+    fecha: 2024-05-12
+    descripcion: Elecciones autonómicas de Cataluña
+    tipo: politico
+    ambito: CCAA:09
+    fuente: "DOGC nº 9178, 06/06/2024 (Junta Electoral Central; configs/elecciones.yaml)"
+    indicadores_afectados: [cercania_partido]
+  - id: e008
+    fecha: 2024-06-09
+    descripcion: Elecciones al Parlamento Europeo
+    tipo: politico
+    ambito: ES
+    fuente: "Ministerio del Interior, resultados (configs/elecciones.yaml, europeas-2024)"
+    indicadores_afectados: [cercania_partido, problema_politica]
+  - id: e009
+    fecha: 2024-06-11
+    descripcion: Entrada en vigor de la Ley Orgánica de amnistía
+    tipo: politico
+    ambito: ES
+    fuente: "Ley Orgánica 1/2024, de 10 de junio (BOE nº 141, de 11/06/2024; BOE-A-2024-11776)"
+    indicadores_afectados: [problema_politica, cercania_partido]
+  - id: e010
+    fecha: 2024-10-29
+    descripcion: DANA con inundaciones catastróficas, sobre todo en la provincia de Valencia
+    tipo: catastrofe
+    ambito: ES
+    fuente: "Real Decreto-ley 6/2024, de 5 de noviembre, de medidas urgentes ante los daños de la DANA entre el 28/10 y el 4/11/2024 (BOE de 06/11/2024)"
+    indicadores_afectados: [problema_politica, economia_espana]
+  - id: e011
+    fecha: 2025-04-02
+    descripcion: Aranceles generales de Estados Unidos («aranceles recíprocos»)
+    tipo: internacional
+    ambito: ES
+    fuente: "Executive Order 14257, de 2 de abril de 2025 (Federal Register; govinfo DCPD-202500444)"
+    indicadores_afectados: [economia_espana, economia_personal, problema_economia]
+  - id: e012
+    fecha: 2025-04-28
+    descripcion: Apagón eléctrico general de la península ibérica (cero de tensión)
+    tipo: catastrofe
+    ambito: ES
+    fuente: "Informe del Comité de análisis del Gobierno (junio de 2025) e informe final del panel de expertos de ENTSO-E (marzo de 2026)"
+    indicadores_afectados: [economia_espana, problema_politica]
+  - id: e013
+    fecha: 2025-12-21
+    descripcion: Elecciones autonómicas de Extremadura
+    tipo: politico
+    ambito: CCAA:11
+    fuente: "DOE nº 8, 14/01/2026 (Junta Electoral de Extremadura; configs/elecciones.yaml)"
+    indicadores_afectados: [cercania_partido]
+  - id: e014
+    fecha: 2026-02-08
+    descripcion: Elecciones autonómicas de Aragón
+    tipo: politico
+    ambito: CCAA:02
+    fuente: "Informe de resultados definitivos del Gobierno de Aragón (configs/elecciones.yaml)"
+    indicadores_afectados: [cercania_partido]
+  - id: e015
+    fecha: 2026-03-15
+    descripcion: Elecciones autonómicas de Castilla y León
+    tipo: politico
+    ambito: CCAA:07
+    fuente: "BOCyL nº 80, 29/04/2026 (Junta Electoral de Castilla y León; configs/elecciones.yaml)"
+    indicadores_afectados: [cercania_partido]
+  - id: e016
+    fecha: 2026-05-17
+    descripcion: Elecciones autonómicas de Andalucía
+    tipo: politico
+    ambito: CCAA:01
+    fuente: "BOJA nº 108, 08/06/2026 (Junta Electoral de Andalucía; configs/elecciones.yaml)"
+    indicadores_afectados: [cercania_partido]

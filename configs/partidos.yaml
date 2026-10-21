@@ -1669,6 +1669,16 @@ intencion_cis_generales_2023_3410:
 # N.S./N.C. son respuestas legítimas (regla 10).
 cercania_cis_adicionales:
   SUMAR: izquierda_estatal
+  # siglas de los estudios autonómicos y de campaña (2023-2024), con la familia de su candidatura
+  EU: izquierda_estatal  # Esquerda Unida (código 9 = IU en el 3442, Galicia)
+  IU-EUCat: izquierda_estatal
+  Comuns: izquierda_estatal
+  Elkarrekin-Podemos: izquierda_estatal
+  Sumar (Sumar Mugimendua): izquierda_estatal
+  Verdes-Equo: izquierda_estatal
+  CCa-PNC: nacionalista_regionalista
+  Existe (Teruel Existe): nacionalista_regionalista
+  MxMe (Més per Menorca): nacionalista_regionalista
   Ninguno: ninguno
   N.S.: NS
   N.C.: NC

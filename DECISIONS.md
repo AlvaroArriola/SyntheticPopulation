@@ -1375,7 +1375,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-21
 - **Fase:** F8B (reabre F3 en un punto: los electores autonómicos)
-- **Estado:** propuesta del agente; pendiente de la revisión humana G8B.9. Los puntos marcados con **[decisión humana]** necesitan aprobación expresa.
+- **Estado:** aprobada por la persona responsable el 2026-10-21 («Acepto todo»), incluidos los puntos marcados con **[decisión humana]** y las dos excepciones de G8B.2 (`thresholds.yaml`, `V-POL-RESERVADA.excepciones_ccaa`).
 - **Fuentes nuevas** (todas anteriores al corte):
   - **CIS:**
     - postelectorales 3410 (junio de 2023, municipales y autonómicas) y 3420 (septiembre de 2023, generales);
@@ -1461,3 +1461,9 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
      - Cantabria, municipios de hasta 2.000 habitantes: TVD 0,063 y participación 5,3 puntos;
      - Navarra, de 10.001 a 50.000: TVD 0,082 y participación 4,4 puntos.
      - España y las otras 47 cumplen. Se propone aceptarlas como excepciones documentadas sin cambiar el umbral, porque la calibración es por provincia y la forma por tamaño sale de la otra mitad de los municipios.
+
+### Aprobación de F8B
+
+- **Estado:** aprobada
+- **Fecha:** 2026-10-21
+- **Decisión:** la persona responsable acepta el informe `reports/fase_08b.md` y todas las decisiones de D-067: las excepciones de G8B.2 (Cantabria ≤ 2.000 habitantes y Navarra 10.001-50.000), la reponderación del 3420 en G8B.3, el ajuste IPF en G8B.5, el criterio contrafactual de G8B.7, los residuos correlacionados y el contraste conjunto de la implicación. Se inicia F8C.

@@ -1,6 +1,6 @@
 # Fase 08B · Capa política
 
-**Estado:** pendiente de la revisión humana G8B.9. La puerta automática falla en un punto: dos celdas de G8B.2, que se proponen como excepciones (D-067).
+**Estado:** superada. Revisión humana G8B.9 aprobada el 2026-10-21, con las dos celdas de G8B.2 como excepciones aprobadas (D-067).
 **Fecha:** 2026-10-21 · **Versión del código:** ver `reports/fase_08b_validacion.json` (`version_codigo`)
 **Comando para reproducir** (tras la cadena de `reports/fase_08a.md`):
 
@@ -43,7 +43,7 @@ Ver `reports/fase_08b_puerta.md` (`sinpop validate --phase 8b`).
 | ID | Resultado | Valor |
 | --- | --- | --- |
 | G8B.1 V-POL-RECUERDO | ✅ | 52/52 provincias; TVD máx. 0,026 |
-| G8B.2 V-POL-RESERVADA | ❌ (2 excepciones propuestas) | España 6/6 tamaños; comunidad × tamaño 47/49 evaluables. Fuera: Cantabria ≤ 2.000 hab. (TVD 0,063; participación 5,3 puntos) y Navarra 10.001-50.000 (TVD 0,082; 4,4 puntos) |
+| G8B.2 V-POL-RESERVADA | ✅ (2 excepciones aprobadas) | España 6/6 tamaños; comunidad × tamaño 47/49 evaluables. Fuera: Cantabria ≤ 2.000 hab. (TVD 0,063; participación 5,3 puntos) y Navarra 10.001-50.000 (TVD 0,082; 4,4 puntos) |
 | G8B.3 V-POL-PERFIL | ✅ | 24/24 (6 electorados × 4 variables) frente al 3420 reponderado; TVD máx. 0,077. Sin reponderar: 14/24 |
 | G8B.4 V-POL-COHERENCIA | ✅ | 9/9 electorados: media a ± 0,3 y razón de desviaciones en [0,8; 1,2] |
 | G8B.5 V-POL-TRANSFERENCIA | ✅ | 28/28 filas con ≥ 200 casos frente al CIS ajustado por IPF; TVD media 0,027. Sin ajustar: 5/28 |
@@ -51,11 +51,11 @@ Ver `reports/fase_08b_puerta.md` (`sinpop validate --phase 8b`).
 | G8B.7 V-POL-SESGO | ✅ | Diversidad 63/63 (razón de entropías mín. 0,94); contrafactual de ideología 9/9 |
 | G8B.8 Derecho a voto | ✅ | 0 personas sin derecho con recuerdo (generales: 144.533 sin derecho; autonómicas: 136.913) |
 | V-LATENTE (tarea 6) | ✅ | Izquierda-derecha CFI 0,966 / RMSEA 0,064 / omega 0,72; desafección 0,991 / 0,059 / 0,85; implicación 0,971 / 0,066 / 0,75 (conjunto); eje territorial 0,999 / 0,030 / 0,72 |
-| G8B.9 Revisión humana | ⏸️ | Pendiente |
+| G8B.9 Revisión humana | ✅ | Aprobada el 2026-10-21 |
 
 **Reproducibilidad:** dos construcciones seguidas de `politics.parquet` con la misma semilla dan el mismo SHA-256 (`d2e34eeb…`) y ninguna columna distinta.
 
-## Decisiones que necesitan aprobación (D-067)
+## Decisiones aprobadas (D-067)
 
 1. **G8B.2:** aceptar las dos celdas fuera de umbral como excepciones documentadas; el umbral no cambia.
 2. **G8B.3:** reponderar el postelectoral 3420 a edad × sexo × estudios. Su peso solo corrige la comunidad, y su muestra tiene un 48 % de titulados superiores frente al 38 % real.

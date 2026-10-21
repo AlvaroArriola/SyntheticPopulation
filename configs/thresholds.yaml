@@ -148,6 +148,11 @@ V-POL-RESERVADA:
   tvd_espana: 0.04
   tvd_ccaa: 0.06
   error_participacion_max: 0.03
+  # Excepciones aprobadas por la persona responsable el 2026-10-21 (D-067): celdas comunidad ×
+  # tamaño de la mitad reservada que quedan fuera; el umbral general no cambia.
+  excepciones_ccaa:
+    - "06 hasta_2000"  # Cantabria: TVD 0,063, participación 5,3 puntos
+    - "15 de_10001_a_50000"  # Navarra: TVD 0,082, participación 4,4 puntos
 V-POL-PERFIL:
   tvd_max: 0.08
   casos_cis_min: 300

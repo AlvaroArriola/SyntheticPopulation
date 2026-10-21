@@ -1,0 +1,59 @@
+# Dimensión temporal (F8C; docs/03 §2.6; D-068). Ver `src/sinpop/temporal/`.
+#
+# Indicadores mensuales de los barómetros del CIS. Cada categoría se define por las ETIQUETAS de
+# la respuesta (nunca por el código); una etiqueta que no esté en ninguna categoría ni en
+# `sin_posicion` detiene el proceso. «N.S.» y «N.C.» son una categoría propia (NS_NC).
+periodo:
+  desde: "2023-01"
+  hasta: "2026-06"  # último barómetro anterior al corte (2026-07-01)
+  frecuencia: mensual  # mensual | trimestral (último mes de cada trimestre)
+
+indicadores:
+  economia_espana:
+    variables: [ECOESP]
+    categorias:
+      buena: ["Muy buena", "Buena"]
+      regular: ["(NO LEER) Regular"]
+      mala: ["Mala", "Muy mala"]
+      NS_NC: ["N.S.", "N.C."]
+  economia_personal:
+    variables: [ECOPER]
+    categorias:
+      buena: ["Muy buena", "Buena"]
+      regular: ["(NO LEER) Regular"]
+      mala: ["Mala", "Muy mala"]
+      NS_NC: ["N.S.", "N.C."]
+  # Autoubicación (ESCIDEOL) en los bloques de D-067 (1-4 / 5-6 / 7-10)
+  ideologia_bloque:
+    variables: [ESCIDEOL]
+    especial: ideologia
+  # Partido más cercano por familia (correspondencias de `partidos.yaml`, D-067)
+  cercania_partido:
+    variables: [CERCANIA]
+    especial: cercania
+  # Principales problemas de España (hasta tres respuestas espontáneas, PESPANNA1-3): 1 si se
+  # menciona alguna de las etiquetas en cualquiera de las tres
+  problema_vivienda:
+    variables: [PESPANNA1, PESPANNA2, PESPANNA3]
+    menciones: ["La vivienda"]
+  problema_inmigracion:
+    variables: [PESPANNA1, PESPANNA2, PESPANNA3]
+    menciones: ["La inmigración"]
+  problema_paro:
+    variables: [PESPANNA1, PESPANNA2, PESPANNA3]
+    menciones: ["El paro"]
+  problema_economia:
+    variables: [PESPANNA1, PESPANNA2, PESPANNA3]
+    menciones: ["La crisis económica, los problemas de índole económica"]
+  problema_politica:
+    variables: [PESPANNA1, PESPANNA2, PESPANNA3]
+    menciones:
+      - "Los problemas políticos en general"
+      - "El Gobierno y partidos o políticos/as concretos/as"
+      - "El mal comportamiento de los/as políticos/as"
+      - "Lo que hacen los partidos políticos"
+      - "La falta de acuerdos, unidad y capacidad de colaboración. Situación e inestabilidad política"
+      - "La corrupción y el fraude"
+
+# Interacciones del efecto de periodo con los grupos principales (docs/03 §2.6)
+interacciones: [edad_4, ccaa, grupo_voto]
