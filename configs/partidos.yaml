@@ -1466,3 +1466,44 @@ cis:
       9999:
         etiqueta: N.C.
         especial: NC
+# Recuerdo de voto de las generales de 2023 en los estudios del CIS (variable RECUERDO, todas las
+# redacciones de 2023-2026) → familia u opción especial (D-067). Se asigna por la ETIQUETA. Las
+# familias siguen los criterios de D-030 y D-032. «Otro partido» mezcla familias (en 3567 el
+# 8995 agrupa listas de todas): se asigna a «otros» y la calibración por provincia corrige el
+# total de cada familia. N.R. («no recuerda») y N.C. son respuestas legítimas (regla 10).
+recuerdo_cis_generales_2023:
+  PSOE: socialdemocrata
+  PSE-EE-PSOE: socialdemocrata
+  PSdeG-PSOE: socialdemocrata
+  PP: centro_derecha_estatal
+  VOX: derecha_radical
+  Sumar: izquierda_estatal
+  SUMAR: izquierda_estatal
+  PACMA: otros
+  CCa: nacionalista_regionalista
+  ERC: nacionalista_regionalista
+  Junts: nacionalista_regionalista
+  BNG: nacionalista_regionalista
+  UPN: nacionalista_regionalista
+  EAJ-PNV: nacionalista_regionalista
+  EH Bildu: nacionalista_regionalista
+  EXISTE-Teruel Existe: nacionalista_regionalista
+  PAR: nacionalista_regionalista
+  Adelante Andalucía: nacionalista_regionalista
+  Jaén Merece Más: nacionalista_regionalista
+  UPL: nacionalista_regionalista
+  SYA: nacionalista_regionalista
+  XAV: nacionalista_regionalista
+  ESPAÑA VACIADA: nacionalista_regionalista
+  Otro partido: otros
+  Otros partidos: otros
+  En blanco: blanco
+  Nulo: nulo
+  Voto nulo: nulo
+  No votó: abstencion
+  No tenía edad: no_tenia_edad
+  No tenía derecho a voto: sin_derecho_voto
+  N.R.: NS
+  N.C.: NC
+  No procede: NP
+  N.P.: NP
