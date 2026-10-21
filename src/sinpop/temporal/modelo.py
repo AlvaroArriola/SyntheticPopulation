@@ -8,9 +8,11 @@ Dos piezas, en el espacio log de las probabilidades (desplazamientos de un softm
 2. **Periodo (dinámico):** para cada mes y categoría, la desviación entre la proporción observada
    y la que predice el modelo, d = log(observada / predicha), con su varianza muestral
    (1 − p) / (n_efectivo · p). Esas desviaciones siguen un **nivel local** (paseo aleatorio)
-   observado con ruido, que se estima con el filtro de Kalman; la varianza del paseo se elige
-   por máxima verosimilitud. El filtro separa el ruido muestral (unos ±0,8 puntos con 4.000
-   entrevistas) del cambio real y un mes sin barómetro (agosto) se queda en el nivel anterior.
+   observado con ruido, que se estima con el filtro de Kalman. El ruido de cada mes es el
+   muestral más una varianza extra común (efecto de diseño, diferencias de campo entre
+   oleadas): la varianza del paseo y la extra se eligen juntas por máxima verosimilitud. El
+   filtro separa ese ruido del cambio real, y un mes sin barómetro (agosto) se queda en el
+   nivel anterior.
 
    Hay un nivel nacional y uno por grupo de cada interacción de `temporal.yaml` (edad en cuatro
    grupos, comunidad y grupo de voto), que recoge lo que cada grupo se separa de la evolución
@@ -37,6 +39,7 @@ NACIONAL = "nacional"
 PASADAS = 3
 PSEUDO = 0.5  # pseudoconteo para proporciones nulas en grupos pequeños
 Q_REJILLA = np.array([0.0, 1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 3e-2, 0.1, 0.3])
+S2_REJILLA = np.array([0.0, 1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 3e-2])
 
 
 def kalman(d: np.ndarray, v: np.ndarray, q: float, suavizar: bool) -> tuple[np.ndarray, float]:
@@ -73,6 +76,7 @@ class Componente:
     nombre: str  # "nacional" o la columna del grupo
     niveles: list[str]
     q: float = 0.0
+    s2: float = 0.0  # varianza de observación extra
     # desplazamiento[nivel] → matriz meses × clases
     desplazamiento: dict[str, np.ndarray] = field(default_factory=dict)
 
@@ -134,24 +138,25 @@ class ModeloTemporal:
                         dd[m] = np.log(o / e)
                         vv[m] = (1 - o) / (n_ef * o)
                     obs[lv] = (dd, vv)
-                c.q = self._elegir_q(obs)
+                c.q, c.s2 = self._elegir_q(obs)
                 for lv, (dd, vv) in obs.items():
                     c.desplazamiento[lv] = np.column_stack(
-                        [kalman(dd[:, j], vv[:, j], c.q, suavizar)[0] for j in range(k)]
+                        [kalman(dd[:, j], vv[:, j] + c.s2, c.q, suavizar)[0] for j in range(k)]
                     )
         return self
 
     @staticmethod
-    def _elegir_q(obs: dict) -> float:
-        mejor, valor = 0.0, -np.inf
+    def _elegir_q(obs: dict) -> tuple[float, float]:
+        mejor, valor = (0.0, 0.0), -np.inf
         for q in Q_REJILLA:
-            ll = sum(
-                kalman(dd[:, j], vv[:, j], q, False)[1]
-                for dd, vv in obs.values()
-                for j in range(dd.shape[1])
-            )
-            if ll > valor:
-                mejor, valor = float(q), ll
+            for s2 in S2_REJILLA:
+                ll = sum(
+                    kalman(dd[:, j], vv[:, j] + s2, q, False)[1]
+                    for dd, vv in obs.values()
+                    for j in range(dd.shape[1])
+                )
+                if ll > valor:
+                    mejor, valor = (float(q), float(s2)), ll
         return mejor
 
     def _offset(self, c: Componente, etiquetas: np.ndarray, t: np.ndarray) -> np.ndarray:

@@ -1487,6 +1487,67 @@ def _g8b_9_human() -> Check:
     )
 
 
+def _f8c() -> dict | None:
+    import json
+
+    from sinpop.validate.fase8c import RESUMEN
+
+    return json.loads(RESUMEN.read_text(encoding="utf-8")) if RESUMEN.exists() else None
+
+
+def _sin_f8c(id_: str, desc: str, um: str) -> Check:
+    falta = "falta reports/fase_08c_validacion.json (python -m sinpop.validate.fase8c)"
+    return Check(id_, desc, False, falta, um)
+
+
+def _g8c_1() -> Check:
+    d, desc = _f8c(), "Backtest temporal frente a la persistencia (V-TEMPORAL)"
+    um = "error medio del modelo < error medio de repetir el último valor (t+1 a t+3)"
+    if d is None:
+        return _sin_f8c("G8C.1", desc, um)
+    g = d["g8c1"]
+    return Check(
+        "G8C.1",
+        desc,
+        g["error_modelo_pp"] < g["error_persistencia_pp"],
+        f"modelo {g['error_modelo_pp']:.2f} pp frente a persistencia "
+        f"{g['error_persistencia_pp']:.2f} pp ({g['predicciones']} predicciones, "
+        f"{g['origenes']} orígenes)",
+        um,
+    )
+
+
+def _g8c_2() -> Check:
+    d, desc = _f8c(), "Series de la población frente a las del CIS (V-TEMPORAL-SERIES)"
+    if d is None:
+        return _sin_f8c("G8C.2", desc, "≤ 2 pp")
+    g = d["g8c2"]
+    um = f"diferencia absoluta media ≤ {g['umbral_pp']} pp"
+    return Check(
+        "G8C.2",
+        desc,
+        g["dif_media_pp"] <= g["umbral_pp"],
+        f"{g['dif_media_pp']:.2f} pp en {g['comparaciones']} mes × categoría",
+        um,
+    )
+
+
+def _g8c_3() -> Check:
+    d, desc = _f8c(), "Cada evento del banco tiene fecha, fuente y efecto con su incertidumbre"
+    um = "todos los eventos"
+    if d is None:
+        return _sin_f8c("G8C.3", desc, um)
+    g = d["g8c3"]
+    return Check(
+        "G8C.3",
+        desc,
+        g["ok"],
+        f"{g['con_efecto']}/{g['eventos']} eventos con efecto e IC 95 %; sin fuente: "
+        f"{g['sin_fuente'] or 0}",
+        um,
+    )
+
+
 PHASES: dict[int | str, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
@@ -1511,6 +1572,7 @@ PHASES: dict[int | str, list[Callable[[], Check]]] = {
     6: [_g6_1, _g6_2, _g6_3, _g6_4, _g6_5, _g6_6],
     7: [_g7_1, _g7_2, _g7_3, _g7_4, _g7_5, _g7_6, _g7_7_human],
     "8a": [_g8a_1, _g8a_2, _g8a_3, _g8a_4, _g8a_5, _g8a_6, _g8a_7_human],
+    "8c": [_g8c_1, _g8c_2, _g8c_3],
     "8b": [
         _g8b_1,
         _g8b_2,
