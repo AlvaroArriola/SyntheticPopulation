@@ -17,6 +17,7 @@ import polars as pl
 
 from sinpop import POPULATIONS_DIR, REPORTS_DIR
 from sinpop.opinion import cv as CV
+from sinpop.opinion import identidad as ID
 from sinpop.opinion import latentes as L
 from sinpop.opinion import lengua as LG
 from sinpop.opinion import medios as MD
@@ -54,6 +55,7 @@ def referencias() -> dict[str, tuple]:
     out = {v: ((lambda v=v: V.datos(v)), "espanoles") for v in VALORES}
     out["lengua_habitual"] = (LG.datos, "todos")
     out["medio_informacion_principal"] = (MD.datos, "espanoles")
+    out["identidad_territorial"] = (ID.datos, "espanoles")
     return out
 
 
@@ -137,6 +139,8 @@ def tvd_nacional(run_id: str) -> list[dict]:
     sint = {u: sintetica(run_id, u) for u in ("espanoles", "todos")}
     for v, (fuente, universo) in referencias().items():
         s, e = sint[universo], fuente().with_columns(_edad_4(pl.col("edad")))
+        # solo donde hay referencia (la identidad solo se pregunta en algunas comunidades)
+        s = s.filter(pl.col(v).is_not_null() & pl.col("ccaa").is_in(e["ccaa"].unique().to_list()))
         if v in REPONDERAR:
             e = _reponderar(e, s, REPONDERAR[v])
         a = _props(s.with_columns(pl.lit(1).alias("_t")), v, "peso", ["_t"]).select(

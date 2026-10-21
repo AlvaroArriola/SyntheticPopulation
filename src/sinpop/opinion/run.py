@@ -14,6 +14,7 @@ import json
 import polars as pl
 
 from sinpop import POPULATIONS_DIR
+from sinpop.opinion import identidad as ID
 from sinpop.opinion import lengua as LG
 from sinpop.opinion import medios as MD
 from sinpop.opinion import rasgos as R
@@ -36,7 +37,7 @@ def construir(run_id: str) -> dict:
     tr, info_r = R.asignar(persons, semilla_capa(semilla, "rasgos"))
     tabla = tabla.join(tr, on="person_id", how="left")
     info |= info_r
-    for nombre, modulo in [("lengua", LG), ("medios", MD)]:
+    for nombre, modulo in [("lengua", LG), ("medios", MD), ("identidad", ID)]:
         t_, i_ = modulo.asignar(persons, semilla_capa(semilla, nombre))
         tabla = tabla.join(t_, on="person_id", how="left")
         info |= i_

@@ -3009,8 +3009,15 @@ variables:
     prioridad: P3
     nivel: opinion
     tipo: ordinal
-    descripcion: Escala Linz-Moreno
-    dominio_pendiente: 'F8A: categorías según el cuestionario del CIS'
+    descripcion: Escala Linz-Moreno (D-066; «ninguna» es la respuesta espontánea «Ninguna de las
+      anteriores» y no forma parte de la escala)
+    categorias:
+    - solo_espanol
+    - mas_espanol
+    - igual
+    - mas_comunidad
+    - solo_comunidad
+    - ninguna
     fuente_principal: cis_barometros / centros_autonomicos
   lengua_habitual:
     prioridad: P3
@@ -3066,7 +3073,9 @@ variables:
     - radio
     - redes_sociales
     - otros_digitales
-    descripcion: Medio principal de información
+    - ninguno
+    descripcion: Medio principal de información (D-066; derivado de la frecuencia de uso de cada
+      medio en el estudio 3511 del CIS; «ninguno», no se informa por ningún medio)
     fuente_principal: cis_barometros
   rasgo_sensibilidad_precio:
     prioridad: P3
