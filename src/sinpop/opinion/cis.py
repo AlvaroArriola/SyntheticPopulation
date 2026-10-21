@@ -285,6 +285,10 @@ def _peso(df: pl.DataFrame) -> pl.Series:
 
 
 PERFIL = ("SEXO", "EDAD", "CCAA", "SITLAB", "ESTUDIOS")
+# Descargados pero fuera de la armonización (D-066): perfil en otro formato y sin variables que
+# no cubran otras fuentes
+_ISSP = "Encuesta Social General Española (ISSP): perfil en el formato del ISSP, no se usa"
+NO_ARMONIZADOS = {"3391": _ISSP, "3462": _ISSP, "3506": _ISSP}
 
 
 def _variable_nacionalidad(meta) -> str | None:
@@ -371,6 +375,9 @@ def armonizar() -> dict:
         f = fechas().get(e)
         if f is None or dt.date.fromisoformat(f) >= CORTE:
             info[e] = "sin fecha o posterior al corte: no se usa"
+            continue
+        if e in NO_ARMONIZADOS:
+            info[e] = NO_ARMONIZADOS[e]
             continue
         try:
             p = personas(e)

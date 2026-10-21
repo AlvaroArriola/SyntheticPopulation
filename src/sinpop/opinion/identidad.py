@@ -12,9 +12,8 @@ proceso:
 - «Me siento únicamente X» → `solo_comunidad`
 - «(NO LEER) Ninguna de las anteriores» → `ninguna`; «N.S.» y «N.C.» → NS y NC.
 
-La identidad depende de la comunidad: se ajusta un modelo por comunidad, con los encuestados de
-esa comunidad de todos los estudios disponibles, y se asigna por extracción a los adultos de esa
-comunidad. En las comunidades sin ningún estudio la variable queda vacía (no se inventa).
+Fuentes: los postelectorales autonómicos (miles de encuestados en su comunidad) y el estudio
+nacional 3409 (Identidades culturales, nacionales y europeas, mayo de 2023), que cubre todas.
 """
 
 from __future__ import annotations
@@ -38,8 +37,15 @@ PATRONES = [  # «Me siento …» en los autonómicos; sin ese prefijo y con may
     (r"^(\(NO LEER\) )?Ninguna de (las|ellas|las anteriores).*$", "ninguna"),
 ]
 ENUNCIADO = r"(?i)^sentimiento nacionalista"
-COLUMNAS = ["sexo", "edad_grupo", "estudios_3", "actividad_3", "tamano_municipio_cis"]
-MIN_ENCUESTADOS = 300  # por comunidad para ajustar su modelo
+COLUMNAS = [
+    "sexo",
+    "edad_grupo",
+    "estudios_3",
+    "actividad_3",
+    "tamano_municipio_cis",
+    "ccaa",
+    "ccaa_edad4",
+]
 
 
 def recodificar(etiqueta: str | None) -> str | None:
@@ -97,35 +103,30 @@ def datos() -> pl.DataFrame:
 
 
 def asignar(persons: pl.DataFrame, semilla: int) -> tuple[pl.DataFrame, dict]:
+    """Un único modelo con la comunidad y su interacción con la edad, regularizado por
+    validación cruzada (como en MRP): las comunidades con estudio autonómico propio (miles de
+    encuestados) conservan su patrón y las que solo tienen la muestra del estudio nacional 3409
+    (de 8 en Ceuta a 1.198 en Madrid) se encogen hacia el patrón general en vez de quedar vacías
+    o copiar su ruido muestral (D-066)."""
     perfil = perfil_sintetico(persons)
     d = datos()
-    rng = make_rng(semilla)
-    valor = np.full(perfil.height, None, dtype=object)
-    meta = {}
-    ccaa_s = perfil["ccaa"].to_numpy()
-    for c in sorted(d["ccaa"].drop_nulls().unique()):
-        dc = d.filter(pl.col("ccaa") == c)
-        sel = np.flatnonzero(ccaa_s == c)
-        if dc.height < MIN_ENCUESTADOS or not len(sel):
-            continue
-        m = Modelo("identidad_territorial", columnas=COLUMNAS).ajustar(dc)
-        pr = m.probabilidades(perfil[sel])
-        u = rng.random(len(sel))
-        idx = (pr.cumsum(axis=1) < u[:, None]).sum(axis=1).clip(max=len(m.clases) - 1)
-        valor[sel] = np.array(m.clases)[idx]
-        meta[c] = {"encuestados": dc.height, "estudios": sorted(dc["estudio"].unique())}
+    m = Modelo("identidad_territorial", columnas=COLUMNAS).ajustar(d)
+    pr = m.probabilidades(perfil)
+    u = make_rng(semilla).random(len(pr))
+    idx = (pr.cumsum(axis=1) < u[:, None]).sum(axis=1).clip(max=len(m.clases) - 1)
     fuera = (perfil["nacionalidad_esp_ext"] != "espanola") | (
         perfil["tipo_residencia"] != "vivienda_familiar"
     )
-    calidad = np.where(
-        pd_isnull(valor), None, np.where(fuera.to_numpy(), "extrapolada", "modelada")
-    )
     out = perfil.select("person_id").with_columns(
-        pl.Series("identidad_territorial", valor, dtype=pl.Utf8),
-        pl.Series("identidad_territorial__calidad", calidad, dtype=pl.Utf8),
+        pl.Series("identidad_territorial", np.array(m.clases)[idx]),
+        pl.Series("identidad_territorial__calidad", np.where(fuera, "extrapolada", "modelada")),
     )
-    return out, {"identidad_territorial": {"por_ccaa": meta}}
-
-
-def pd_isnull(a: np.ndarray) -> np.ndarray:
-    return np.array([x is None for x in a])
+    n = dict(d.group_by("ccaa").len().iter_rows())
+    return out, {
+        "identidad_territorial": {
+            "encuestados": d.height,
+            "estudios": sorted(d["estudio"].unique()),
+            "encuestados_por_ccaa": n,
+            "c": m.c_elegido,
+        }
+    }
