@@ -57,11 +57,36 @@ def referencias() -> dict[str, tuple]:
     return out
 
 
+REPONDERAR = {"lengua_habitual": ["ccaa", "edad_4", "pais_nacimiento_grupo"]}
+
+
+def _reponderar(e: pl.DataFrame, s: pl.DataFrame, celdas: list[str]) -> pl.DataFrame:
+    """Lleva la referencia a la composición de la población sintética en `celdas`. La ECEPOV es
+    de 2021 y desde entonces creció la población nacida fuera de España (16 % → 21 % de los
+    adultos): sin esto, el cambio demográfico real se leería como error del modelo (D-066)."""
+    pe = e.group_by(celdas).agg(pl.col("peso").sum().alias("we"))
+    ps = s.group_by(celdas).agg(pl.col("peso").sum().alias("ws"))
+    f = pe.join(ps, on=celdas, how="inner").with_columns(
+        (pl.col("ws") / pl.col("ws").sum() / (pl.col("we") / pl.col("we").sum())).alias("f")
+    )
+    return e.join(f.select(*celdas, "f"), on=celdas, how="inner").with_columns(
+        pl.col("peso") * pl.col("f")
+    )
+
+
 def sintetica(run_id: str, universo: str = "espanoles") -> pl.DataFrame:
     d = POPULATIONS_DIR / run_id
     p = pl.read_parquet(
         d / "persons.parquet",
-        columns=["person_id", "edad", "ccaa", "peso", "nacionalidad_esp_ext", "tipo_residencia"],
+        columns=[
+            "person_id",
+            "edad",
+            "ccaa",
+            "peso",
+            "nacionalidad_esp_ext",
+            "tipo_residencia",
+            "pais_nacimiento_grupo",
+        ],
     )
     o = pl.read_parquet(d / "opinion.parquet")
     filtro = pl.col("tipo_residencia") == "vivienda_familiar"
@@ -76,6 +101,8 @@ def v_marg_valores(run_id: str, replicas: int = 200, semilla: int = 0) -> pl.Dat
     for v, (fuente, universo) in referencias().items():
         s = sint[universo]
         e = fuente().with_columns(_edad_4(pl.col("edad")))
+        if v in REPONDERAR:
+            e = _reponderar(e, s, REPONDERAR[v])
         ic = bootstrap_ic(e, v, "peso", ["ccaa", "edad_4"], None, replicas, semilla)
         ps = _props(s, v, "peso", ["ccaa", "edad_4"])
         pe = _props(e, v, "peso", ["ccaa", "edad_4"])
@@ -109,7 +136,9 @@ def tvd_nacional(run_id: str) -> list[dict]:
     out = []
     sint = {u: sintetica(run_id, u) for u in ("espanoles", "todos")}
     for v, (fuente, universo) in referencias().items():
-        s, e = sint[universo], fuente()
+        s, e = sint[universo], fuente().with_columns(_edad_4(pl.col("edad")))
+        if v in REPONDERAR:
+            e = _reponderar(e, s, REPONDERAR[v])
         a = _props(s.with_columns(pl.lit(1).alias("_t")), v, "peso", ["_t"]).select(
             v, pl.col("p").alias("p_s")
         )
