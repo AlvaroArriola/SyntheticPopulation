@@ -41,7 +41,8 @@ EXCLUIR = {  # perfil, pesos y control de calidad: no son preguntas de opinión
 NO_OPINION = (
     r"^(IA_|TIPO_TEL|SINCERIDAD|ESCUELA|INGRES|ESTUDIOS|HOGAR|NUMPERS|MOVIL|TELEF|"
     r"LIDER|VOTO|RECUERDO|RECUVOTO|INTENCION|VOTOSIM|ESCIDEOL|PARTIDO|CERCANIA|SIMPATIA|"
-    r"CONFIANZAPTE|CONFIANZAOPOSIC|PROBVOTO|VALORA|PREFPTE|PREFERENCIA|AFILIA|PARTICIPA)"
+    r"CONFIANZAPTE|CONFIANZAOPOSIC|PROBVOTO|VALORA|PREFPTE|PREFERENCIA|AFILIA|PARTICIPA|"
+    r"CONOMINIS|VALMINIS|CONOLIDER|FIDEVOTO|MVOTO|CAPITAL|CNO11|ENTREV|ESTUDIO$|CUES|PROV|MUN)"
 )
 
 
@@ -51,6 +52,7 @@ def preguntas_repetidas() -> pl.DataFrame:
         (pl.col("estudios").list.len() >= MIN_ESTUDIOS)
         & ~pl.col("variable").is_in(list(EXCLUIR))
         & ~pl.col("variable").str.contains(NO_OPINION)
+        & ~pl.col("enunciado").str.contains(r"(?i)^nacionalidad|^edad|^sexo|^provincia|^municipio")
     )
 
 

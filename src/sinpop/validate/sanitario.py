@@ -53,6 +53,7 @@ def preguntas(entreno: list[str], test: str) -> list[str]:
             & pl.col("estudios").list.eval(pl.element().is_in(entreno)).list.any()
             & ~pl.col("variable").is_in(list(EXCLUIR))
             & ~pl.col("variable").str.contains(NO_OPINION)
+            & ~pl.col("enunciado").str.contains(r"(?i)^nacionalidad|^edad|^sexo|^provincia")
         )["variable"].unique()
     )
 
