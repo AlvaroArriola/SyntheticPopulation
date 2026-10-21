@@ -3931,6 +3931,16 @@ ficheros:
   condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
   via: automatica
 - fuente: cis_barometros
+  fichero: cis_barometros/3409/cues3409pdf.pdf
+  tipo: cuestionario
+  edicion: '3409'
+  url_oficial: https://www.cis.es/documents/20117/1557711/cues3409pdf.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 0674bf7011dddb43b95438bbeae1b89c6a88ffcd06da39124a074f158bc37575
+  bytes: 82602
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
   fichero: cis_barometros/3413/FT3413pdf.pdf
   tipo: metodologia
   edicion: '3413'
@@ -4348,6 +4358,26 @@ ficheros:
   fecha_descarga: '2026-10-21'
   sha256: b896c63f96e1c62b39109bc0f03a7b7f32a3630f2657438f698b06f8304b718e
   bytes: 96708
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3462/FT3462.pdf
+  tipo: metodologia
+  edicion: '3462'
+  url_oficial: https://www.cis.es/documents/20117/13448182/FT3462.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 6f86dac8156cd147adea13c41f86605721594a7a947131b26b6805837346f200
+  bytes: 130458
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3462/MD3462.zip
+  tipo: datos
+  edicion: '3462'
+  url_oficial: https://www.cis.es/documents/20117/13448182/MD3462.zip
+  fecha_descarga: '2026-10-21'
+  sha256: de78bfff7650f82bf60796f75e916434c05be5aadcc9c255ce5fd52bd0d34996
+  bytes: 3693322
   condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
   via: automatica
 - fuente: cis_barometros
