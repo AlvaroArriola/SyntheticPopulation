@@ -1,0 +1,146 @@
+{
+ "estudios": [
+  "3571",
+  "3577"
+ ],
+ "sin_recalibrar": {
+  "casos": 2588,
+  "spearman_error": 0.6930184173626973,
+  "spearman_confianza": 0.7617883589284998,
+  "ece": 0.01780178012262816,
+  "spearman_confianza_n_subgrupo": 0.4633207078655897,
+  "spearman_confianza_n_ccaa": 0.3374613683791711,
+  "confianza_media_total": 0.8371434512127123,
+  "confianza_media_subgrupos": 0.6842987292762875,
+  "diagrama_calibracion": [
+   {
+    "bin": "0.0-0.1",
+    "casos": 233,
+    "confianza_media": 0.07175780199478148,
+    "acierto": 0.07725321888412018
+   },
+   {
+    "bin": "0.1-0.2",
+    "casos": 155,
+    "confianza_media": 0.13741892315917154,
+    "acierto": 0.2129032258064516
+   },
+   {
+    "bin": "0.2-0.3",
+    "casos": 112,
+    "confianza_media": 0.2517433195160327,
+    "acierto": 0.16964285714285715
+   },
+   {
+    "bin": "0.3-0.4",
+    "casos": 91,
+    "confianza_media": 0.3441839885230616,
+    "acierto": 0.4175824175824176
+   },
+   {
+    "bin": "0.4-0.5",
+    "casos": 106,
+    "confianza_media": 0.44768534071563654,
+    "acierto": 0.4528301886792453
+   },
+   {
+    "bin": "0.5-0.6",
+    "casos": 99,
+    "confianza_media": 0.5465402060974636,
+    "acierto": 0.5555555555555556
+   },
+   {
+    "bin": "0.6-0.7",
+    "casos": 142,
+    "confianza_media": 0.6593615708094104,
+    "acierto": 0.7183098591549296
+   },
+   {
+    "bin": "0.7-0.8",
+    "casos": 134,
+    "confianza_media": 0.750266246343954,
+    "acierto": 0.7611940298507462
+   },
+   {
+    "bin": "0.8-0.9",
+    "casos": 490,
+    "confianza_media": 0.8627342101104539,
+    "acierto": 0.863265306122449
+   },
+   {
+    "bin": "0.9-1.0",
+    "casos": 1026,
+    "confianza_media": 0.9467028181088936,
+    "acierto": 0.9522417153996101
+   }
+  ]
+ },
+ "calibrado_en_validacion": {
+  "casos": 2588,
+  "spearman_error": 0.6930184173626973,
+  "spearman_confianza": 0.7642782701028628,
+  "ece": 0.04691819536973169,
+  "spearman_confianza_n_subgrupo": 0.4541962191423958,
+  "spearman_confianza_n_ccaa": 0.33768400721351544,
+  "confianza_media_total": 0.8369386721637513,
+  "confianza_media_subgrupos": 0.6858877617990959,
+  "diagrama_calibracion": [
+   {
+    "bin": "0.0-0.1",
+    "casos": 328,
+    "confianza_media": 0.048951616177023795,
+    "acierto": 0.14939024390243902
+   },
+   {
+    "bin": "0.2-0.3",
+    "casos": 166,
+    "confianza_media": 0.2510114532202885,
+    "acierto": 0.10240963855421686
+   },
+   {
+    "bin": "0.3-0.4",
+    "casos": 41,
+    "confianza_media": 0.3390243902439024,
+    "acierto": 0.36585365853658536
+   },
+   {
+    "bin": "0.4-0.5",
+    "casos": 278,
+    "confianza_media": 0.4591128962731134,
+    "acierto": 0.5035971223021583
+   },
+   {
+    "bin": "0.5-0.6",
+    "casos": 6,
+    "confianza_media": 0.5158195722802336,
+    "acierto": 0.6666666666666666
+   },
+   {
+    "bin": "0.6-0.7",
+    "casos": 171,
+    "confianza_media": 0.6592012278388054,
+    "acierto": 0.8070175438596491
+   },
+   {
+    "bin": "0.7-0.8",
+    "casos": 57,
+    "confianza_media": 0.7322035989284438,
+    "acierto": 0.631578947368421
+   },
+   {
+    "bin": "0.8-0.9",
+    "casos": 211,
+    "confianza_media": 0.8271765232841425,
+    "acierto": 0.7819905213270142
+   },
+   {
+    "bin": "0.9-1.0",
+    "casos": 1330,
+    "confianza_media": 0.9472890071387435,
+    "acierto": 0.9406015037593985
+   }
+  ]
+ },
+ "publicada": "sin_recalibrar",
+ "tvd_umbral": 0.1
+}
