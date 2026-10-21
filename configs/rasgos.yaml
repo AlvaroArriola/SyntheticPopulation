@@ -8,6 +8,16 @@
 
 escalas:
   temor_4: {"Mucho temor": 4, "Bastante temor": 3, "Poco temor": 2, "Ningún temor": 1}
+  grado_5: {"Mucho": 5, "Bastante": 4, "Regular": 3, "Poco": 2, "Nada": 1}
+  recursos_clima:
+    "Cree que deberíamos dedicar más recursos": 1
+    "No cree que sea necesario dedicar más recursos": 0
+    "(NO LEER) No sabe, está en duda": null
+  # «Siempre han ocurrido fenómenos similares» tampoco atribuye la DANA al cambio climático
+  atribucion_clima:
+    "Creo que es algo que se relaciona con el cambio climático": 1
+    "Creo que es un fenómeno totalmente aislado": 0
+    "(NO LEER) Siempre han ocurrido fenómenos similares": 0
 
 rasgos:
   # Estudio 3535 (Encuesta sobre tendencias sociales V, noviembre de 2025), P.4: confianza de
@@ -42,3 +52,12 @@ rasgos:
       P2_7: numerica  # no tener a una persona a la que amar (0-10)
       P16: temor_4  # temor a quedarse solo/a o sin apoyo emocional
   # P17 (tiene con quién hablar de sus preocupaciones) no carga en el factor (0,04): se descarta.
+  # Estudio 3489 (Barómetro de diciembre de 2024), bloque sobre la DANA y el cambio climático
+  # (D-066). El barómetro de marzo de 2023 (3398) tiene otra batería, con tres ítems y omega 0,67.
+  rasgo_preocupacion_ambiental:
+    estudios: ["3489"]
+    items:
+      P13: grado_5  # preocupación por el cambio climático
+      MEDIDASCLIMA: numerica  # importancia (0-10) de tomar medidas contra sus efectos
+      P12: recursos_clima  # dedicar más recursos públicos a fenómenos y desastres naturales
+      P7: atribucion_clima  # la DANA se relaciona con el cambio climático

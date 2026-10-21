@@ -60,6 +60,39 @@ def _puntuar(etiqueta: str | None, escala: str | dict, var: str) -> float | None
     raise ValueError(f"{var}: etiqueta no prevista en la escala {escala}: {et!r}")
 
 
+def _intermedios_numericos(lg: pl.DataFrame, defs: dict) -> pl.DataFrame:
+    """En algunas escalas numéricas el fichero solo etiqueta los extremos («1 Totalmente
+    incómodo/a» … «10 Totalmente cómodo/a»). Un código sin etiqueta se acepta como su número solo
+    si está entre los dos extremos etiquetados de esa variable en ese estudio; fuera de ese
+    intervalo sigue sin etiqueta y detiene el proceso (nunca se inventa un código)."""
+    numericas = [
+        v for v, d in defs.items() if (d["escala"] if isinstance(d, dict) else d) == "numerica"
+    ]
+    if not numericas:
+        return lg
+    extremos = (
+        lg.filter(
+            pl.col("variable").is_in(numericas) & pl.col("etiqueta").str.contains(r"^\d{1,2}(\s|$)")
+        )
+        .group_by("estudio", "variable")
+        .agg(pl.col("codigo").min().alias("lo"), pl.col("codigo").max().alias("hi"))
+    )
+    return (
+        lg.join(extremos, on=["estudio", "variable"], how="left")
+        .with_columns(
+            pl.when(
+                pl.col("etiqueta").is_null()
+                & pl.col("codigo").is_between(pl.col("lo"), pl.col("hi"))
+                & (pl.col("codigo") == pl.col("codigo").round(0))
+            )
+            .then(pl.col("codigo").cast(pl.Int64).cast(pl.Utf8))
+            .otherwise(pl.col("etiqueta"))
+            .alias("etiqueta")
+        )
+        .drop("lo", "hi")
+    )
+
+
 def items(rasgo: str) -> pl.DataFrame:
     """Ancho: estudio, encuestado y una columna por ítem con su puntuación (nulo si no hay)."""
     c = config()["rasgos"][rasgo]
@@ -68,9 +101,10 @@ def items(rasgo: str) -> pl.DataFrame:
     lg = (
         pl.scan_parquet(INTERIM_DIR / "cis_largo.parquet")
         .filter(pl.col("estudio").is_in(estudios) & pl.col("variable").is_in(list(defs)))
-        .select("estudio", "encuestado", "variable", "etiqueta")
+        .select("estudio", "encuestado", "variable", "codigo", "etiqueta")
         .collect()
     )
+    lg = _intermedios_numericos(lg, defs)
     faltan = set(defs) - set(lg["variable"].unique())
     if faltan:
         raise ValueError(f"{rasgo}: ítems sin datos en {estudios}: {sorted(faltan)}")
@@ -86,7 +120,8 @@ def items(rasgo: str) -> pl.DataFrame:
         puntos, schema={"variable": pl.Utf8, "etiqueta": pl.Utf8, "valor": pl.Float64}
     )
     return (
-        lg.join(tabla, on=["variable", "etiqueta"], how="left")
+        lg.drop("codigo")
+        .join(tabla, on=["variable", "etiqueta"], how="left")
         .pivot(on="variable", index=["estudio", "encuestado"], values="valor")
         .select("estudio", "encuestado", *sorted(defs))
         .sort("estudio", "encuestado")  # pivot no garantiza el orden: reproducibilidad

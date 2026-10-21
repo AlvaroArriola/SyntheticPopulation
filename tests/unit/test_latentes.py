@@ -28,3 +28,23 @@ def test_corr_ponderada():
     x = rng.normal(size=(2000, 3))
     s = L._corr_ponderada(x, np.ones(2000))
     np.testing.assert_allclose(s, np.corrcoef(x.T), atol=1e-12)
+
+
+def test_intermedios_numericos_solo_entre_extremos():
+    import polars as pl
+
+    lg = pl.DataFrame(
+        {
+            "estudio": ["1"] * 5,
+            "encuestado": [0, 1, 2, 3, 4],
+            "variable": ["X"] * 5,
+            "codigo": [1.0, 5.0, 10.0, 98.0, 7.0],
+            "etiqueta": ["1 Nada", None, "10 Mucho", "N.S.", None],
+        }
+    )
+    out = L._intermedios_numericos(lg, {"X": "numerica"})
+    assert out["etiqueta"].to_list() == ["1 Nada", "5", "10 Mucho", "N.S.", "7"]
+    lg2 = lg.with_columns(pl.Series("codigo", [1.0, 5.0, 10.0, 12.0, 7.0]))
+    lg2 = lg2.with_columns(pl.Series("etiqueta", ["1 Nada", None, "10 Mucho", None, None]))
+    out2 = L._intermedios_numericos(lg2, {"X": "numerica"})
+    assert out2["etiqueta"][3] is None  # fuera de los extremos: sigue sin etiqueta
