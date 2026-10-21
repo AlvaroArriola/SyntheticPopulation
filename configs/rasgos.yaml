@@ -1,0 +1,11 @@
+# Rasgos latentes de actitud (F8A; docs/02 §3.4, docs/03 §2.4). Ver `src/sinpop/opinion/latentes.py`.
+#
+# Cada ítem se puntúa por la ETIQUETA de su respuesta en el fichero del CIS, nunca por el código.
+# «N.S.», «N.C.» y «No procede» no tienen posición (dato ausente del ítem). Una etiqueta que no
+# esté en la escala detiene el proceso: se revisa contra el cuestionario y se añade aquí.
+# `numerica`: escalas 0-10 o 1-10, con el número al principio de la etiqueta.
+# Un ítem es `VAR: escala` o `VAR: {escala: ..., invertir: true}`. Mayor puntuación = más rasgo.
+
+escalas: {}
+
+rasgos: {}

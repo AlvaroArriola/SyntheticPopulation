@@ -7,7 +7,7 @@ cualquier estudio.
 
 Asignación (docs/03 §2.4, extracción y no media): el valor de una persona sintética es la
 predicción de un modelo lineal ponderado según su perfil y territorio más un **residuo real**
-de un encuestado de su misma celda edad × estudios, sorteado con la semilla. Así se conservan
+de un encuestado de su misma celda edad × estudios × sexo, sorteado con la semilla. Así se conservan
 la variabilidad y la asimetría dentro de los grupos (G8A.3).
 """
 
@@ -21,7 +21,7 @@ import polars as pl
 from sinpop import INTERIM_DIR
 from sinpop.opinion import latentes as L
 from sinpop.opinion.cis import CORTE
-from sinpop.opinion.valores import PREDICTORES, VENTANA_MESES, _edad_grupo, perfil_sintetico
+from sinpop.opinion.valores import COLUMNAS, VENTANA_MESES, _edad_grupo, columna, perfil_sintetico
 from sinpop.repro import make_rng
 
 NS_NC_ETIQUETAS = [
@@ -81,14 +81,21 @@ def datos_rasgo(rasgo: str = "estilo_ns_nc") -> pl.DataFrame:
     )
 
 
+def _celda(df: pl.DataFrame) -> np.ndarray:
+    """Celda de los residuos: edad × estudios × sexo (los grupos de G8A.3)."""
+    return (
+        df["edad_grupo"] + "|" + df["estudios_3"].cast(pl.Utf8) + "|" + df["sexo"].cast(pl.Utf8)
+    ).to_numpy()
+
+
 class ModeloRasgo:
     def __init__(self, rasgo: str) -> None:
         self.rasgo = rasgo
 
     def _x(self, df: pl.DataFrame) -> np.ndarray:
         cols = []
-        for v in PREDICTORES:
-            col = df[v].cast(pl.Utf8).to_list()
+        for v in COLUMNAS:
+            col = columna(df, v)
             m = np.zeros((df.height, len(self.cats[v])))
             for i, x in enumerate(col):
                 j = self.cats[v].get(x)
@@ -101,17 +108,14 @@ class ModeloRasgo:
         from sklearn.linear_model import Ridge
 
         self.cats = {
-            v: {
-                c: i
-                for i, c in enumerate(sorted(d[v].cast(pl.Utf8).drop_nulls().unique().to_list()))
-            }
-            for v in PREDICTORES
+            v: {c: i for i, c in enumerate(sorted({x for x in columna(d, v) if x is not None}))}
+            for v in COLUMNAS
         }
         y = d[self.rasgo].to_numpy()
         w = d["peso"].to_numpy()
         self.lr = Ridge(alpha=1.0).fit(self._x(d), y, sample_weight=w)
         res = y - self.lr.predict(self._x(d))
-        celda = (d["edad_grupo"] + "|" + d["estudios_3"]).to_numpy()
+        celda = _celda(d)
         self.residuos = {c: (res[celda == c], w[celda == c]) for c in np.unique(celda)}
         self.todos = (res, w)
         self.n = d.height
@@ -119,7 +123,7 @@ class ModeloRasgo:
 
     def extraer(self, df: pl.DataFrame, rng: np.random.Generator) -> np.ndarray:
         pred = self.lr.predict(self._x(df))
-        celda = (df["edad_grupo"] + "|" + df["estudios_3"].cast(pl.Utf8)).to_numpy()
+        celda = _celda(df)
         out = np.empty(len(pred))
         for c in np.unique(celda):
             idx = np.flatnonzero(celda == c)

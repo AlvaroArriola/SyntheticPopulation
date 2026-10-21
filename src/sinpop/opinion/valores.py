@@ -25,6 +25,32 @@ from sinpop.repro import make_rng
 VENTANA_MESES = 12
 EDADES = [18, 25, 35, 45, 55, 65, 75]
 PREDICTORES = ["sexo", "edad_grupo", "estudios_3", "actividad_3", "ccaa", "tamano_municipio_cis"]
+# Interacción comunidad × edad (cuatro grupos), como en MRP: el modelo aditivo no recoge las
+# diferencias de edad propias de cada comunidad, que es lo que compara G8A.4 (D-064)
+INTERACCIONES = {"ccaa_edad4": ("ccaa", "edad")}
+COLUMNAS = PREDICTORES + list(INTERACCIONES)
+
+
+def _edad4_txt(edad: pl.Series) -> pl.Series:
+    return pl.select(
+        pl.when(edad < 35)
+        .then(pl.lit("18-34"))
+        .when(edad < 50)
+        .then(pl.lit("35-49"))
+        .when(edad < 65)
+        .then(pl.lit("50-64"))
+        .otherwise(pl.lit("65+"))
+    ).to_series()
+
+
+def columna(df: pl.DataFrame, v: str) -> list:
+    """Valores (texto) de un predictor o de una interacción para la matriz del modelo."""
+    if v in INTERACCIONES:
+        a, e = INTERACCIONES[v]
+        return (df[a].cast(pl.Utf8) + "|" + _edad4_txt(df[e])).to_list()
+    return df[v].cast(pl.Utf8).to_list()
+
+
 # Tamaño de municipio del Padrón (población) → clases comunes con el CIS (que corta en 400.000)
 TAMANO_A_CIS = {
     "hasta_2000": "hasta_2000",
@@ -78,8 +104,8 @@ class Modelo:
         import scipy.sparse as sp
 
         filas = []
-        for v in PREDICTORES:
-            col = df[v].cast(pl.Utf8).to_list()
+        for v in COLUMNAS:
+            col = columna(df, v)
             idx = np.array([self.cats[v].get(x, -1) for x in col])
             m = sp.csr_matrix(
                 (np.ones((idx >= 0).sum()), (np.flatnonzero(idx >= 0), idx[idx >= 0])),
@@ -92,11 +118,8 @@ class Modelo:
         from sklearn.linear_model import LogisticRegression
 
         self.cats = {
-            v: {
-                c: i
-                for i, c in enumerate(sorted(df[v].cast(pl.Utf8).drop_nulls().unique().to_list()))
-            }
-            for v in PREDICTORES
+            v: {c: i for i, c in enumerate(sorted({x for x in columna(df, v) if x is not None}))}
+            for v in COLUMNAS
         }
         self.clases = sorted(df[self.variable].unique().to_list())
         y = df[self.variable].to_numpy()
