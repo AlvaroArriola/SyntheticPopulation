@@ -4731,6 +4731,26 @@ ficheros:
   condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
   via: automatica
 - fuente: cis_barometros
+  fichero: cis_barometros/3506/FT3506.pdf
+  tipo: metodologia
+  edicion: '3506'
+  url_oficial: https://www.cis.es/documents/20117/13652945/FT3506.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 157f2813577c7e25fdc9ab50cc7c0b75929b2c3517ced77266452b1685fe53c1
+  bytes: 130553
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3506/MD3506.zip
+  tipo: datos
+  edicion: '3506'
+  url_oficial: https://www.cis.es/documents/20117/13652945/MD3506.zip
+  fecha_descarga: '2026-10-21'
+  sha256: 3c330517956a5f21ce6c7ceb0b3bd6c9df2d60ec4aaefbb920b6cc52bbd867c7
+  bytes: 3745120
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
   fichero: cis_barometros/3510/FT3510.pdf
   tipo: metodologia
   edicion: '3510'
