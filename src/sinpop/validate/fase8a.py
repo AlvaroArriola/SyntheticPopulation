@@ -202,7 +202,9 @@ def ejecutar(run_id: str = NACIONAL) -> dict:
     }
     res["g8a1"] = v_latente()
     cv = CV.v_opinion_cv()
-    pl.DataFrame(cv.pop("detalle")).write_csv(DETALLE / "v_opinion_cv.csv")
+    pl.DataFrame(cv.pop("detalle")).with_columns(
+        pl.col("estudios_entreno").list.join(",")
+    ).write_csv(DETALLE / "v_opinion_cv.csv")
     res["g8a2"] = cv
     meta = json.loads((POPULATIONS_DIR / run_id / "metadata.json").read_text("utf-8"))
     persons = pl.read_parquet(POPULATIONS_DIR / run_id / "persons.parquet")
