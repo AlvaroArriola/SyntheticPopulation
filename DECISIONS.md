@@ -1338,7 +1338,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Corrección de la armonización del CIS:**
   - En muchos estudios la nacionalidad no está en `NACIONALIDAD`, sino en la `P0` de filtro («Nacionalidad de la persona entrevistada»). Ahora se lee de ahí.
   - Los barómetros siguen siendo 100 % españoles, como se suponía en D-063 y D-064.
-  - El estudio de Temores (3554) tenía 317 extranjeros que se trataban como españoles; ya se excluyen de sus rasgos.
+  - Afecta a los barómetros de 2023 y mediados de 2024 y al 3511, que resultan ser 100 % españoles: ningún resultado cambia. (Una primera versión de esta entrada decía que el estudio de Temores, 3554, tenía extranjeros tratados como españoles; es falso: ese estudio trae `NACIONALIDAD` y sus 317 extranjeros ya estaban excluidos.)
 - **Estudios nacionales:**
   - Para los modelos nacionales se excluyen los preelectorales y postelectorales, aunque cubran varias comunidades.
   - El 3402 entrevista a 12 comunidades con muestras desproporcionadas; se excluye por la misma razón.
