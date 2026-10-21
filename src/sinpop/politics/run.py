@@ -15,6 +15,9 @@ import polars as pl
 
 from sinpop import POPULATIONS_DIR
 from sinpop.politics import derecho as DV
+from sinpop.politics import ess_donantes as ED
+from sinpop.politics import ideologia as ID
+from sinpop.politics import rasgos_politicos as RP
 from sinpop.politics import recuerdo as RV
 from sinpop.repro import code_version, make_rng, sha256_file
 
@@ -33,9 +36,22 @@ def construir(run_id: str) -> dict:
     semilla = semilla_capa(int(meta_pob["semilla"]), "politica")
     tabla = DV.derechos_actuales(persons)
     eleg = DV.elegible(persons, RV.ELECCION, make_rng(semilla_capa(semilla, "elegible_2023")))
+    tabla = tabla.with_columns(pl.Series("derecho_voto_generales_2023", eleg))
     voto, info_voto = RV.asignar(persons, opinion, eleg, make_rng(semilla_capa(semilla, "voto")))
-    tabla = tabla.join(voto, on="person_id", how="left").with_columns(
-        pl.lit(FECHA_REFERENCIA).alias("fecha_referencia")
+    ideol, info_ideol = ID.asignar(
+        persons, opinion, voto, make_rng(semilla_capa(semilla, "ideologia"))
+    )
+    rasgos, info_rasgos = RP.asignar(
+        persons, voto, ideol, make_rng(semilla_capa(semilla, "rasgos_politicos"))
+    )
+    actitudes, info_ess = ED.asignar(persons, voto, make_rng(semilla_capa(semilla, "ess")))
+    tabla = (
+        tabla.join(voto, on="person_id", how="left")
+        .join(ideol, on="person_id", how="left")
+        .join(rasgos, on="person_id", how="left")
+        .join(actitudes, on="person_id", how="left")
+        .with_columns(pl.lit(FECHA_REFERENCIA).alias("fecha_referencia"))
+        .sort("person_id")
     )
     destino = d / "politics.parquet"
     tabla.write_parquet(destino)
@@ -52,8 +68,17 @@ def construir(run_id: str) -> dict:
             "el número de estudio y al CIS)",
             "infoelectoral_resultados": "Ministerio del Interior, generales del 23/07/2023 "
             "(escrutinio provisional por municipio, residentes)",
+            "cis_3409": "CIS, estudio 3409, Identidades culturales, nacionales y europeas (2023)",
+            "ess11": "European Social Survey European Research Infrastructure (ESS ERIC), "
+            "ESS round 11 - 2023, fichero integrado, edición 4.2 (ESS11e04_2), distribuido "
+            "por Sikt; submuestra de España",
         },
-        "variables": {"recuerdo_voto_generales": info_voto},
+        "variables": {
+            "recuerdo_voto_generales": info_voto,
+            "ideologia_autoubicacion": info_ideol,
+            "rasgos_politicos": info_rasgos,
+            "actitudes_ess": info_ess,
+        },
         "personas": tabla.height,
         "sha256": sha256_file(destino),
     }

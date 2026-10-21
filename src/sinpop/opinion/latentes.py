@@ -36,8 +36,19 @@ def config() -> dict:
     return yaml.safe_load((CONFIGS_DIR / "rasgos.yaml").read_text("utf-8"))
 
 
-def rasgos() -> list[str]:
-    return list(config()["rasgos"])
+CAPAS = {"opinion": "rasgos", "politica": "rasgos_politicos"}
+
+
+def rasgos(capa: str = "opinion") -> list[str]:
+    """Rasgos de `opinion.parquet` (F8A) o de `politics.parquet` (F8B, `rasgos_politicos`)."""
+    return list(config().get(CAPAS[capa], {}))
+
+
+def definicion(rasgo: str) -> dict:
+    for seccion in CAPAS.values():
+        if rasgo in config().get(seccion, {}):
+            return config()[seccion][rasgo]
+    raise KeyError(rasgo)
 
 
 def _puntuar(etiqueta: str | None, escala: str | dict, var: str) -> float | None:
@@ -95,12 +106,18 @@ def _intermedios_numericos(lg: pl.DataFrame, defs: dict) -> pl.DataFrame:
 
 def items(rasgo: str) -> pl.DataFrame:
     """Ancho: estudio, encuestado y una columna por ítem con su puntuación (nulo si no hay)."""
-    c = config()["rasgos"][rasgo]
+    c = definicion(rasgo)
     estudios = [str(e) for e in c["estudios"]]
     defs = c["items"]
     if c.get("fuente") == "ess":  # ítems ya puntuados por etiqueta en `ess.armonizar`
+        d = pl.read_parquet(INTERIM_DIR / "ess_es.parquet")
+        if "posicion_partido_votado" in defs:
+            from sinpop.politics.posiciones import posicion
+
+            d = d.with_columns(posicion(d["voto_generales_2023"], d["ccaa"]))
+        invertir = [v for v, x in defs.items() if isinstance(x, dict) and x.get("invertir")]
         return (
-            pl.read_parquet(INTERIM_DIR / "ess_es.parquet")
+            d.with_columns([-pl.col(v) for v in invertir])
             .select("estudio", "encuestado", *sorted(defs))
             .sort("estudio", "encuestado")
         )
@@ -137,18 +154,18 @@ def items(rasgo: str) -> pl.DataFrame:
 def universo(rasgo: str) -> str:
     """«espanoles» (barómetros y estudios del CIS) o «todos» (la ESS entrevista a residentes
     de cualquier nacionalidad)."""
-    return "todos" if config()["rasgos"][rasgo].get("fuente") == "ess" else "espanoles"
+    return "todos" if definicion(rasgo).get("fuente") == "ess" else "espanoles"
 
 
 def columnas(rasgo: str) -> list[str] | None:
     """Predictores del modelo de perfil del rasgo (None: los de siempre)."""
-    return config()["rasgos"][rasgo].get("columnas")
+    return definicion(rasgo).get("columnas")
 
 
 def _base(rasgo: str) -> pl.DataFrame:
     if universo(rasgo) == "todos":
         p = pl.read_parquet(INTERIM_DIR / "ess_es.parquet").drop(
-            sorted(config()["rasgos"][rasgo]["items"])
+            sorted(definicion(rasgo)["items"]), strict=False
         )
         return items(rasgo).join(p, on=["estudio", "encuestado"]).filter(pl.col("edad") >= 18)
     p = pl.read_parquet(INTERIM_DIR / "cis_personas.parquet")
@@ -175,13 +192,18 @@ def _corr_ponderada(x: np.ndarray, w: np.ndarray) -> np.ndarray:
     return cov / np.outer(sd, sd)
 
 
+def residuos(rasgo: str, cols: list[str]) -> list[tuple[int, int]]:
+    """Pares de ítems con residuos correlacionados declarados en `rasgos.yaml` (D-067)."""
+    return [(cols.index(a), cols.index(b)) for a, b in definicion(rasgo).get("residuos", [])]
+
+
 def ajuste(rasgo: str) -> tuple[F.AjusteCFA, dict]:
     d = _base(rasgo)
-    cols = sorted(config()["rasgos"][rasgo]["items"])
+    cols = sorted(definicion(rasgo)["items"])
     cc = d.drop_nulls(cols)
     x, w = cc.select(cols).to_numpy(), cc["peso"].to_numpy()
     S = _corr_ponderada(x, w)
-    a = F.ajustar(S, cc.height, np.zeros(len(cols), dtype=int))
+    a = F.ajustar(S, cc.height, np.zeros(len(cols), dtype=int), residuos(rasgo, cols))
     signo = 1.0 if a.cargas[:, 0].sum() >= 0 else -1.0
     info = {
         "rasgo": rasgo,
@@ -192,6 +214,7 @@ def ajuste(rasgo: str) -> tuple[F.AjusteCFA, dict]:
         "cfi": a.cfi,
         "rmsea": a.rmsea,
         "omega": float(a.omega[0]),
+        "residuos_correlacionados": definicion(rasgo).get("residuos", []),
         "chi2": a.chi2,
         "gl": a.gl,
     }
@@ -202,7 +225,7 @@ def datos(rasgo: str) -> pl.DataFrame:
     """Encuestados con la puntuación del rasgo (media 0, desviación 1 ponderadas)."""
     a, _ = ajuste(rasgo)
     d = _base(rasgo)
-    cols = sorted(config()["rasgos"][rasgo]["items"])
+    cols = sorted(definicion(rasgo)["items"])
     x = d.select(cols).to_numpy().astype(float)
     w = d["peso"].to_numpy()
     validos = (~np.isnan(x)).sum(axis=1) >= math.ceil(len(cols) / 2)
@@ -223,12 +246,17 @@ def datos(rasgo: str) -> pl.DataFrame:
     ).with_columns(_edad_grupo(pl.col("edad")))
 
 
-def ajuste_conjunto(estudio: str) -> dict | None:
+def ajuste_conjunto(
+    estudio: str, capa: str = "opinion", conjunto: str | None = None
+) -> dict | None:
     """Factorial de varios factores con todos los rasgos medidos en un mismo estudio: contrasta
     el ajuste de los rasgos con pocos ítems (un factor con tres ítems tiene 0 grados de
     libertad) y que los rasgos son distintos (correlación entre factores)."""
     nombres = [
-        r for r in rasgos() if [str(e) for e in config()["rasgos"][r]["estudios"]] == [estudio]
+        r
+        for r in rasgos(capa)
+        if [str(e) for e in definicion(r)["estudios"]] == [estudio]
+        and (conjunto is None or definicion(r).get("conjunto") == conjunto)
     ]
     if len(nombres) < 2:
         return None
@@ -241,16 +269,18 @@ def ajuste_conjunto(estudio: str) -> dict | None:
             ),
             on=["estudio", "encuestado"],
         )
-    cols, asignacion = [], []
+    cols, asignacion, pares = [], [], []
     for k, r in enumerate(nombres):
-        for c in sorted(config()["rasgos"][r]["items"]):
-            cols.append(c)
-            asignacion.append(k)
+        propios = sorted(definicion(r)["items"])
+        pares += [(len(cols) + i, len(cols) + j) for i, j in residuos(r, propios)]
+        cols += propios
+        asignacion += [k] * len(propios)
     cc = d.drop_nulls(cols)
     S = _corr_ponderada(cc.select(cols).to_numpy(), cc["peso"].to_numpy())
-    a = F.ajustar(S, cc.height, np.array(asignacion))
+    a = F.ajustar(S, cc.height, np.array(asignacion), pares)
     return {
         "estudio": estudio,
+        "conjunto": conjunto,
         "rasgos": nombres,
         "n_completos": cc.height,
         "cfi": a.cfi,

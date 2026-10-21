@@ -14,6 +14,21 @@ escalas:
     "No cree que sea necesario dedicar más recursos": 0
     "(NO LEER) No sabe, está en duda": null
   # «Siempre han ocurrido fenómenos similares» tampoco atribuye la DANA al cambio climático
+  # Estudio 3409 (eje territorial, F8B)
+  sentimiento_5:
+    "Únicamente español/a": 1
+    "Más español/a que (gentilicio de C.A.)": 2
+    "Tan español/a como (gentilicio de C.A.)": 3
+    "Más (gentilicio de C.A.) que español/a": 4
+    "Únicamente (gentilicio de C.A.)": 5
+    "(NO LEER) Ninguna de las anteriores": null
+  orgullo_4: {"Muy orgulloso/a": 1, "Bastante orgulloso/a": 2, "Poco orgulloso/a": 3, "Nada orgulloso/a": 4}
+  organizacion_5:
+    "Un Estado con un único Gobierno central sin autonomías": 1
+    "Un Estado en el que las comunidades autónomas tengan menor autonomía que en la actualidad": 2
+    "Un Estado con comunidades autónomas como en la actualidad": 3
+    "Un Estado en el que las comunidades autónomas tengan mayor autonomía que en la actualidad": 4
+    "Un Estado en el que se reconociese a las comunidades autónomas la posibilidad de convertirse en estados independientes": 5
   atribucion_clima:
     "Creo que es algo que se relaciona con el cambio climático": 1
     "Creo que es un fenómeno totalmente aislado": 0
@@ -94,3 +109,78 @@ rasgos:
       ipbhprpa: ess  # comportarse correctamente
       ipmodsta: ess  # ser humilde y modesto
       imptrada: ess  # seguir las tradiciones y costumbres
+
+# Rasgos políticos latentes (F8B; docs/02 §3.5; D-067). Van a `politics.parquet`, nunca a
+# `opinion.parquet`. Mismo método que los de F8A; `residuos` declara a priori pares de ítems que
+# comparten contenido además del rasgo (sus residuos se correlacionan en el factorial).
+rasgos_politicos:
+  # European Social Survey, ronda 11 (España, 2023). Autoubicación (lrscale, 0-10), posición
+  # del partido votado (autoubicación media 1-10 de su electorado en el CIS, `politics/posiciones`;
+  # ausente si no votó a un partido) y actitudes: religiosidad (0-10), apego a España (0-10),
+  # rechazo a la adopción por parejas homosexuales y a la redistribución (1-5) e inmigración de otro
+  # origen étnico (1-4, más = menos). Autoubicación y posición del partido comparten la
+  # identificación partidista: residuos correlacionados. Sin el voto, las actitudes solas dan
+  # omega 0,63 (la ideología española está poco estructurada por actitudes).
+  rasgo_izquierda_derecha:
+    fuente: ess
+    estudios: ["ESS11"]
+    items:
+      lrscale: ess
+      posicion_partido_votado: ess
+      rlgdgr: ess
+      atchctr: ess
+      hmsacld: ess
+      gincdif: ess
+      imdfetn: ess
+    residuos: [[lrscale, posicion_partido_votado]]
+    predictores_extra: [grupo_voto, ideologia_bloque]
+  # ESS11: confianza (0-10) en los políticos, el Parlamento, la justicia y el Parlamento Europeo
+  # y satisfacción con la democracia (0-10), invertidas: más = más desafección. La confianza en
+  # los partidos se descarta: es casi la misma pregunta que la de los políticos (RMSEA 0,19 con
+  # las dos); la satisfacción con el Gobierno, porque depende de quién gobierna.
+  rasgo_desafeccion:
+    fuente: ess
+    estudios: ["ESS11"]
+    items:
+      confianza_politicos: {escala: ess, invertir: true}
+      confianza_parlamento: {escala: ess, invertir: true}
+      confianza_justicia: {escala: ess, invertir: true}
+      confianza_parlamento_europeo: {escala: ess, invertir: true}
+      satisfaccion_democracia: {escala: ess, invertir: true}
+    conjunto: actitudes_politicas
+    predictores_extra: [grupo_voto]
+  # ESS11: interés por la política (1-4) y eficacia política interna: capacidad de participar
+  # activamente en un grupo político y confianza en la propia capacidad de participar (1-5).
+  # Las siete formas de participación (sí/no) cargan poco (0,33-0,45) y el haber votado 0,16:
+  # quedan como variables observadas (`politics/ess_donantes`). Tres ítems: el ajuste se
+  # contrasta en el factorial conjunto con la desafección (`conjunto`). Con los tres rasgos de la
+  # ESS juntos el ajuste baja (CFI 0,88) por cargas cruzadas de la ideología en la confianza
+  # (con un Gobierno de izquierda, la derecha desconfía más), no por la implicación.
+  rasgo_implicacion_politica:
+    fuente: ess
+    estudios: ["ESS11"]
+    items:
+      interes_politica_puntos: ess
+      actrolga: ess
+      cptppola: ess
+    conjunto: actitudes_politicas
+    predictores_extra: [grupo_voto]
+  # Estudio 3409 (Identidades culturales, nacionales y europeas, junio de 2023; 7.643 españoles
+  # de 18 y más años, todas las comunidades). Más = más autogobierno o periferia:
+  # P7_3 identificación con España (0-10, invertida), P10 sentimiento (únicamente español …
+  # únicamente de su comunidad), P11 orgullo de ser español (más = menos orgullo) y P13
+  # organización territorial preferida (sin autonomías … posibilidad de independencia).
+  # Identificación con España y orgullo de ser español comparten objeto: residuos correlacionados.
+  # La identificación con la propia comunidad y el orgullo de ella no discriminan (casi todos se
+  # identifican con su comunidad, carga 0,16).
+  rasgo_eje_territorial:
+    estudios: ["3409"]
+    items:
+      P7_3: {escala: numerica, invertir: true}
+      P10: sentimiento_5
+      P11: orgullo_4
+      P13: organizacion_5
+    residuos: [[P7_3, P11]]
+    # El campo es anterior a las generales de 2023 (su recuerdo es de 2019): el predictor político
+    # es la autoubicación (ESCIDEOL) en bloques, no el voto.
+    predictores_extra: [ideologia_bloque]

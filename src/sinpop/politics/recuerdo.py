@@ -56,20 +56,29 @@ def mapa() -> dict[str, str]:
 
 
 def respuestas() -> pl.DataFrame:
-    """(estudio, encuestado, recuerdo) de los estudios posteriores al 23J."""
+    """(estudio, encuestado, recuerdo) de los estudios posteriores al 23J. La variable es
+    `RECUERDO` o, en el postelectoral 3420 (que pregunta también por 2019), `RECUERDO1`: la que
+    el banco de preguntas enuncia como recuerdo de las generales de 2023."""
     banco = pl.read_parquet(INTERIM_DIR / "cis_preguntas.parquet")
     q = banco.filter(
-        (pl.col("variable") == "RECUERDO") & pl.col("enunciado").str.contains("2023")
+        pl.col("variable").is_in(["RECUERDO", "RECUERDO1"])
+        & pl.col("enunciado").str.contains("generales de 2023")
+        & ~pl.col("enunciado").str.contains("de los votantes")
     ).explode("estudios")
     f = fechas()
-    estudios = [
-        e
-        for e in q["estudios"].unique().to_list()
+    pares = [
+        (e, v)
+        for e, v in q.select("estudios", "variable").unique().iter_rows()
         if e in f and ELECCION < dt.date.fromisoformat(f[e]) < CORTE
     ]
+    if len({e for e, _ in pares}) != len(pares):
+        raise ValueError(f"RECUERDO: más de una variable de 2023 en un estudio: {sorted(pares)}")
+    filtro = pl.lit(False)
+    for e, v in pares:
+        filtro = filtro | ((pl.col("estudio") == e) & (pl.col("variable") == v))
     lg = (
         pl.scan_parquet(INTERIM_DIR / "cis_largo.parquet")
-        .filter((pl.col("variable") == "RECUERDO") & pl.col("estudio").is_in(estudios))
+        .filter(filtro)
         .select("estudio", "encuestado", "etiqueta")
         .collect()
     )

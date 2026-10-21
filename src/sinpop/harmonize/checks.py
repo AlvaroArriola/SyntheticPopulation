@@ -113,6 +113,38 @@ NULOS_DOCUMENTADOS: dict[tuple[str, str], tuple[pl.Expr, str]] = {
     ),
 }
 
+# ESS ronda 11 (D-066, D-067): «Refusal», «Don't know», «No answer» y «Not applicable» no tienen
+# posición en la escala ni categoría propia en estos ítems; quedan vacíos (respuesta legítima:
+# los modelos los tratan como dato ausente y el emparejamiento de F8B los copia tal cual).
+_ESS_PERFIL = {
+    "estudio",
+    "encuestado",
+    "peso",
+    "sexo",
+    "edad",
+    "estudios_3",
+    "actividad_3",
+    "ccaa",
+    "nacionalidad_esp_ext",
+}
+
+
+def _nulos_ess() -> dict[tuple[str, str], tuple[pl.Expr, str]]:
+    ruta = INTERIM_DIR / "ess_es.parquet"
+    if not ruta.exists():
+        return {}
+    return {
+        ("ess_es", c): (
+            pl.lit(True),
+            "no respuesta en la ESS (rechazo, no sabe, no contesta o no procede)",
+        )
+        for c in pl.read_parquet_schema(ruta)
+        if c not in _ESS_PERFIL
+    }
+
+
+NULOS_DOCUMENTADOS |= _nulos_ess()
+
 
 def g21_nulos() -> dict[str, str]:
     """{fichero.columna: problema} para los vacíos no documentados (vacío si todo está bien)."""

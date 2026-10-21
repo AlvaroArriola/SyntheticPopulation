@@ -3991,6 +3991,36 @@ ficheros:
   condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
   via: automatica
 - fuente: cis_barometros
+  fichero: cis_barometros/3420/FT3420.pdf
+  tipo: metodologia
+  edicion: '3420'
+  url_oficial: https://www.cis.es/documents/20117/1558341/FT3420.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: c65f06da091582cf23a7c23b21415c7773045a1638b125f8d9afa5a187228b56
+  bytes: 24148
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3420/MD3420.zip
+  tipo: datos
+  edicion: '3420'
+  url_oficial: https://www.cis.es/documents/20117/1558341/MD3420.zip
+  fecha_descarga: '2026-10-21'
+  sha256: 26c06cd379b1742da029845effdeaf1ed8eccba14734b177e13c9b860c3dbb2b
+  bytes: 4810509
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3420/cues3420.pdf
+  tipo: cuestionario
+  edicion: '3420'
+  url_oficial: https://www.cis.es/documents/20117/1558341/cues3420.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: a276bc87989baea83cfd57b8f4311555819dabf947cbc51ba2f789d40c85b558
+  bytes: 101212
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
   fichero: cis_barometros/3423/FT3423.pdf
   tipo: metodologia
   edicion: '3423'

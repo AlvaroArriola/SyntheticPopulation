@@ -1,11 +1,11 @@
 {
  "fecha": "2026-10-21",
- "version_codigo": "git:3e79be1-dirty",
+ "version_codigo": "git:84fbfe8-dirty",
  "run_id": "2026-01-01_ES_1000000_s1",
  "g8b1": {
   "provincias": 52,
   "dentro": 52,
-  "tvd_max": 0.02809817177371237
+  "tvd_max": 0.026155393822294537
  },
  "g8b2": {
   "espana_celdas": 6,
@@ -15,19 +15,119 @@
   "ccaa_dentro": 47,
   "ccaa_fuera": [
    {
-    "ccaa": "15",
-    "tamano_municipio": "de_10001_a_50000",
-    "tvd": 0.08483300598955346,
-    "error_participacion_pp": 4.531741199326439
-   },
-   {
     "ccaa": "06",
     "tamano_municipio": "hasta_2000",
-    "tvd": 0.06637196453520959,
+    "tvd": 0.06254543392296469,
     "error_participacion_pp": 5.270689512948349
+   },
+   {
+    "ccaa": "15",
+    "tamano_municipio": "de_10001_a_50000",
+    "tvd": 0.0823861017324996,
+    "error_participacion_pp": 4.448959742372799
    }
   ],
-  "tvd_media_ccaa": 0.03553663382632387,
+  "tvd_media_ccaa": 0.03548825019780807,
   "error_participacion_max_pp": 5.270689512948349
+ },
+ "g8b3": {
+  "estudio_cis": "3420",
+  "comparaciones": 24,
+  "dentro": 14,
+  "fuera": [
+   {
+    "electorado": "izquierda_estatal",
+    "variable": "edad_4",
+    "tvd": 0.0961818024270983
+   },
+   {
+    "electorado": "izquierda_estatal",
+    "variable": "estudios_3",
+    "tvd": 0.16688352303634504
+   },
+   {
+    "electorado": "socialdemocrata",
+    "variable": "edad_4",
+    "tvd": 0.08456059158699251
+   },
+   {
+    "electorado": "socialdemocrata",
+    "variable": "estudios_3",
+    "tvd": 0.22506652361124924
+   },
+   {
+    "electorado": "centro_derecha_estatal",
+    "variable": "estudios_3",
+    "tvd": 0.22266056606755016
+   },
+   {
+    "electorado": "derecha_radical",
+    "variable": "estudios_3",
+    "tvd": 0.2172528590803054
+   },
+   {
+    "electorado": "nacionalista_regionalista",
+    "variable": "edad_4",
+    "tvd": 0.08436837384714942
+   },
+   {
+    "electorado": "nacionalista_regionalista",
+    "variable": "estudios_3",
+    "tvd": 0.16243883498961142
+   },
+   {
+    "electorado": "abstencion",
+    "variable": "edad_4",
+    "tvd": 0.08947595430287508
+   },
+   {
+    "electorado": "abstencion",
+    "variable": "estudios_3",
+    "tvd": 0.21167002255611808
+   }
+  ],
+  "tvd_max": 0.22506652361124924
+ },
+ "g8b4": {
+  "electorados": 9,
+  "dentro": 9,
+  "fuera": []
+ },
+ "g8b6": {
+  "base_con_politica": [],
+  "opinion_con_politica": [],
+  "persons_sin_cambios": true,
+  "opinion_sin_cambios": true,
+  "ok": true
+ },
+ "g8b7": {
+  "diversidad_comparaciones": 63,
+  "diversidad_dentro": 63,
+  "diversidad_razon_min": 0.9445127250534615,
+  "diversidad_fuera": [],
+  "contrafactual_dentro": 7,
+  "contrafactual_electorados": 9,
+  "contrafactual_fuera": [
+   {
+    "electorado": "centro_derecha_estatal",
+    "diferencia_contrafactual": 3.1757381585231474,
+    "diferencia_datos": 3.4782218879014986,
+    "celdas": 24,
+    "ok": false
+   },
+   {
+    "electorado": "derecha_radical",
+    "diferencia_contrafactual": 3.969930944252506,
+    "diferencia_datos": 4.3597198910023325,
+    "celdas": 24,
+    "ok": false
+   }
+  ]
+ },
+ "g8b8": {
+  "sin_derecho": 144533,
+  "sin_derecho_con_recuerdo": 0,
+  "con_derecho_sin_recuerdo": 0,
+  "ok": true
  }
 }

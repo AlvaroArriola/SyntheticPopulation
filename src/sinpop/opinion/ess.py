@@ -114,6 +114,46 @@ INTERES = {
     "Not at all interested": "nada",
 }
 NS_NC_ESS = {"Refusal": "NC", "No answer": "NC", "Don't know": "NS"}
+# Ítems de los rasgos políticos (F8B, D-067), puntuados por etiqueta. Mayor = más de lo que dice
+# el nombre de la escala (más desacuerdo, menos inmigración permitida, más capacidad).
+ACUERDO_5 = {
+    "Agree strongly": 1.0,
+    "Agree": 2.0,
+    "Neither agree nor disagree": 3.0,
+    "Disagree": 4.0,
+    "Disagree strongly": 5.0,
+}
+ITEMS_POLITICOS = {
+    "hmsacld": ACUERDO_5,  # derecho de las parejas homosexuales a adoptar (5 = muy en contra)
+    "gincdif": ACUERDO_5,  # el Gobierno debe reducir la desigualdad de ingresos (5 = muy en contra)
+    "imdfetn": {  # inmigrantes de otra raza o grupo étnico (4 = ninguno)
+        "Allow many to come and live here": 1.0,
+        "Allow some": 2.0,
+        "Allow a few": 3.0,
+        "Allow none": 4.0,
+    },
+    "actrolga": {  # capaz de participar activamente en un grupo político
+        "Not at all able": 1.0,
+        "A little able": 2.0,
+        "Quite able": 3.0,
+        "Very able": 4.0,
+        "Completely able": 5.0,
+    },
+    "cptppola": {  # confianza en la propia capacidad de participar en política
+        "Not at all confident": 1.0,
+        "A little confident": 2.0,
+        "Quite confident": 3.0,
+        "Very confident": 4.0,
+        "Completely confident": 5.0,
+    },
+    "polintr": {  # interés por la política (4 = mucho)
+        "Very interested": 4.0,
+        "Quite interested": 3.0,
+        "Hardly interested": 2.0,
+        "Not at all interested": 1.0,
+    },
+}
+ESCALAS_0_10_POLITICAS = ["rlgdgr", "atchctr"]  # religiosidad; apego a España
 
 
 def _escala_0_10(df: pl.DataFrame, var: str) -> pl.Series:
@@ -148,6 +188,15 @@ def _politica(d: pl.DataFrame, meta) -> list[pl.Series]:
         _escala_0_10(d, "stfdem").alias("satisfaccion_democracia"),
         _escala_0_10(d, "lrscale").alias("lrscale"),
     ]
+    for v in ESCALAS_0_10_POLITICAS:
+        out.append(_escala_0_10(d, v).alias(v))
+    for v, mapa in ITEMS_POLITICOS.items():
+        et = _etiquetar(d, meta, v)
+        sin = set(et.drop_nulls().unique()) - set(mapa) - AUSENTE
+        if sin:
+            raise ValueError(f"ESS {v}: etiquetas no previstas {sorted(sin)}")
+        nombre = "interes_politica_puntos" if v == "polintr" else v
+        out.append(et.replace_strict(mapa, default=None, return_dtype=pl.Float64).alias(nombre))
     for v, nombre in CONFIANZA_INSTITUCIONES.items():
         out.append(_escala_0_10(d, v).alias(f"confianza_{nombre}"))
     for v, nombre in PARTICIPACION.items():
@@ -184,6 +233,8 @@ def armonizar() -> dict:
         + CONFIANZA
         + list(PVQ)
         + ["vote", "prtvtges", "polintr", "stfdem", "lrscale"]
+        + ESCALAS_0_10_POLITICAS
+        + [v for v in ITEMS_POLITICOS if v != "polintr"]
         + list(CONFIANZA_INSTITUCIONES)
         + list(PARTICIPACION)
     )
