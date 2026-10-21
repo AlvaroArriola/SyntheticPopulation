@@ -102,20 +102,50 @@ def _dist(opciones: list[str], mu: np.ndarray, sd: np.ndarray, cal: dict, simili
     }
 
 
-def confianza(r: E.Resultado) -> float:
-    """Provisional hasta F10 (modelo de confianza): la similitud de la mejor análoga, rebajada
-    por el desacuerdo entre análogas."""
+def _confianza_provisional(r: E.Resultado) -> float:
+    """Si no hay modelo de F10: la similitud de la mejor análoga, rebajada por el desacuerdo."""
     if not r.analogas:
         return 0.0
     desacuerdo = float(np.mean(r.sistema_sd["total"])) * 10
     return float(np.clip(r.analogas[0]["similitud"] * (1 - desacuerdo), 0, 1))
 
 
+def confianza(r: E.Resultado) -> dict:
+    """Probabilidad de que el error (TVD) sea ≤ 0,10, del modelo de confianza de F10 (D-070), por
+    clave; si el modelo no está construido, la provisional de F9 para todas."""
+    import polars as pl
+
+    from sinpop.confidence import modelo as M
+    from sinpop.confidence.senales import senales
+
+    claves = [k for k in r.sistema if k in r.sistema_cis]
+    d = M.confianza_final(pl.DataFrame([senales(r, k) | {"clave": k} for k in claves]))
+    if d is None:
+        c = _confianza_provisional(r)
+        return {
+            "total": c,
+            "por_subgrupo": {k: c for k in r.sistema if k != "total"},
+            "metodo": "provisional: similitud con el banco y desacuerdo entre análogas",
+        }
+    v = dict(zip(d["clave"], d["confianza"].round(4).to_list(), strict=True))
+    err = float(d.filter(pl.col("clave") == "total")["error_predicho"][0])
+    return {
+        "total": v["total"],
+        "por_subgrupo": {k: v.get(k, v["total"]) for k in r.sistema if k != "total"},
+        "error_tvd_predicho": round(err, 4),
+        "metodo": (
+            f"P(TVD ≤ {M.UMBRAL_TVD}) según el modelo de confianza (F10, D-070), "
+            "recalibrado en la ventana de validación"
+            if M.recalibrador() is not None
+            else f"P(TVD ≤ {M.UMBRAL_TVD}) según el modelo de confianza (F10, D-070)"
+        ),
+    }
+
+
 def construir(r: E.Resultado, run_id: str) -> dict:
     q, cal = r.pregunta, E.calibracion()
     if not r.analogas:
         raise ValueError(f"{q.id}: sin preguntas parecidas alineables en el banco")
-    c = confianza(r)
     sim = r.analogas[0]["similitud"]
     out = {
         "id": q.id,
@@ -129,11 +159,7 @@ def construir(r: E.Resultado, run_id: str) -> dict:
             for k, v in r.sistema.items()
             if k != "total"
         },
-        "confianza": {
-            "total": c,
-            "por_subgrupo": {k: c for k in r.sistema if k != "total"},
-            "metodo": "provisional (F10): similitud con el banco y desacuerdo entre análogas",
-        },
+        "confianza": confianza(r),
         "parametros_llm": None,
         "parametros": {
             "estimador": "estadistico_sin_llm",

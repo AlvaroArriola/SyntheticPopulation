@@ -6,7 +6,8 @@ compara con la confianza del modelo entrenado en el *backtest* histórico:
 
 - **sin recalibrar:** el modelo tal como sale del *backtest*;
 - **calibrado en validación** (`docs/04`, F10, tarea 3), sin ver la misma pregunta: isotónica
-  ajustada en un barómetro y evaluada en el otro (y al revés). Es la confianza que se usará.
+  ajustada en un barómetro y evaluada en el otro (y al revés). La que se publica
+  (`confidence.modelo.RECALIBRACION`) se ajusta con los dos; sus métricas son las cruzadas.
 
 Comando: `python -m sinpop.evaluate.confianza`
 """
@@ -14,6 +15,7 @@ Comando: `python -m sinpop.evaluate.confianza`
 from __future__ import annotations
 
 import json
+import pickle
 
 import polars as pl
 
@@ -79,6 +81,12 @@ def ejecutar(limite: int | None = None) -> dict:
     dc = pl.concat(cal)
     con = M.metricas(dc)
     dc.write_csv(FILAS)
+    # la que se publica: isotónica con los dos barómetros (sus métricas son las cruzadas de arriba)
+    final = IsotonicRegression(out_of_bounds="clip", y_min=0, y_max=1).fit(
+        d["confianza"].to_numpy(), (d["tvd"].to_numpy() <= M.UMBRAL_TVD).astype(float)
+    )
+    M.RECALIBRACION.parent.mkdir(parents=True, exist_ok=True)
+    M.RECALIBRACION.write_bytes(pickle.dumps(final))
     res = {
         "estudios": estudios,
         "sin_recalibrar": sin,

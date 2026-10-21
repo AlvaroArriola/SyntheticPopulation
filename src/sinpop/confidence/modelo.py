@@ -45,6 +45,9 @@ SENALES = {
     "es_subgrupo": -1,
 }
 DESTINO = PROCESSED_DIR / "confidence" / "modelo.pkl"
+# isotónica ajustada en la ventana de validación (docs/04, F10, tarea 3) por
+# `sinpop.evaluate.confianza`; si existe, se aplica encima del modelo
+RECALIBRACION = PROCESSED_DIR / "confidence" / "recalibracion.pkl"
 
 
 def _x(d: pl.DataFrame) -> np.ndarray:
@@ -102,6 +105,22 @@ class ModeloConfianza:
 
 def cargar() -> ModeloConfianza | None:
     return pickle.loads(DESTINO.read_bytes()) if DESTINO.exists() else None  # noqa: S301
+
+
+def recalibrador():
+    return pickle.loads(RECALIBRACION.read_bytes()) if RECALIBRACION.exists() else None  # noqa: S301
+
+
+def confianza_final(d: pl.DataFrame) -> pl.DataFrame | None:
+    """Confianza que se publica: modelo del backtest más la recalibración en validación."""
+    m = cargar()
+    if m is None:
+        return None
+    d = m.predecir(d)
+    iso = recalibrador()
+    if iso is not None:
+        d = d.with_columns(pl.Series("confianza", iso.predict(d["confianza"].to_numpy())))
+    return d
 
 
 def ece(confianza: np.ndarray, acierto: np.ndarray, bins: int = 10) -> float:
