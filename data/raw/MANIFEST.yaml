@@ -3711,6 +3711,66 @@ ficheros:
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
 - fuente: cis_barometros
+  fichero: cis_barometros/3390/FT3390pdf.pdf
+  tipo: metodologia
+  edicion: '3390'
+  url_oficial: https://www.cis.es/documents/20117/1557641/FT3390pdf.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: c94c3c64d286e0c354fe75408d20306cc113ba3947bbfe1431e3ab7678a440a2
+  bytes: 23136
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3390/MD3390.zip
+  tipo: datos
+  edicion: '3390'
+  url_oficial: https://www.cis.es/documents/20117/1557641/MD3390.zip
+  fecha_descarga: '2026-10-21'
+  sha256: fd5e54fe63e625dc7ea49f3226f445322a01fa98c176e1101ecedebf29812920
+  bytes: 2528607
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3390/cues3390pdf.pdf
+  tipo: cuestionario
+  edicion: '3390'
+  url_oficial: https://www.cis.es/documents/20117/1557641/cues3390pdf.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 71f4dd68dcdc640890925a393cdb53caff2e84b46736ea98b8bdd68962a20b80
+  bytes: 152555
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3395/FT3395pdf.pdf
+  tipo: metodologia
+  edicion: '3395'
+  url_oficial: https://www.cis.es/documents/20117/1557661/FT3395pdf.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 2ac35b126fb788e7b4569febb9def40e6d722cf0c6cb9ccb68494f88ca2e132d
+  bytes: 23130
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3395/MD3395.zip
+  tipo: datos
+  edicion: '3395'
+  url_oficial: https://www.cis.es/documents/20117/1557661/MD3395.zip
+  fecha_descarga: '2026-10-21'
+  sha256: ede736b98a81d9f9c7b4d27a6a1ae383ff3dd78853188caba127abe4da68e965
+  bytes: 1832568
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3395/cues3395pdf.pdf
+  tipo: cuestionario
+  edicion: '3395'
+  url_oficial: https://www.cis.es/documents/20117/1557661/cues3395pdf.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 422373aa35d5f3b34e3794cdec99e624bebf73164deb581105c34930df54c70e
+  bytes: 121820
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
   fichero: cis_barometros/3567/FT3567.pdf
   tipo: metodologia
   edicion: '3567'

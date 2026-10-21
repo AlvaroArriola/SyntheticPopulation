@@ -87,10 +87,17 @@ ESTUDIOS = {  # ESTUDIOS (resumen); la F.P. sin nivel se precisa con NIVELESTENT
     "Secundaria 2ª etapa": "secundaria_2a_etapa",
     "Superiores": "superior",
 }
-NIVEL_FP = {  # NIVELESTENTREV, solo para la F.P.
-    3: "hasta_obligatoria",  # FP básica
-    5: "secundaria_2a_etapa",  # FP de grado medio
-    7: "superior",  # FP de grado superior
+# NIVELESTENTREV (nivel alcanzado, CNED): para precisar «F.P.» y «Otros» del resumen ESTUDIOS.
+# 1-4: hasta la ESO (CINE 0-2); 5-6: FP de grado medio y bachillerato (CINE 3-4); 7-15: FP de
+# grado superior y universitarios (CINE 5-8); 16 «Otros estudios», 98 y 99: no consta.
+NIVEL_ESTUDIOS = {
+    1: "hasta_obligatoria",
+    2: "hasta_obligatoria",
+    3: "hasta_obligatoria",
+    4: "hasta_obligatoria",
+    5: "secundaria_2a_etapa",
+    6: "secundaria_2a_etapa",
+    **dict.fromkeys(range(7, 16), "superior"),
 }
 SITLAB = {
     "Trabaja": "ocupado",
@@ -187,6 +194,16 @@ def _etiquetas(meta, var: str) -> dict[float, str]:
     return meta.variable_value_labels.get(var, {})
 
 
+def _buscar(mapa: dict[str, str], et: str) -> str | None:
+    """Categoría de una etiqueta: tal cual o sin su aclaración final entre paréntesis
+    («Ateo/a (niegan la existencia de Dios)» → «Ateo/a»)."""
+    et = et.strip()
+    if et in mapa:
+        return mapa[et]
+    corta = et.split(" (")[0].strip()
+    return mapa.get(corta) if corta and not et.startswith("(") else None
+
+
 def _recodificar(df: pl.DataFrame, meta, var: str, mapa: dict[str, str], estudio: str) -> pl.Series:
     """Código → categoría por la etiqueta. NS/NC se conservan; «No procede» → NP; una etiqueta
     no prevista detiene el proceso."""
@@ -194,11 +211,11 @@ def _recodificar(df: pl.DataFrame, meta, var: str, mapa: dict[str, str], estudio
     tabla: dict[float, str] = {}
     for cod, et in lab.items():
         et = et.strip()
-        if et in mapa:
-            tabla[cod] = mapa[et]
+        if _buscar(mapa, et) is not None:
+            tabla[cod] = _buscar(mapa, et)
         elif et in NS_NC:
             tabla[cod] = NS_NC[et]
-        elif et == "No procede":
+        elif et in ("No procede", "N.P."):
             tabla[cod] = "NP"
         else:
             raise ValueError(f"{estudio} {var}: etiqueta no prevista {et!r} ({cod})")
@@ -216,27 +233,28 @@ def _territorio(df: pl.DataFrame, meta, var: str, nivel: str, estudio: str) -> p
 
 
 def _estudios(df: pl.DataFrame, meta, estudio: str) -> pl.Series:
+    """estudios_3 desde el resumen ESTUDIOS; «F.P.» y «Otros», con NIVELESTENTREV."""
     lab = _etiquetas(meta, "ESTUDIOS")
-    base = {c: ESTUDIOS.get(e.strip(), NS_NC.get(e.strip())) for c, e in lab.items()}
-    fp = [c for c, e in lab.items() if e.strip() == "F.P."]
+    base, ambiguos = {}, []
     for c, e in lab.items():
-        if base[c] is None and c not in fp:
+        e = e.strip()
+        if e in ESTUDIOS:
+            base[c] = ESTUDIOS[e]
+        elif e in NS_NC:
+            base[c] = "NC"
+        elif e in ("F.P.", "Otros"):
+            ambiguos.append(c)
+        else:
             raise ValueError(f"{estudio} ESTUDIOS: etiqueta no prevista {e!r}")
-    s = (
-        df["ESTUDIOS"]
-        .cast(pl.Float64)
-        .replace_strict(
-            {c: v for c, v in base.items() if v is not None}, return_dtype=pl.Utf8, default=None
-        )
-    )
-    if fp and "NIVELESTENTREV" in df.columns:
+    cod = df["ESTUDIOS"].cast(pl.Float64)
+    s = cod.replace_strict(base, return_dtype=pl.Utf8, default=None)
+    if ambiguos and "NIVELESTENTREV" in df.columns:
         nivel = (
             df["NIVELESTENTREV"]
             .cast(pl.Int64)
-            .replace_strict(NIVEL_FP, return_dtype=pl.Utf8, default=None)
+            .replace_strict(NIVEL_ESTUDIOS, return_dtype=pl.Utf8, default=None)
         )
-        es_fp = df["ESTUDIOS"].cast(pl.Float64).is_in(fp)
-        s = pl.select(pl.when(es_fp).then(nivel).otherwise(s)).to_series()
+        s = pl.select(pl.when(cod.is_in(ambiguos)).then(nivel).otherwise(s)).to_series()
     return s.fill_null("NC").alias("estudios_3")
 
 
