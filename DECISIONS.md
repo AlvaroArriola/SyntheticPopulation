@@ -1547,3 +1547,9 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Pendiente:**
   - B2 y G9.7 quedan para cuando se incorpore un modelo de lenguaje.
   - Antes, un piloto pequeño (menos de 5 $ o con un modelo local) medirá si mejora el modo evento y las preguntas sin precedentes frente a lo actual.
+- **Puerta F9 (`reports/fase_09.md`):** G9.1, G9.3, G9.4 y G9.5 superadas; G9.2 y G9.7 pendientes del LLM; **G9.6 fallida** (6/15).
+  - **Duda para decisión humana:** se proponen dos vías y no se aplica ninguna:
+    1. el piloto de LLM para la dirección del evento;
+    2. contar en V-EVENTO solo los efectos observados significativos (cuatro de los fallos tienen un IC 95 % que incluye 0).
+  - La segunda cambia la definición de una puerta y necesita aprobación.
+  - Mientras tanto se sigue con F10, que no depende del modo evento.

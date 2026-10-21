@@ -1659,6 +1659,61 @@ def _g9_7() -> Check:
     )
 
 
+def _f10() -> dict | None:
+    import json
+
+    ruta = REPO_ROOT / "reports" / "fase_10_validacion.json"
+    if not ruta.exists():
+        return None
+    return json.loads(ruta.read_text(encoding="utf-8"))["calibrado_en_validacion"]
+
+
+def _sin_f10(id_: str, desc: str, um: str) -> Check:
+    falta = "falta reports/fase_10_validacion.json (python -m sinpop.evaluate.confianza)"
+    return Check(id_, desc, False, falta, um)
+
+
+def _g10_1() -> Check:
+    from sinpop.config import load_config
+
+    rmin = load_config("thresholds.yaml").v_conf_corr.spearman_min  # type: ignore[attr-defined]
+    d, desc = _f10(), "Correlación de rangos entre confianza y error real (V-CONF-CORR)"
+    um = f"Spearman(confianza, −error) ≥ {rmin}"
+    if d is None:
+        return _sin_f10("G10.1", desc, um)
+    r = d["spearman_confianza"]
+    return Check("G10.1", desc, r >= rmin, f"{r:.3f} ({d['casos']} casos)", um)
+
+
+def _g10_2() -> Check:
+    from sinpop.config import load_config
+
+    c = load_config("thresholds.yaml").v_conf_ece  # type: ignore[attr-defined]
+    d, desc = _f10(), "Error de calibración (V-CONF-ECE)"
+    um = f"ECE ≤ {c.ece_max} (acierto: TVD ≤ {c.tvd_acierto})"
+    if d is None:
+        return _sin_f10("G10.2", desc, um)
+    return Check("G10.2", desc, d["ece"] <= c.ece_max, f"{d['ece']:.3f}", um)
+
+
+def _g10_3() -> Check:
+    d, desc = _f10(), "La confianza baja con el tamaño del territorio y del subgrupo"
+    um = "confianza total > subgrupos; Spearman(confianza, datos) > 0 en subgrupos y en CCAA"
+    if d is None:
+        return _sin_f10("G10.3", desc, um)
+    rs, rt = d["spearman_confianza_n_subgrupo"], d["spearman_confianza_n_ccaa"]
+    ct, cs = d["confianza_media_total"], d["confianza_media_subgrupos"]
+    ok = rs is not None and rt is not None and cs is not None and ct > cs and rs > 0 and rt > 0
+    return Check(
+        "G10.3",
+        desc,
+        ok,
+        f"confianza media total {ct:.2f}, subgrupos {cs:.2f}; Spearman subgrupos {rs:.2f}, "
+        f"CCAA {rt:.2f}",
+        um,
+    )
+
+
 PHASES: dict[int | str, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
@@ -1685,6 +1740,7 @@ PHASES: dict[int | str, list[Callable[[], Check]]] = {
     "8a": [_g8a_1, _g8a_2, _g8a_3, _g8a_4, _g8a_5, _g8a_6, _g8a_7_human],
     "8c": [_g8c_1, _g8c_2, _g8c_3],
     9: [_g9_1, _g9_2, _g9_3, _g9_4, _g9_5, _g9_6, _g9_7],
+    10: [_g10_1, _g10_2, _g10_3],
     "8b": [
         _g8b_1,
         _g8b_2,

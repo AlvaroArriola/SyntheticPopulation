@@ -21,9 +21,12 @@ import pickle
 
 import numpy as np
 import polars as pl
+from threadpoolctl import threadpool_limits
 
 from sinpop import PROCESSED_DIR
 
+# un hilo en ajuste y predicción: los datos son pequeños y OpenMP, con otros procesos en marcha,
+# se sobresuscribe (minutos en lugar de segundos)
 UMBRAL_TVD = 0.10
 SENALES = {
     # señal: monotonía respecto a la confianza (+1 sube, −1 baja, 0 libre)
@@ -50,6 +53,12 @@ def _x(d: pl.DataFrame) -> np.ndarray:
 
 class ModeloConfianza:
     def ajustar(self, d: pl.DataFrame) -> ModeloConfianza:
+        import sklearn.ensemble  # noqa: F401  (carga libgomp antes de limitar los hilos)
+
+        with threadpool_limits(1):
+            return self._ajustar(d)
+
+    def _ajustar(self, d: pl.DataFrame) -> ModeloConfianza:
         from sklearn.calibration import CalibratedClassifierCV
         from sklearn.ensemble import HistGradientBoostingClassifier, HistGradientBoostingRegressor
 
@@ -82,10 +91,9 @@ class ModeloConfianza:
 
     def predecir(self, d: pl.DataFrame) -> pl.DataFrame:
         x = _x(d)
-        return d.with_columns(
-            pl.Series("error_predicho", self.error.predict(x)),
-            pl.Series("confianza", self.confianza.predict_proba(x)[:, 1]),
-        )
+        with threadpool_limits(1):
+            err, conf = self.error.predict(x), self.confianza.predict_proba(x)[:, 1]
+        return d.with_columns(pl.Series("error_predicho", err), pl.Series("confianza", conf))
 
     def guardar(self) -> None:
         DESTINO.parent.mkdir(parents=True, exist_ok=True)
@@ -116,6 +124,8 @@ def metricas(d: pl.DataFrame) -> dict:
     conf = d["confianza"].to_numpy()
     sub = d.filter(pl.col("es_subgrupo") == 1)
     rho_n = spearmanr(sub["confianza"], sub["log_n_datos"]).statistic if sub.height > 2 else None
+    ccaa = sub.filter(pl.col("grupo") == "ccaa")
+    rho_t = spearmanr(ccaa["confianza"], ccaa["log_n_datos"]).statistic if ccaa.height > 2 else None
     cal = []
     cortes = np.linspace(0, 1, 11)
     idx = np.clip(np.digitize(conf, cortes[1:-1]), 0, 9)
@@ -133,8 +143,11 @@ def metricas(d: pl.DataFrame) -> dict:
     return {
         "casos": d.height,
         "spearman_error": float(spearmanr(d["error_predicho"], d["tvd"]).statistic),
+        # V-CONF-CORR: más confianza, menos error (se informa con el signo cambiado)
+        "spearman_confianza": float(-spearmanr(conf, d["tvd"]).statistic),
         "ece": ece(conf, acierto),
         "spearman_confianza_n_subgrupo": float(rho_n) if rho_n is not None else None,
+        "spearman_confianza_n_ccaa": float(rho_t) if rho_t is not None else None,
         "confianza_media_total": float(d.filter(pl.col("es_subgrupo") == 0)["confianza"].mean()),
         "confianza_media_subgrupos": float(sub["confianza"].mean()) if sub.height else None,
         "diagrama_calibracion": cal,
