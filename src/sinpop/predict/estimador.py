@@ -281,6 +281,12 @@ def predecir(q: Pregunta, excluir: pl.Expr | None = None, run_id: str = P.NACION
         )
         b0.append(_observada(d, q.opciones))
         a["encuestados"] = d.height
+        a["n_sub"] = {
+            f"{g}={lv}": n
+            for g in q.subgrupos
+            if g in d.columns
+            for lv, n in d.group_by(g).len().iter_rows()
+        }
     validas = [i for i, s in enumerate(sis) if s is not None]
     an = [an[i] for i in validas]
     if not an:
