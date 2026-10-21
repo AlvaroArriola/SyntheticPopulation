@@ -29,12 +29,12 @@ from sinpop.opinion.cis import CORTE, NS_NC
 from sinpop.opinion.valores import Modelo, _edad_grupo, perfil_sintetico
 from sinpop.repro import make_rng
 
-PATRONES = [
-    (r"^Me siento únicamente español/a$", "solo_espanol"),
-    (r"^Me siento más español/a que .+$", "mas_espanol"),
-    (r"^Me siento tan español/a como .+$", "igual"),
-    (r"^Me siento más .+ que español/a$", "mas_comunidad"),
-    (r"^Me siento únicamente .+$", "solo_comunidad"),
+PATRONES = [  # «Me siento …» en los autonómicos; sin ese prefijo y con mayúscula en el 3409
+    (r"^(Me siento )?[úÚ]nicamente español/a$", "solo_espanol"),
+    (r"^(Me siento )?[mM]ás español/a que .+$", "mas_espanol"),
+    (r"^(Me siento )?[tT]an español/a como .+$", "igual"),
+    (r"^(Me siento )?[mM]ás .+ que español/a$", "mas_comunidad"),
+    (r"^(Me siento )?[úÚ]nicamente .+$", "solo_comunidad"),
     (r"^(\(NO LEER\) )?Ninguna de (las|ellas|las anteriores).*$", "ninguna"),
 ]
 ENUNCIADO = r"(?i)^sentimiento nacionalista"

@@ -65,3 +65,17 @@ def test_lengua_habitual_reglas():
     assert LG.habitual({"castellano": 2, "otras": 4}) == "otras"
     assert LG.habitual({"castellano": 4, "otras": 4}) == "castellano"
     assert LG.habitual({}) == "NC"
+
+
+def test_identidad_patrones():
+    import pytest as _pt
+
+    from sinpop.opinion import identidad as ID
+
+    assert ID.recodificar("Me siento únicamente español/a") == "solo_espanol"
+    assert ID.recodificar("Más (gentilicio de C.A.) que español/a") == "mas_comunidad"
+    assert ID.recodificar("Me siento tan español/a como gallego/a") == "igual"
+    assert ID.recodificar("Únicamente (gentilicio de C.A.)") == "solo_comunidad"
+    assert ID.recodificar("N.S.") == "NS"
+    with _pt.raises(ValueError):
+        ID.recodificar("Me da igual")
