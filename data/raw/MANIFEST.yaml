@@ -3921,6 +3921,26 @@ ficheros:
   condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
   via: automatica
 - fuente: cis_barometros
+  fichero: cis_barometros/3427/FT3427.pdf
+  tipo: metodologia
+  edicion: '3427'
+  url_oficial: https://www.cis.es/documents/20117/1558411/FT3427.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 87675eaba53a23f6d4c1baee1c4efce8571250ca4173cf4c1b42d1f1921505d3
+  bytes: 24062
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3427/MD3427.zip
+  tipo: datos
+  edicion: '3427'
+  url_oficial: https://www.cis.es/documents/20117/1558411/MD3427.zip
+  fecha_descarga: '2026-10-21'
+  sha256: 98f232f1b1a9a7255f83a8d97010be4d6da06b03953fa7ad74152ae925d8b268
+  bytes: 1876517
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
   fichero: cis_barometros/3567/FT3567.pdf
   tipo: metodologia
   edicion: '3567'
