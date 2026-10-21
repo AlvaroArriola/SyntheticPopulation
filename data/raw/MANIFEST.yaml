@@ -3811,6 +3811,26 @@ ficheros:
   condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
   via: automatica
 - fuente: cis_barometros
+  fichero: cis_barometros/3402/MD3402.zip
+  tipo: datos
+  edicion: '3402'
+  url_oficial: https://www.cis.es/documents/20117/1544721/MD3402.zip
+  fecha_descarga: '2026-10-21'
+  sha256: 48a0a4108b7a4784857d5dd201a7d62c17cc3066798fb82fe7b741b068dc1219
+  bytes: 14595485
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3402/cues3402pdf.pdf
+  tipo: cuestionario
+  edicion: '3402'
+  url_oficial: https://www.cis.es/documents/20117/1544721/cues3402pdf.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: d84a5e353078cc37ba1985a435852c087164871a91848a0b726a7ca311d5902d
+  bytes: 346086
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
   fichero: cis_barometros/3403/FT3403pdf.pdf
   tipo: metodologia
   edicion: '3403'
@@ -4351,6 +4371,26 @@ ficheros:
   condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
   via: automatica
 - fuente: cis_barometros
+  fichero: cis_barometros/3495/FT3495.pdf
+  tipo: metodologia
+  edicion: '3495'
+  url_oficial: https://www.cis.es/documents/20117/13445501/FT3495.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 063a7eb0a7a269bec4814041b55702db1e4909dff8b2874642afd902d1900094
+  bytes: 27286
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3495/MD3495.zip
+  tipo: datos
+  edicion: '3495'
+  url_oficial: https://www.cis.es/documents/20117/13445501/MD3495.zip
+  fecha_descarga: '2026-10-21'
+  sha256: ed7e1215b2989bbb99aa2844e9d0e2026114d5f56599f6fc342198de197c8db2
+  bytes: 2898205
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
   fichero: cis_barometros/3496/FT3496.pdf
   tipo: metodologia
   edicion: '3496'
@@ -4468,6 +4508,36 @@ ficheros:
   fecha_descarga: '2026-10-21'
   sha256: cdbe30329d8701cebd06f89757013e63978a1f0f38ff23a04c1816aba653aa4a
   bytes: 448941
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3511/Cues3511.pdf
+  tipo: cuestionario
+  edicion: '3511'
+  url_oficial: https://www.cis.es/documents/20117/13443950/Cues3511.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: b84b158e628afc0ae7d0ded96d10b688a8dd33b9c7ae9cb435ca8b5a59d8a177
+  bytes: 223727
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3511/FT3511.pdf
+  tipo: metodologia
+  edicion: '3511'
+  url_oficial: https://www.cis.es/documents/20117/13443950/FT3511.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 4fadc01d1d507b97c2ddc6305f420c9aea1398b3061b732a6d0c2720830bf9ca
+  bytes: 29298
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3511/MD3511.zip
+  tipo: datos
+  edicion: '3511'
+  url_oficial: https://www.cis.es/documents/20117/13443950/MD3511.zip
+  fecha_descarga: '2026-10-21'
+  sha256: deba65057ec5ef1570772db0a5c494125111460dcbfeaec4d3151d3ffc7ee7f1
+  bytes: 8747733
   condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
   via: automatica
 - fuente: cis_barometros
@@ -5244,6 +5314,26 @@ ficheros:
   sha256: 78160c73683a285ccad8ddfc8408e0ea4ff1e5999109e435e669be22d62ecb4d
   bytes: 2485419
   condiciones: 'INE/Eurostat: citar la fuente'
+  via: automatica
+- fuente: ecepov2021
+  fichero: ecepov2021/2021/datos_2021.zip
+  tipo: datos
+  edicion: '2021'
+  url_oficial: https://www.ine.es/ftp/microdatos/ecepov/datos_2021.zip
+  fecha_descarga: '2026-10-21'
+  sha256: 36d9226f7716b36be3622a18ed9ee99240fa8a4b8bde5e596f0a73b60cedf94d
+  bytes: 197172814
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: ecepov2021
+  fichero: ecepov2021/2021/disreg_ecepov21.zip
+  tipo: diseno_registro
+  edicion: '2021'
+  url_oficial: https://www.ine.es/ftp/microdatos/ecepov/disreg_ecepov21.zip
+  fecha_descarga: '2026-10-21'
+  sha256: d16c11b27191a672aba22ab3550c3d8d3cfc6bb7ed3c4436e6cdf12925e1e472
+  bytes: 134534
+  condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
 - fuente: ecp
   fichero: ecp/2026-01-01/tabla_59589_20260101.json

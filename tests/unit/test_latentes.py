@@ -48,3 +48,20 @@ def test_intermedios_numericos_solo_entre_extremos():
     lg2 = lg2.with_columns(pl.Series("etiqueta", ["1 Nada", None, "10 Mucho", None, None]))
     out2 = L._intermedios_numericos(lg2, {"X": "numerica"})
     assert out2["etiqueta"][3] is None  # fuera de los extremos: sigue sin etiqueta
+
+
+def test_lengua_habitual_reglas():
+    from sinpop.opinion import lengua as LG
+
+    assert LG.clase_lengua("CATALÁN (MALLORQUÍN, MENORQUÍN, IBICENCO O FORMENTERENSE)") == (
+        "catalan_valenciano"
+    )
+    assert LG.clase_lengua("VALENCIANO") == "catalan_valenciano"
+    assert LG.clase_lengua("CASTELLANO") == "castellano"
+    assert LG.clase_lengua("ÁRABE") == "otras"
+    assert LG.clase_lengua("   ") is None
+    assert LG.habitual({"castellano": 4, "gallego": 4}) == "bilingue"
+    assert LG.habitual({"castellano": 3, "gallego": 4}) == "gallego"
+    assert LG.habitual({"castellano": 2, "otras": 4}) == "otras"
+    assert LG.habitual({"castellano": 4, "otras": 4}) == "castellano"
+    assert LG.habitual({}) == "NC"

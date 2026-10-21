@@ -27,8 +27,8 @@ EDADES = [18, 25, 35, 45, 55, 65, 75]
 PREDICTORES = ["sexo", "edad_grupo", "estudios_3", "actividad_3", "ccaa", "tamano_municipio_cis"]
 # Interacción comunidad × edad (cuatro grupos), como en MRP: el modelo aditivo no recoge las
 # diferencias de edad propias de cada comunidad, que es lo que compara G8A.4 (D-064)
-INTERACCIONES = {"ccaa_edad4": ("ccaa", "edad")}
-COLUMNAS = PREDICTORES + list(INTERACCIONES)
+INTERACCIONES = {"ccaa_edad4": ("ccaa", "edad"), "provincia_edad4": ("provincia", "edad")}
+COLUMNAS = PREDICTORES + ["ccaa_edad4"]
 
 
 def _edad4_txt(edad: pl.Series) -> pl.Series:
@@ -69,20 +69,28 @@ def _edad_grupo(edad: pl.Expr) -> pl.Expr:
     return e.alias("edad_grupo")
 
 
-def nacional() -> pl.Expr:
-    """Estudios de ámbito nacional: los preelectorales y postelectorales autonómicos entrevistan
-    a una sola comunidad y, mezclados, la sobrerrepresentarían (D-065)."""
-    return pl.col("ccaa").n_unique().over("estudio") > 1
-
-
 def estudios_nacionales() -> list[str]:
-    return (
+    """Estudios con muestra nacional: más de una comunidad y que no sean preelectorales ni
+    postelectorales (los autonómicos entrevistan a una comunidad; el preelectoral de municipales
+    y autonómicas de 2023, a varias con muestras desproporcionadas) (D-065, D-066)."""
+    import json
+
+    from sinpop.opinion.cis import SELECCION
+
+    titulos = {e["estudio"]: e["titulo"] for e in json.loads(SELECCION.read_text("utf-8"))}
+    varias = (
         pl.read_parquet(INTERIM_DIR / "cis_personas.parquet", columns=["estudio", "ccaa"])
         .group_by("estudio")
         .agg(pl.col("ccaa").n_unique())
         .filter(pl.col("ccaa") > 1)["estudio"]
         .to_list()
     )
+    return sorted(e for e in varias if "electoral" not in titulos.get(e, "").lower())
+
+
+def nacional() -> pl.Expr:
+    """Filtro de `estudios_nacionales()`."""
+    return pl.col("estudio").is_in(estudios_nacionales())
 
 
 def datos(variable: str) -> pl.DataFrame:
@@ -115,18 +123,21 @@ class Modelo:
 
     REJILLA_C = (0.01, 0.03, 0.1, 0.3, 1.0)
 
-    def __init__(self, variable: str, c: float | None = None) -> None:
+    def __init__(
+        self, variable: str, c: float | None = None, columnas: list[str] | None = None
+    ) -> None:
         """`c` = None: la regularización se elige por validación cruzada (3 particiones fijas,
         log-verosimilitud ponderada), así el modelo se encoge hacia efectos más simples cuando
         hay pocos encuestados por comunidad y edad, como en MRP (D-064)."""
         self.variable = variable
         self.c = c
+        self.columnas = columnas or COLUMNAS
 
     def _x(self, df: pl.DataFrame):
         import scipy.sparse as sp
 
         filas = []
-        for v in COLUMNAS:
+        for v in self.columnas:
             col = columna(df, v)
             idx = np.array([self.cats[v].get(x, -1) for x in col])
             m = sp.csr_matrix(
@@ -141,7 +152,7 @@ class Modelo:
 
         self.cats = {
             v: {c: i for i, c in enumerate(sorted({x for x in columna(df, v) if x is not None}))}
-            for v in COLUMNAS
+            for v in self.columnas
         }
         self.clases = sorted(df[self.variable].unique().to_list())
         y = df[self.variable].to_numpy()
