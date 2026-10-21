@@ -260,8 +260,12 @@ def audit(run: Annotated[str, typer.Option(help="run_id de la población")]) -> 
 @app.command()
 def opinion(run: Annotated[str, typer.Option(help="run_id de la población")]) -> None:
     """Asigna la capa de opinión y valores (F8A)."""
+    from sinpop import POPULATIONS_DIR
     from sinpop.opinion import run as OR
 
+    if not (POPULATIONS_DIR / run / "persons.parquet").exists():
+        typer.echo(f"No existe la población {run}", err=True)
+        raise typer.Exit(code=1)
     m = OR.construir(run)
     typer.echo(f"{run}: opinion.parquet con {m['personas']} adultos · {list(m['variables'])}")
 

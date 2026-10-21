@@ -102,6 +102,12 @@ Ver `reports/fase_08a_puerta.md` (`sinpop validate --phase 8a`).
 4. **Una sola medición por rasgo:** cada rasgo latente procede de un único estudio, de noviembre de 2025 o marzo de 2026. No hay todavía serie temporal para fecharlos (F8C).
 5. **Cambio de la clase subjetiva:** el dominio de `clase_subjetiva` incluye «otras» y «no cree en las clases», respuestas reales del CIS (D-063).
 
+## Tests
+
+`pytest tests` pasa entero, con una excepción: `tests/integration/test_poblacion.py` (F4, sin cambios en esta fase) construye tres poblaciones con todo el banco de donantes y el contenedor actual (unos 14 GB) lo corta por memoria. Se ha ejecutado con `--deselect tests/integration/test_poblacion.py`; necesita una máquina con más memoria o reducir su banco de donantes.
+
+En esta fase se han añadido tests de puntuación de ítems y del factorial (`tests/unit/test_latentes.py`, `tests/unit/test_factorial.py`). La comprobación de vacíos de F2 documenta los del CIS y lee por columnas, para no cargar los 25 millones de filas de `cis_largo`.
+
 ## Decisiones
 
 D-063 (armonización y variables de valores), D-064 (modelo MRP, universos y validación) y D-065 (rasgos latentes y huecos).
