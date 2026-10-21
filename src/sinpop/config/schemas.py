@@ -619,15 +619,15 @@ class PartidosConfig(Strict):
     cis: dict[str, EstudioCIS] = Field(default_factory=dict)
     # etiqueta del recuerdo de voto del CIS → familia u opción especial (D-067)
     recuerdo_cis_generales_2023: dict[str, str] = Field(default_factory=dict)
+    recuerdo_ess_generales_2023: dict[str, str] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def _familias_existen(self) -> PartidosConfig:
         ids = {f.id for f in self.familias}
         especiales = {"blanco", "nulo", "abstencion", "no_tenia_edad", "sin_derecho_voto"}
+        recuerdos = self.recuerdo_cis_generales_2023 | self.recuerdo_ess_generales_2023
         malas = {
-            k: v
-            for k, v in self.recuerdo_cis_generales_2023.items()
-            if v not in ids | especiales | {"NS", "NC", "NP"}
+            k: v for k, v in recuerdos.items() if v not in ids | especiales | {"NS", "NC", "NP"}
         }
         if malas:
             raise ValueError(f"recuerdo_cis_generales_2023 con familias desconocidas: {malas}")

@@ -1,0 +1,33 @@
+{
+ "fecha": "2026-10-21",
+ "version_codigo": "git:3e79be1-dirty",
+ "run_id": "2026-01-01_ES_1000000_s1",
+ "g8b1": {
+  "provincias": 52,
+  "dentro": 52,
+  "tvd_max": 0.02809817177371237
+ },
+ "g8b2": {
+  "espana_celdas": 6,
+  "espana_dentro": 6,
+  "ccaa_celdas": 80,
+  "ccaa_evaluables": 49,
+  "ccaa_dentro": 47,
+  "ccaa_fuera": [
+   {
+    "ccaa": "15",
+    "tamano_municipio": "de_10001_a_50000",
+    "tvd": 0.08483300598955346,
+    "error_participacion_pp": 4.531741199326439
+   },
+   {
+    "ccaa": "06",
+    "tamano_municipio": "hasta_2000",
+    "tvd": 0.06637196453520959,
+    "error_participacion_pp": 5.270689512948349
+   }
+  ],
+  "tvd_media_ccaa": 0.03553663382632387,
+  "error_participacion_max_pp": 5.270689512948349
+ }
+}

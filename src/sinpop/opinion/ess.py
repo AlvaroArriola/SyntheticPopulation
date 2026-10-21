@@ -88,6 +88,77 @@ ACTIVIDAD = {  # mnactic
 }
 
 
+# Bloque político (F8B, D-067)
+CONFIANZA_INSTITUCIONES = {  # 0-10, extremos etiquetados
+    "trstprl": "parlamento",
+    "trstlgl": "justicia",
+    "trstplc": "policia",
+    "trstplt": "politicos",
+    "trstprt": "partidos",
+    "trstep": "parlamento_europeo",
+    "trstun": "naciones_unidas",
+}
+PARTICIPACION = {  # Yes / No en los últimos 12 meses
+    "contplt": "contacto_politico",
+    "donprty": "partido_o_grupo",
+    "badge": "insignia_campana",
+    "sgnptit": "firma",
+    "pbldmna": "manifestacion",
+    "bctprd": "boicot",
+    "pstplonl": "redes",
+}
+INTERES = {
+    "Very interested": "mucho",
+    "Quite interested": "bastante",
+    "Hardly interested": "poco",
+    "Not at all interested": "nada",
+}
+NS_NC_ESS = {"Refusal": "NC", "No answer": "NC", "Don't know": "NS"}
+
+
+def _escala_0_10(df: pl.DataFrame, var: str) -> pl.Series:
+    # 0-10 con los extremos etiquetados; 77, 88 y 99 son rechazo, no sabe y no contesta
+    return df[var].cast(pl.Float64).replace({77.0: None, 88.0: None, 99.0: None})
+
+
+def _politica(d: pl.DataFrame, meta) -> list[pl.Series]:
+    from sinpop.config import load_config
+
+    fam = load_config("partidos.yaml").recuerdo_ess_generales_2023  # type: ignore[attr-defined]
+    vote = _etiquetar(d, meta, "vote")
+    prt = _etiquetar(d, meta, "prtvtges")
+    sin = set(prt.drop_nulls().unique()) - set(fam) - AUSENTE
+    if sin:
+        raise ValueError(f"ESS prtvtges: etiquetas sin familia {sorted(sin)}")
+
+    def voto(v: str | None, p: str | None) -> str | None:
+        if v == "No":
+            return "abstencion"
+        if v == "Not eligible to vote":
+            return "sin_derecho_voto"
+        if v == "Yes":
+            return fam.get(p) if p in fam else NS_NC_ESS.get(p, "NC")
+        return NS_NC_ESS.get(v, "NC") if v is not None else None
+
+    out = [
+        pl.Series("voto_generales_2023", [voto(v, p) for v, p in zip(vote, prt, strict=True)]),
+        _recod(_etiquetar(d, meta, "polintr"), INTERES | NS_NC_ESS, "polintr", None).alias(
+            "interes_politica"
+        ),
+        _escala_0_10(d, "stfdem").alias("satisfaccion_democracia"),
+        _escala_0_10(d, "lrscale").alias("lrscale"),
+    ]
+    for v, nombre in CONFIANZA_INSTITUCIONES.items():
+        out.append(_escala_0_10(d, v).alias(f"confianza_{nombre}"))
+    for v, nombre in PARTICIPACION.items():
+        out.append(
+            _recod(_etiquetar(d, meta, v), {"Yes": "si", "No": "no"} | NS_NC_ESS, v, None).alias(
+                f"participacion_{nombre}"
+            )
+        )
+    return out
+
+
 def _etiquetar(df: pl.DataFrame, meta, var: str) -> pl.Series:
     lab = meta.variable_value_labels.get(var, {})
     return df[var].map_elements(lambda x: lab.get(x), return_dtype=pl.Utf8)
@@ -112,6 +183,9 @@ def armonizar() -> dict:
         ["idno", "cntry", "anweight", "gndr", "agea", "eisced", "mnactic", "region", "ctzcntr"]
         + CONFIANZA
         + list(PVQ)
+        + ["vote", "prtvtges", "polintr", "stfdem", "lrscale"]
+        + list(CONFIANZA_INSTITUCIONES)
+        + list(PARTICIPACION)
     )
     with tempfile.TemporaryDirectory() as tmp, zipfile.ZipFile(ZIP) as z:
         z.extract("ESS11e04_2.sav", tmp)
@@ -155,6 +229,7 @@ def armonizar() -> dict:
         out = out.with_columns(
             et.replace_strict(ESCALA_PVQ, default=None, return_dtype=pl.Float64).alias(v)
         )
+    out = out.with_columns(_politica(d, meta))
     out = out.filter(pl.col("edad").is_between(18, 120))
     out.write_parquet(SALIDA)
     return {"personas": out.height, "ccaa": out["ccaa"].n_unique()}

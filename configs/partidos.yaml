@@ -1507,3 +1507,21 @@ recuerdo_cis_generales_2023:
   N.C.: NC
   No procede: NP
   N.P.: NP
+# Voto en las generales de 2023 en la ESS ronda 11 (España): `prtvtges` (partido) y `vote`
+# (votó / no votó / sin derecho), por la ETIQUETA (D-067). Mismos criterios de familia.
+recuerdo_ess_generales_2023:
+  PP: centro_derecha_estatal
+  PSOE: socialdemocrata
+  VOX: derecha_radical
+  SUMAR: izquierda_estatal
+  ERC: nacionalista_regionalista
+  Junts x Cat: nacionalista_regionalista
+  EH-Bildu: nacionalista_regionalista
+  EAJ-PNV: nacionalista_regionalista
+  BNG: nacionalista_regionalista
+  Coalición Canaria (CC): nacionalista_regionalista
+  UPN: nacionalista_regionalista
+  PACMA: otros
+  Other: otros
+  Blank vote: blanco
+  Invalid vote: nulo
