@@ -24,7 +24,15 @@ from sinpop.opinion.cis import CORTE
 from sinpop.opinion.valores import PREDICTORES, VENTANA_MESES, _edad_grupo, perfil_sintetico
 from sinpop.repro import make_rng
 
-NS_NC_ETIQUETAS = ["N.S.", "N.C.", "No sabe, duda", "N.S./No recuerda", "No sabe", "No contesta"]
+NS_NC_ETIQUETAS = [
+    "N.S.",
+    "N.C.",
+    "No sabe, duda",
+    "No sabe/duda",
+    "N.S./No recuerda",
+    "No sabe",
+    "No contesta",
+]
 NO_PROCEDE = ["No procede", "N.P."]
 MIN_PREGUNTAS = 10  # preguntas con opción NS/NC necesarias para medir el estilo
 

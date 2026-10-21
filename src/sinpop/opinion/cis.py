@@ -34,7 +34,13 @@ from sinpop import INTERIM_DIR, RAW_DIR
 CARPETA = RAW_DIR / "cis_barometros"
 CORTE = dt.date(2026, 7, 1)
 SELECCION = RAW_DIR / "cis_catalogo" / "seleccion.json"
-NS_NC = {"N.S.": "NS", "N.C.": "NC", "No sabe, duda": "NS", "N.S./No recuerda": "NS"}
+NS_NC = {
+    "N.S.": "NS",
+    "N.C.": "NC",
+    "No sabe, duda": "NS",
+    "No sabe/duda": "NS",
+    "N.S./No recuerda": "NS",
+}
 
 
 def _norm(s: str) -> str:
@@ -139,6 +145,7 @@ CLASESOCIAL = {  # respuesta espontánea codificada por el CIS
     "Clase baja": "baja",
     "A la gente común": "otras",
     "Otras": "otras",
+    "Otra": "otras",
     "No cree en las clases": "no_cree_clases",
 }
 ECOPER = {
