@@ -66,7 +66,45 @@ def estilo_ns_nc() -> pl.DataFrame:
     )
 
 
+COLUMNAS_ESS = ["sexo", "edad_grupo", "estudios_3", "actividad_3", "ccaa", "nacionalidad_esp_ext"]
+
+
+def estilo_aquiescencia() -> pl.DataFrame:
+    """Media de las 21 respuestas de la escala de valores de Schwartz de la ESS (6 = «Very much
+    like me»), con al menos 16 respondidas: es la medida estándar de la tendencia a mostrarse de
+    acuerdo con cualquier enunciado en esa escala (MRAT; Schwartz, guía de la ESS) (D-066)."""
+    from sinpop.opinion import ess as E
+
+    d = pl.read_parquet(E.SALIDA)
+    pvq = list(E.PVQ)
+    return (
+        d.with_columns(
+            pl.mean_horizontal(pvq).alias("estilo_aquiescencia"),
+            pl.sum_horizontal([pl.col(v).is_not_null() for v in pvq]).alias("_n"),
+        )
+        .filter((pl.col("_n") >= 16) & (pl.col("edad") >= 18))
+        .drop("_n")
+    )
+
+
+def columnas_rasgo(rasgo: str) -> list[str]:
+    if rasgo == "estilo_aquiescencia":
+        return COLUMNAS_ESS
+    if rasgo == "estilo_ns_nc":
+        return COLUMNAS
+    return L.columnas(rasgo) or (COLUMNAS_ESS if L.universo(rasgo) == "todos" else COLUMNAS)
+
+
 def datos_rasgo(rasgo: str = "estilo_ns_nc") -> pl.DataFrame:
+    if rasgo == "estilo_aquiescencia":
+        return (
+            estilo_aquiescencia()
+            .filter(
+                ~pl.col("estudios_3").is_in(["NC", "NS"])
+                & ~pl.col("actividad_3").is_in(["NC", "NS"])
+            )
+            .with_columns(_edad_grupo(pl.col("edad")))
+        )
     if rasgo != "estilo_ns_nc":
         return L.datos(rasgo)
     p = pl.read_parquet(INTERIM_DIR / "cis_personas.parquet")
@@ -98,12 +136,13 @@ def _celda(df: pl.DataFrame) -> np.ndarray:
 
 
 class ModeloRasgo:
-    def __init__(self, rasgo: str) -> None:
+    def __init__(self, rasgo: str, columnas: list[str] | None = None) -> None:
         self.rasgo = rasgo
+        self.columnas = columnas or COLUMNAS
 
     def _x(self, df: pl.DataFrame) -> np.ndarray:
         cols = []
-        for v in COLUMNAS:
+        for v in self.columnas:
             col = columna(df, v)
             m = np.zeros((df.height, len(self.cats[v])))
             for i, x in enumerate(col):
@@ -118,7 +157,7 @@ class ModeloRasgo:
 
         self.cats = {
             v: {c: i for i, c in enumerate(sorted({x for x in columna(d, v) if x is not None}))}
-            for v in COLUMNAS
+            for v in self.columnas
         }
         y = d[self.rasgo].to_numpy()
         w = d["peso"].to_numpy()
@@ -145,21 +184,26 @@ class ModeloRasgo:
 
 
 def asignar(persons: pl.DataFrame, semilla: int) -> tuple[pl.DataFrame, dict]:
-    """El estilo NS/NC y los rasgos latentes de `configs/rasgos.yaml`, con su `__calidad`."""
+    """Los estilos de respuesta y los rasgos latentes de `configs/rasgos.yaml`, con su
+    `__calidad`. Lo que viene de la ESS (que entrevista a cualquier nacionalidad) solo es
+    `extrapolada` en los residentes en establecimientos colectivos."""
     perfil = perfil_sintetico(persons)
     rng = make_rng(semilla)
-    extrapolada = (perfil["nacionalidad_esp_ext"] != "espanola") | (
-        perfil["tipo_residencia"] != "vivienda_familiar"
-    )
-    calidad = np.where(extrapolada, "extrapolada", "modelada")
+    colectivo = perfil["tipo_residencia"] != "vivienda_familiar"
+    extranjero = perfil["nacionalidad_esp_ext"] != "espanola"
     out = perfil.select("person_id")
     meta = {}
-    for r in ["estilo_ns_nc", *L.rasgos()]:
+    for r in ["estilo_ns_nc", "estilo_aquiescencia", *L.rasgos()]:
         d = datos_rasgo(r)
-        m = ModeloRasgo(r).ajustar(d)
+        m = ModeloRasgo(r, columnas_rasgo(r)).ajustar(d)
         valor = m.extraer(perfil, rng)
         if r == "estilo_ns_nc":  # proporción
             valor = np.clip(valor, 0.0, 1.0)
+        if r == "estilo_aquiescencia":  # media de una escala 1-6
+            valor = np.clip(valor, 1.0, 6.0)
+        todos = r == "estilo_aquiescencia" or (r in L.rasgos() and L.universo(r) == "todos")
+        fuera = colectivo if todos else (colectivo | extranjero)
+        calidad = np.where(fuera, "extrapolada", "modelada")
         out = out.with_columns(pl.Series(r, valor), pl.Series(f"{r}__calidad", calidad))
         meta[r] = {"encuestados": m.n, "estudios": sorted(d["estudio"].unique())}
     return out, meta

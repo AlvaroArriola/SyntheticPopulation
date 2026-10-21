@@ -4071,6 +4071,26 @@ ficheros:
   condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
   via: automatica
 - fuente: cis_barometros
+  fichero: cis_barometros/3442/FT3442.pdf
+  tipo: metodologia
+  edicion: '3442'
+  url_oficial: https://www.cis.es/documents/20117/1559306/FT3442.pdf
+  fecha_descarga: '2026-10-21'
+  sha256: 4ae6a2990216da3775a974c64506ef0a2f012c540b7b4403b8aac69162476a6b
+  bytes: 25715
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
+  fichero: cis_barometros/3442/MD3442.zip
+  tipo: datos
+  edicion: '3442'
+  url_oficial: https://www.cis.es/documents/20117/1559306/MD3442.zip
+  fecha_descarga: '2026-10-21'
+  sha256: 32e57058e1359a3fa68d584fb40263bccfdef44b80503c2b1834618f3ece0fe5
+  bytes: 1636595
+  condiciones: 'CIS: citar el número de estudio y al CIS como fuente'
+  via: automatica
+- fuente: cis_barometros
   fichero: cis_barometros/3445/FT3445.pdf
   tipo: metodologia
   edicion: '3445'
@@ -6315,6 +6335,18 @@ ficheros:
   bytes: 165573
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
+- fuente: ess
+  fichero: ess/ESS11/ESS11e04_2.zip
+  tipo: datos
+  edicion: ESS11
+  url_oficial: https://ess.sikt.no/ (ESS Round 11 - 2023, integrated file, edición
+    4.2)
+  fecha_descarga: '2026-10-21'
+  sha256: 4abb19ee518aa51e107f8f9718e4c8c1713d5cb1732bd9b0aa85b9f5e749f42f
+  bytes: 13304062
+  condiciones: 'ESS ERIC: uso no comercial, no redistribuir los datos; citar ESS Round
+    11: European Social Survey Round 11 Data (2023). Data file edition 4.2. Sikt'
+  via: manual
 - fuente: infoelectoral_resultados
   fichero: infoelectoral_resultados/generales-2023/BOE-A-2023-18907.pdf
   tipo: datos

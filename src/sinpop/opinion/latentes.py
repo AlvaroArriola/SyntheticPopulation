@@ -98,6 +98,12 @@ def items(rasgo: str) -> pl.DataFrame:
     c = config()["rasgos"][rasgo]
     estudios = [str(e) for e in c["estudios"]]
     defs = c["items"]
+    if c.get("fuente") == "ess":  # ítems ya puntuados por etiqueta en `ess.armonizar`
+        return (
+            pl.read_parquet(INTERIM_DIR / "ess_es.parquet")
+            .select("estudio", "encuestado", *sorted(defs))
+            .sort("estudio", "encuestado")
+        )
     lg = (
         pl.scan_parquet(INTERIM_DIR / "cis_largo.parquet")
         .filter(pl.col("estudio").is_in(estudios) & pl.col("variable").is_in(list(defs)))
@@ -128,7 +134,23 @@ def items(rasgo: str) -> pl.DataFrame:
     )
 
 
+def universo(rasgo: str) -> str:
+    """«espanoles» (barómetros y estudios del CIS) o «todos» (la ESS entrevista a residentes
+    de cualquier nacionalidad)."""
+    return "todos" if config()["rasgos"][rasgo].get("fuente") == "ess" else "espanoles"
+
+
+def columnas(rasgo: str) -> list[str] | None:
+    """Predictores del modelo de perfil del rasgo (None: los de siempre)."""
+    return config()["rasgos"][rasgo].get("columnas")
+
+
 def _base(rasgo: str) -> pl.DataFrame:
+    if universo(rasgo) == "todos":
+        p = pl.read_parquet(INTERIM_DIR / "ess_es.parquet").drop(
+            sorted(config()["rasgos"][rasgo]["items"])
+        )
+        return items(rasgo).join(p, on=["estudio", "encuestado"]).filter(pl.col("edad") >= 18)
     p = pl.read_parquet(INTERIM_DIR / "cis_personas.parquet")
     return (
         items(rasgo)

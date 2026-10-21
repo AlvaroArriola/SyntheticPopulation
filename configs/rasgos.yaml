@@ -72,3 +72,25 @@ rasgos:
       P3_3: numerica  # riqueza
       P3_5: numerica  # eficacia
       P3_10: numerica  # bienestar
+  # European Social Survey, ronda 11 (España, 2023), D-066. Ítems ya puntuados por etiqueta en
+  # `opinion/ess.py`; la ESS entrevista a residentes de cualquier nacionalidad.
+  rasgo_confianza_interpersonal:
+    fuente: ess
+    estudios: ["ESS11"]
+    items:
+      ppltrst: ess  # se puede confiar en la mayoría de la gente (0-10)
+      pplfair: ess  # la gente intentaría ser justa (0-10)
+      pplhlp: ess  # la gente intenta ayudar (0-10)
+  # Polo de conservación del eje de Schwartz (seguridad, conformidad y tradición; 1-6, más = más
+  # parecido a la persona entrevistada). Mayor puntuación = más tradición, menos apertura.
+  # La versión bipolar (ítems centrados en la media de cada persona) ajusta peor (CFI 0,81).
+  rasgo_tradicion_apertura:
+    fuente: ess
+    estudios: ["ESS11"]
+    items:
+      impsafea: ess  # vivir en un entorno seguro
+      ipstrgva: ess  # un Estado fuerte que garantice la seguridad
+      ipfrulea: ess  # hacer lo que se le dice y seguir las normas
+      ipbhprpa: ess  # comportarse correctamente
+      ipmodsta: ess  # ser humilde y modesto
+      imptrada: ess  # seguir las tradiciones y costumbres
