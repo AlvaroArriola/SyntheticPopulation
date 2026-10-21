@@ -1,0 +1,86 @@
+{
+ "fecha": "2026-10-21",
+ "estudios_validacion": {
+  "3571": "2026-07-01",
+  "3577": "2026-09-01"
+ },
+ "estudios_reservados_f11": {
+  "3582": "2026-10-01"
+ },
+ "preguntas": 1,
+ "sin_analogas": [
+  "CIS-3571-P2",
+  "CIS-3571-P3",
+  "CIS-3577-P1",
+  "CIS-3577-P2",
+  "CIS-3577-P3"
+ ],
+ "g9_1": {
+  "salidas": 1,
+  "validas": 1
+ },
+ "g9_2": {
+  "todas": {
+   "sistema_cis": 0.3567713064671064,
+   "sistema": 0.37976581808647925,
+   "b0": 0.36280750098025316,
+   "b1": 0.36137845637403043,
+   "preguntas": 1
+  },
+  "recurrentes": {
+   "sistema_cis": 0.3567713064671064,
+   "sistema": 0.37976581808647925,
+   "b0": 0.36280750098025316,
+   "b1": 0.36137845637403043,
+   "preguntas": 1
+  },
+  "nuevas": {
+   "sistema_cis": null,
+   "sistema": null,
+   "b0": null,
+   "b1": null,
+   "preguntas": 0
+  },
+  "politicas": {
+   "sistema_cis": null,
+   "sistema": null,
+   "b0": null,
+   "b1": null,
+   "preguntas": 0
+  },
+  "subgrupos": {
+   "sistema": 0.37746173637079994,
+   "b1": 0.3605282043879866
+  },
+  "ccaa": {
+   "sistema": 0.38345935820332455,
+   "b1": 0.3658335471613201
+  },
+  "b2": "no ejecutado: necesita un modelo de lenguaje (D-069)"
+ },
+ "g9_3": {
+  "llamadas": 0,
+  "tokens": 0,
+  "eur": 0.0,
+  "segundos_por_pregunta": null
+ },
+ "g9_4": {
+  "preguntas": 1,
+  "tvd_media": 0.0025973129901192015,
+  "tvd_max": 0.0025973129901192015,
+  "por_encima_umbral": 0
+ },
+ "g9_5": {
+  "cobertura80": 0.5,
+  "cobertura95": 0.5,
+  "casos": 4
+ },
+ "g9_6": {
+  "pares": 26,
+  "pares_correctos": 14,
+  "eventos": 15,
+  "eventos_correctos": 6,
+  "error_magnitud_pp_medio": 4.3051787024167005
+ },
+ "g9_7": "no aplica: sin modelo de lenguaje no hay salidas que auditar (docs/06 §5)"
+}

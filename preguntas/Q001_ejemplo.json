@@ -1,0 +1,10 @@
+{
+  "id": "Q001",
+  "tipo": "pregunta",
+  "enunciado": "¿Cómo calificaría usted la situación económica actual de España?",
+  "opciones": ["Muy buena", "Buena", "Regular", "Mala", "Muy mala", "N.S.", "N.C."],
+  "escala": "ordinal",
+  "poblacion": {"territorio": "ES", "universo": "18+"},
+  "fecha_referencia": "2026-07",
+  "subgrupos": ["edad_4", "sexo", "estudios_3", "ccaa", "recuerdo_voto_generales_familia"]
+}

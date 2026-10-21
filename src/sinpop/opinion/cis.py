@@ -176,8 +176,8 @@ def fechas() -> dict[str, str]:
     return out
 
 
-def _sav(estudio: str) -> Path:
-    d = CARPETA / estudio
+def _sav(estudio: str, carpeta: Path = CARPETA) -> Path:
+    d = carpeta / estudio
     ext = d / "extraido"
     savs = list(ext.glob("*.sav")) if ext.exists() else []
     if not savs:
@@ -193,10 +193,11 @@ def _sav(estudio: str) -> Path:
     return savs[0]
 
 
-def leer(estudio: str):
+def leer(estudio: str, carpeta: Path = CARPETA):
+    """Microdatos y metadatos de un estudio. `carpeta` solo la cambia `sinpop.evaluate`."""
     import pyreadstat
 
-    df, meta = pyreadstat.read_sav(str(_sav(estudio)), apply_value_formats=False)
+    df, meta = pyreadstat.read_sav(str(_sav(estudio, carpeta)), apply_value_formats=False)
     return pl.from_pandas(df), meta
 
 
@@ -302,15 +303,15 @@ def _variable_nacionalidad(meta) -> str | None:
     return None
 
 
-def personas(estudio: str) -> pl.DataFrame:
+def personas(estudio: str, carpeta: Path = CARPETA, fecha: str | None = None) -> pl.DataFrame:
     """Perfil armonizado, peso, fecha y variables de valores de un estudio."""
-    df, meta = leer(estudio)
+    df, meta = leer(estudio, carpeta)
     faltan = [v for v in PERFIL if v not in df.columns]
     if faltan:
         raise KeyError(", ".join(faltan))
     cols = [
         pl.lit(estudio).alias("estudio"),
-        pl.lit(fechas().get(estudio)).alias("fecha"),
+        pl.lit(fecha or fechas().get(estudio)).alias("fecha"),
         pl.int_range(df.height).alias("encuestado"),
     ]
     out = df.select(*cols)
@@ -333,9 +334,9 @@ def personas(estudio: str) -> pl.DataFrame:
     return out.with_columns([s.alias(k) for k, s in columnas.items()])
 
 
-def largo(estudio: str) -> tuple[pl.DataFrame, pl.DataFrame]:
+def largo(estudio: str, carpeta: Path = CARPETA) -> tuple[pl.DataFrame, pl.DataFrame]:
     """Formato largo de todas las preguntas con etiquetas de valores y su banco."""
-    df, meta = leer(estudio)
+    df, meta = leer(estudio, carpeta)
     filas, banco = [], []
     for var, enunciado in zip(meta.column_names, meta.column_labels, strict=True):
         lab = _etiquetas(meta, var)
