@@ -1316,3 +1316,57 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Estado:** aprobada por la persona responsable el 2026-10-21. Aprueba la capa de opinión, los tres rasgos construidos y las decisiones D-063 a D-065, incluido que la confianza en partidos, sindicatos, Gobierno y Parlamento pase a `rasgo_desafeccion` (F8B).
 - **Encargo adicional:** completar los rasgos y variables de docs/02 §3.4 que quedaron como huecos (D-065) con las fuentes pertinentes, y después pasar a F8B. Se registra en D-066.
+
+## D-066 · Huecos de F8A completados: lengua, medios, identidad, tecnología, ambiente y ESS (2026-10-21)
+
+- **Fecha:** 2026-10-21
+- **Fase:** F8A (encargo de la persona responsable al aprobar F8A)
+- **Estado:** aprobada por el agente; la excepción de omega de `rasgo_tradicion_apertura`, aprobada por la persona responsable.
+- **Fuentes nuevas** (todas anteriores al corte):
+  - **INE, ECEPOV 2021:** microdatos públicos, 424.493 personas.
+  - **CIS:**
+    - 3495, Inteligencia artificial (febrero de 2025);
+    - 3511, Audiencias de medios II (mayo de 2025);
+    - 3402, Preelectoral municipales y autonómicas 2023;
+    - postelectorales de Galicia (3446), País Vasco (3459) y Cataluña (3464) de 2024;
+    - estudios de campaña 3442, 3451 y 3456.
+  - **ESS ronda 11, edición 4.2:** descargada a mano por la persona responsable.
+- **Incidente con la ESS:**
+  - El fichero de la ESS se subió al repositorio, que es **público**, en el commit `4ba7b79`. Eso incumplía la regla 8 y las condiciones de la ESS, que prohíben redistribuir los datos.
+  - Con la aprobación de la persona responsable, se reescribió el historial de la rama hasta `4d37770` (push forzado) y el fichero queda solo en local, en `data/raw/ess/ESS11/`.
+  - GitHub puede conservar una copia en caché del commit huérfano hasta que su soporte la purgue.
+- **Corrección de la armonización del CIS:**
+  - En muchos estudios la nacionalidad no está en `NACIONALIDAD`, sino en la `P0` de filtro («Nacionalidad de la persona entrevistada»). Ahora se lee de ahí.
+  - Los barómetros siguen siendo 100 % españoles, como se suponía en D-063 y D-064.
+  - El estudio de Temores (3554) tenía 317 extranjeros que se trataban como españoles; ya se excluyen de sus rasgos.
+- **Estudios nacionales:**
+  - Para los modelos nacionales se excluyen los preelectorales y postelectorales, aunque cubran varias comunidades.
+  - El 3402 entrevista a 12 comunidades con muestras desproporcionadas; se excluye por la misma razón.
+- **`lengua_habitual` (ECEPOV 2021):**
+  - La lengua más usada **en familia**. Castellano y cooficial empatadas → `bilingue`. Las lenguas se clasifican por su nombre en el fichero.
+  - Modelo multinomial con sexo, edad, estudios, actividad, provincia × edad, tamaño de municipio, nacionalidad y país de nacimiento (agrupado con la tabla del Censo 2021: los códigos INE de país coinciden).
+  - **Validación:** la ECEPOV es de 2021, y la población adulta nacida fuera de España pasó del 16 % al 21 %. G8A.4 compara con la ECEPOV reponderada a la composición sintética por comunidad × edad × país de nacimiento.
+    - Sin reponderar: 78,7 % de celdas en el IC.
+    - Reponderada: 91,4 % de celdas en el IC y TVD nacional 0,004.
+  - La ECEPOV cubre a todas las nacionalidades: solo los residentes en colectivos son `extrapolada`.
+- **`medio_informacion_principal` (CIS 3511):**
+  - No se pregunta un medio «principal». Se toma el de mayor frecuencia de uso para informarse (de 5, a diario, a 2, de vez en cuando; mencionado sin frecuencia = 1).
+  - Los empates reparten el peso del encuestado.
+  - Se añade la categoría `ninguno`.
+- **`identidad_territorial` (Linz-Moreno):**
+  - Se recodifica por patrón de la etiqueta, independiente del gentilicio.
+  - Hay un modelo por comunidad con los encuestados de esa comunidad.
+  - Disponible en Andalucía, Aragón, Castilla y León, Cataluña, Galicia y País Vasco, más las que aporte el estudio nacional 3409 (Identidades culturales, nacionales y europeas, 2023) si se completa su descarga.
+  - En las comunidades sin datos la variable queda vacía; no se inventa.
+- **Rasgos nuevos:**
+  - **`rasgo_confianza_tecnologia`** (3495, P.3, asociación 1-10 de los avances tecnológicos con progreso, riqueza, eficacia y bienestar): CFI 0,999, RMSEA 0,020, omega 0,76.
+    - La media de «Progreso» reproduce la publicada por el CIS: 7,68 frente a 7,67.
+    - La batería de comodidad con la IA del Barómetro Sanitario no ajusta (RMSEA 0,18-0,20).
+    - La de beneficios de la IA (3495, P.14) solo la contesta quien conoce la IA.
+  - **`rasgo_preocupacion_ambiental`** (3489): preocupación por el cambio climático, importancia de las medidas, más recursos públicos y atribución de la DANA al cambio climático. CFI 0,991, RMSEA 0,059, omega 0,71.
+  - **`rasgo_confianza_interpersonal`** (ESS: ppltrst, pplfair, pplhlp): omega 0,70. El factorial conjunto de la ESS da CFI 0,960 y RMSEA 0,045.
+  - **`rasgo_tradicion_apertura`** (ESS): polo de conservación de Schwartz (seguridad, conformidad y tradición, 6 ítems). CFI 0,943, RMSEA 0,069, **omega 0,68**.
+    - La versión bipolar centrada en la media individual ajusta peor (CFI 0,81).
+    - **Excepción aprobada** por la persona responsable (`thresholds.yaml`, `V-LATENTE.excepciones_omega`); el umbral general no cambia.
+  - **`estilo_aquiescencia`** (ESS): media de los 21 ítems de valores de Schwartz (MRAT), con al menos 16 respondidos. Es un estilo de respuesta, como `estilo_ns_nc`, y no pasa por el análisis factorial.
+  - Los rasgos de la ESS se modelan con sexo, edad, estudios, actividad, comunidad y nacionalidad. La ESS no trae el tamaño de municipio en clases comparables. Los extranjeros son `modelada`, porque la ESS los entrevista.

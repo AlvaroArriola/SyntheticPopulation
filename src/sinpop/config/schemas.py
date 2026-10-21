@@ -445,6 +445,8 @@ class VLatente(_Th):
     cfi_min: float
     rmsea_max: float
     omega_min: float
+    # rasgo → omega mínima aceptada por la persona responsable (excepción documentada)
+    excepciones_omega: dict[str, float] = {}
 
 
 class VDiversidadRasgos(_Th):

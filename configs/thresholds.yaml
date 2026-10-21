@@ -134,6 +134,11 @@ V-LATENTE:
   cfi_min: 0.90
   rmsea_max: 0.08
   omega_min: 0.70
+  # Excepción aprobada por la persona responsable el 2026-10-21 (D-066): las escalas de valores
+  # de Schwartz son anchas por diseño; el polo de conservación da omega 0,68. El umbral general
+  # no cambia.
+  excepciones_omega:
+    rasgo_tradicion_apertura: 0.68
 V-DIVERSIDAD-RASGOS:
   ratio_varianza: [0.8, 1.2]
 V-POL-RECUERDO:

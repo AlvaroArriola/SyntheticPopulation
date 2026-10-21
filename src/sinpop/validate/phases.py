@@ -1204,8 +1204,11 @@ def _g8a_1() -> Check:
     malos = [
         r["rasgo"]
         for r in rs
-        if r["cfi"] < c.cfi_min or r["rmsea"] > c.rmsea_max or r["omega"] < c.omega_min
+        if r["cfi"] < c.cfi_min
+        or r["rmsea"] > c.rmsea_max
+        or r["omega"] < c.excepciones_omega.get(r["rasgo"], c.omega_min) - 1e-3
     ]
+    excepciones = [r["rasgo"] for r in rs if r["rasgo"] in c.excepciones_omega]
     return Check(
         "G8A.1",
         desc,
@@ -1214,7 +1217,8 @@ def _g8a_1() -> Check:
             f"{r['rasgo']}: CFI {r['cfi']:.3f}, RMSEA {r['rmsea']:.3f}, omega {r['omega']:.2f}"
             for r in rs
         )
-        + f"; fuera: {malos or 0}",
+        + f"; fuera: {malos or 0}"
+        + (f"; excepciones aprobadas (omega): {excepciones}" if excepciones else ""),
         um,
     )
 
