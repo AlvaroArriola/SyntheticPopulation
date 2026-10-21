@@ -1,0 +1,119 @@
+{
+ "fecha": "2026-10-21",
+ "version_codigo": "git:0b05e33-dirty",
+ "run_id": "2026-01-01_ES_1000000_s1",
+ "g8c1": {
+  "origenes": 11,
+  "predicciones": 870,
+  "error_modelo_pp": 1.9001244639088353,
+  "error_persistencia_pp": 2.289824440853582,
+  "por_indicador": [
+   {
+    "indicador": "cercania_partido",
+    "error_modelo_pp": 0.71931891562224,
+    "error_persistencia_pp": 1.0681733285077448
+   },
+   {
+    "indicador": "economia_espana",
+    "error_modelo_pp": 1.8754328155880124,
+    "error_persistencia_pp": 2.379570512539295
+   },
+   {
+    "indicador": "economia_personal",
+    "error_modelo_pp": 1.090007121821131,
+    "error_persistencia_pp": 1.8801626683986632
+   },
+   {
+    "indicador": "ideologia_bloque",
+    "error_modelo_pp": 0.9755154770854981,
+    "error_persistencia_pp": 1.531198699371081
+   },
+   {
+    "indicador": "problema_economia",
+    "error_modelo_pp": 2.503938149651883,
+    "error_persistencia_pp": 2.688148841953351
+   },
+   {
+    "indicador": "problema_inmigracion",
+    "error_modelo_pp": 3.8632573750142063,
+    "error_persistencia_pp": 4.084468677783017
+   },
+   {
+    "indicador": "problema_paro",
+    "error_modelo_pp": 2.1762797624969314,
+    "error_persistencia_pp": 2.1973781886997354
+   },
+   {
+    "indicador": "problema_politica",
+    "error_modelo_pp": 4.587830249324585,
+    "error_persistencia_pp": 5.083921092261015
+   },
+   {
+    "indicador": "problema_vivienda",
+    "error_modelo_pp": 4.61137493066668,
+    "error_persistencia_pp": 4.438892737457546
+   }
+  ]
+ },
+ "g8c2": {
+  "umbral_pp": 2.0,
+  "comparaciones": 1170,
+  "dif_media_pp": 1.5740578796908102,
+  "por_indicador": [
+   {
+    "indicador": "cercania_partido",
+    "dif_pp": 1.4913351257888812,
+    "max": 6.791171446252175
+   },
+   {
+    "indicador": "economia_espana",
+    "dif_pp": 1.8245989453395823,
+    "max": 9.225448078475129
+   },
+   {
+    "indicador": "economia_personal",
+    "dif_pp": 1.488268835371982,
+    "max": 9.654800448230993
+   },
+   {
+    "indicador": "ideologia_bloque",
+    "dif_pp": 2.2999887141970086,
+    "max": 10.800550412000865
+   },
+   {
+    "indicador": "problema_economia",
+    "dif_pp": 0.7028504099585619,
+    "max": 1.684265356764647
+   },
+   {
+    "indicador": "problema_inmigracion",
+    "dif_pp": 1.4815384166537733,
+    "max": 4.817880935061069
+   },
+   {
+    "indicador": "problema_paro",
+    "dif_pp": 1.204203734326377,
+    "max": 3.7951651885270943
+   },
+   {
+    "indicador": "problema_politica",
+    "dif_pp": 1.7340365902287727,
+    "max": 6.5292338226693944
+   },
+   {
+    "indicador": "problema_vivienda",
+    "dif_pp": 1.2971855512219994,
+    "max": 7.031056439965
+   }
+  ]
+ },
+ "g8c3": {
+  "eventos": 16,
+  "con_efecto": 16,
+  "sin_efecto": [],
+  "sin_fuente": [],
+  "filas_sin_intervalo": 0,
+  "filas": 3750,
+  "ok": true
+ }
+}

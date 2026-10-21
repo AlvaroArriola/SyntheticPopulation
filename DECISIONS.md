@@ -1467,3 +1467,34 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Estado:** aprobada
 - **Fecha:** 2026-10-21
 - **Decisión:** la persona responsable acepta el informe `reports/fase_08b.md` y todas las decisiones de D-067: las excepciones de G8B.2 (Cantabria ≤ 2.000 habitantes y Navarra 10.001-50.000), la reponderación del 3420 en G8B.3, el ajuste IPF en G8B.5, el criterio contrafactual de G8B.7, los residuos correlacionados y el contraste conjunto de la implicación. Se inicia F8C.
+
+## D-068 · Dimensión temporal (F8C): indicadores, modelo de periodo, trayectorias y banco de eventos (2026-10-21)
+
+- **Fecha:** 2026-10-21
+- **Fase:** F8C (sin revisión humana obligatoria en `docs/04`)
+- **Estado:** decisión del agente.
+- **Indicadores** (`configs/temporal.yaml`), mensuales, de enero de 2023 a junio de 2026, recodificados por etiqueta:
+  - situación económica de España y personal (buena, regular, mala, NS/NC);
+  - autoubicación en bloques (D-067);
+  - partido más cercano por familia (D-067; 9 siglas de estudios autonómicos y de campaña añadidas a `partidos.yaml` con la familia de su candidatura);
+  - mención de vivienda, inmigración, paro, economía o política entre los tres principales problemas de España.
+- **Datos:**
+  - Estudios nacionales del CIS más los barómetros con módulo postelectoral (3410 y 3420), que son la muestra nacional de su mes. Así quedan 39 meses con barómetro; agosto no tiene.
+  - Universo: españoles de 18 años o más.
+- **Modelo** (`temporal/modelo.py`):
+  - **Perfil estático:** multinomial con los predictores de F8A y el grupo de voto de 2023 (desconocido antes de agosto de 2023).
+  - **Periodo:** un **nivel local** (paseo aleatorio con ruido) sobre log(observada / predicha), estimado con el filtro de Kalman. Hay un nivel nacional y uno por grupo de edad, comunidad y voto (por pasadas sucesivas). Las varianzas del paseo y del ruido extra de cada oleada se eligen por máxima verosimilitud.
+  - **Alternativa descartada:** una primera versión con escalones mensuales en la regresión no suavizaba: reproducía cada mes y predecía como la persistencia.
+- **Trayectorias** (`trajectories.parquet`, 840.249 personas × 42 meses):
+  - Cada persona tiene un cuantil fijo por indicador, así que conserva su posición en su grupo y solo cambia cuando cambia la evolución del grupo.
+  - Se marcan `modelada` y, fuera del universo del CIS, `extrapolada`.
+  - No se versionan (pesan 250 MB).
+- **Banco de eventos** (`configs/eventos.yaml`, `data/processed/temporal/banco_efectos_eventos.parquet`):
+  - 16 eventos con fecha y fuente oficial o primaria: elecciones, convocatoria de las generales, investidura, Ley de amnistía, DANA, aranceles de EE. UU. y apagón.
+  - Efecto = cambio observado entre los dos barómetros anteriores y los dos posteriores, por grupo, con IC 95 %. Es descriptivo, no causal.
+  - Los eventos e001 y e002 (28 y 30 de mayo de 2023) comparten ventanas y no se pueden separar.
+  - Los incendios de agosto de 2025 quedan fuera: no tienen fecha única y en agosto no hay barómetro.
+- **Validación:**
+  - **G8C.1** (*backtest* con 11 orígenes, de t + 1 a t + 3, solo información hasta t): error medio del modelo 1,90 puntos frente a 2,29 de la persistencia. Gana en 8 de los 9 indicadores; en vivienda, con tendencia sostenida, pierde (4,61 frente a 4,44).
+  - **G8C.2:** diferencia media de 1,57 puntos entre las series de la población y las del CIS. La mayor parte es **composición**: la población está calibrada al voto oficial (D-067), mientras que la muestra del CIS sobrerrepresenta el recuerdo del PSOE (30,9 % frente al 22,1 % oficial) e infrarrepresenta la abstención (15,8 % frente al 29,6 %). Por eso la población tiene menos «izquierda» (36 % frente a 43-47 %) y algo menos de optimismo económico. Octubre de 2025 es un mes atípico del CIS (3,6 puntos de media) que el nivel suavizado no sigue.
+  - **G8C.3:** 16/16 eventos con efecto e intervalo.
