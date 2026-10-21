@@ -201,7 +201,13 @@ def leer(estudio: str):
 
 
 def _etiquetas(meta, var: str) -> dict[float, str]:
-    return meta.variable_value_labels.get(var, {})
+    """Etiquetas de valor numéricas (se descartan las de claves no numéricas o NaN, que
+    aparecen en algunas variables de texto de los estudios temáticos)."""
+    out = {}
+    for k, v in meta.variable_value_labels.get(var, {}).items():
+        if isinstance(k, int | float) and k == k:
+            out[k] = v
+    return out
 
 
 def _buscar(mapa: dict[str, str], et: str) -> str | None:
@@ -268,9 +274,25 @@ def _estudios(df: pl.DataFrame, meta, estudio: str) -> pl.Series:
     return s.fill_null("NC").alias("estudios_3")
 
 
+PESOS = ("PESO", "PESO1")  # PESO1: «Ponderación con ajuste por Estudios» de algunos estudios
+
+
+def _peso(df: pl.DataFrame) -> pl.Series:
+    for v in PESOS:
+        if v in df.columns:
+            return df[v].cast(pl.Float64)
+    return pl.Series([1.0] * df.height)  # muestra autoponderada (sin variable de peso)
+
+
+PERFIL = ("SEXO", "EDAD", "CCAA", "SITLAB", "ESTUDIOS")
+
+
 def personas(estudio: str) -> pl.DataFrame:
     """Perfil armonizado, peso, fecha y variables de valores de un estudio."""
     df, meta = leer(estudio)
+    faltan = [v for v in PERFIL if v not in df.columns]
+    if faltan:
+        raise KeyError(", ".join(faltan))
     cols = [
         pl.lit(estudio).alias("estudio"),
         pl.lit(fechas().get(estudio)).alias("fecha"),
@@ -285,9 +307,7 @@ def personas(estudio: str) -> pl.DataFrame:
         "tamano_municipio_cis": _recodificar(df, meta, "TAMUNI", TAMUNI, estudio),
         "estudios_3": _estudios(df, meta, estudio),
         "actividad_3": _recodificar(df, meta, "SITLAB", SITLAB, estudio),
-        "peso": df["PESO"].cast(pl.Float64)
-        if "PESO" in df.columns
-        else pl.Series([1.0] * df.height),
+        "peso": _peso(df),
     }
     if "NACIONALIDAD" in df.columns:
         columnas["nacionalidad_esp_ext"] = _recodificar(
@@ -346,6 +366,9 @@ def armonizar() -> dict:
             p = personas(e)
         except FileNotFoundError:
             info[e] = "sin microdatos (descarga pendiente)"
+            continue
+        except KeyError as exc:  # p. ej. el Índice de Confianza del Consumidor (D-065)
+            info[e] = f"sin el perfil estándar del CIS ({exc}): no se usa"
             continue
         lg, bq = largo(e)
         pers.append(p)

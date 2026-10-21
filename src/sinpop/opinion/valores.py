@@ -69,6 +69,22 @@ def _edad_grupo(edad: pl.Expr) -> pl.Expr:
     return e.alias("edad_grupo")
 
 
+def nacional() -> pl.Expr:
+    """Estudios de ámbito nacional: los preelectorales y postelectorales autonómicos entrevistan
+    a una sola comunidad y, mezclados, la sobrerrepresentarían (D-065)."""
+    return pl.col("ccaa").n_unique().over("estudio") > 1
+
+
+def estudios_nacionales() -> list[str]:
+    return (
+        pl.read_parquet(INTERIM_DIR / "cis_personas.parquet", columns=["estudio", "ccaa"])
+        .group_by("estudio")
+        .agg(pl.col("ccaa").n_unique())
+        .filter(pl.col("ccaa") > 1)["estudio"]
+        .to_list()
+    )
+
+
 def datos(variable: str) -> pl.DataFrame:
     """Encuestados del CIS con la variable, en la ventana anterior al corte, con el peso
     normalizado para que cada estudio cuente por su tamaño."""
@@ -86,6 +102,7 @@ def datos(variable: str) -> pl.DataFrame:
             pl.col("nacionalidad_esp_ext").is_null()
             | (pl.col("nacionalidad_esp_ext") == "espanola")
         )
+        & nacional()
     )
     return p.with_columns(
         _edad_grupo(pl.col("edad")),

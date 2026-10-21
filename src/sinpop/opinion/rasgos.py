@@ -21,7 +21,14 @@ import polars as pl
 from sinpop import INTERIM_DIR
 from sinpop.opinion import latentes as L
 from sinpop.opinion.cis import CORTE
-from sinpop.opinion.valores import COLUMNAS, VENTANA_MESES, _edad_grupo, columna, perfil_sintetico
+from sinpop.opinion.valores import (
+    COLUMNAS,
+    VENTANA_MESES,
+    _edad_grupo,
+    columna,
+    nacional,
+    perfil_sintetico,
+)
 from sinpop.repro import make_rng
 
 NS_NC_ETIQUETAS = [
@@ -72,6 +79,7 @@ def datos_rasgo(rasgo: str = "estilo_ns_nc") -> pl.DataFrame:
             pl.col("nacionalidad_esp_ext").is_null()
             | (pl.col("nacionalidad_esp_ext") == "espanola")
         )
+        & nacional()
         & ~pl.col("estudios_3").is_in(["NC", "NS"])
         & ~pl.col("actividad_3").is_in(["NC", "NS"])
     )

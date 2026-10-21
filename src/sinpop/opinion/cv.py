@@ -37,12 +37,14 @@ EXCLUIR = {  # perfil, pesos y control de calidad: no son preguntas de opinión
 
 
 # Preguntas que no son de opinión: técnicas de la entrevista, perfil socioeconómico y las
-# políticas (voto, líderes, partidos, ideología), que son de la capa política (F8B, D-005)
+# políticas (voto, líderes, partidos, ideología), que son de la capa política (F8B, D-005), y
+# las observaciones del entrevistador sobre la entrevista (V2_*, V3)
 NO_OPINION = (
     r"^(IA_|TIPO_TEL|SINCERIDAD|ESCUELA|INGRES|ESTUDIOS|HOGAR|NUMPERS|MOVIL|TELEF|"
     r"LIDER|VOTO|RECUERDO|RECUVOTO|INTENCION|VOTOSIM|ESCIDEOL|PARTIDO|CERCANIA|SIMPATIA|"
     r"CONFIANZAPTE|CONFIANZAOPOSIC|PROBVOTO|VALORA|PREFPTE|PREFERENCIA|AFILIA|PARTICIPA|"
-    r"CONOMINIS|VALMINIS|CONOLIDER|FIDEVOTO|MVOTO|CAPITAL|CNO11|ENTREV|ESTUDIO$|CUES|PROV|MUN)"
+    r"CONOMINIS|VALMINIS|CONOLIDER|FIDEVOTO|MVOTO|CAPITAL|CNO11|ENTREV|ESTUDIO$|CUES|PROV|MUN|"
+    r"V2_|V3$)"
 )
 
 
@@ -51,6 +53,11 @@ def preguntas_repetidas() -> pl.DataFrame:
     cambian con el tiempo (por ejemplo, los problemas codificados) y cada lista es una
     pregunta distinta en el banco."""
     banco = pl.read_parquet(INTERIM_DIR / "cis_preguntas.parquet")
+    # solo estudios de ámbito nacional (los autonómicos entrevistan a una comunidad, D-065)
+    nacionales = V.estudios_nacionales()
+    banco = banco.with_columns(
+        pl.col("estudios").list.eval(pl.element().filter(pl.element().is_in(nacionales)))
+    )
     return (
         banco.filter(
             (pl.col("estudios").list.len() >= MIN_ESTUDIOS)

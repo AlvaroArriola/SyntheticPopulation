@@ -163,3 +163,41 @@ def datos(rasgo: str) -> pl.DataFrame:
     return d.filter(
         ~pl.col("estudios_3").is_in(["NC", "NS"]) & ~pl.col("actividad_3").is_in(["NC", "NS"])
     ).with_columns(_edad_grupo(pl.col("edad")))
+
+
+def ajuste_conjunto(estudio: str) -> dict | None:
+    """Factorial de varios factores con todos los rasgos medidos en un mismo estudio: contrasta
+    el ajuste de los rasgos con pocos ítems (un factor con tres ítems tiene 0 grados de
+    libertad) y que los rasgos son distintos (correlación entre factores)."""
+    nombres = [
+        r for r in rasgos() if [str(e) for e in config()["rasgos"][r]["estudios"]] == [estudio]
+    ]
+    if len(nombres) < 2:
+        return None
+    bases = [_base(r) for r in nombres]
+    d = bases[0]
+    for b in bases[1:]:
+        d = d.join(
+            b.select(
+                "estudio", "encuestado", *[c for c in sorted(b.columns) if c not in d.columns]
+            ),
+            on=["estudio", "encuestado"],
+        )
+    cols, asignacion = [], []
+    for k, r in enumerate(nombres):
+        for c in sorted(config()["rasgos"][r]["items"]):
+            cols.append(c)
+            asignacion.append(k)
+    cc = d.drop_nulls(cols)
+    S = _corr_ponderada(cc.select(cols).to_numpy(), cc["peso"].to_numpy())
+    a = F.ajustar(S, cc.height, np.array(asignacion))
+    return {
+        "estudio": estudio,
+        "rasgos": nombres,
+        "n_completos": cc.height,
+        "cfi": a.cfi,
+        "rmsea": a.rmsea,
+        "chi2": a.chi2,
+        "gl": a.gl,
+        "correlaciones_factores": a.phi.round(3).tolist(),
+    }

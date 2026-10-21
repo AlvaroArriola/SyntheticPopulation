@@ -56,6 +56,7 @@ def preguntas(test: str) -> dict[str, list[str]]:
     banco = pl.read_parquet(INTERIM_DIR / "cis_preguntas.parquet")
     f = {e: dt.date.fromisoformat(x) for e, x in fechas().items()}
     ft = f[test]
+    nacionales = set(V.estudios_nacionales())
     out = {}
     for var, estudios in (
         banco.filter(
@@ -67,7 +68,9 @@ def preguntas(test: str) -> dict[str, list[str]]:
         .select("variable", "estudios")
         .iter_rows()
     ):
-        previos = [e for e in estudios if e in f and 0 < (ft - f[e]).days <= 366]
+        previos = [
+            e for e in estudios if e in f and e in nacionales and 0 < (ft - f[e]).days <= 366
+        ]
         if previos:
             out[var] = sorted(previos)
     return dict(sorted(out.items()))

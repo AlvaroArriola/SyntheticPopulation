@@ -6,6 +6,39 @@
 # `numerica`: escalas 0-10 o 1-10, con el número al principio de la etiqueta.
 # Un ítem es `VAR: escala` o `VAR: {escala: ..., invertir: true}`. Mayor puntuación = más rasgo.
 
-escalas: {}
+escalas:
+  temor_4: {"Mucho temor": 4, "Bastante temor": 3, "Poco temor": 2, "Ningún temor": 1}
 
-rasgos: {}
+rasgos:
+  # Estudio 3535 (Encuesta sobre tendencias sociales V, noviembre de 2025), P.4: confianza de
+  # 1 (mínima) a 10 (máxima) en nueve organizaciones políticas e instituciones.
+  # Solo las instituciones no partidistas: partidos, sindicatos, Gobierno y Parlamento forman un
+  # segundo factor (confianza partidista, CFI 0,67 con un solo factor), que es la desafección de
+  # la capa política (F8B, `rasgo_desafeccion`) (D-065).
+  rasgo_confianza_institucional:
+    estudios: ["3535"]
+    items:
+      CONFIANZA_5: numerica  # medios de comunicación
+      CONFIANZA_6: numerica  # Justicia
+      CONFIANZA_7: numerica  # Constitución de 1978
+      CONFIANZA_8: numerica  # Tribunal Constitucional
+      CONFIANZA_9: numerica  # organizaciones empresariales
+  # Estudio 3554 (Estudio sobre temores en la sociedad actual, marzo de 2026), P.2 y P.2A:
+  # miedo de 0 (ninguno) a 10 (máximo). Indicador de la presión del coste de vida (D-065).
+  rasgo_sensibilidad_precio:
+    estudios: ["3554"]
+    items:
+      P2_4: numerica  # que su trabajo o pensión no le permitan vivir con dignidad
+      P2_10: numerica  # perder su trabajo o no encontrar un trabajo estable
+      P2_11: numerica  # no poder pagar su vivienda, alquiler o hipoteca
+      P2A_3: numerica  # una crisis económica
+  # Estudio 3554: temor a la soledad y a quedarse sin apoyo emocional (D-065). Con tres ítems el
+  # modelo propio está exactamente identificado (0 grados de libertad): su ajuste se contrasta en el
+  # factorial conjunto con `rasgo_sensibilidad_precio`, del mismo estudio.
+  rasgo_aislamiento_social:
+    estudios: ["3554"]
+    items:
+      P2_5: numerica  # temor a la soledad (0-10)
+      P2_7: numerica  # no tener a una persona a la que amar (0-10)
+      P16: temor_4  # temor a quedarse solo/a o sin apoyo emocional
+  # P17 (tiene con quién hablar de sus preocupaciones) no carga en el factor (0,04): se descarta.

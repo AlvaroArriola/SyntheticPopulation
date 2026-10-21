@@ -144,6 +144,29 @@ def v_diversidad_rasgos(run_id: str, s: pl.DataFrame) -> pl.DataFrame:
     return pl.concat(filas)
 
 
+def v_latente() -> dict:
+    """G8A.1: ajuste de cada rasgo. Un factor con tres ítems tiene 0 grados de libertad y su
+    CFI y RMSEA no contrastan nada: para esos rasgos se usan los del factorial conjunto de
+    todos los rasgos de su estudio (`latentes.ajuste_conjunto`)."""
+    conjuntos = {}
+    filas = []
+    for r in L.rasgos():
+        _, i = L.ajuste(r)
+        i["ajuste_de"] = "propio"
+        if i["gl"] == 0:
+            e = i["estudios"][0]
+            if e not in conjuntos:
+                conjuntos[e] = L.ajuste_conjunto(e)
+            c = conjuntos[e]
+            if c is not None:
+                i |= {"cfi": c["cfi"], "rmsea": c["rmsea"], "ajuste_de": f"conjunto {e}"}
+        filas.append(i)
+    for e in {x["estudios"][0] for x in filas}:
+        if e not in conjuntos:
+            conjuntos[e] = L.ajuste_conjunto(e)
+    return {"rasgos": filas, "conjuntos": [c for c in conjuntos.values() if c]}
+
+
 def ejecutar(run_id: str = NACIONAL) -> dict:
     DETALLE.mkdir(parents=True, exist_ok=True)
     if not (POPULATIONS_DIR / run_id / "opinion.parquet").exists():
@@ -177,7 +200,7 @@ def ejecutar(run_id: str = NACIONAL) -> dict:
         "ratio_min": float(dv["ratio"].min()) if dv.height else None,
         "ratio_max": float(dv["ratio"].max()) if dv.height else None,
     }
-    res["g8a1"] = {"rasgos": [L.ajuste(r)[1] for r in L.rasgos()]}
+    res["g8a1"] = v_latente()
     cv = CV.v_opinion_cv()
     pl.DataFrame(cv.pop("detalle")).write_csv(DETALLE / "v_opinion_cv.csv")
     res["g8a2"] = cv
