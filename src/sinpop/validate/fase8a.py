@@ -59,7 +59,13 @@ def referencias() -> dict[str, tuple]:
     return out
 
 
-REPONDERAR = {"lengua_habitual": ["ccaa", "edad_4", "pais_nacimiento_grupo"]}
+REPONDERAR = {
+    "lengua_habitual": ["ccaa", "edad_4", "pais_nacimiento_grupo"],
+    # la identidad junta postelectorales autonómicos (miles de entrevistas en su comunidad) con
+    # el estudio nacional 3409: sin reponderar, la cifra «nacional» del CIS sobrerrepresenta
+    # Andalucía, Cataluña, Galicia, País Vasco, Aragón y Castilla y León (D-066)
+    "identidad_territorial": ["ccaa", "edad_4"],
+}
 
 
 def _reponderar(e: pl.DataFrame, s: pl.DataFrame, celdas: list[str]) -> pl.DataFrame:
