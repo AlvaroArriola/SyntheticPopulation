@@ -35,7 +35,7 @@ python -c "from sinpop.temporal import trayectorias as T, eventos as E; T.constr
 | G8C.2 V-TEMPORAL-SERIES | ✅ | Diferencia absoluta media 1,57 puntos (umbral 2) en 1.170 mes × categoría |
 | G8C.3 Banco de eventos | ✅ | 16/16 eventos con fecha, fuente y efecto con IC 95 % |
 
-**Reproducibilidad:** ver `trajectories_metadata.json` (sha256). Dos construcciones con la misma semilla se comparan en la sección final.
+**Reproducibilidad:** dos construcciones seguidas de `trajectories.parquet` con la misma semilla dan el mismo SHA-256 (`eaf75318…`).
 
 ## Resultados por indicador
 
