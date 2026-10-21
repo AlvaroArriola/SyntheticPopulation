@@ -1276,3 +1276,38 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - Se informa la TVD por comunidad frente a tres referencias: B0 (distribución nacional previa), B1 (distribución directa previa de la comunidad) y el ruido muestral de la oleada de contraste.
   - Con una sola oleada de ajuste y la interacción sin regularizar, el modelo quedaba peor que B0 (0,085 frente a 0,078). Con la regularización por validación cruzada y los barómetros cuando comparten pregunta, mejora a B0 y a B1.
 - **Pesos:** se usa `PESO` (ponderación con ajuste por estudios), normalizado a media 1 por estudio. `PESOCCAA` es la ponderación autonómica sin el ajuste por estudios. Dentro de una comunidad, `PESO` corrige además la composición por estudios.
+
+## D-065 · Rasgos latentes de F8A y huecos de la lista de rasgos (2026-10-21)
+
+- **Fecha:** 2026-10-21
+- **Fase:** F8A
+- **Estado:** aprobada por el agente (decisiones delegadas; G8A.7 queda para revisión humana).
+- **Estudios temáticos descargados** (todos anteriores al corte):
+  - 3535, Tendencias sociales V (noviembre de 2025).
+  - 3534, Miedos e incertidumbres (noviembre de 2025).
+  - 3554, Temores en la sociedad actual (marzo de 2026).
+  - 3563, Desinformación y humor (mayo de 2026).
+  - Postelectorales autonómicos: 3541 (Extremadura), 3548 (Aragón), 3550 (Castilla y León) y 3566 (Andalucía).
+  - 3569, Índice de Confianza del Consumidor de junio de 2026.
+- **Estudios descartados o restringidos:**
+  - **Índice de Confianza del Consumidor (3569):** no se usa. No lleva el perfil estándar del CIS (sexo y edad están en P19 y P20, no en SEXO y EDAD), y sus ítems son expectativas económicas, no actitudes. Queda descargado para una armonización propia si hace falta.
+  - **Postelectorales autonómicos:** entrevistan a una sola comunidad. No entran en los modelos nacionales de valores y rasgos ni en V-OPINION-CV, porque sobrerrepresentarían su comunidad. Se usarán en F8B (recuerdo de voto autonómico, eje territorial).
+  - **Peso del estudio 3550:** no trae `PESO` sino `PESO1` («Ponderación con ajuste por Estudios»); se usa ese.
+- **Rasgos construidos** (`configs/rasgos.yaml`). Factorial confirmatorio de un factor por rasgo, máxima verosimilitud sobre la correlación de Pearson ponderada:
+  - **`rasgo_confianza_institucional`** (3535, P.4, escala 1-10):
+    - Ítems: medios de comunicación, Justicia, Constitución, Tribunal Constitucional y organizaciones empresariales. CFI 0,995, RMSEA 0,038, omega 0,80.
+    - Con los nueve ítems el modelo de un factor no ajusta (CFI 0,67): partidos, sindicatos, Gobierno y Parlamento forman un factor partidista, que es la desafección de la capa política (F8B).
+  - **`rasgo_sensibilidad_precio`** (3554, P.2 y P.2A, miedo de 0 a 10):
+    - Ítems: que el trabajo o la pensión no permitan vivir con dignidad, perder el trabajo, no poder pagar la vivienda y una crisis económica. CFI 0,997, RMSEA 0,048, omega 0,82.
+    - Es un indicador de la presión del coste de vida; no hay en los estudios disponibles una batería del peso del precio en las decisiones de compra.
+  - **`rasgo_aislamiento_social`** (3554):
+    - Ítems: temor a la soledad, a no tener a quien amar y a quedarse sin apoyo emocional. Omega 0,74.
+    - El ítem «tiene con quién hablar de sus preocupaciones» no carga en el factor (0,04) y se descarta. Es un rasgo de **temor** a la soledad, no una medida de la red social real.
+    - Con tres ítems el modelo propio tiene 0 grados de libertad. Su ajuste se contrasta en el factorial conjunto con la sensibilidad al precio: 13 grados de libertad, CFI 0,987, RMSEA 0,049, correlación entre factores 0,58 (rasgos distintos).
+- **Huecos (rasgos de la lista de docs/02 §3.4 que no se construyen):**
+  - **`rasgo_confianza_tecnologia` y `rasgo_preocupacion_ambiental`:** en los estudios disponibles solo hay ítems sueltos (miedo al control por las nuevas tecnologías, miedo al deterioro ambiental) o expectativas de desarrollo tecnológico, no actitudes. Propuesta: estudios temáticos del CIS sobre inteligencia artificial y sobre medio ambiente anteriores al corte, cuya ficha no se ha podido localizar porque la paginación del catálogo cae en la comprobación anti-bots; o el módulo de cambio climático de la ESS.
+  - **`rasgo_confianza_interpersonal` y `rasgo_tradicion_apertura` (ESS):** la ESS requiere registro. Está anotada en `data/raw/MANUAL_DOWNLOADS.md` (ronda 11) y pendiente de descarga manual.
+  - **`estilo_aquiescencia`:** necesita baterías equilibradas de acuerdo y desacuerdo con ítems invertidos, que no hay en estos estudios.
+  - **`identidad_territorial` y `lengua_habitual`:** los barómetros nacionales de 2023-2026 no preguntan la escala Linz-Moreno ni la lengua, y los postelectorales autonómicos solo cubren cuatro comunidades. Propuesta: estudios autonómicos o de los centros autonómicos (CEO, Euskobarómetro, etc.) para las comunidades con lengua cooficial.
+  - **`medio_informacion_principal`:** no está en los barómetros descargados.
+  - Ningún hueco se rellena con suposiciones (CLAUDE.md, regla 3).
