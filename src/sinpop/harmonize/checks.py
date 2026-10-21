@@ -39,8 +39,13 @@ def salidas() -> list[str]:
 def g21_dominios() -> dict[str, dict[str, list[str]]]:
     """{fichero: {columna: valores fuera de dominio}} (vacío si todo está bien)."""
     out = {}
+    v = variables().variables
     for nombre in salidas():
-        df = pl.read_parquet(INTERIM_DIR / f"{nombre}.parquet")
+        # solo las columnas con dominio: cis_largo tiene decenas de millones de filas
+        cols = [c for c in pl.read_parquet_schema(INTERIM_DIR / f"{nombre}.parquet") if c in v]
+        if not cols:
+            continue
+        df = pl.read_parquet(INTERIM_DIR / f"{nombre}.parquet", columns=cols)
         malos = comprobar_dominio(df, df.columns)
         if malos:
             out[nombre] = malos
@@ -52,6 +57,21 @@ def g21_dominios() -> dict[str, dict[str, list[str]]]:
 # aquí, es un error de la armonización.
 _PEQUENO = ["hasta_2000", "de_2001_a_10000"]
 NULOS_DOCUMENTADOS: dict[tuple[str, str], tuple[pl.Expr, str]] = {
+    # CIS (F8A, D-063): una pregunta que el estudio no hace queda vacía en todo el estudio
+    ("cis_personas", "nacionalidad_esp_ext"): (
+        pl.col("nacionalidad_esp_ext").is_null().all().over("estudio"),
+        "el estudio no pregunta la nacionalidad (barómetros hasta mediados de 2024: universo de "
+        "españoles)",
+    ),
+    ("cis_personas", "situacion_economica_personal"): (
+        pl.col("situacion_economica_personal").is_null().all().over("estudio"),
+        "el estudio no pregunta la situación económica personal (ECOPER)",
+    ),
+    ("cis_largo", "etiqueta"): (
+        pl.col("codigo").is_not_null(),
+        "valor sin etiqueta en el fichero SPSS (respuestas numéricas abiertas, como la edad o "
+        "el número de personas, y puntos intermedios de escalas sin rotular)",
+    ),
     ("censo2021_personas", "municipio"): (
         pl.col("tamano_municipio").is_in(_PEQUENO),
         "el INE no identifica los municipios de menos de 10.000 habitantes (CMUN 991–993)",
@@ -98,14 +118,17 @@ def g21_nulos() -> dict[str, str]:
     """{fichero.columna: problema} para los vacíos no documentados (vacío si todo está bien)."""
     out = {}
     for nombre in salidas():
-        df = pl.read_parquet(INTERIM_DIR / f"{nombre}.parquet")
-        for c, n in df.null_count().row(0, named=True).items():
+        ruta = INTERIM_DIR / f"{nombre}.parquet"
+        nulos = pl.scan_parquet(ruta).select(pl.all().null_count()).collect()
+        for c, n in nulos.row(0, named=True).items():
             if not n:
                 continue
             regla = NULOS_DOCUMENTADOS.get((nombre, c))
             if regla is None:
                 out[f"{nombre}.{c}"] = f"{n} vacíos sin documentar"
                 continue
+            cols = sorted({c, *regla[0].meta.root_names()})
+            df = pl.read_parquet(ruta, columns=cols)
             fuera = df.filter(pl.col(c).is_null() & ~regla[0]).height
             if fuera:
                 out[f"{nombre}.{c}"] = f"{fuera} vacíos fuera de la condición documentada"
@@ -126,7 +149,13 @@ def g22_especiales() -> dict[str, dict[str, str]]:
     v = variables().variables
     out: dict[str, dict[str, str]] = {}
     for nombre in salidas():
-        df = pl.read_parquet(INTERIM_DIR / f"{nombre}.parquet")
+        ruta = INTERIM_DIR / f"{nombre}.parquet"
+        cols = [
+            c
+            for c, dt in pl.read_parquet_schema(ruta).items()
+            if c not in NO_VARIABLES and (dt.is_numeric() or c in v)
+        ]
+        df = pl.read_parquet(ruta, columns=cols)
         malos = {}
         for c, dtype in df.schema.items():
             if c in NO_VARIABLES:

@@ -1,6 +1,6 @@
 {
  "fecha": "2026-10-21",
- "version_codigo": "git:d54de96-dirty",
+ "version_codigo": "git:3193f5c-dirty",
  "run_id": "2026-01-01_ES_1000000_s1",
  "g8a4": {
   "umbral_celdas": 0.9,
@@ -26,11 +26,11 @@
   "tvd_nacional": [
    {
     "variable": "religiosidad",
-    "tvd": 0.00394748513257359
+    "tvd": 0.003947485132573531
    },
    {
     "variable": "clase_subjetiva",
-    "tvd": 0.005992971295187981
+    "tvd": 0.00599297129518797
    },
    {
     "variable": "situacion_economica_personal",
@@ -45,8 +45,8 @@
   ],
   "grupos": 63,
   "dentro": 63,
-  "ratio_min": 0.9094595760141324,
-  "ratio_max": 1.0747421028821849
+  "ratio_min": 0.884812407166375,
+  "ratio_max": 1.0491946297658463
  },
  "g8a1": {
   "rasgos": [
@@ -154,7 +154,7 @@
  "g8a2": {
   "preguntas": 21,
   "tvd_media_modelo": 0.11607656923688607,
-  "tvd_media_b0": 0.1688442399696461,
+  "tvd_media_b0": 0.16884423996964606,
   "ok": true
  },
  "g8a5": {

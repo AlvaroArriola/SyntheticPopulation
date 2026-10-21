@@ -45,11 +45,13 @@ Ver `reports/fase_08a_puerta.md` (`sinpop validate --phase 8a`).
 | --- | --- | --- |
 | G8A.1 V-LATENTE | ✅ | Confianza institucional: CFI 0,995, RMSEA 0,038, omega 0,80. Sensibilidad al precio: 0,997 / 0,048 / 0,82. Aislamiento social: 0,987 / 0,049 / 0,74 (ajuste del factorial conjunto de su estudio) |
 | G8A.2 V-OPINION-CV | ✅ | 21 preguntas reservadas completas: TVD media del modelo 0,116 frente a 0,169 de B0; el modelo gana en las 21 |
-| G8A.3 V-DIVERSIDAD (rasgos) | ✅ | 63 de 63 grupos edad × estudios × sexo con ratio de varianzas en [0,91; 1,07] |
+| G8A.3 V-DIVERSIDAD (rasgos) | ✅ | 63 de 63 grupos edad × estudios × sexo con ratio de varianzas en [0,88; 1,05] |
 | G8A.4 V-ENRIQ-MARG (valores) | ✅ | 93,4 % de celdas CCAA × edad en el IC 95 % del CIS (religiosidad 92,4 %, clase 92,7 %, situación económica 95,7 %); TVD nacional 0,004 / 0,006 / 0,011 |
 | G8A.5 Barómetro Sanitario | ✅ (se informa) | Oleada de marzo de 2026, 13 preguntas, 221 celdas pregunta × comunidad: TVD simulada 0,072 frente a B0 nacional 0,078 y B1 directa 0,087; ruido muestral de la oleada 0,054 |
 | G8A.6 Fugas | ✅ | `test_no_leakage.py`: 7 pasan |
 | G8A.7 Revisión humana | ⏸️ | Este informe |
+
+**Reproducibilidad:** dos construcciones seguidas de `opinion.parquet` con la misma semilla dan el mismo SHA-256 (`8a67f74f…`). Una primera comprobación detectó que el orden de filas de una agrupación de polars no era estable y cambiaba el sorteo de residuos del estilo NS/NC; se corrigió ordenando explícitamente antes de dar la fase por buena.
 
 ## Resultados principales
 
