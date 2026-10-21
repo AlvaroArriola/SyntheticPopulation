@@ -1,0 +1,309 @@
+{
+ "fecha": "2026-10-21",
+ "version_codigo": "git:d54de96-dirty",
+ "run_id": "2026-01-01_ES_1000000_s1",
+ "g8a4": {
+  "umbral_celdas": 0.9,
+  "umbral_tvd": 0.02,
+  "por_variable": [
+   {
+    "variable": "clase_subjetiva",
+    "proporcion": 0.9270976616231087,
+    "celdas": 727
+   },
+   {
+    "variable": "religiosidad",
+    "proporcion": 0.9242424242424242,
+    "celdas": 528
+   },
+   {
+    "variable": "situacion_economica_personal",
+    "proporcion": 0.9567099567099567,
+    "celdas": 462
+   }
+  ],
+  "global": 0.9341875364006988,
+  "tvd_nacional": [
+   {
+    "variable": "religiosidad",
+    "tvd": 0.00394748513257359
+   },
+   {
+    "variable": "clase_subjetiva",
+    "tvd": 0.005992971295187981
+   },
+   {
+    "variable": "situacion_economica_personal",
+    "tvd": 0.010649437774908909
+   }
+  ]
+ },
+ "g8a3": {
+  "umbral": [
+   0.8,
+   1.2
+  ],
+  "grupos": 63,
+  "dentro": 63,
+  "ratio_min": 0.9094595760141324,
+  "ratio_max": 1.0747421028821849
+ },
+ "g8a1": {
+  "rasgos": [
+   {
+    "rasgo": "rasgo_confianza_institucional",
+    "items": [
+     "CONFIANZA_5",
+     "CONFIANZA_6",
+     "CONFIANZA_7",
+     "CONFIANZA_8",
+     "CONFIANZA_9"
+    ],
+    "estudios": [
+     "3535"
+    ],
+    "n_completos": 3853,
+    "cargas": {
+     "CONFIANZA_5": 0.438,
+     "CONFIANZA_6": 0.742,
+     "CONFIANZA_7": 0.697,
+     "CONFIANZA_8": 0.765,
+     "CONFIANZA_9": 0.661
+    },
+    "cfi": 0.9949327462484974,
+    "rmsea": 0.0378802231078462,
+    "omega": 0.7986214401803129,
+    "chi2": 32.63639169000596,
+    "gl": 5,
+    "ajuste_de": "propio"
+   },
+   {
+    "rasgo": "rasgo_sensibilidad_precio",
+    "items": [
+     "P2A_3",
+     "P2_10",
+     "P2_11",
+     "P2_4"
+    ],
+    "estudios": [
+     "3554"
+    ],
+    "n_completos": 3996,
+    "cargas": {
+     "P2A_3": 0.558,
+     "P2_10": 0.787,
+     "P2_11": 0.837,
+     "P2_4": 0.702
+    },
+    "cfi": 0.9966140890003723,
+    "rmsea": 0.048155355838980486,
+    "omega": 0.8156852186934009,
+    "chi2": 20.52831698487087,
+    "gl": 2,
+    "ajuste_de": "propio"
+   },
+   {
+    "rasgo": "rasgo_aislamiento_social",
+    "items": [
+     "P16",
+     "P2_5",
+     "P2_7"
+    ],
+    "estudios": [
+     "3554"
+    ],
+    "n_completos": 4647,
+    "cargas": {
+     "P16": 0.621,
+     "P2_5": 0.81,
+     "P2_7": 0.646
+    },
+    "cfi": 0.9865432939077818,
+    "rmsea": 0.048923812761143624,
+    "omega": 0.7368356770847705,
+    "chi2": 3.14705763670986e-07,
+    "gl": 0,
+    "ajuste_de": "conjunto 3554"
+   }
+  ],
+  "conjuntos": [
+   {
+    "estudio": "3554",
+    "rasgos": [
+     "rasgo_sensibilidad_precio",
+     "rasgo_aislamiento_social"
+    ],
+    "n_completos": 3982,
+    "cfi": 0.9865432939077818,
+    "rmsea": 0.048923812761143624,
+    "chi2": 136.87284741914027,
+    "gl": 13,
+    "correlaciones_factores": [
+     [
+      1.0,
+      0.583
+     ],
+     [
+      0.583,
+      1.0
+     ]
+    ]
+   }
+  ]
+ },
+ "g8a2": {
+  "preguntas": 21,
+  "tvd_media_modelo": 0.11607656923688607,
+  "tvd_media_b0": 0.1688442399696461,
+  "ok": true
+ },
+ "g8a5": {
+  "ok": true,
+  "oleada_contraste": "3551",
+  "oleadas_sanitario_previas": [
+   "3531"
+  ],
+  "preguntas": [
+   "CLASESUB",
+   "ENFCRONICA",
+   "ESTSALUD",
+   "P1",
+   "P10_1",
+   "P10_2",
+   "P10_3",
+   "P10_4",
+   "P3_1",
+   "P3_2",
+   "P3_3",
+   "P3_4",
+   "RELIGION"
+  ],
+  "celdas": 221,
+  "tvd_media_simulada": 0.07192287888806283,
+  "tvd_media_b0": 0.07800342488495311,
+  "tvd_media_b1": 0.08667373951407589,
+  "ruido_muestral_medio": 0.05427145012244012,
+  "por_ccaa": [
+   {
+    "ccaa": "01",
+    "tvd_simulada": 0.043332920298320365,
+    "tvd_b0": 0.04809131190903203,
+    "tvd_b1": 0.045910632336851234,
+    "ruido_muestral": 0.03825543408721958
+   },
+   {
+    "ccaa": "02",
+    "tvd_simulada": 0.06528099365834183,
+    "tvd_b0": 0.06956651604994571,
+    "tvd_b1": 0.09712779706923659,
+    "ruido_muestral": 0.054061947936684104
+   },
+   {
+    "ccaa": "03",
+    "tvd_simulada": 0.07657128634703661,
+    "tvd_b0": 0.0869795551375275,
+    "tvd_b1": 0.09277688847355235,
+    "ruido_muestral": 0.0563016885350343
+   },
+   {
+    "ccaa": "04",
+    "tvd_simulada": 0.09984871306283269,
+    "tvd_b0": 0.09779903840788247,
+    "tvd_b1": 0.11425518682793119,
+    "ruido_muestral": 0.06465438466520132
+   },
+   {
+    "ccaa": "05",
+    "tvd_simulada": 0.05806389294078104,
+    "tvd_b0": 0.054793454189555064,
+    "tvd_b1": 0.07940704946032975,
+    "ruido_muestral": 0.05181535497012989
+   },
+   {
+    "ccaa": "06",
+    "tvd_simulada": 0.07729651963259575,
+    "tvd_b0": 0.08217358095215029,
+    "tvd_b1": 0.0746925631449144,
+    "ruido_muestral": 0.06287422274309107
+   },
+   {
+    "ccaa": "07",
+    "tvd_simulada": 0.07810054536298673,
+    "tvd_b0": 0.09143490490635943,
+    "tvd_b1": 0.07948418781795795,
+    "ruido_muestral": 0.04800070121173353
+   },
+   {
+    "ccaa": "08",
+    "tvd_simulada": 0.06294606027909436,
+    "tvd_b0": 0.061214668864435724,
+    "tvd_b1": 0.08774568081886105,
+    "ruido_muestral": 0.05665289363975896
+   },
+   {
+    "ccaa": "09",
+    "tvd_simulada": 0.037869027639463516,
+    "tvd_b0": 0.047270413664253774,
+    "tvd_b1": 0.0510219335510136,
+    "ruido_muestral": 0.04244787604776734
+   },
+   {
+    "ccaa": "10",
+    "tvd_simulada": 0.04771835195611208,
+    "tvd_b0": 0.05370164033863212,
+    "tvd_b1": 0.06645213906234203,
+    "ruido_muestral": 0.04141931541603237
+   },
+   {
+    "ccaa": "11",
+    "tvd_simulada": 0.09482121215307017,
+    "tvd_b0": 0.10525028705468122,
+    "tvd_b1": 0.0943737288424027,
+    "ruido_muestral": 0.057623379025147345
+   },
+   {
+    "ccaa": "12",
+    "tvd_simulada": 0.06562517161606177,
+    "tvd_b0": 0.07804215879291995,
+    "tvd_b1": 0.08367083954707263,
+    "ruido_muestral": 0.06279185352837321
+   },
+   {
+    "ccaa": "13",
+    "tvd_simulada": 0.05224027600701992,
+    "tvd_b0": 0.04843313838431463,
+    "tvd_b1": 0.06089725453118589,
+    "ruido_muestral": 0.038977682051372975
+   },
+   {
+    "ccaa": "14",
+    "tvd_simulada": 0.08737477339983216,
+    "tvd_b0": 0.09827751387266044,
+    "tvd_b1": 0.09615153320983717,
+    "ruido_muestral": 0.05052678993502227
+   },
+   {
+    "ccaa": "15",
+    "tvd_simulada": 0.0947528600884926,
+    "tvd_b0": 0.1033697475170449,
+    "tvd_b1": 0.1151191012940685,
+    "ruido_muestral": 0.05625754678664908
+   },
+   {
+    "ccaa": "16",
+    "tvd_simulada": 0.06280330380897606,
+    "tvd_b0": 0.07679072641752716,
+    "tvd_b1": 0.07830191600025621,
+    "ruido_muestral": 0.05805479290010011
+   },
+   {
+    "ccaa": "17",
+    "tvd_simulada": 0.11804303284605032,
+    "tvd_b0": 0.12286956658528066,
+    "tvd_b1": 0.15606513975147665,
+    "ruido_muestral": 0.08189878860216451
+   }
+  ],
+  "resumen": "oleada 3551 (ajuste con los 12 meses previos); 13 preguntas, 221 celdas pregunta × CCAA; TVD media simulada 0.072, B0 nacional 0.078, B1 directa 0.087, ruido muestral 0.054"
+ }
+}

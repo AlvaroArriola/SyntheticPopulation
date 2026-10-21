@@ -67,7 +67,12 @@ def preguntas_repetidas() -> pl.DataFrame:
                 r"(?i)^nacionalidad|^edad|^sexo|^provincia|^municipio"
             )
         )
-        .sort(pl.col("estudios").list.len(), "variable", descending=[True, False])
+        .sort(
+            pl.col("estudios").list.len(),
+            "variable",
+            "opciones",
+            descending=[True, False, False],
+        )
         .unique(["variable", "enunciado"], keep="first", maintain_order=True)
         .sort("variable")
     )

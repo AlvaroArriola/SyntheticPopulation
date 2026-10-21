@@ -386,7 +386,7 @@ def armonizar() -> dict:
         pl.concat(bancos)
         .group_by("variable", "enunciado", "opciones")
         .agg(pl.col("estudio").sort().alias("estudios"))
-        .sort("variable")
+        .sort("variable", "enunciado", "opciones")
     )
     banco.write_parquet(INTERIM_DIR / "cis_preguntas.parquet")
     return {"estudios": info, "encuestados": personas_df.height, "preguntas": banco.height}

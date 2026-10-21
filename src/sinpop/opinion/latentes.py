@@ -89,6 +89,7 @@ def items(rasgo: str) -> pl.DataFrame:
         lg.join(tabla, on=["variable", "etiqueta"], how="left")
         .pivot(on="variable", index=["estudio", "encuestado"], values="valor")
         .select("estudio", "encuestado", *sorted(defs))
+        .sort("estudio", "encuestado")  # pivot no garantiza el orden: reproducibilidad
     )
 
 

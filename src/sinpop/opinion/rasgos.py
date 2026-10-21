@@ -61,6 +61,7 @@ def estilo_ns_nc() -> pl.DataFrame:
             pl.col("etiqueta").is_in(NS_NC_ETIQUETAS).mean().alias("estilo_ns_nc"),
         )
         .filter(pl.col("preguntas") >= MIN_PREGUNTAS)
+        .sort("estudio", "encuestado")  # group_by no conserva el orden: reproducibilidad
         .collect()
     )
 
