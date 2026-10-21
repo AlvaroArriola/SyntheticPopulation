@@ -1548,6 +1548,117 @@ def _g8c_3() -> Check:
     )
 
 
+def _f9() -> dict | None:
+    import json
+
+    ruta = REPO_ROOT / "reports" / "fase_09_validacion.json"
+    return json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else None
+
+
+def _sin_f9(id_: str, desc: str, um: str) -> Check:
+    falta = "falta reports/fase_09_validacion.json (python -m sinpop.evaluate.validacion)"
+    return Check(id_, desc, False, falta, um)
+
+
+def _g9_1() -> Check:
+    d, desc = _f9(), "Salidas en el formato de §2.8 validadas por esquema (V-FORMATO)"
+    if d is None:
+        return _sin_f9("G9.1", desc, "100 %")
+    g = d["g9_1"]
+    return Check(
+        "G9.1", desc, g["validas"] == g["salidas"], f"{g['validas']}/{g['salidas']}", "100 %"
+    )
+
+
+def _g9_2() -> Check:
+    d, desc = _f9(), "Sistema y baselines en la ventana de validación (total, subgrupo, CCAA)"
+    um = "B0, B1, B2 y sistema informados"
+    if d is None:
+        return _sin_f9("G9.2", desc, um)
+    t = d["g9_2"]["todas"]
+    valor = (
+        f"TVD media: medición CIS {t['sistema_cis']:.3f}, B0 {t['b0']:.3f}, B1 {t['b1']:.3f} "
+        f"({t['preguntas']} preguntas); B2 pendiente del modelo de lenguaje (D-069)"
+    )
+    return Check("G9.2", desc, None, valor, um)
+
+
+def _g9_3() -> Check:
+    from sinpop.config import load_config
+
+    d, desc = _f9(), "Coste por pregunta informado y dentro del presupuesto"
+    pres = load_config("llm.yaml").presupuesto.eur_max_por_prediccion  # type: ignore[attr-defined]
+    um = f"≤ {pres} € por predicción"
+    if d is None:
+        return _sin_f9("G9.3", desc, um)
+    g = d["g9_3"]
+    return Check("G9.3", desc, g["eur"] <= pres, f"{g['llamadas']} llamadas, {g['eur']} €", um)
+
+
+def _g9_4() -> Check:
+    from sinpop.config import load_config
+
+    tmax = load_config("thresholds.yaml").v_reformulacion.tvd_max  # type: ignore[attr-defined]
+    d, desc = _f9(), "Reformulación neutra (V-REFORMULACION)"
+    um = f"TVD ≤ {tmax} en cada pregunta"
+    if d is None:
+        return _sin_f9("G9.4", desc, um)
+    g = d["g9_4"]
+    return Check(
+        "G9.4",
+        desc,
+        g["por_encima_umbral"] == 0,
+        f"{g['preguntas']} preguntas; TVD media {g['tvd_media']:.4f}, máx. {g['tvd_max']:.4f}; "
+        f"por encima: {g['por_encima_umbral']}",
+        um,
+    )
+
+
+def _g9_5() -> Check:
+    from sinpop.config import load_config
+
+    c = load_config("thresholds.yaml").v_cobertura  # type: ignore[attr-defined]
+    d, desc = _f9(), "Cobertura de los intervalos (V-COBERTURA)"
+    um = f"IC80 en {c.ic80}, IC95 en {c.ic95}"
+    if d is None:
+        return _sin_f9("G9.5", desc, um)
+    g = d["g9_5"]
+    ok = c.ic80[0] <= g["cobertura80"] <= c.ic80[1] and c.ic95[0] <= g["cobertura95"] <= c.ic95[1]
+    return Check(
+        "G9.5",
+        desc,
+        ok,
+        f"IC80 {g['cobertura80']:.2f}, IC95 {g['cobertura95']:.2f} ({g['casos']} opciones)",
+        um,
+    )
+
+
+def _g9_6() -> Check:
+    d, desc = _f9(), "Modo evento con eventos pasados (V-EVENTO)"
+    um = "dirección correcta en ≥ 2 de cada 3 eventos; magnitud informada"
+    if d is None:
+        return _sin_f9("G9.6", desc, um)
+    g = d["g9_6"]
+    return Check(
+        "G9.6",
+        desc,
+        g["eventos"] >= 3 and g["eventos_correctos"] / g["eventos"] >= 2 / 3,
+        f"{g['eventos_correctos']}/{g['eventos']} eventos ({g['pares_correctos']}/{g['pares']} "
+        f"evento × indicador); error de magnitud {g['error_magnitud_pp_medio']:.1f} pp",
+        um,
+    )
+
+
+def _g9_7() -> Check:
+    return Check(
+        "G9.7",
+        "Pruebas de estereotipos de la capa de IA",
+        None,
+        "no aplica mientras no intervenga un modelo de lenguaje (docs/06 §5, D-069)",
+        "pruebas superadas",
+    )
+
+
 PHASES: dict[int | str, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
@@ -1573,6 +1684,7 @@ PHASES: dict[int | str, list[Callable[[], Check]]] = {
     7: [_g7_1, _g7_2, _g7_3, _g7_4, _g7_5, _g7_6, _g7_7_human],
     "8a": [_g8a_1, _g8a_2, _g8a_3, _g8a_4, _g8a_5, _g8a_6, _g8a_7_human],
     "8c": [_g8c_1, _g8c_2, _g8c_3],
+    9: [_g9_1, _g9_2, _g9_3, _g9_4, _g9_5, _g9_6, _g9_7],
     "8b": [
         _g8b_1,
         _g8b_2,

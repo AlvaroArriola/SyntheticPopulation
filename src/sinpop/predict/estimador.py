@@ -7,9 +7,10 @@ Para una pregunta nueva (enunciado, opciones, escala, fecha de referencia):
    w = similitud² · 0,5^(meses de antigüedad / 12) y se usan las `K` primeras, siempre que su
    similitud sea al menos `UMBRAL_RELATIVO` de la mejor.
 2. **Sistema (estimador estadístico):** para cada análoga, una regresión multinomial ponderada de
-   sus respuestas (llevadas a las opciones nuevas) con el perfil, los valores (religiosidad,
-   clase subjetiva), el grupo de voto de 2023 y la autoubicación de los encuestados, aplicada al
-   marco de población sintética (`poblacion.marco`). Las análogas se combinan con sus pesos.
+   sus respuestas (llevadas a las opciones nuevas) con el perfil y los valores (religiosidad,
+   clase subjetiva) de los encuestados, aplicada al marco de población sintética
+   (`poblacion.marco`). El desglose por recuerdo de voto usa además el grupo de voto y la
+   autoubicación. Las análogas se combinan con sus pesos.
 3. **B0:** la distribución observada (ponderada) de las análogas, combinada con los mismos pesos.
 4. **B1:** como el sistema, pero solo con el perfil demográfico (sexo, edad, estudios,
    actividad, comunidad, tamaño de municipio, comunidad × edad): el modelo clásico entrenado en
@@ -46,7 +47,13 @@ UMBRAL_RELATIVO = 0.6
 SIMILITUD_MIN = 0.15
 C_MODELO = 0.1
 C_ESCALA = 0.0025
-COLUMNAS_SISTEMA = COLUMNAS + ["religiosidad", "clase_subjetiva", "grupo_voto", "ideologia_bloque"]
+# El voto y la ideología empeoran la predicción fuera de la muestra (backtest, D-069): los
+# coeficientes se estiman con el voto **recordado** de los encuestados (sesgado hacia el PSOE y
+# con menos abstención) y se aplicarían al voto **real** calibrado de la población. Solo se usan
+# para el desglose por recuerdo de voto, que sin ellos no tendría diferencias entre electorados.
+COLUMNAS_SISTEMA = COLUMNAS + ["religiosidad", "clase_subjetiva"]
+COLUMNAS_VOTO = COLUMNAS_SISTEMA + ["grupo_voto", "ideologia_bloque"]
+SUBGRUPO_VOTO = "recuerdo_voto_generales_familia"
 COLUMNAS_B1 = COLUMNAS
 SUBGRUPOS = ["edad_4", "sexo", "estudios_3", "ccaa", "recuerdo_voto_generales_familia"]
 CALIBRACION = PROCESSED_DIR / "predict" / "calibracion.json"
@@ -255,8 +262,19 @@ def predecir(q: Pregunta, excluir: pl.Expr | None = None, run_id: str = P.NACION
             sis_cis.append(None)
             continue
         pr = _modelo(d, COLUMNAS_SISTEMA, q.opciones, marco)
-        sis.append(_agregar(pr, marco, q.subgrupos))
-        sis_cis.append(_agregar(pr, marco, q.subgrupos, "peso_cis"))
+        otros = [g for g in q.subgrupos if g != SUBGRUPO_VOTO]
+        a_pob = _agregar(pr, marco, otros)
+        a_cis = _agregar(pr, marco, otros, "peso_cis")
+        if SUBGRUPO_VOTO in q.subgrupos:
+            prv = _modelo(d, COLUMNAS_VOTO, q.opciones, marco)
+            for k, v in _agregar(prv, marco, [SUBGRUPO_VOTO]).items():
+                if k != "total":
+                    a_pob[k] = v
+            for k, v in _agregar(prv, marco, [SUBGRUPO_VOTO], "peso_cis").items():
+                if k != "total":
+                    a_cis[k] = v
+        sis.append(a_pob)
+        sis_cis.append(a_cis)
         b1.append(
             _agregar(_modelo(d, COLUMNAS_B1, q.opciones, marco), marco, q.subgrupos, "peso_es")
         )
