@@ -105,7 +105,7 @@ class ModeloRasgo:
         return np.hstack(cols)
 
     def ajustar(self, d: pl.DataFrame) -> ModeloRasgo:
-        from sklearn.linear_model import Ridge
+        from sklearn.linear_model import RidgeCV
 
         self.cats = {
             v: {c: i for i, c in enumerate(sorted({x for x in columna(d, v) if x is not None}))}
@@ -113,7 +113,10 @@ class ModeloRasgo:
         }
         y = d[self.rasgo].to_numpy()
         w = d["peso"].to_numpy()
-        self.lr = Ridge(alpha=1.0).fit(self._x(d), y, sample_weight=w)
+        # regularización elegida por validación cruzada (D-064)
+        self.lr = RidgeCV(alphas=(0.1, 1.0, 10.0, 100.0, 1000.0)).fit(
+            self._x(d), y, sample_weight=w
+        )
         res = y - self.lr.predict(self._x(d))
         celda = _celda(d)
         self.residuos = {c: (res[celda == c], w[celda == c]) for c in np.unique(celda)}

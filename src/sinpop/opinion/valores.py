@@ -96,7 +96,12 @@ def datos(variable: str) -> pl.DataFrame:
 class Modelo:
     """Regresión logística multinomial ponderada con codificación one-hot de los predictores."""
 
-    def __init__(self, variable: str, c: float = 1.0) -> None:
+    REJILLA_C = (0.01, 0.03, 0.1, 0.3, 1.0)
+
+    def __init__(self, variable: str, c: float | None = None) -> None:
+        """`c` = None: la regularización se elige por validación cruzada (3 particiones fijas,
+        log-verosimilitud ponderada), así el modelo se encoge hacia efectos más simples cuando
+        hay pocos encuestados por comunidad y edad, como en MRP (D-064)."""
         self.variable = variable
         self.c = c
 
@@ -123,10 +128,31 @@ class Modelo:
         }
         self.clases = sorted(df[self.variable].unique().to_list())
         y = df[self.variable].to_numpy()
-        self.lr = LogisticRegression(C=self.c, max_iter=2000)
-        self.lr.fit(self._x(df), y, sample_weight=df["peso"].to_numpy())
+        x, w = self._x(df), df["peso"].to_numpy()
+        self.c_elegido = self.c if self.c is not None else self._elegir_c(x, y, w)
+        self.lr = LogisticRegression(C=self.c_elegido, max_iter=2000)
+        self.lr.fit(x, y, sample_weight=w)
         self.n = df.height
         return self
+
+    def _elegir_c(self, x, y: np.ndarray, w: np.ndarray) -> float:
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.metrics import log_loss
+        from sklearn.model_selection import KFold
+
+        clases = np.unique(y)
+        perdida = {}
+        for c in self.REJILLA_C:
+            total = 0.0
+            for tr, te in KFold(3, shuffle=True, random_state=0).split(y):
+                lr = LogisticRegression(C=c, max_iter=2000).fit(x[tr], y[tr], sample_weight=w[tr])
+                p = np.full((len(te), len(clases)), 1e-9)
+                p[:, np.searchsorted(clases, lr.classes_)] = lr.predict_proba(x[te])
+                total += log_loss(
+                    y[te], p / p.sum(1, keepdims=True), sample_weight=w[te], labels=clases
+                )
+            perdida[c] = total
+        return min(perdida, key=perdida.get)
 
     def probabilidades(self, df: pl.DataFrame) -> np.ndarray:
         return self.lr.predict_proba(self._x(df))

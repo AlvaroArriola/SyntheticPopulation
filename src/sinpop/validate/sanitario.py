@@ -3,6 +3,8 @@
 Para cada pregunta de opinión que se repite, con las mismas opciones, en la última oleada del
 Barómetro Sanitario anterior al corte y en alguna oleada previa:
 
+- el modelo se ajusta con los estudios de los 12 meses previos que tienen la misma pregunta
+  (otras oleadas del Sanitario y, si está, barómetros mensuales);
 - el modelo de opinión (el multinomial ponderado de las variables de valores) se ajusta con las
   oleadas previas y la población sintética **responde**: a cada adulto en vivienda familiar (el
   universo del Barómetro Sanitario, que incluye extranjeros) se le sortea una respuesta con la
@@ -19,6 +21,7 @@ La puerta pide informar del error, sin umbral (docs/04 G8A.5).
 
 from __future__ import annotations
 
+import datetime as dt
 import json
 
 import numpy as np
@@ -26,7 +29,7 @@ import polars as pl
 
 from sinpop import INTERIM_DIR
 from sinpop.opinion import valores as V
-from sinpop.opinion.cis import SELECCION
+from sinpop.opinion.cis import SELECCION, fechas
 from sinpop.opinion.cv import EXCLUIR, NO_OPINION
 from sinpop.repro import make_rng
 from sinpop.validate import metrics as M
@@ -46,17 +49,28 @@ def oleadas() -> list[str]:
     ]
 
 
-def preguntas(entreno: list[str], test: str) -> list[str]:
+def preguntas(test: str) -> dict[str, list[str]]:
+    """Pregunta → estudios de ajuste: los anteriores a la oleada de contraste, de los 12 meses
+    previos, en que la misma pregunta (variable, enunciado y opciones) aparece, sean del
+    Barómetro Sanitario o barómetros mensuales."""
     banco = pl.read_parquet(INTERIM_DIR / "cis_preguntas.parquet")
-    return sorted(
+    f = {e: dt.date.fromisoformat(x) for e, x in fechas().items()}
+    ft = f[test]
+    out = {}
+    for var, estudios in (
         banco.filter(
             pl.col("estudios").list.contains(test)
-            & pl.col("estudios").list.eval(pl.element().is_in(entreno)).list.any()
             & ~pl.col("variable").is_in(list(EXCLUIR))
             & ~pl.col("variable").str.contains(NO_OPINION)
             & ~pl.col("enunciado").str.contains(r"(?i)^nacionalidad|^edad|^sexo|^provincia")
-        )["variable"].unique()
-    )
+        )
+        .select("variable", "estudios")
+        .iter_rows()
+    ):
+        previos = [e for e in estudios if e in f and 0 < (ft - f[e]).days <= 366]
+        if previos:
+            out[var] = sorted(previos)
+    return dict(sorted(out.items()))
 
 
 def _respuestas(variable: str, estudios: list[str]) -> pl.DataFrame:
@@ -147,8 +161,8 @@ def g8a5(persons: pl.DataFrame, semilla: int, max_preguntas: int = 30) -> tuple[
     rng = make_rng(semilla)
     filas = []
     usadas = []
-    for v in preguntas(entreno, test):
-        r = evaluar(v, entreno, test, perfil, peso, rng)
+    for v, ajuste in preguntas(test).items():
+        r = evaluar(v, ajuste, test, perfil, peso, rng)
         if r:
             filas += r
             usadas.append(v)
@@ -160,7 +174,7 @@ def g8a5(persons: pl.DataFrame, semilla: int, max_preguntas: int = 30) -> tuple[
     res = {
         "ok": True,
         "oleada_contraste": test,
-        "oleadas_ajuste": entreno,
+        "oleadas_sanitario_previas": entreno,
         "preguntas": usadas,
         "celdas": t.height,
         "tvd_media_simulada": float(t["tvd_simulada"].mean()),

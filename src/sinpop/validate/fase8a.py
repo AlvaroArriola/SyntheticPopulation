@@ -187,7 +187,7 @@ def ejecutar(run_id: str = NACIONAL) -> dict:
     if not t.is_empty():
         t.write_csv(DETALLE / f"{run_id}_g8a5_sanitario.csv")
         g5["resumen"] = (
-            f"oleada {g5['oleada_contraste']} frente a {g5['oleadas_ajuste']}; "
+            f"oleada {g5['oleada_contraste']} (ajuste con los 12 meses previos); "
             f"{len(g5['preguntas'])} preguntas, {g5['celdas']} celdas pregunta × CCAA; TVD media "
             f"simulada {g5['tvd_media_simulada']:.3f}, B0 nacional {g5['tvd_media_b0']:.3f}, "
             f"B1 directa {g5['tvd_media_b1']:.3f}, ruido muestral {g5['ruido_muestral_medio']:.3f}"
