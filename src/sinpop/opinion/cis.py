@@ -13,7 +13,8 @@ Salidas (`data/interim/`):
   código y etiqueta de la respuesta);
 - `cis_preguntas.parquet`: banco de preguntas (enunciado, opciones y estudios en que aparece).
 
-Los estudios con trabajo de campo posterior al corte están en `data/eval/` y aquí no se leen.
+Los estudios con trabajo de campo posterior al corte están en la carpeta de datos de evaluación
+(CLAUDE.md, regla 5) y aquí no se leen.
 """
 
 from __future__ import annotations

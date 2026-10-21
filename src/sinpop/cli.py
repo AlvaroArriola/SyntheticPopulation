@@ -209,7 +209,9 @@ def build(
 
 @app.command()
 def validate(
-    phase: Annotated[int | None, typer.Option(help="Ejecuta la puerta de la fase N")] = None,
+    phase: Annotated[
+        str | None, typer.Option(help="Ejecuta la puerta de la fase N (0-7, 8a, 8b, 8c…)")
+    ] = None,
     run: Annotated[str | None, typer.Option(help="Valida la población <run_id>")] = None,
 ) -> None:
     """Ejecuta las comprobaciones de una puerta de fase o de una población."""
@@ -226,7 +228,7 @@ def validate(
             f"{run}: validación {'superada' if ok else 'fallida'} · reports/{run}/validacion.md"
         )
         raise typer.Exit(code=0 if ok else 1)
-    ok = run_phase(int(phase))  # type: ignore[arg-type]
+    ok = run_phase(int(phase) if phase.isdigit() else phase.lower())  # type: ignore[union-attr]
     raise typer.Exit(code=0 if ok else 1)
 
 

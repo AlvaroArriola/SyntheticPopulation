@@ -1,7 +1,7 @@
 # Puerta de la fase F7
 
 **Resultado:** superada  
-**Fecha:** 2026-10-20 · **Versión del código:** git:a1ac669-dirty  
+**Fecha:** 2026-10-21 · **Versión del código:** git:eada33e-dirty  
 **Comando:** `sinpop validate --phase 7`
 
 | ID | Comprobación | Resultado | Valor | Umbral |

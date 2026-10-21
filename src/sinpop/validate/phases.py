@@ -1179,7 +1179,118 @@ def _g7_7_human() -> Check:
     )
 
 
-PHASES: dict[int, list[Callable[[], Check]]] = {
+def _f8a() -> dict | None:
+    import json
+
+    from sinpop.validate.fase8a import RESUMEN
+
+    return json.loads(RESUMEN.read_text(encoding="utf-8")) if RESUMEN.exists() else None
+
+
+def _sin_f8a(id_: str, desc: str, um: str) -> Check:
+    falta = "falta reports/fase_08a_validacion.json (python -m sinpop.validate.fase8a)"
+    return Check(id_, desc, False, falta, um)
+
+
+def _g8a_1() -> Check:
+    from sinpop.config import load_config
+
+    c = load_config("thresholds.yaml").v_latente  # type: ignore[attr-defined]
+    d, desc = _f8a(), "Ajuste del modelo latente (V-LATENTE)"
+    um = f"CFI ≥ {c.cfi_min}, RMSEA ≤ {c.rmsea_max}, omega ≥ {c.omega_min} por rasgo"
+    if d is None or "g8a1" not in d:
+        return _sin_f8a("G8A.1", desc, um)
+    g = d["g8a1"]
+    ok = g["cfi"] >= c.cfi_min and g["rmsea"] <= c.rmsea_max and min(g["omega"]) >= c.omega_min
+    return Check(
+        "G8A.1",
+        desc,
+        ok,
+        f"{g['rasgos']}; CFI {g['cfi']:.3f}; RMSEA {g['rmsea']:.3f}; "
+        f"omega {[round(x, 2) for x in g['omega']]}",
+        um,
+    )
+
+
+def _g8a_2() -> Check:
+    d, desc = _f8a(), "Validación cruzada por pregunta completa frente a B0 (V-OPINION-CV)"
+    um = "TVD media del modelo < TVD media de B0 (distribución histórica)"
+    if d is None or "g8a2" not in d:
+        return _sin_f8a("G8A.2", desc, um)
+    g = d["g8a2"]
+    return Check(
+        "G8A.2",
+        desc,
+        bool(g["ok"]),
+        f"{g['preguntas']} preguntas; TVD modelo {g['tvd_media_modelo']:.4f} frente a B0 "
+        f"{g['tvd_media_b0']:.4f}",
+        um,
+    )
+
+
+def _g8a_3() -> Check:
+    d, desc = _f8a(), "Varianza de los rasgos dentro de los grupos frente a la real (V-DIVERSIDAD)"
+    um = "ratio de varianzas en [0,8; 1,2] en cada grupo con ≥ 200 encuestados"
+    if d is None or "g8a3" not in d:
+        return _sin_f8a("G8A.3", desc, um)
+    g = d["g8a3"]
+    return Check(
+        "G8A.3",
+        desc,
+        g["grupos"] > 0 and g["dentro"] == g["grupos"],
+        f"{g['dentro']} de {g['grupos']} grupos dentro; ratio de {g['ratio_min']:.2f} a "
+        f"{g['ratio_max']:.2f}",
+        um,
+    )
+
+
+def _g8a_4() -> Check:
+    d, desc = _f8a(), "Variables de valores por CCAA × edad frente al CIS (V-ENRIQ-MARG)"
+    um = "≥ 90 % de las celdas en el IC 95 % del CIS y TVD nacional ≤ 0,02"
+    if d is None or "g8a4" not in d:
+        return _sin_f8a("G8A.4", desc, um)
+    g = d["g8a4"]
+    malas = [x["variable"] for x in g["por_variable"] if x["proporcion"] < g["umbral_celdas"]]
+    malas += [x["variable"] for x in g["tvd_nacional"] if x["tvd"] > g["umbral_tvd"]]
+    return Check(
+        "G8A.4",
+        desc,
+        not malas,
+        f"en IC global {100 * g['global']:.1f} %; "
+        + "; ".join(f"{x['variable']} {100 * x['proporcion']:.1f} %" for x in g["por_variable"])
+        + f"; fuera: {sorted(set(malas)) or 0}",
+        um,
+    )
+
+
+def _g8a_5() -> Check:
+    d, desc = _f8a(), "Respuestas simuladas por CCAA frente al Barómetro Sanitario (se informa)"
+    um = "se informa el error (sin umbral)"
+    if d is None or "g8a5" not in d:
+        return _sin_f8a("G8A.5", desc, um)
+    g = d["g8a5"]
+    return Check("G8A.5", desc, True, g.get("resumen", ""), um)
+
+
+def _g8a_6() -> Check:
+    c = _g0_3_leakage()
+    return Check("G8A.6", "test_no_leakage.py pasa", c.ok, c.valor, c.umbral)
+
+
+def _g8a_7_human() -> Check:
+    texto = (REPO_ROOT / "DECISIONS.md").read_text(encoding="utf-8")
+    i = texto.find("### Aprobación de F8A")
+    ok = i >= 0 and "**Estado:** aprobada" in texto[i : i + 400]
+    return Check(
+        "G8A.7",
+        "Revisión humana del informe de F8A",
+        True if ok else None,
+        "aprobada" if ok else "pendiente (reports/fase_08a.md)",
+        "aprobación",
+    )
+
+
+PHASES: dict[int | str, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
         _g1_1_p0_downloaded,
@@ -1202,6 +1313,7 @@ PHASES: dict[int, list[Callable[[], Check]]] = {
     5: [_g5_1, _g5_2, _g5_3, _g5_4, _g5_5, _g5_6_human],
     6: [_g6_1, _g6_2, _g6_3, _g6_4, _g6_5, _g6_6],
     7: [_g7_1, _g7_2, _g7_3, _g7_4, _g7_5, _g7_6, _g7_7_human],
+    "8a": [_g8a_1, _g8a_2, _g8a_3, _g8a_4, _g8a_5, _g8a_6, _g8a_7_human],
     4: [
         _g4_1_marg,
         _g4_2_cruce,
@@ -1223,7 +1335,7 @@ PHASES: dict[int, list[Callable[[], Check]]] = {
 }
 
 
-def run_checks(phase: int) -> list[Check]:
+def run_checks(phase: int | str) -> list[Check]:
     if phase not in PHASES:
         raise NotImplementedError(f"La puerta de la fase {phase} aún no está implementada")
     return [f() for f in PHASES[phase]]
@@ -1233,7 +1345,7 @@ def _icon(ok: bool | None) -> str:
     return {True: "✅", False: "❌", None: "⏸️"}[ok]
 
 
-def write_gate_report(phase: int, checks: list[Check]) -> str:
+def write_gate_report(phase: int | str, checks: list[Check]) -> str:
     from sinpop.repro import code_version
 
     superada = all(c.ok is not False for c in checks)
@@ -1251,12 +1363,13 @@ def write_gate_report(phase: int, checks: list[Check]) -> str:
         f"| {c.id} | {c.descripcion} | {_icon(c.ok)} | {c.valor} | {c.umbral} |" for c in checks
     ]
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    path = REPORTS_DIR / f"fase_{phase:02d}_puerta.md"
+    nombre = f"{phase:02d}" if isinstance(phase, int) else f"0{phase}"
+    path = REPORTS_DIR / f"fase_{nombre}_puerta.md"
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return str(path)
 
 
-def run_phase(phase: int) -> bool:
+def run_phase(phase: int | str) -> bool:
     checks = run_checks(phase)
     for c in checks:
         print(f"{_icon(c.ok)} {c.id} {c.descripcion}: {c.valor} (umbral: {c.umbral})")
