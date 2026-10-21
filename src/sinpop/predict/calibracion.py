@@ -101,7 +101,7 @@ def calibrar(d: pl.DataFrame) -> dict:
     """Cuantiles conformales de |observada − predicha| / σ, globales y por tramo de similitud
     de la mejor análoga (con al menos `MIN_CASOS_TRAMO` opciones)."""
     mu = d["sistema_cis"].to_numpy()
-    s = np.sqrt(d["sd"].to_numpy() ** 2 + E.C_ESCALA * mu * (1 - mu))
+    s = np.sqrt(d["sd"].to_numpy() ** 2 + E.C_ESCALA * np.clip(mu * (1 - mu), 0, None))
     z = np.abs(d["observada"].to_numpy() - mu) / np.maximum(s, 1e-6)
     tr = np.array([E.tramo(x) for x in d["similitud_max"].to_numpy()])
     por_tramo = {}

@@ -6,10 +6,10 @@ usan los modelos: perfil (F4-F6), valores (F8A: religiosidad, clase subjetiva), 
 salida.
 
 Pesos: `peso` (todos los adultos), `peso_es` (españoles, el universo del CIS) y `peso_cis`
-(españoles reponderados para que su recuerdo de voto de 2023 tenga la composición que tiene en las
-muestras del CIS de los 12 meses anteriores al corte: más voto al PSOE y menos abstención que el
-resultado oficial, D-068). `peso_cis` predice lo que **mediría el CIS**, que es con lo que se
-valida; `peso`, lo que piensa la población.
+(españoles ajustados por *raking* a la composición de las muestras del CIS de los 12 meses
+anteriores al corte en recuerdo de voto de 2023 —más voto al PSOE y menos abstención que el
+resultado oficial, D-068—, edad × sexo, estudios y comunidad). `peso_cis` predice lo que
+**mediría el CIS**, que es con lo que se valida; `peso`, lo que piensa la población.
 
 Con 100.000 personas el error de muestreo de una proporción es ≤ 0,3 puntos, muy por
 debajo del error del modelo, y la predicción tarda segundos en vez de minutos.
@@ -19,6 +19,7 @@ from __future__ import annotations
 
 from functools import cache
 
+import numpy as np
 import polars as pl
 
 from sinpop import POPULATIONS_DIR
@@ -63,26 +64,43 @@ def marco(run_id: str = NACIONAL) -> pl.DataFrame:
         (pl.col("peso") / pl.col("peso").mean()).alias("peso"),
     )
     es = m["nacionalidad_esp_ext"] == "espanola"
-    m = m.with_columns(pl.when(es).then(pl.col("peso")).otherwise(0.0).alias("peso_es"))
+    m = m.with_columns(
+        pl.when(es).then(pl.col("peso")).otherwise(0.0).alias("peso_es"),
+        (pl.col("edad_4") + "|" + pl.col("sexo")).alias("_edad_sexo"),
+    )
+    return m.with_columns(pl.Series("peso_cis", rastrillo(m, "peso_es"))).drop("_edad_sexo")
+
+
+DIMENSIONES_CIS = {
+    "grupo_voto": "grupo_voto",
+    "_edad_sexo": "_edad_sexo",
+    "estudios_3": "estudios_3",
+    "ccaa": "ccaa",
+}
+
+
+def rastrillo(m: pl.DataFrame, peso: str, iteraciones: int = 30) -> np.ndarray:
+    """Raking del peso de los españoles a la composición de las muestras del CIS en grupo de voto,
+    edad × sexo, estudios y comunidad (`composicion_cis`)."""
+    w = m[peso].to_numpy().copy()
     obj = composicion_cis()
-    actual = (
-        m.filter(es)
-        .group_by("grupo_voto")
-        .agg(pl.col("peso_es").sum())
-        .with_columns(pl.col("peso_es") / pl.col("peso_es").sum())
-    )
-    razon = {g: obj.get(g, 0.0) / a for g, a in actual.iter_rows() if a > 0}
-    return m.with_columns(
-        (pl.col("peso_es") * pl.col("grupo_voto").replace_strict(razon, default=0.0)).alias(
-            "peso_cis"
-        )
-    )
+    cols = {d: m[c].cast(pl.Utf8).to_numpy() for d, c in DIMENSIONES_CIS.items()}
+    for _ in range(iteraciones):
+        for d, col in cols.items():
+            tot = w.sum()
+            for lv, p in obj[d].items():
+                s = col == lv
+                a = w[s].sum()
+                if a > 0:
+                    w[s] *= p * tot / a
+    return w
 
 
 @cache
-def composicion_cis() -> dict[str, float]:
-    """Reparto del grupo de voto de 2023 entre los encuestados españoles de 18+ de los estudios
-    nacionales del CIS de los 12 meses anteriores al corte (ponderado)."""
+def composicion_cis() -> dict[str, dict[str, float]]:
+    """Composición de los encuestados españoles de 18+ de los estudios nacionales del CIS de los
+    12 meses anteriores al corte (ponderada): grupo de voto de 2023, edad × sexo, estudios y
+    comunidad."""
     import datetime as dt
 
     from sinpop import INTERIM_DIR
@@ -102,12 +120,12 @@ def composicion_cis() -> dict[str, float]:
     )
     d = p.join(RV.respuestas(), on=["estudio", "encuestado"]).with_columns(
         grupo_voto(pl.col("recuerdo")),
+        (_edad4(pl.col("edad")) + "|" + pl.col("sexo")).alias("_edad_sexo"),
         (pl.col("peso") / pl.col("peso").mean().over("estudio")).alias("peso"),
     )
-    t = (
-        d.filter(pl.col("grupo_voto").is_not_null())
-        .group_by("grupo_voto")
-        .agg(pl.col("peso").sum())
-    )
-    tot = t["peso"].sum()
-    return {g: w / tot for g, w in t.iter_rows()}
+    out = {}
+    for dim in DIMENSIONES_CIS:
+        t = d.filter(pl.col(dim).is_not_null()).group_by(dim).agg(pl.col("peso").sum())
+        tot = t["peso"].sum()
+        out[dim] = {g: w / tot for g, w in t.iter_rows()}
+    return out

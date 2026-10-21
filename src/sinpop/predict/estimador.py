@@ -221,7 +221,7 @@ def intervalos(
     q = cal
     if similitud is not None and tramo(similitud) in cal.get("por_tramo", {}):
         q = cal["por_tramo"][tramo(similitud)]
-    s = np.sqrt(sd**2 + cal["c_escala"] * mu * (1 - mu))
+    s = np.sqrt(sd**2 + cal["c_escala"] * np.clip(mu * (1 - mu), 0, None))
     i80 = np.column_stack([np.clip(mu - q["q80"] * s, 0, 1), np.clip(mu + q["q80"] * s, 0, 1)])
     i95 = np.column_stack([np.clip(mu - q["q95"] * s, 0, 1), np.clip(mu + q["q95"] * s, 0, 1)])
     return i80, i95
