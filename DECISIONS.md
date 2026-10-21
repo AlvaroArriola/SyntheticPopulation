@@ -1247,3 +1247,32 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - Los extranjeros y los residentes en colectivos, fuera del universo del CIS, reciben la predicción con su perfil y se marcan `extrapolada`; el resto, `modelada`.
   - Limitación declarada: en los extranjeros, el modelo de los españoles infravalora previsiblemente «otra religión», y no hay fuente oficial para corregirlo.
 - **Dependencias nuevas:** `pyreadstat`, `scikit-learn` y `statsmodels`. `semopy` no compila en el entorno; el análisis factorial confirmatorio de V-LATENTE se programa con `scipy`.
+
+## D-064 · Capa de opinión: modelo MRP, universos y validación (2026-10-21)
+
+- **Fecha:** 2026-10-21
+- **Fase:** F8A
+- **Estado:** aprobada por el agente (decisiones delegadas para esta noche; ningún umbral cambia; G8A.7 queda para revisión humana).
+- **Datos:** 39 estudios del CIS anteriores al corte (37 barómetros mensuales de enero de 2023 a junio de 2026 y las oleadas del Barómetro Sanitario de noviembre de 2025 y marzo de 2026), 154.838 encuestados. Los tres barómetros posteriores al corte (julio, septiembre y octubre de 2026) están en `data/eval/cis/` y no se leen. No hay ficha de barómetro en junio ni en septiembre de 2023 (tampoco en agosto, que no se hace).
+- **Universos:**
+  - Los barómetros mensuales solo entrevistan a personas de nacionalidad española: ningún extranjero en los estudios que traen la variable.
+  - El Barómetro Sanitario entrevista también a extranjeros (128 y 170 en sus dos oleadas).
+  - Los modelos de valores y rasgos se ajustan solo con españoles, porque no llevan la nacionalidad como predictor. Los extranjeros sintéticos siguen marcados `extrapolada` (D-063).
+  - En G8A.5 la población sintética que responde son todos los adultos en vivienda familiar, el universo del Sanitario.
+- **Modelo (al estilo MRP):**
+  - Al modelo aditivo se le añade la interacción comunidad × edad en cuatro grupos.
+  - Sin ella, religiosidad quedaba en el 89,5 % de celdas en el IC, por debajo del umbral del 90 %. Los fallos se repartían por todas las categorías: es el efecto de la edad propio de cada comunidad, que el modelo aditivo no recoge.
+  - La regularización se elige por validación cruzada (3 particiones fijas, log-verosimilitud ponderada; rejilla C ∈ {0,01; 0,03; 0,1; 0,3; 1}). Así el modelo se encoge hacia efectos simples cuando hay pocos encuestados por celda.
+  - Alternativa considerada: un modelo multinivel bayesiano (PyMC). Se descarta por coste y por reproducibilidad bit a bit; la regresión penalizada es su aproximación estándar.
+- **Rasgos continuos:**
+  - Los residuos reales se sortean dentro de la celda edad × estudios × sexo. Antes se sorteaban por edad × estudios, y la varianza dentro de los grupos por sexo salía 0,78-1,39 frente al CIS.
+  - La regularización de la regresión de los rasgos también se elige por validación cruzada (RidgeCV).
+- **V-OPINION-CV (G8A.2):**
+  - Se toma una versión por pregunta: la lista de opciones que aparece en más estudios. Los problemas codificados cambian de lista con el tiempo y cada lista cuenta como pregunta distinta en el banco.
+  - Se excluyen las preguntas políticas (ministros, líderes, voto), las técnicas y las de perfil (nacionalidad, edad, sexo).
+- **G8A.5 (Barómetro Sanitario):**
+  - La oleada de contraste es la última del Sanitario anterior al corte (marzo de 2026).
+  - Cada pregunta se ajusta con los estudios de los 12 meses previos que tienen la misma pregunta (variable, enunciado y opciones).
+  - Se informa la TVD por comunidad frente a tres referencias: B0 (distribución nacional previa), B1 (distribución directa previa de la comunidad) y el ruido muestral de la oleada de contraste.
+  - Con una sola oleada de ajuste y la interacción sin regularizar, el modelo quedaba peor que B0 (0,085 frente a 0,078). Con la regularización por validación cruzada y los barómetros cuando comparten pregunta, mejora a B0 y a B1.
+- **Pesos:** se usa `PESO` (ponderación con ajuste por estudios), normalizado a media 1 por estudio. `PESOCCAA` es la ponderación autonómica sin el ajuste por estudios. Dentro de una comunidad, `PESO` corrige además la composición por estudios.
