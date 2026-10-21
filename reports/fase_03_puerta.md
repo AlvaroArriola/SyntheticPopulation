@@ -1,7 +1,7 @@
 # Puerta de la fase F3
 
 **Resultado:** superada  
-**Fecha:** 2026-10-20 · **Versión del código:** git:9472480  
+**Fecha:** 2026-10-21 · **Versión del código:** git:8eb0b2c-dirty  
 **Comando:** `sinpop validate --phase 3`
 
 | ID | Comprobación | Resultado | Valor | Umbral |

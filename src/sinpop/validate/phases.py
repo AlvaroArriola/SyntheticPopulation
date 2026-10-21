@@ -1301,6 +1301,187 @@ def _g8a_7_human() -> Check:
     )
 
 
+def _f8b() -> dict | None:
+    import json
+
+    from sinpop.validate.fase8b import RESUMEN
+
+    return json.loads(RESUMEN.read_text(encoding="utf-8")) if RESUMEN.exists() else None
+
+
+def _sin_f8b(id_: str, desc: str, um: str) -> Check:
+    falta = "falta reports/fase_08b_validacion.json (python -m sinpop.validate.fase8b)"
+    return Check(id_, desc, False, falta, um)
+
+
+def _g8b_1() -> Check:
+    d, desc = _f8b(), "Recuerdo de generales por provincia frente al oficial (V-POL-RECUERDO)"
+    um = "TVD ≤ 1,2 × TVD_ref + 0,005 en cada provincia"
+    if d is None:
+        return _sin_f8b("G8B.1", desc, um)
+    g = d["g8b1"]
+    return Check(
+        "G8B.1",
+        desc,
+        g["dentro"] == g["provincias"],
+        f"{g['dentro']}/{g['provincias']} provincias; TVD máx. {g['tvd_max']:.3f}",
+        um,
+    )
+
+
+def _g8b_2() -> Check:
+    d, desc = _f8b(), "Mitad reservada de municipios frente al oficial (V-POL-RESERVADA)"
+    um = "TVD ≤ 0,04 España y ≤ 0,06 CCAA (+ ruido de muestreo); participación ≤ 3 puntos"
+    if d is None:
+        return _sin_f8b("G8B.2", desc, um)
+    g = d["g8b2"]
+    fuera = [f"{x['ccaa']} {x['tamano_municipio']}" for x in g["ccaa_fuera"]]
+    return Check(
+        "G8B.2",
+        desc,
+        g["espana_dentro"] == g["espana_celdas"] and not fuera,
+        f"España {g['espana_dentro']}/{g['espana_celdas']}; CCAA × tamaño "
+        f"{g['ccaa_dentro']}/{g['ccaa_evaluables']} evaluables; fuera: {fuera or 0}",
+        um,
+    )
+
+
+def _g8b_3() -> Check:
+    d, desc = _f8b(), "Perfil de cada electorado frente al postelectoral 3420 (V-POL-PERFIL)"
+    um = "TVD ≤ 0,08 por variable en electorados con ≥ 300 casos"
+    if d is None:
+        return _sin_f8b("G8B.3", desc, um)
+    g = d["g8b3"]
+    return Check(
+        "G8B.3",
+        desc,
+        g["dentro"] == g["comparaciones"],
+        f"{g['dentro']}/{g['comparaciones']}; TVD máx. {g['tvd_max']:.3f}",
+        um,
+    )
+
+
+def _g8b_4() -> Check:
+    d, desc = _f8b(), "Ideología dentro de cada electorado frente al CIS (V-POL-COHERENCIA)"
+    um = "media ± 0,3; razón de desviaciones en [0,8; 1,2]"
+    if d is None:
+        return _sin_f8b("G8B.4", desc, um)
+    g = d["g8b4"]
+    return Check(
+        "G8B.4",
+        desc,
+        g["dentro"] == g["electorados"],
+        f"{g['dentro']}/{g['electorados']} electorados; fuera: {g['fuera'] or 0}",
+        um,
+    )
+
+
+def _g8b_5() -> Check:
+    d, desc = _f8b(), "Transferencia generales → autonómicas frente al CIS (V-POL-TRANSFERENCIA)"
+    um = "TVD ≤ 0,10 por fila con ≥ 200 casos (CIS ajustado por IPF a los márgenes oficiales)"
+    if d is None or "g8b5" not in d:
+        return _sin_f8b("G8B.5", desc, um)
+    g = d["g8b5"]
+    return Check(
+        "G8B.5",
+        desc,
+        g["evaluables"] > 0 and g["dentro"] == g["evaluables"],
+        f"{g['dentro']}/{g['evaluables']} filas; TVD media {g['tvd_media']:.3f}",
+        um,
+    )
+
+
+def _g8b_6() -> Check:
+    d, desc = _f8b(), "Ninguna variable política en la población base ni en la de opinión"
+    um = "0 columnas; persons y opinion sin cambios (sha256)"
+    if d is None:
+        return _sin_f8b("G8B.6", desc, um)
+    g = d["g8b6"]
+    return Check(
+        "G8B.6",
+        desc,
+        g["ok"],
+        f"base: {g['base_con_politica'] or 0}; opinión: {g['opinion_con_politica'] or 0}; "
+        f"sin cambios: {g['persons_sin_cambios'] and g['opinion_sin_cambios']}",
+        um,
+    )
+
+
+def _g8b_7() -> Check:
+    d, desc = _f8b(), "Pruebas de sesgo político (V-POL-SESGO)"
+    um = "razón de entropías ≥ 0,9; contrafactual de ideología ± 0,3"
+    if d is None:
+        return _sin_f8b("G8B.7", desc, um)
+    g = d["g8b7"]
+    return Check(
+        "G8B.7",
+        desc,
+        g["diversidad_dentro"] == g["diversidad_comparaciones"]
+        and g["contrafactual_dentro"] == g["contrafactual_electorados"],
+        f"diversidad {g['diversidad_dentro']}/{g['diversidad_comparaciones']} "
+        f"(razón mín. {g['diversidad_razon_min']:.2f}); contrafactual "
+        f"{g['contrafactual_dentro']}/{g['contrafactual_electorados']}",
+        um,
+    )
+
+
+def _g8b_8() -> Check:
+    d, desc = _f8b(), "Sin recuerdo de voto sin derecho a voto en esa elección"
+    um = "0 personas"
+    if d is None:
+        return _sin_f8b("G8B.8", desc, um)
+    g = d["g8b8"]
+    a = g["autonomicas"]
+    return Check(
+        "G8B.8",
+        desc,
+        g["ok"],
+        f"generales: {g['sin_derecho_con_recuerdo']} de {g['sin_derecho']} sin derecho; "
+        f"autonómicas: {a['sin_derecho_con_recuerdo']} de {a['sin_derecho']}",
+        um,
+    )
+
+
+def _g8b_latentes() -> Check:
+    from sinpop.config import load_config
+
+    c = load_config("thresholds.yaml").v_latente  # type: ignore[attr-defined]
+    d, desc = _f8b(), "Ajuste de los rasgos políticos latentes (V-LATENTE, tarea 6)"
+    um = f"CFI ≥ {c.cfi_min}, RMSEA ≤ {c.rmsea_max}, omega ≥ {c.omega_min} por rasgo"
+    if d is None or "latentes" not in d:
+        return _sin_f8b("G8B.L", desc, um)
+    rs = d["latentes"]
+    malos = [
+        r["rasgo"]
+        for r in rs
+        if r["cfi"] < c.cfi_min or r["rmsea"] > c.rmsea_max or r["omega"] < c.omega_min - 1e-3
+    ]
+    return Check(
+        "G8B.L",
+        desc,
+        bool(rs) and not malos,
+        "; ".join(
+            f"{r['rasgo']}: CFI {r['cfi']:.3f}, RMSEA {r['rmsea']:.3f}, omega {r['omega']:.2f}"
+            for r in rs
+        )
+        + f"; fuera: {malos or 0}",
+        um,
+    )
+
+
+def _g8b_9_human() -> Check:
+    texto = (REPO_ROOT / "DECISIONS.md").read_text(encoding="utf-8")
+    i = texto.find("### Aprobación de F8B")
+    ok = i >= 0 and "**Estado:** aprobada" in texto[i : i + 400]
+    return Check(
+        "G8B.9",
+        "Revisión humana del informe de F8B",
+        True if ok else None,
+        "aprobada" if ok else "pendiente (reports/fase_08b.md)",
+        "aprobación",
+    )
+
+
 PHASES: dict[int | str, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
@@ -1325,6 +1506,18 @@ PHASES: dict[int | str, list[Callable[[], Check]]] = {
     6: [_g6_1, _g6_2, _g6_3, _g6_4, _g6_5, _g6_6],
     7: [_g7_1, _g7_2, _g7_3, _g7_4, _g7_5, _g7_6, _g7_7_human],
     "8a": [_g8a_1, _g8a_2, _g8a_3, _g8a_4, _g8a_5, _g8a_6, _g8a_7_human],
+    "8b": [
+        _g8b_1,
+        _g8b_2,
+        _g8b_3,
+        _g8b_4,
+        _g8b_5,
+        _g8b_6,
+        _g8b_7,
+        _g8b_8,
+        _g8b_latentes,
+        _g8b_9_human,
+    ],
     4: [
         _g4_1_marg,
         _g4_2_cruce,

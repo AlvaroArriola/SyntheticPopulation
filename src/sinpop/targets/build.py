@@ -1060,8 +1060,9 @@ def electorales_provincia() -> list[pl.DataFrame]:
             {
                 "fuente": "resultados_autonomicas: boletines oficiales de cada comunidad",
                 "edicion": "última elección de cada comunidad (2023–2026; elecciones.yaml)",
-                "metodo": "suma de circunscripciones; abstención = electores − válidos − nulos; "
-                "Aragón sin electores publicados (sin abstención); familias D-030",
+                "metodo": "suma de circunscripciones; abstención = electores − CERA − válidos − "
+                "nulos (CERA de las generales de 2023 donde el censo autonómico lo incluye, "
+                "D-067); Aragón sin electores publicados (sin abstención); familias D-030",
             },
         )
     )

@@ -88,10 +88,10 @@ def asignar(
     for k, claves in enumerate(niveles):
         grupos_d = {
             key: np.asarray(g["_i"].to_numpy())
-            for key, g in d.with_row_index("_i").group_by(claves)
+            for key, g in d.with_row_index("_i").group_by(claves, maintain_order=True)
         }
         s_pend = s.with_row_index("_j").filter(pl.Series(pendiente))
-        for key, g in s_pend.group_by(claves):
+        for key, g in s_pend.sort("_j").group_by(claves, maintain_order=True):
             cand = grupos_d.get(key)
             if cand is None or len(cand) < MIN_DONANTES:
                 continue

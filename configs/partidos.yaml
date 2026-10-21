@@ -1526,3 +1526,149 @@ recuerdo_ess_generales_2023:
   Other: otros
   Blank vote: blanco
   Invalid vote: nulo
+# Recuerdo de voto de la última elección autonómica de cada comunidad en los postelectorales
+# autonómicos del CIS (3566 Andalucía 2026, 3548 Aragón 2026, 3550 Castilla y León 2026, 3541
+# Extremadura 2025, 3446 Galicia 2024, 3459 País Vasco 2024, 3464 Cataluña 2024; 3410, las doce
+# comunidades y las dos ciudades del 28/05/2023), por la ETIQUETA (D-067). Cada sigla lleva la
+# familia que la candidatura oficial tiene en `tools/familias_autonomicas.py` (D-030, D-032).
+# «Otro partido» mezcla familias: «otros», como en el recuerdo de generales.
+recuerdo_cis_autonomicas:
+  PP: centro_derecha_estatal
+  PSOE: socialdemocrata
+  PSC-PSOE: socialdemocrata
+  PSdeG-PSOE: socialdemocrata
+  PSE-EE-PSOE: socialdemocrata
+  VOX: derecha_radical
+  SALF: derecha_radical
+  Se Acabó la Fiesta: derecha_radical
+  Ciudadanos: centro_derecha_estatal
+  C's: centro_derecha_estatal
+  Cs: centro_derecha_estatal
+  Por Andalucía: izquierda_estatal
+  IU-MOVIMIENTO SUMAR: izquierda_estatal
+  IU-MS-VQ: izquierda_estatal
+  IU: izquierda_estatal
+  PODEMOS-AV: izquierda_estatal
+  Podemos-AV: izquierda_estatal
+  Podemos-IU-AV: izquierda_estatal
+  Podemos: izquierda_estatal
+  Unidas Podemos: izquierda_estatal
+  UP: izquierda_estatal
+  Más Madrid: izquierda_estatal
+  Sumar Galicia: izquierda_estatal
+  Podemos Galicia: izquierda_estatal
+  Sumar Mugimendua: izquierda_estatal
+  Elkarrekin Podemos-Alianza Verde: izquierda_estatal
+  Comuns Sumar: izquierda_estatal
+  Adelante Andalucía: nacionalista_regionalista
+  Jaén Merece Más: nacionalista_regionalista
+  CHA: nacionalista_regionalista
+  EXISTE: nacionalista_regionalista
+  Teruel Existe: nacionalista_regionalista
+  PAR: nacionalista_regionalista
+  UPL: nacionalista_regionalista
+  XAV: nacionalista_regionalista
+  SYA: nacionalista_regionalista
+  AD-EV: nacionalista_regionalista
+  Juntos-Levanta: nacionalista_regionalista
+  BNG: nacionalista_regionalista
+  Democracia Ourensana: nacionalista_regionalista
+  Espazo Común Galeguista: nacionalista_regionalista
+  EH Bildu: nacionalista_regionalista
+  EAJ-PNV: nacionalista_regionalista
+  Cat-Junts+: nacionalista_regionalista
+  ERC: nacionalista_regionalista
+  CUP-DT: nacionalista_regionalista
+  Aliança Catalana: nacionalista_regionalista
+  Alhora: nacionalista_regionalista
+  Compromís: nacionalista_regionalista
+  CCa: nacionalista_regionalista
+  Nueva Canarias: nacionalista_regionalista
+  Drago Verdes Canarias: nacionalista_regionalista
+  PNC (Partido Nacionalista Canario): nacionalista_regionalista
+  MÉS (PSM-Entesa): nacionalista_regionalista
+  PI (Proposta per les Illes): nacionalista_regionalista
+  MXME (Més per Menorca): nacionalista_regionalista
+  PRC: nacionalista_regionalista
+  FAC: nacionalista_regionalista
+  UPN: nacionalista_regionalista
+  Geroa Bai: nacionalista_regionalista
+  Partido Riojano: nacionalista_regionalista
+  España Vaciada: nacionalista_regionalista
+  Coalición por Melilla: nacionalista_regionalista
+  MDyC: nacionalista_regionalista
+  PACMA: otros
+  Por un Mundo más Justo (M+J): otros
+  Partido Feminista de España: otros
+  Otro partido: otros
+  En blanco: blanco
+  Nulo: nulo
+  Voto nulo: nulo
+  No votó: abstencion
+  No tenía edad: no_tenia_edad
+  No tenía derecho a voto: sin_derecho_voto
+  N.R.: NS
+  N.C.: NC
+# Intención de voto en las generales del 23/07/2023 en el estudio 3410 (junio de 2023), que se
+# usa como aproximación del voto de generales en las comunidades que votaron el 28/05/2023 (no hay
+# un estudio con recuerdo de esas autonómicas y de las generales de 2023; D-067). Etiqueta →
+# familia de la candidatura de generales; «No votaría» = abstención; «No sabe todavía» = NS.
+intencion_cis_generales_2023_3410:
+  PP: centro_derecha_estatal
+  PSOE: socialdemocrata
+  VOX: derecha_radical
+  Movimiento Sumar: izquierda_estatal
+  Podemos: izquierda_estatal
+  Unidas Podemos: izquierda_estatal
+  IU: izquierda_estatal
+  Más País: izquierda_estatal
+  Más Madrid: izquierda_estatal
+  En Comú Podem: izquierda_estatal
+  En Común-Unidas Podemos: izquierda_estatal
+  Verdes-Equo: izquierda_estatal
+  Por Andalucía: izquierda_estatal
+  Compromís: izquierda_estatal  # concurrió dentro de Sumar en las generales de 2023
+  Ciudadanos: centro_derecha_estatal
+  ERC: nacionalista_regionalista
+  EH Bildu: nacionalista_regionalista
+  JxCat: nacionalista_regionalista
+  EAJ-PNV: nacionalista_regionalista
+  BNG: nacionalista_regionalista
+  CUP: nacionalista_regionalista
+  CCa-PNC: nacionalista_regionalista
+  Nueva Canarias: nacionalista_regionalista
+  Drago Verdes Canarias: nacionalista_regionalista
+  Teruel Existe: nacionalista_regionalista
+  Geroa Bai: nacionalista_regionalista
+  UPN: nacionalista_regionalista
+  UPL: nacionalista_regionalista
+  MÉS (PSM-Entesa): nacionalista_regionalista
+  PRC: nacionalista_regionalista
+  Soria Ya: nacionalista_regionalista
+  Adelante Andalucía: nacionalista_regionalista
+  Andalucía Por Sí: nacionalista_regionalista
+  Jaén Merece Más: nacionalista_regionalista
+  FAC: nacionalista_regionalista
+  España Vaciada: nacionalista_regionalista
+  CHA: nacionalista_regionalista
+  Vía Burgalesa: nacionalista_regionalista
+  PACMA: otros
+  Escaños en Blanco: otros
+  Partido Feminista de España: otros
+  Partido Libertario: otros
+  Por un Mundo más Justo (M+J): otros
+  Otro partido: otros
+  En blanco: blanco
+  Voto nulo: nulo
+  No votaría: abstencion
+  No sabe todavía: NS
+  N.C.: NC
+# Partido más cercano a sus ideas (CERCANIA, últimos 12 meses antes del corte; D-067). Cada
+# etiqueta toma la familia que ya tiene en los códigos del CIS de este fichero (`cis`) o en el
+# recuerdo autonómico; aquí solo las que no aparecen en ellos. «Ninguno» es una opción propia y
+# N.S./N.C. son respuestas legítimas (regla 10).
+cercania_cis_adicionales:
+  SUMAR: izquierda_estatal
+  Ninguno: ninguno
+  N.S.: NS
+  N.C.: NC

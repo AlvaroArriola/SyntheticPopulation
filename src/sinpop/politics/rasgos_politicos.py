@@ -74,6 +74,7 @@ def datos(rasgo: str) -> pl.DataFrame:
         d = d.join(ideol, on=["estudio", "encuestado"], how="left").with_columns(
             bloque_cis(pl.col("ideologia")).alias("ideologia_bloque")
         )
+    d = d.sort("estudio", "encuestado")  # orden fijo: residuos sorteados por posición
     if "grupo_voto" not in predictores(rasgo):
         return d
     if L.universo(rasgo) != "todos":
@@ -86,6 +87,7 @@ def datos(rasgo: str) -> pl.DataFrame:
         d.filter(pl.col("_voto").is_in(list(GRUPO)))
         .with_columns(pl.col("_voto").replace_strict(GRUPO).alias("grupo_voto"))
         .drop("_voto")
+        .sort("estudio", "encuestado")
     )
 
 

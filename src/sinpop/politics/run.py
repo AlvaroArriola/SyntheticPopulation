@@ -14,6 +14,8 @@ import json
 import polars as pl
 
 from sinpop import POPULATIONS_DIR
+from sinpop.politics import autonomicas as AU
+from sinpop.politics import cercania as CE
 from sinpop.politics import derecho as DV
 from sinpop.politics import ess_donantes as ED
 from sinpop.politics import ideologia as ID
@@ -38,8 +40,12 @@ def construir(run_id: str) -> dict:
     eleg = DV.elegible(persons, RV.ELECCION, make_rng(semilla_capa(semilla, "elegible_2023")))
     tabla = tabla.with_columns(pl.Series("derecho_voto_generales_2023", eleg))
     voto, info_voto = RV.asignar(persons, opinion, eleg, make_rng(semilla_capa(semilla, "voto")))
+    auto, info_auto = AU.asignar(persons, voto, make_rng(semilla_capa(semilla, "autonomicas")))
     ideol, info_ideol = ID.asignar(
         persons, opinion, voto, make_rng(semilla_capa(semilla, "ideologia"))
+    )
+    cerca, info_cerca = CE.asignar(
+        persons, opinion, voto, make_rng(semilla_capa(semilla, "cercania"))
     )
     rasgos, info_rasgos = RP.asignar(
         persons, voto, ideol, make_rng(semilla_capa(semilla, "rasgos_politicos"))
@@ -47,7 +53,9 @@ def construir(run_id: str) -> dict:
     actitudes, info_ess = ED.asignar(persons, voto, make_rng(semilla_capa(semilla, "ess")))
     tabla = (
         tabla.join(voto, on="person_id", how="left")
+        .join(auto, on="person_id", how="left")
         .join(ideol, on="person_id", how="left")
+        .join(cerca, on="person_id", how="left")
         .join(rasgos, on="person_id", how="left")
         .join(actitudes, on="person_id", how="left")
         .with_columns(pl.lit(FECHA_REFERENCIA).alias("fecha_referencia"))
@@ -68,6 +76,10 @@ def construir(run_id: str) -> dict:
             "el número de estudio y al CIS)",
             "infoelectoral_resultados": "Ministerio del Interior, generales del 23/07/2023 "
             "(escrutinio provisional por municipio, residentes)",
+            "cis_postelectorales_autonomicos": "CIS, estudios 3410, 3446, 3459, 3464, 3541, "
+            "3548, 3550 y 3566 (postelectorales autonómicos)",
+            "resultados_autonomicas": "boletines oficiales de cada comunidad, última elección "
+            "autonómica (configs/elecciones.yaml)",
             "cis_3409": "CIS, estudio 3409, Identidades culturales, nacionales y europeas (2023)",
             "ess11": "European Social Survey European Research Infrastructure (ESS ERIC), "
             "ESS round 11 - 2023, fichero integrado, edición 4.2 (ESS11e04_2), distribuido "
@@ -75,7 +87,9 @@ def construir(run_id: str) -> dict:
         },
         "variables": {
             "recuerdo_voto_generales": info_voto,
+            "recuerdo_voto_autonomicas": info_auto,
             "ideologia_autoubicacion": info_ideol,
+            "cercania_partido": info_cerca,
             "rasgos_politicos": info_rasgos,
             "actitudes_ess": info_ess,
         },

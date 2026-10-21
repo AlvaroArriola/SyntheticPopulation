@@ -59,7 +59,8 @@ def respuestas() -> pl.DataFrame:
 
 def datos() -> pl.DataFrame:
     d = RV.datos().filter(pl.col("recuerdo").is_in(RV.OPCIONES))
-    return d.join(respuestas(), on=["estudio", "encuestado"])
+    # orden fijo: la validación cruzada del modelo depende del orden de las filas
+    return d.join(respuestas(), on=["estudio", "encuestado"]).sort("estudio", "encuestado")
 
 
 def asignar(
@@ -83,8 +84,12 @@ def asignar(
     pr = np.where(con_voto[:, None], m.probabilidades(perfil), m0.probabilidades(perfil))
     u = rng.random(len(pr))
     idx = (pr.cumsum(axis=1) < u[:, None]).sum(axis=1).clip(max=len(m.clases) - 1)
+    fuera = (perfil["nacionalidad_esp_ext"] != "espanola") | (
+        perfil["tipo_residencia"] != "vivienda_familiar"
+    )
     out = perfil.select("person_id").with_columns(
-        pl.Series("ideologia_autoubicacion", np.array(m.clases)[idx])
+        pl.Series("ideologia_autoubicacion", np.array(m.clases)[idx]),
+        pl.Series("ideologia_autoubicacion__calidad", np.where(fuera, "extrapolada", "modelada")),
     )
     return out, {
         "encuestados": d.height,

@@ -140,7 +140,8 @@ def g36_electorales(fs: dict[str, pl.DataFrame]) -> tuple[list[str], dict[str, f
 
 def electores_autonomicas(territorio: str) -> float:
     """Electores publicados de las circunscripciones autonómicas del territorio (votantes donde
-    no se publican electores: Aragón), sin la lista autonómica de Canarias."""
+    no se publican electores: Aragón), sin la lista autonómica de Canarias y sin el CERA
+    descontado (`electorales.cera_autonomicas`)."""
     from sinpop import INTERIM_DIR
     from sinpop.targets.build import provincias_de
 
@@ -149,4 +150,11 @@ def electores_autonomicas(territorio: str) -> float:
         (pl.col("circunscripcion") != "05-AUT")
         & pl.col("circunscripcion").str.slice(0, 2).is_in(provincias_de(territorio))
     )
-    return float(c.select(pl.coalesce("electores", "votantes")).sum().item())
+    from sinpop.targets.electorales import cera_autonomicas
+
+    c = c.join(cera_autonomicas(), on=["ccaa", "circunscripcion"], how="left")
+    return float(
+        c.select(pl.coalesce("electores", "votantes") - pl.col("cera_descontado").fill_null(0.0))
+        .sum()
+        .item()
+    )

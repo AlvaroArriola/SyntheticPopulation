@@ -67,6 +67,62 @@ def comprobar_generales(opciones: pl.DataFrame) -> None:
         raise ValueError(f"{malos.height} municipios cuyas opciones no suman su censo")
 
 
+UMBRAL_CERA = 0.9  # parte del censo CERA de 2023 que debe explicar el exceso de electores
+
+
+def cera_autonomicas() -> pl.DataFrame:
+    """Electores residentes en el extranjero (CERA) que se descuentan de cada circunscripción
+    autonómica (D-067, reapertura de F3).
+
+    Los boletines autonómicos dan el censo total, con el CERA, mientras que la población sintética
+    y los objetivos de generales son de residentes (regla 2 de `docs/02`, §3.5). Sin descontarlo,
+    la abstención de los residentes sale inflada (Galicia: 44 % frente a 33 %). El CERA de cada
+    provincia es el de las generales de 2023: electores del BOE (con CERA) menos el censo de
+    residentes de las hojas de Interior. Se descuenta en las comunidades cuyo censo autonómico
+    supera al de residentes de 2023 en al menos el `UMBRAL_CERA` de ese CERA (el censo incluye
+    el CERA); en Andalucía (2026) el exceso es el 41 %, explicable por el crecimiento del censo de
+    residentes, y no se descuenta. Dentro de una provincia con varias islas, se reparte en
+    proporción a los electores. Los votos del CERA (en torno al 1-5 % de su censo) no se publican
+    aparte y quedan dentro de los votos: la abstención de residentes queda algo por debajo de la
+    real.
+    """
+    res = pl.read_parquet(INTERIM_DIR / "elecciones_autonomicas_circunscripciones.parquet").filter(
+        (pl.col("circunscripcion") != "05-AUT") & pl.col("electores").is_not_null()
+    )
+    residentes = (
+        pl.read_parquet(INTERIM_DIR / "elecciones_generales_2023_municipios.parquet")
+        .group_by("provincia")
+        .agg(pl.col("censo_residentes").sum().alias("residentes"))
+    )
+    boe = pl.read_parquet(INTERIM_DIR / "elecciones_generales_2023_provincias.parquet").select(
+        "provincia", pl.col("electores").alias("boe")
+    )
+    cera = residentes.join(boe, on="provincia").with_columns(
+        (pl.col("boe") - pl.col("residentes")).alias("cera")
+    )
+    c = res.with_columns(pl.col("circunscripcion").str.slice(0, 2).alias("provincia")).join(
+        cera, on="provincia"
+    )
+    por_ccaa = (
+        c.group_by("ccaa")
+        .agg(
+            pl.col("electores").sum(),
+            pl.col("residentes").unique().sum(),
+            pl.col("cera").unique().sum(),
+        )
+        .with_columns(
+            ((pl.col("electores") - pl.col("residentes")) / pl.col("cera")).alias("fraccion")
+        )
+    )
+    incluye = por_ccaa.filter(pl.col("fraccion") >= UMBRAL_CERA)["ccaa"].to_list()
+    return c.with_columns(
+        pl.when(pl.col("ccaa").is_in(incluye))
+        .then(pl.col("cera") * pl.col("electores") / pl.col("electores").sum().over("provincia"))
+        .otherwise(0.0)
+        .alias("cera_descontado")
+    ).select("ccaa", "circunscripcion", "cera_descontado")
+
+
 def autonomicas_circunscripciones() -> pl.DataFrame:
     """Opciones por circunscripción autonómica: ccaa, circunscripcion, provincia, opcion, valor.
 
@@ -100,14 +156,18 @@ def autonomicas_circunscripciones() -> pl.DataFrame:
         .group_by("ccaa", "circunscripcion", "opcion")
         .agg(pl.col("votos").sum().cast(pl.Float64).alias("valor"))
     )
+    res = res.join(cera_autonomicas(), on=["ccaa", "circunscripcion"], how="left")
     esp = res.select(
         "ccaa",
         "circunscripcion",
         pl.col("blancos").cast(pl.Float64).alias("blanco"),
         pl.col("nulos").cast(pl.Float64).alias("nulo"),
-        (pl.col("electores") - pl.col("validos") - pl.col("nulos"))
-        .cast(pl.Float64)
-        .alias("abstencion"),
+        (
+            pl.col("electores").cast(pl.Float64)
+            - pl.col("cera_descontado").fill_null(0.0)
+            - pl.col("validos")
+            - pl.col("nulos")
+        ).alias("abstencion"),
     ).unpivot(index=["ccaa", "circunscripcion"], variable_name="opcion", value_name="valor")
     esp = esp.filter(pl.col("valor").is_not_null())
     out = pl.concat([v, esp])

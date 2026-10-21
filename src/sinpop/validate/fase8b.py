@@ -19,6 +19,15 @@
 - G8B.4 V-POL-COHERENCIA: autoubicación (1-10, sin NS/NC) dentro de cada electorado frente a
   todos los estudios del CIS con recuerdo de 2023: media a ± 0,3 y razón de desviaciones en
   [0,8; 1,2].
+- G8B.5 V-POL-TRANSFERENCIA: matriz generales → autonómicas (cada fila: el voto autonómico de
+  quienes votaron a una opción en generales) frente a la de cada postelectoral autonómico con
+  recuerdo de las dos elecciones; TVD ≤ 0,10 por fila con al menos 200 casos. El recuerdo de
+  encuesta exagera la participación (los encuestados declaran un 10-14 % de abstención
+  autonómica frente al 30-45 % real) y la población está calibrada a los resultados oficiales:
+  la tabla cruzada del CIS se ajusta antes por IPF a los márgenes oficiales de las dos elecciones
+  en la comunidad, lo que conserva su asociación (razones de odds) y quita el sesgo de los
+  márgenes (D-067). Se informa también la TVD sin ajustar. Las comunidades del 28/05/2023 solo
+  tienen la intención de voto de generales (3410): se informan, no se evalúan.
 - G8B.6: ninguna variable política en la población base ni en la capa de opinión, que además no
   cambian (su sha256 es el de su metadata).
 - G8B.7 V-POL-SESGO: (1) diversidad no política de cada electorado (edad, sexo, estudios,
@@ -46,7 +55,9 @@ import polars as pl
 from sinpop import POPULATIONS_DIR, REPORTS_DIR
 from sinpop.config import load_config
 from sinpop.harmonize.core import ccaa_de_provincia
+from sinpop.opinion import latentes as L
 from sinpop.opinion.valores import TAMANO_A_CIS
+from sinpop.politics import autonomicas as AU
 from sinpop.politics import ideologia as ID
 from sinpop.politics import recuerdo as RV
 from sinpop.repro import code_version, sha256_file
@@ -62,6 +73,8 @@ REPLICAS = 200
 POSTELECTORAL = "3420"
 MIN_CASOS_PERFIL = 300
 TVD_PERFIL = 0.08
+TVD_TRANSFERENCIA = 0.10
+MIN_CASOS_FILA = 200
 TOL_MEDIA = 0.3
 RAZON_SD = (0.8, 1.2)
 RAZON_ENTROPIA = 0.9
@@ -235,6 +248,84 @@ def v_pol_coherencia(s: pl.DataFrame) -> pl.DataFrame:
     )
 
 
+def _margenes_oficiales(ccaa: str) -> tuple[np.ndarray, np.ndarray]:
+    """Reparto oficial de generales 2023 (residentes) y de las autonómicas (residentes, sin
+    CERA) en la comunidad, en el orden de `RV.OPCIONES`."""
+    cod = ccaa_de_provincia()
+    g = RV.objetivos().filter(pl.col("provincia").replace_strict(cod) == ccaa)
+    a = AU.objetivos().filter(pl.col("provincia").replace_strict(cod) == ccaa)
+    gd = dict(g.group_by("opcion").agg(pl.col("valor").sum()).iter_rows())
+    ad = dict(a.group_by("opcion").agg(pl.col("valor").sum()).iter_rows())
+    vg = np.array([gd.get(k, 0.0) for k in RV.OPCIONES])
+    va = np.array([ad.get(k, 0.0) for k in RV.OPCIONES])
+    return vg / vg.sum(), va / va.sum()
+
+
+def ipf(tabla: np.ndarray, filas: np.ndarray, columnas: np.ndarray, iters: int = 500) -> np.ndarray:
+    """Ajuste proporcional iterativo de una tabla (con un pequeño suelo en las celdas vacías de
+    filas y columnas con objetivo) a sus márgenes."""
+    t = tabla / tabla.sum() + 1e-9 * np.outer(filas > 0, columnas > 0)
+    for _ in range(iters):
+        r = t.sum(1)
+        t = t * np.where(r > 0, filas / np.where(r > 0, r, 1), 0)[:, None]
+        c = t.sum(0)
+        t = t * np.where(c > 0, columnas / np.where(c > 0, c, 1), 0)[None, :]
+        if np.abs(t.sum(1) - filas).max() < 1e-9:
+            break
+    return t
+
+
+def v_pol_transferencia(s: pl.DataFrame) -> pl.DataFrame:
+    cis = AU.datos()
+    e = s.filter(
+        pl.col("recuerdo_voto_generales").is_in(RV.OPCIONES)
+        & pl.col("recuerdo_voto_autonomicas").is_in(RV.OPCIONES)
+        & (pl.col("tipo_residencia") == "vivienda_familiar")
+    )
+    filas = []
+    k = len(RV.OPCIONES)
+    for (estudio, ccaa), c in cis.group_by("estudio", "ccaa"):
+        cc = c.filter(pl.col("generales").is_in(RV.OPCIONES))
+        tabla = np.zeros((k, k))
+        for gi, ai, w in cc.select("generales", "autonomicas", "peso").iter_rows():
+            tabla[RV.OPCIONES.index(gi), RV.OPCIONES.index(ai)] += w
+        mg, ma = _margenes_oficiales(ccaa)
+        ia = RV.OPCIONES.index("abstencion")
+        if ma[ia] == 0:  # Aragón: sin electores publicados; la abstención es la de la población
+            sa = _reparto(e.filter(pl.col("ccaa") == ccaa), "recuerdo_voto_autonomicas")
+            ma = ma * (1 - sa.get("abstencion", 0.0))
+            ma[ia] = sa.get("abstencion", 0.0)
+        ajustada = ipf(tabla, mg, ma)
+        for g in RV.OPCIONES:
+            fila_c = c.filter(pl.col("generales") == g)
+            fila_s = e.filter((pl.col("ccaa") == ccaa) & (pl.col("recuerdo_voto_generales") == g))
+            if fila_s.is_empty():
+                continue
+            fila_a = ajustada[RV.OPCIONES.index(g)]
+            filas.append(
+                {
+                    "estudio": estudio,
+                    "ccaa": ccaa,
+                    "generales": g,
+                    "casos_cis": fila_c.height,
+                    "evaluable": estudio != AU.ESTUDIO_2023 and fila_c.height >= MIN_CASOS_FILA,
+                    "tvd": _tvd_dict(
+                        _reparto(fila_s, "recuerdo_voto_autonomicas"),
+                        dict(zip(RV.OPCIONES, fila_a / fila_a.sum(), strict=True)),
+                    ),
+                    "tvd_sin_ajustar": _tvd_dict(
+                        _reparto(fila_s, "recuerdo_voto_autonomicas"),
+                        _reparto(fila_c, "autonomicas"),
+                    ),
+                }
+            )
+    return (
+        pl.DataFrame(filas)
+        .with_columns((pl.col("tvd") <= TVD_TRANSFERENCIA).alias("ok"))
+        .sort("ccaa", "generales")
+    )
+
+
 def v_pol_capas(run_id: str, s_cols: list[str]) -> dict:
     d = POPULATIONS_DIR / run_id
     politicas = set(pl.read_parquet_schema(d / "politics.parquet")) - {
@@ -356,7 +447,36 @@ def v_pol_contrafactual(run_id: str, s: pl.DataFrame) -> pl.DataFrame:
     )
 
 
+def v_latente_politica() -> list[dict]:
+    """V-LATENTE de los rasgos políticos (tarea 6). Con tres ítems (0 grados de libertad) el
+    ajuste es el del factorial conjunto de su grupo (`conjunto` en `rasgos.yaml`)."""
+    filas = []
+    for r in L.rasgos("politica"):
+        _, i = L.ajuste(r)
+        i["ajuste_de"] = "propio"
+        if i["gl"] == 0:
+            conj = L.definicion(r).get("conjunto")
+            c = L.ajuste_conjunto(i["estudios"][0], "politica", conj)
+            if c is not None:
+                i |= {"cfi": c["cfi"], "rmsea": c["rmsea"], "ajuste_de": f"conjunto {c['rasgos']}"}
+        filas.append(i)
+    return filas
+
+
 def v_pol_derecho(s: pl.DataFrame) -> dict:
+    """Generales de 2023 y última autonómica: sin derecho, sin recuerdo; con derecho, con él."""
+    sin_a = s.filter(~pl.col("derecho_voto_autonomicas_ultima"))
+    auto = {
+        "sin_derecho": sin_a.height,
+        "sin_derecho_con_recuerdo": sin_a.filter(
+            pl.col("recuerdo_voto_autonomicas").is_in(RV.OPCIONES)
+            | pl.col("recuerdo_voto_autonomicas_ns_nc")
+        ).height,
+        "con_derecho_sin_recuerdo": s.filter(
+            pl.col("derecho_voto_autonomicas_ultima")
+            & ~pl.col("recuerdo_voto_autonomicas").is_in(RV.OPCIONES)
+        ).height,
+    }
     sin = s.filter(~pl.col("derecho_voto_generales_2023"))
     con_recuerdo = sin.filter(
         pl.col("recuerdo_voto_generales").is_in(RV.OPCIONES)
@@ -368,7 +488,11 @@ def v_pol_derecho(s: pl.DataFrame) -> dict:
         "sin_derecho": sin.height,
         "sin_derecho_con_recuerdo": con_recuerdo,
         "con_derecho_sin_recuerdo": sin_dato,
-        "ok": con_recuerdo == 0 and sin_dato == 0,
+        "autonomicas": auto,
+        "ok": con_recuerdo == 0
+        and sin_dato == 0
+        and auto["sin_derecho_con_recuerdo"] == 0
+        and auto["con_derecho_sin_recuerdo"] == 0,
     }
 
 
@@ -456,6 +580,9 @@ def ejecutar(run_id: str = NACIONAL) -> dict:
     esp, cc = v_pol_reservada(s)
     esp.write_csv(DETALLE / f"{run_id}_v_pol_reservada_espana.csv")
     cc.write_csv(DETALLE / f"{run_id}_v_pol_reservada_ccaa.csv")
+    tr = v_pol_transferencia(s)
+    tr.write_csv(DETALLE / f"{run_id}_v_pol_transferencia.csv")
+    tr_ev = tr.filter(pl.col("evaluable"))
     perfil = v_pol_perfil(s)
     perfil.write_csv(DETALLE / f"{run_id}_v_pol_perfil.csv")
     coh = v_pol_coherencia(s)
@@ -502,6 +629,15 @@ def ejecutar(run_id: str = NACIONAL) -> dict:
             .select("electorado", "media_cis", "media_sintetica", "razon_sd")
             .to_dicts(),
         },
+        "g8b5": {
+            "filas": tr.height,
+            "evaluables": tr_ev.height,
+            "dentro": int(tr_ev["ok"].sum()),
+            "fuera": tr_ev.filter(~pl.col("ok"))
+            .select("ccaa", "generales", "casos_cis", "tvd")
+            .to_dicts(),
+            "tvd_media": float(tr_ev["tvd"].mean()),
+        },
         "g8b6": v_pol_capas(run_id, s.columns),
         "g8b7": {
             "diversidad_comparaciones": div.height,
@@ -515,6 +651,7 @@ def ejecutar(run_id: str = NACIONAL) -> dict:
             "contrafactual_fuera": cf.filter(~pl.col("ok")).to_dicts(),
         },
         "g8b8": v_pol_derecho(s),
+        "latentes": v_latente_politica(),
     }
     RESUMEN.write_text(json.dumps(res, ensure_ascii=False, indent=1), "utf-8")
     return res
