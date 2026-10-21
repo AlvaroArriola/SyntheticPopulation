@@ -18,6 +18,8 @@ import polars as pl
 from sinpop import POPULATIONS_DIR, REPORTS_DIR
 from sinpop.opinion import cv as CV
 from sinpop.opinion import latentes as L
+from sinpop.opinion import lengua as LG
+from sinpop.opinion import medios as MD
 from sinpop.opinion import rasgos as R
 from sinpop.opinion import run as OR
 from sinpop.opinion import valores as V
@@ -45,27 +47,35 @@ def _edad_4(edad: pl.Expr) -> pl.Expr:
     )
 
 
-def sintetica(run_id: str) -> pl.DataFrame:
+def referencias() -> dict[str, tuple]:
+    """Variable observada → (datos de referencia, universo de la comparación). Las del CIS se
+    comparan en su universo (españoles en vivienda familiar); la lengua, con la ECEPOV, en todos
+    los adultos en vivienda familiar (D-066)."""
+    out = {v: ((lambda v=v: V.datos(v)), "espanoles") for v in VALORES}
+    out["lengua_habitual"] = (LG.datos, "todos")
+    out["medio_informacion_principal"] = (MD.datos, "espanoles")
+    return out
+
+
+def sintetica(run_id: str, universo: str = "espanoles") -> pl.DataFrame:
     d = POPULATIONS_DIR / run_id
     p = pl.read_parquet(
         d / "persons.parquet",
         columns=["person_id", "edad", "ccaa", "peso", "nacionalidad_esp_ext", "tipo_residencia"],
     )
     o = pl.read_parquet(d / "opinion.parquet")
-    return (
-        p.join(o, on="person_id")
-        .filter(
-            (pl.col("nacionalidad_esp_ext") == "espanola")
-            & (pl.col("tipo_residencia") == "vivienda_familiar")
-        )
-        .with_columns(_edad_4(pl.col("edad")))
-    )
+    filtro = pl.col("tipo_residencia") == "vivienda_familiar"
+    if universo == "espanoles":
+        filtro = filtro & (pl.col("nacionalidad_esp_ext") == "espanola")
+    return p.join(o, on="person_id").filter(filtro).with_columns(_edad_4(pl.col("edad")))
 
 
-def v_marg_valores(s: pl.DataFrame, replicas: int = 200, semilla: int = 0) -> pl.DataFrame:
+def v_marg_valores(run_id: str, replicas: int = 200, semilla: int = 0) -> pl.DataFrame:
     filas = []
-    for v in VALORES:
-        e = V.datos(v).with_columns(_edad_4(pl.col("edad")))
+    sint = {u: sintetica(run_id, u) for u in ("espanoles", "todos")}
+    for v, (fuente, universo) in referencias().items():
+        s = sint[universo]
+        e = fuente().with_columns(_edad_4(pl.col("edad")))
         ic = bootstrap_ic(e, v, "peso", ["ccaa", "edad_4"], None, replicas, semilla)
         ps = _props(s, v, "peso", ["ccaa", "edad_4"])
         pe = _props(e, v, "peso", ["ccaa", "edad_4"])
@@ -95,10 +105,11 @@ def v_marg_valores(s: pl.DataFrame, replicas: int = 200, semilla: int = 0) -> pl
     return pl.concat(filas, how="diagonal_relaxed")
 
 
-def tvd_nacional(s: pl.DataFrame) -> list[dict]:
+def tvd_nacional(run_id: str) -> list[dict]:
     out = []
-    for v in VALORES:
-        e = V.datos(v)
+    sint = {u: sintetica(run_id, u) for u in ("espanoles", "todos")}
+    for v, (fuente, universo) in referencias().items():
+        s, e = sint[universo], fuente()
         a = _props(s.with_columns(pl.lit(1).alias("_t")), v, "peso", ["_t"]).select(
             v, pl.col("p").alias("p_s")
         )
@@ -172,7 +183,7 @@ def ejecutar(run_id: str = NACIONAL) -> dict:
     if not (POPULATIONS_DIR / run_id / "opinion.parquet").exists():
         OR.construir(run_id)
     s = sintetica(run_id)
-    m = v_marg_valores(s)
+    m = v_marg_valores(run_id)
     m.write_csv(DETALLE / f"{run_id}_v_marg_valores.csv")
     por_var = (
         m.group_by("variable")
@@ -188,7 +199,7 @@ def ejecutar(run_id: str = NACIONAL) -> dict:
             "umbral_tvd": 0.02,
             "por_variable": por_var.to_dicts(),
             "global": float(m["en_ic"].mean()),
-            "tvd_nacional": tvd_nacional(s),
+            "tvd_nacional": tvd_nacional(run_id),
         },
     }
     dv = v_diversidad_rasgos(run_id, s)

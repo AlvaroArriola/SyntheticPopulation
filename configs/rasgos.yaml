@@ -61,3 +61,14 @@ rasgos:
       MEDIDASCLIMA: numerica  # importancia (0-10) de tomar medidas contra sus efectos
       P12: recursos_clima  # dedicar más recursos públicos a fenómenos y desastres naturales
       P7: atribucion_clima  # la DANA se relaciona con el cambio climático
+  # Estudio 3495 (Inteligencia artificial, febrero de 2025), P.3: grado (1-10) en que asocia cada
+  # palabra a los avances tecnológicos (enunciado en las tablas marginales del CIS). Las palabras
+  # positivas forman un factor (D-066); las negativas (deshumanización, riesgos…) miden otra cosa.
+  # La batería de beneficios de la IA (P.14) solo la responde quien conoce la IA y no se usa.
+  rasgo_confianza_tecnologia:
+    estudios: ["3495"]
+    items:
+      P3_1: numerica  # progreso
+      P3_3: numerica  # riqueza
+      P3_5: numerica  # eficacia
+      P3_10: numerica  # bienestar

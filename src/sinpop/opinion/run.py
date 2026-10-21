@@ -14,6 +14,8 @@ import json
 import polars as pl
 
 from sinpop import POPULATIONS_DIR
+from sinpop.opinion import lengua as LG
+from sinpop.opinion import medios as MD
 from sinpop.opinion import rasgos as R
 from sinpop.opinion import valores as V
 from sinpop.repro import code_version, sha256_file
@@ -34,6 +36,10 @@ def construir(run_id: str) -> dict:
     tr, info_r = R.asignar(persons, semilla_capa(semilla, "rasgos"))
     tabla = tabla.join(tr, on="person_id", how="left")
     info |= info_r
+    for nombre, modulo in [("lengua", LG), ("medios", MD)]:
+        t_, i_ = modulo.asignar(persons, semilla_capa(semilla, nombre))
+        tabla = tabla.join(t_, on="person_id", how="left")
+        info |= i_
     tabla = tabla.with_columns(pl.lit(FECHA_REFERENCIA).alias("fecha_referencia"))
     destino = d / "opinion.parquet"
     tabla.write_parquet(destino)
@@ -46,7 +52,10 @@ def construir(run_id: str) -> dict:
         "version_codigo": code_version(),
         "fecha": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"),
         "fuentes": {
-            "cis_barometros": "CIS, barómetros mensuales (citar el número de estudio y al CIS)",
+            "cis_barometros": "CIS, barómetros mensuales y estudios temáticos (citar el número "
+            "de estudio y al CIS)",
+            "ecepov2021": "INE, Encuesta de Características Esenciales de la Población y las "
+            "Viviendas 2021 (lengua habitual)",
         },
         "variables": info,
         "personas": tabla.height,

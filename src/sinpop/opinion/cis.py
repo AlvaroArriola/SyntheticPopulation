@@ -287,6 +287,17 @@ def _peso(df: pl.DataFrame) -> pl.Series:
 PERFIL = ("SEXO", "EDAD", "CCAA", "SITLAB", "ESTUDIOS")
 
 
+def _variable_nacionalidad(meta) -> str | None:
+    """`NACIONALIDAD` o, en muchos estudios (barómetros de 2023-2024, 3511…), la `P0` de filtro
+    con el enunciado «Nacionalidad de la persona entrevistada» (D-066)."""
+    if "NACIONALIDAD" in meta.column_names:
+        return "NACIONALIDAD"
+    for v, et in zip(meta.column_names, meta.column_labels, strict=True):
+        if (et or "").strip().lower() == "nacionalidad de la persona entrevistada":
+            return v
+    return None
+
+
 def personas(estudio: str) -> pl.DataFrame:
     """Perfil armonizado, peso, fecha y variables de valores de un estudio."""
     df, meta = leer(estudio)
@@ -309,10 +320,9 @@ def personas(estudio: str) -> pl.DataFrame:
         "actividad_3": _recodificar(df, meta, "SITLAB", SITLAB, estudio),
         "peso": _peso(df),
     }
-    if "NACIONALIDAD" in df.columns:
-        columnas["nacionalidad_esp_ext"] = _recodificar(
-            df, meta, "NACIONALIDAD", NACIONALIDAD, estudio
-        )
+    var_nac = _variable_nacionalidad(meta)
+    if var_nac is not None:
+        columnas["nacionalidad_esp_ext"] = _recodificar(df, meta, var_nac, NACIONALIDAD, estudio)
     for v, (orig, mapa) in VALORES.items():
         if orig in df.columns:
             columnas[v] = _recodificar(df, meta, orig, mapa, estudio)

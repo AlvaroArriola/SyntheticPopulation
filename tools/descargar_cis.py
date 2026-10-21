@@ -159,7 +159,7 @@ def por_ficha(fichas: list[str]) -> list[dict]:
         slug, fecha = f.split("@")
         url = f"{BASE}/en/surveys/{slug}"
         try:
-            texto = _pagina(url, f"ficha_{slug[:80]}.html")
+            texto = _pagina(url, f"ficha_{re.sub(r'[^\w.-]', '_', slug)[:80]}.html")
         except RuntimeError as exc:
             print(f"  sin ficha {slug}: {exc}", flush=True)
             continue
