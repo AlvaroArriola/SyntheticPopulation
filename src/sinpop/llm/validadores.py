@@ -10,6 +10,14 @@ from collections.abc import Callable
 
 TOLERANCIA_SUMA = 0.03
 CAMBIO_MAX_PP = 50
+# la justificación se enseña en la interfaz: una salida con «x» o vacía se rechaza y se repite
+JUSTIFICACION_MIN = 30
+
+
+def _justificacion(s: dict) -> None:
+    j = (s.get("justificacion") or "").strip()
+    if len(j) < JUSTIFICACION_MIN or len(set(j)) < 8:
+        raise ValueError(f"justificación vacía o demasiado corta: {j[:20]!r}")
 
 
 def construir(spec: dict | None) -> Callable[[dict], None] | None:
@@ -24,6 +32,7 @@ def construir(spec: dict | None) -> Callable[[dict], None] | None:
 
 def _distribucion(n: int, claves: list[str]) -> Callable[[dict], None]:
     def _v(s: dict) -> None:
+        _justificacion(s)
         dists = [("total", s["total"])] + [(x["clave"], x["distribucion"]) for x in s["subgrupos"]]
         faltan = set(claves) - {x["clave"] for x in s["subgrupos"]}
         if faltan:
@@ -39,6 +48,7 @@ def _distribucion(n: int, claves: list[str]) -> Callable[[dict], None]:
 
 def _evento(categorias: list[str]) -> Callable[[dict], None]:
     def _v(s: dict) -> None:
+        _justificacion(s)
         if {x["categoria"] for x in s["categorias"]} != set(categorias):
             raise ValueError("las categorías no coinciden con las pedidas")
         if any(abs(x["cambio_pp"]) > CAMBIO_MAX_PP for x in s["categorias"]):

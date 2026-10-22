@@ -47,7 +47,8 @@ presupuesto:
   eur_max_total: 15.0
   llamadas_max_por_prediccion: 100
   eur_por_usd: 1.0
-  usar_lotes: true
+  # sin lotes (D-085): un lote de la API tardó más de tres horas; para una demo hay que responder en segundos
+  usar_lotes: false
   descuento_lotes: 0.5
 reintentos_salida_invalida: 2
 cache_dir: logs/llm/cache

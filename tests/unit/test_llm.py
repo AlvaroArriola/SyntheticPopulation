@@ -28,7 +28,7 @@ def _ok(_s: dict) -> str:
         {
             "total": d,
             "subgrupos": [{"clave": k, "distribucion": d} for k in CLAVES],
-            "justificacion": "x",
+            "justificacion": "Referencia: preguntas parecidas del CIS y perfil de la población.",
         }
     )
 
@@ -107,3 +107,17 @@ def test_exportar_y_enviar_desde_otra_sesion(rutas, monkeypatch) -> None:
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     assert C.ejecutar([p])["b2:Q1"]["total"] == [0.5, 0.4, 0.1]
     assert C.exportar([p], "prueba")["peticiones"] == 0
+
+
+def test_justificacion_vacia_se_rechaza() -> None:
+    """Una salida con justificación «x» se rechaza para que se repita (D-085)."""
+    from sinpop.llm import validadores as V
+
+    v = V.construir({"tipo": "evento", "categorias": ["a"]})
+    bien = {
+        "categorias": [{"categoria": "a", "cambio_pp": 1}],
+        "justificacion": "Se apoya en eventos parecidos del banco.",
+    }
+    v(bien)
+    with pytest.raises(ValueError):
+        v({**bien, "justificacion": "x"})
