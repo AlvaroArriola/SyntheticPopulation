@@ -141,6 +141,7 @@ def test_fallo_del_llm_cae_al_estimador_sin_llm(monkeypatch) -> None:
     monkeypatch.setattr(S, "calibracion_llm", lambda: None)
     monkeypatch.setattr(S, "construir_asistida", falla)
     monkeypatch.setattr(S, "construir", lambda r, run_id: {"aviso": "Simulado.", "parametros": {}})
-    out = S.predecir_dict({"id": "x", "tipo": "pregunta", "enunciado": "¿Qué?", "opciones": ["Sí", "No"]}, "r")
+    q = {"id": "x", "tipo": "pregunta", "enunciado": "¿Qué?", "opciones": ["Sí", "No"]}
+    out = S.predecir_dict(q, "r")
     assert "no dio una respuesta válida" in out["aviso"]
     assert "ValueError" in out["parametros"]["llm_fallo"]

@@ -375,6 +375,7 @@ class AnthropicBackend:
     """Envío real con el SDK oficial de Anthropic (`pip install anthropic`)."""
 
     ESPERA_S = 30
+    CONCURRENCIA = 8
 
     def __init__(self) -> None:
         import anthropic
@@ -389,11 +390,15 @@ class AnthropicBackend:
         return Respuesta(texto, msg.usage.input_tokens, msg.usage.output_tokens, msg.stop_reason)
 
     def enviar(self, solicitudes: list[dict], lotes: bool) -> dict[str, Respuesta]:
-        if not lotes:
-            out = {}
-            for s in solicitudes:
-                out[s["custom_id"]] = self._respuesta(self.cliente.messages.create(**_sin_id(s)))
-            return out
+        if not lotes:  # directas, varias a la vez (D-085): una evaluación son ~150 llamadas
+            from concurrent.futures import ThreadPoolExecutor
+
+            def una(s: dict) -> Respuesta:
+                return self._respuesta(self.cliente.messages.create(**_sin_id(s)))
+
+            with ThreadPoolExecutor(self.CONCURRENCIA) as ex:
+                res = list(ex.map(una, solicitudes))
+            return {s["custom_id"]: r for s, r in zip(solicitudes, res, strict=True)}
         # la API de lotes solo admite identificadores [a-zA-Z0-9_-]{1,64}: se numeran y se
         # traducen de vuelta a los nuestros
         ids = {f"r{i}": s["custom_id"] for i, s in enumerate(solicitudes)}

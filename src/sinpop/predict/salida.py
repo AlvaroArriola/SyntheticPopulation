@@ -534,7 +534,7 @@ def predecir_dict(
     if permitir_llm and sin_analogas and C.disponible() and usar:
         try:
             out = construir_asistida(p, r, run_id)
-        except Exception as e:  # sin respuesta válida del LLM: estimador sin LLM, avisándolo (D-085)
+        except Exception as e:  # sin salida válida del LLM: estimador sin él, con aviso (D-085)
             fallo = f"{type(e).__name__}: {e}"
         else:
             # en una población de comunidad, el total es el subgrupo de esa comunidad
