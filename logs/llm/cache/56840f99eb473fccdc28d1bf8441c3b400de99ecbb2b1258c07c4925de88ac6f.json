@@ -1,0 +1,329 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "pregunta_nueva@v2",
+  "prompt_sha256": "4500dc4f7e1cd580ff41ed6c56eb69c85b5e800e04da1b7c4436e1ba13df1d85",
+  "tarea": "pregunta_nueva"
+ },
+ "salida": {
+  "justificacion": "La vivienda aparece como problema principal para un tercio de la población (2025-11), lo que indica alta saliencia y pocas respuestas «No sabe». En encuestas españolas la construcción de vivienda pública y la limitación de alquileres reúnen apoyos mayoritarios, con más peso del límite de alquiler entre jóvenes y en Cataluña, Baleares, Madrid y País Vasco. La bajada de impuestos a la compra atrae más a perfiles de mediana edad y de derecha, y el «No sabe» crece entre mayores y personas con menos estudios.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.31,
+     0.31,
+     0.2,
+     0.13,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.35,
+     0.28,
+     0.13,
+     0.18,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.38,
+     0.27,
+     0.13,
+     0.15,
+     0.05,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.39,
+     0.23,
+     0.15,
+     0.11,
+     0.09,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.36,
+     0.26,
+     0.14,
+     0.16,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.36,
+     0.28,
+     0.16,
+     0.12,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.35,
+     0.25,
+     0.17,
+     0.12,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.35,
+     0.28,
+     0.15,
+     0.15,
+     0.05,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.38,
+     0.29,
+     0.12,
+     0.16,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.36,
+     0.25,
+     0.17,
+     0.13,
+     0.07,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.37,
+     0.26,
+     0.15,
+     0.14,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.39,
+     0.25,
+     0.15,
+     0.13,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.33,
+     0.32,
+     0.13,
+     0.15,
+     0.05,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.37,
+     0.28,
+     0.15,
+     0.12,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.37,
+     0.25,
+     0.15,
+     0.15,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.37,
+     0.23,
+     0.16,
+     0.16,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.36,
+     0.24,
+     0.17,
+     0.15,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.35,
+     0.31,
+     0.13,
+     0.13,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.35,
+     0.27,
+     0.15,
+     0.15,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.37,
+     0.23,
+     0.17,
+     0.14,
+     0.07,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.38,
+     0.25,
+     0.15,
+     0.13,
+     0.07,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.35,
+     0.29,
+     0.13,
+     0.17,
+     0.05,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.34,
+     0.24,
+     0.16,
+     0.18,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.39,
+     0.27,
+     0.14,
+     0.12,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.4,
+     0.29,
+     0.12,
+     0.11,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.36,
+     0.25,
+     0.15,
+     0.16,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.36,
+     0.23,
+     0.18,
+     0.14,
+     0.07,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.36,
+     0.23,
+     0.18,
+     0.14,
+     0.07,
+     0.02
+    ]
+   }
+  ],
+  "total": [
+   0.36,
+   0.27,
+   0.15,
+   0.14,
+   0.06,
+   0.02
+  ]
+ }
+}

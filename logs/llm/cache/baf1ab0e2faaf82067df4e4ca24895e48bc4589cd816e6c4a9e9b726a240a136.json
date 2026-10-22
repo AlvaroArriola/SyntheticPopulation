@@ -1,0 +1,358 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v1",
+  "prompt_sha256": "fdf90794003d185beb2898461229b348e1bd5b63684ae27a9e2bba6ce1652f50",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "La seguridad de las fronteras con Marruecos es un asunto de amplio consenso en España, con mayoría que lo valora como muy o bastante importante; las diferencias se concentran en el nivel de no respuesta, algo mayor entre mayores y personas con estudios básicos, y apenas varían por sexo o comunidad.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.32,
+     0.36,
+     0.09,
+     0.11,
+     0.06,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.34,
+     0.36,
+     0.08,
+     0.1,
+     0.06,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.36,
+     0.35,
+     0.08,
+     0.09,
+     0.04,
+     0.05,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.36,
+     0.33,
+     0.08,
+     0.07,
+     0.04,
+     0.09,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.35,
+     0.34,
+     0.08,
+     0.1,
+     0.06,
+     0.05,
+     0.02
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.35,
+     0.36,
+     0.08,
+     0.08,
+     0.04,
+     0.06,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.37,
+     0.33,
+     0.07,
+     0.08,
+     0.04,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.35,
+     0.37,
+     0.08,
+     0.09,
+     0.05,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.31,
+     0.39,
+     0.09,
+     0.11,
+     0.06,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.38,
+     0.34,
+     0.07,
+     0.08,
+     0.04,
+     0.06,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.33,
+     0.37,
+     0.08,
+     0.1,
+     0.06,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.36,
+     0.36,
+     0.07,
+     0.09,
+     0.05,
+     0.05,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.32,
+     0.36,
+     0.08,
+     0.11,
+     0.07,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.34,
+     0.35,
+     0.08,
+     0.09,
+     0.06,
+     0.05,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.36,
+     0.35,
+     0.07,
+     0.09,
+     0.05,
+     0.05,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.37,
+     0.34,
+     0.07,
+     0.08,
+     0.04,
+     0.07,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.36,
+     0.35,
+     0.07,
+     0.08,
+     0.05,
+     0.06,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.33,
+     0.36,
+     0.09,
+     0.11,
+     0.05,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.34,
+     0.35,
+     0.08,
+     0.1,
+     0.06,
+     0.05,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.38,
+     0.34,
+     0.07,
+     0.08,
+     0.04,
+     0.06,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.36,
+     0.36,
+     0.07,
+     0.08,
+     0.04,
+     0.06,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.33,
+     0.37,
+     0.08,
+     0.1,
+     0.06,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.37,
+     0.34,
+     0.07,
+     0.09,
+     0.05,
+     0.06,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.33,
+     0.36,
+     0.09,
+     0.11,
+     0.05,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.32,
+     0.37,
+     0.09,
+     0.11,
+     0.06,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.35,
+     0.36,
+     0.08,
+     0.09,
+     0.05,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.36,
+     0.35,
+     0.07,
+     0.08,
+     0.05,
+     0.06,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.36,
+     0.35,
+     0.07,
+     0.08,
+     0.05,
+     0.06,
+     0.03
+    ]
+   }
+  ],
+  "total": [
+   0.35,
+   0.35,
+   0.08,
+   0.09,
+   0.05,
+   0.05,
+   0.03
+  ]
+ }
+}

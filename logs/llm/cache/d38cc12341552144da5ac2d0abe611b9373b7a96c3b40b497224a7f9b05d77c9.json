@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v1",
+  "prompt_sha256": "fdf90794003d185beb2898461229b348e1bd5b63684ae27a9e2bba6ce1652f50",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Luis Planas, ministro de Agricultura, Pesca y Alimentación, es una figura poco conocida por el público general, por lo que predomina el «N.S.»; las diferencias entre grupos son pequeñas y se concentran en que las personas con más estudios y menor edad muestran algo más de opinión formada.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.2,
+     0.1,
+     0.64,
+     0.06
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.21,
+     0.11,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.2,
+     0.12,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.19,
+     0.13,
+     0.6,
+     0.08
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.21,
+     0.13,
+     0.6,
+     0.06
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.19,
+     0.11,
+     0.64,
+     0.06
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.18,
+     0.1,
+     0.64,
+     0.08
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.2,
+     0.12,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.22,
+     0.14,
+     0.58,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.2,
+     0.12,
+     0.61,
+     0.07
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.2,
+     0.12,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.2,
+     0.12,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.21,
+     0.11,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.2,
+     0.12,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.2,
+     0.12,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.2,
+     0.12,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.2,
+     0.12,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.22,
+     0.11,
+     0.61,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.21,
+     0.11,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.19,
+     0.12,
+     0.63,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.2,
+     0.12,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.21,
+     0.13,
+     0.6,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.2,
+     0.12,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.2,
+     0.13,
+     0.61,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.21,
+     0.12,
+     0.61,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.2,
+     0.12,
+     0.62,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.19,
+     0.11,
+     0.64,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.19,
+     0.11,
+     0.64,
+     0.06
+    ]
+   }
+  ],
+  "total": [
+   0.2,
+   0.12,
+   0.62,
+   0.06
+  ]
+ }
+}

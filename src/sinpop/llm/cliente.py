@@ -393,12 +393,17 @@ class AnthropicBackend:
         if not lotes:  # directas, varias a la vez (D-085): una evaluación son ~150 llamadas
             from concurrent.futures import ThreadPoolExecutor
 
-            def una(s: dict) -> Respuesta:
-                return self._respuesta(self.cliente.messages.create(**_sin_id(s)))
+            import anthropic
+
+            def una(s: dict) -> Respuesta | None:
+                try:
+                    return self._respuesta(self.cliente.messages.create(**_sin_id(s)))
+                except anthropic.APIError:  # sin respuesta: se reintenta en la vuelta siguiente
+                    return None
 
             with ThreadPoolExecutor(self.CONCURRENCIA) as ex:
                 res = list(ex.map(una, solicitudes))
-            return {s["custom_id"]: r for s, r in zip(solicitudes, res, strict=True)}
+            return {s["custom_id"]: r for s, r in zip(solicitudes, res, strict=True) if r}
         # la API de lotes solo admite identificadores [a-zA-Z0-9_-]{1,64}: se numeran y se
         # traducen de vuelta a los nuestros
         ids = {f"r{i}": s["custom_id"] for i, s in enumerate(solicitudes)}
