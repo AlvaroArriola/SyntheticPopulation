@@ -55,6 +55,26 @@
         <div class="paso"><span>2</span><h2 id="t-tamano">Tamaño de la población</h2></div>
         <div class="tamanos" role="radiogroup" aria-label="Número de personas sintéticas" id="tamanos"></div>
         <div class="estado-poblacion" id="estado-poblacion" aria-live="polite"></div>
+        <details class="asistente" id="asistente">
+          <summary>¿Qué tamaño necesito?</summary>
+          <div class="fila">
+            <label class="campo-mini"><span>Quiero ver</span>
+              <select id="asis-detalle">
+                <option value="total">Solo el total</option>
+                <option value="grupos" selected>Por edad, sexo y estudios</option>
+                <option value="voto">Por recuerdo de voto</option>
+              </select>
+            </label>
+            <label class="campo-mini"><span>Margen de simulación</span>
+              <select id="asis-margen">
+                <option value="0.005">± 0,5 puntos</option>
+                <option value="0.01" selected>± 1 punto</option>
+                <option value="0.02">± 2 puntos</option>
+              </select>
+            </label>
+          </div>
+          <div id="asis-resultado" aria-live="polite"></div>
+        </details>
       </section>
 
       <section class="tarjeta" aria-labelledby="t-pregunta">
@@ -68,8 +88,14 @@
           <textarea id="enunciado" rows="3" placeholder="Por ejemplo: ¿Cómo calificaría usted la situación económica actual de España?"></textarea>
         </label>
         <div class="sugerencias" id="sugerencias" hidden>
-          <p class="sugerencias-titulo">Preguntas parecidas del CIS</p>
-          <ul id="lista-sugerencias"></ul>
+          <div id="grupo-atributos" hidden>
+            <p class="sugerencias-titulo">La población ya lo sabe · datos del INE y otras fuentes</p>
+            <ul id="lista-atributos"></ul>
+          </div>
+          <div id="grupo-cis" hidden>
+            <p class="sugerencias-titulo">Preguntas parecidas del CIS</p>
+            <ul id="lista-sugerencias"></ul>
+          </div>
         </div>
         <div class="campo">
           <span>Opciones de respuesta</span>
@@ -96,6 +122,11 @@
         </div>
         <button class="primario" id="preguntar" type="button">Preguntar a la población</button>
         <p class="trabajo" id="trabajo" aria-live="polite"></p>
+        <details class="historial" id="historial" hidden>
+          <summary>Consultas recientes</summary>
+          <ul id="lista-historial"></ul>
+          <button class="enlace" id="borrar-historial" type="button">Borrar el historial</button>
+        </details>
       </section>
 
       <section class="tarjeta resultado" id="resultado" hidden aria-live="polite"></section>

@@ -1746,3 +1746,63 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - El resultado puede diferir ligeramente del modo completo, porque el modo completo ajusta el modelo sobre las opciones ya fusionadas. Medido en 40 preguntas del banco sobre la población nacional (`tools/comparar_paquete.py`, `reports/fase_13/comparacion_paquete.json`): TVD media 0,0000 y máxima 0,0002; confianza idéntica.
 - **Distribución:** el paquete ocupa 28 MB y se versiona en `dist/paquete/`, porque el repositorio es la forma más sencilla de llevarlo a otro equipo. Lleva poblaciones sintéticas y agregados, que se pueden publicar (`docs/08` §2). Si la persona responsable prefiere no publicarlo, basta con quitarlo de la rama y llevarlo a mano.
 - **Riesgo de reidentificación:** los coeficientes de una regresión logística regularizada con predictores categóricos y los recuentos por grupo son agregados. No se guardan recuentos de cruces de varias variables. Los recuentos por nivel de un solo subgrupo ya se publican en las fichas.
+
+## D-077 · Datos de la población consultables directamente (INE y otras fuentes) (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F14 (mejoras pedidas tras la revisión de la interfaz).
+- **Estado:** pedido por la persona responsable («me pregunto si detecta preguntas anteriores, no solo del CIS, sino también del INE y compañía»); diseño del agente.
+- **Qué:** la población sintética ya lleva atributos calibrados o emparejados con fuentes oficiales. Algunos son la respuesta directa a preguntas habituales: salud autopercibida (ECV y Encuesta de Salud), uso de internet y compra por internet (TIC-H), situación laboral, ocupación y teletrabajo (Censo y EPA), llegar a fin de mes, privación y vivienda (ECV), etc. Cuando alguien escribe una pregunta, la interfaz busca también entre esos atributos y, si hay uno parecido, ofrece el dato. El dato es la distribución ponderada entre los adultos del universo, total y por subgrupos.
+- **Catálogo:** `configs/atributos.yaml` lista 26 atributos.
+  - La descripción, las categorías y las fuentes salen de `configs/variables.yaml`.
+  - Solo se añaden expresiones de búsqueda, que no se presentan como texto del cuestionario.
+  - Se añaden etiquetas legibles; las de la CNO-11 y la CNAE-2009 son los nombres oficiales.
+  - Se añade el universo, comprobado en los datos: teletrabajo, jornada, ocupación, sector y sector público solo existen para los ocupados; `cursa_formacion`, para los no ocupados; las variables del hogar, para quienes viven en viviendas familiares.
+- **Cómo se presenta:** como **dato de la población, no como predicción**. Lleva el margen de simulación del 95 % (con el tamaño efectivo de Kish), la procedencia de los valores (`observada`, `emparejada`, `modelada` y `extrapolada`, de `__calidad`) y las fuentes con su variable original. No lleva el modelo de confianza de F10, que mide el error de las predicciones de preguntas del CIS. El error de la fuente y el del emparejamiento se miden en la validación de F6 y F7.
+- **«No contesta»** es una categoría más (regla 10); «No aplicable» y los vacíos definen el universo.
+- **Paquete:** las distribuciones se calculan al exportar (`atributos/<run_id>.json`, agregados).
+- **Alternativa descartada:** convertir cada atributo en una «pregunta» del banco del CIS. Se mezclarían datos calibrados con predicciones, y la confianza dejaría de tener sentido.
+
+## D-078 · Informe PDF de un resultado (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F14.
+- **Estado:** pedido por la persona responsable («exportar gráficos a un pdf, varios gráficos para una misma pregunta, con un pequeño informe generado automáticamente»); diseño del agente.
+- **Qué:** `POST /api/informe` (`servicio/informe.py`) convierte el resultado que ya muestra la interfaz en un PDF A4 con matplotlib:
+  1. resumen;
+  2. distribución con intervalos del 80 % y del 95 %, y comparación con lo que mediría el CIS;
+  3. mapas de calor por grupos;
+  4. mapa por comunidades con Canarias en recuadro.
+- **Texto automático sin modelo de lenguaje:** reglas fijas sobre las cifras. Indica:
+  - la opción más frecuente y si su intervalo se solapa con la segunda;
+  - el porcentaje de NS/NC;
+  - la mayor diferencia entre grupos, solo entre grupos con confianza ≥ 50 %;
+  - el rango entre comunidades;
+  - la diferencia con la medición del CIS;
+  - la confianza y los grupos con confianza baja.
+  
+  Así es reproducible, gratuito y no puede inventar nada. Un resumen con LLM se podría añadir después, pero costaría dinero en cada informe.
+- **Dependencia nueva:** `matplotlib>=3.8` en el extra `web`.
+
+## D-079 · Asistente de tamaño según el margen deseado (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F14.
+- **Estado:** pedido por la persona responsable («generarse el tamaño de la población según el nivel de confianza que espera tener»); diseño del agente.
+- **Lo que hay que saber:** el tamaño de la población solo controla el **error de simulación**. La confianza de las predicciones depende sobre todo de cuántos encuestados del CIS hay del territorio. Además, el estimador predice sobre una muestra de como mucho 100 000 personas (`predict.poblacion.TAMANO`), así que más de 100 000 no mejora las predicciones; solo mejora los datos de la población.
+- **Qué hace** (`servicio/tamano.py`, `GET /api/tamano`): para el detalle pedido (total, por edad, sexo y estudios, o por recuerdo de voto) toma el grupo más pequeño de ese territorio (mínimo 1 %). Calcula el margen del 95 % en el peor caso, 1,96·√(0,25/(N·cuota)), para cada tamaño y recomienda el menor que cumple. Además da la mediana de encuestados del CIS por pregunta en el territorio y un «techo de confianza»: alto con 300 o más, medio entre 50 y 299 y bajo con menos de 50. Ejemplos: Madrid tiene 544 (alto); Teruel, 11 (bajo).
+- **Alternativa descartada:** pedir directamente una confianza objetivo y devolver un tamaño. Sería engañoso: para Teruel ningún tamaño da confianza alta.
+
+## D-080 · Comparar una pregunta entre comunidades con sus propias poblaciones (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F14.
+- **Estado:** propuesta del agente dentro de la lista de mejoras que pidió la persona responsable.
+- **Qué:** `POST /api/comparar` repite la pregunta en cada comunidad con población lista, usando su propia población de 100 000 personas y el rastrillo con la composición del CIS de ese territorio (D-075). El mapa se colorea con esos valores, y no con el desglose por comunidad de la población nacional. Cada comunidad lleva su intervalo y su confianza.
+- **Sin modelo de lenguaje** (`predecir_dict(..., permitir_llm=False)`): si no, una pregunta sin precedentes haría 19 llamadas de golpe.
+- **Otras mejoras de la misma ronda:**
+  - historial de consultas en el navegador;
+  - exportación CSV y JSON;
+  - recuadro de Canarias con las islas;
+  - límites sin huecos vacíos: las zonas sin secciones censales, como los territorios mancomunados, se rellenan con el territorio que las rodea, y solo se conservan los enclaves reales;
+  - nombres naturales («Las Palmas»).

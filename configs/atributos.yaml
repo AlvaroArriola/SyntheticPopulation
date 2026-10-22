@@ -1,0 +1,142 @@
+# Datos de la población que se pueden consultar directamente (D-077).
+#
+# Son atributos de persons.parquet, calibrados o emparejados con fuentes oficiales (INE sobre
+# todo). La descripción, las categorías y la fuente salen de configs/variables.yaml. Aquí solo se
+# añade:
+# - `busqueda`: expresiones para encontrar el atributo cuando alguien escribe una pregunta. Solo
+#   sirven para buscar: no son el texto del cuestionario oficial y no se muestran como tal.
+# - `etiquetas`: nombres legibles de las categorías. Para la CNO-11 y la CNAE-2009 son los
+#   nombres oficiales de los grandes grupos y de las secciones.
+# - `universo`: a quién se refiere el dato cuando no es a todos los adultos (los «NP» y los
+#   vacíos quedan fuera del cálculo y se dice qué parte de los adultos representa el universo).
+#   Comprobado en la población nacional: teletrabajo, jornada, ocupación, sector y sector
+#   público solo tienen valor para las personas ocupadas; cursa_formacion, para las no ocupadas;
+#   las variables del hogar, para las personas en viviendas familiares.
+
+atributos:
+  salud_autopercibida:
+    busqueda: [estado de salud, cómo es su salud en general, salud percibida, se encuentra de salud]
+    etiquetas: {muy_buena: Muy buena, buena: Buena, regular: Regular, mala: Mala, muy_mala: Muy mala, NC: N.C.}
+  discapacidad_limitacion:
+    busqueda: [limitación por problemas de salud, discapacidad, limitado para actividades habituales]
+    etiquetas: {sin_limitacion: Sin limitación, limitacion_moderada: Limitación moderada, limitacion_grave: Limitación grave, NC: N.C.}
+  uso_internet:
+    busqueda: [usa internet, frecuencia de uso de internet, conexión a internet]
+    etiquetas: {diario: A diario, semanal: Cada semana, menos_frecuente: Con menos frecuencia, nunca: Nunca, NC: N.C.}
+  compra_online:
+    busqueda: [compra por internet, compras online, comercio electrónico]
+    etiquetas: {si: Sí, "no": "No", NC: N.C.}
+  teletrabajo:
+    busqueda: [teletrabajo, trabaja desde casa, trabajo a distancia]
+    etiquetas: {nunca: Nunca, ocasional: Ocasionalmente, habitual: Habitualmente, NC: N.C.}
+    universo: personas ocupadas
+  relacion_actividad:
+    busqueda: [situación laboral, trabaja actualmente, está en paro, situación de actividad, jubilado]
+    etiquetas: {ocupado: Trabaja, parado: En paro, jubilado_pensionista: Jubilado o pensionista, incapacidad_permanente: Incapacidad permanente, estudiante: Estudiante, otra_inactividad: Otra inactividad, NC: N.C.}
+  situacion_profesional:
+    busqueda: [situación profesional, asalariado o autónomo, contrato indefinido o temporal]
+    etiquetas: {empresario: Empresario con asalariados, autonomo: Autónomo sin asalariados, asalariado_indefinido: Asalariado indefinido, asalariado_temporal: Asalariado temporal, asalariado: Asalariado (sin detalle), otra: Otra, NC: N.C.}
+    universo: personas ocupadas
+  tipo_jornada:
+    busqueda: [jornada completa o parcial, tipo de jornada]
+    etiquetas: {completa: Completa, parcial: Parcial, NC: N.C.}
+    universo: personas ocupadas
+  sector_publico:
+    busqueda: [trabaja en el sector público, funcionario, empleado público]
+    etiquetas: {si: Sector público, "no": Sector privado, NC: N.C.}
+    universo: personas ocupadas
+  ocupacion:
+    busqueda: [ocupación, a qué se dedica, profesión, trabajo que realiza]
+    etiquetas:
+      "0": Ocupaciones militares
+      "1": Directores y gerentes
+      "2": Técnicos y profesionales científicos e intelectuales
+      "3": Técnicos; profesionales de apoyo
+      "4": Empleados contables, administrativos y otros empleados de oficina
+      "5": Trabajadores de los servicios de restauración, personales, protección y vendedores
+      "6": Trabajadores cualificados en el sector agrícola, ganadero, forestal y pesquero
+      "7": Artesanos y trabajadores cualificados de las industrias manufactureras y la construcción
+      "8": Operadores de instalaciones y maquinaria, y montadores
+      "9": Ocupaciones elementales
+      NC: N.C.
+    universo: personas ocupadas
+  sector_actividad:
+    busqueda: [sector de actividad, en qué sector trabaja, rama de actividad]
+    etiquetas:
+      A: Agricultura, ganadería, silvicultura y pesca
+      B: Industrias extractivas
+      C: Industria manufacturera
+      D: Suministro de energía eléctrica, gas, vapor y aire acondicionado
+      E: Suministro de agua, saneamiento, gestión de residuos y descontaminación
+      F: Construcción
+      G: Comercio al por mayor y al por menor; reparación de vehículos
+      H: Transporte y almacenamiento
+      I: Hostelería
+      J: Información y comunicaciones
+      K: Actividades financieras y de seguros
+      L: Actividades inmobiliarias
+      M: Actividades profesionales, científicas y técnicas
+      N: Actividades administrativas y servicios auxiliares
+      O: Administración Pública y defensa; Seguridad Social obligatoria
+      P: Educación
+      Q: Actividades sanitarias y de servicios sociales
+      R: Actividades artísticas, recreativas y de entretenimiento
+      S: Otros servicios
+      T: Actividades de los hogares como empleadores de personal doméstico
+      U: Actividades de organizaciones y organismos extraterritoriales
+      NC: N.C.
+    universo: personas ocupadas
+  cursa_formacion:
+    busqueda: [está estudiando, formación en las últimas semanas, cursa estudios]
+    etiquetas: {si: Sí, "no": "No", NC: N.C.}
+    universo: personas no ocupadas
+  nivel_estudios:
+    busqueda: [nivel de estudios, estudios terminados, titulación, formación académica]
+    etiquetas: {analfabetos: Analfabetos, primaria_incompleta: Primaria incompleta, primaria: Primaria, secundaria_1a_etapa: Secundaria 1.ª etapa, bachillerato: Bachillerato, fp_grado_medio: FP de grado medio, postsecundaria_no_superior: Postsecundaria no superior, fp_grado_superior: FP de grado superior, grado_240: Grado (240 créditos), grado_mas_240_licenciatura: Grado de más de 240 créditos o licenciatura, master: Máster, doctorado: Doctorado, NC: N.C.}
+  estado_civil:
+    busqueda: [estado civil, casado, soltero]
+    etiquetas: {soltero: Soltero/a, casado: Casado/a, viudo: Viudo/a, separado_divorciado: Separado/a o divorciado/a, NC: N.C.}
+  nacionalidad_grupo:
+    busqueda: [nacionalidad, extranjeros, inmigrantes]
+    etiquetas: {espanola: Española, ue: Unión Europea, resto_europa: Resto de Europa, africa: África, america_latina: América Latina, asia: Asia, otros: Otras, NC: N.C.}
+  pais_nacimiento_grupo:
+    busqueda: [país de nacimiento, nacido en el extranjero, dónde nació]
+    etiquetas: {espana: España, ue: Unión Europea, resto_europa: Resto de Europa, africa: África, america_latina: América Latina, asia: Asia, otros: Otros, NC: N.C.}
+  tipo_hogar:
+    busqueda: [tipo de hogar, con quién vive, vive solo, hogar unipersonal]
+    universo: personas en viviendas familiares
+    etiquetas: {unipersonal: Unipersonal, pareja_sin_hijos: Pareja sin hijos, pareja_con_hijos: Pareja con hijos, monoparental: Monoparental, varias_familias_no_emparentadas: Varias familias o no emparentados, otros: Otros, NC: N.C.}
+  tamano_hogar:
+    busqueda: [cuántas personas viven en su hogar, tamaño del hogar, miembros del hogar]
+    etiquetas: {"1": "1 persona", "2": "2 personas", "3": "3 personas", "4": "4 personas", "5+": "5 o más", NC: N.C.}
+    universo: personas en viviendas familiares
+  n_menores_hogar:
+    busqueda: [hijos menores en casa, menores en el hogar, niños en el hogar]
+    etiquetas: {"0": Ninguno, "1": Uno, "2": Dos, "3+": Tres o más, NC: N.C.}
+    universo: personas en viviendas familiares
+  tenencia_vivienda:
+    busqueda: [vivienda en propiedad o alquiler, régimen de tenencia, hipoteca, alquiler]
+    etiquetas: {propiedad_sin_hipoteca: En propiedad sin hipoteca, propiedad_con_hipoteca: En propiedad con hipoteca, alquiler_mercado: Alquiler a precio de mercado, alquiler_inferior_cesion: Alquiler reducido o cesión, NC: N.C.}
+    universo: personas en viviendas familiares
+  dificultad_fin_mes:
+    busqueda: [llegar a fin de mes, dificultad económica del hogar, cómo llega a final de mes]
+    etiquetas: {mucha_dificultad: Con mucha dificultad, dificultad: Con dificultad, cierta_dificultad: Con cierta dificultad, cierta_facilidad: Con cierta facilidad, facilidad: Con facilidad, mucha_facilidad: Con mucha facilidad, NC: N.C.}
+    universo: personas en viviendas familiares
+  privacion_material:
+    busqueda: [privación material, carencia material, no puede permitirse]
+    etiquetas: {si: En privación material, "no": Sin privación material, NC: N.C.}
+    universo: personas en viviendas familiares
+  vehiculo_hogar:
+    busqueda: [tiene coche, vehículo en el hogar, dispone de coche]
+    etiquetas: {si: Sí, "no": "No", NC: N.C.}
+    universo: personas en viviendas familiares
+  renta_hogar_decil:
+    busqueda: [nivel de ingresos, renta del hogar, ingresos del hogar, decil de renta]
+    etiquetas: {D01: "Decil 1 (más bajo)", D02: Decil 2, D03: Decil 3, D04: Decil 4, D05: Decil 5, D06: Decil 6, D07: Decil 7, D08: Decil 8, D09: Decil 9, D10: "Decil 10 (más alto)", NC: N.C.}
+    universo: personas en viviendas familiares
+  grado_urbanizacion:
+    busqueda: [vive en ciudad o en zona rural, grado de urbanización, hábitat]
+    etiquetas: {ciudad: Ciudad, intermedio: Zona intermedia, rural: Zona rural, NC: N.C.}
+  tamano_municipio:
+    busqueda: [tamaño del municipio, habitantes del municipio]
+    etiquetas: {hasta_2000: Hasta 2.000, de_2001_a_10000: 2.001 a 10.000, de_10001_a_50000: 10.001 a 50.000, de_50001_a_100000: 50.001 a 100.000, de_100001_a_500000: 100.001 a 500.000, mas_de_500000: Más de 500.000, NC: N.C.}

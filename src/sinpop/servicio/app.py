@@ -8,7 +8,11 @@ Una API HTTP sobre las funciones ya validadas, sin reimplementar ningún método
 - `POST /api/preguntas`    predice una pregunta (`predict.salida.predecir_dict`, formato §2.8);
 - `POST /api/eventos`      efecto de un evento sobre una pregunta (`predict.evento`);
 - `GET  /api/trabajos/{id}` estado y resultado de un trabajo en segundo plano;
-- `GET  /api/banco`        preguntas parecidas del banco del CIS (para inspirarse o reutilizar);
+- `GET  /api/banco`        preguntas parecidas del banco del CIS y datos de la población (INE…);
+- `GET  /api/atributos/{v}` distribución de un dato de la población (D-077);
+- `GET  /api/tamano`       asistente de tamaño según el margen deseado (D-079);
+- `POST /api/informe`      informe PDF de un resultado (D-078);
+- `POST /api/comparar`     la misma pregunta en cada comunidad con su propia población (D-080);
 - `GET  /api/llm`          gasto acumulado del modelo de lenguaje frente al tope;
 - `GET  /api/ficha/{run}`  ficha de datos de una población.
 
@@ -156,6 +160,22 @@ def _predecir(q: dict, rid: str, avance) -> dict:
     return S.predecir_dict(q, rid)
 
 
+def _comparar(q: dict, runs: list[str], avance) -> dict:
+    """La misma pregunta sobre la población propia de cada territorio, sin LLM (D-080)."""
+    from sinpop.predict import salida as S
+
+    out = {}
+    for i, rid in enumerate(runs, 1):
+        avance(f"Territorio {i} de {len(runs)}…")
+        r = S.predecir_dict(q, rid, permitir_llm=False)
+        out[r.get("territorio") or rid] = {
+            "run_id": rid,
+            "total": r["total"],
+            "confianza": r["confianza"]["total"],
+        }
+    return {"territorios": out, "opciones": q["opciones"]}
+
+
 def _evento(q: dict, ev: dict, rid: str, avance) -> dict:
     from sinpop.predict import estimador as E
     from sinpop.predict import evento as V
@@ -183,6 +203,33 @@ def _id_pregunta(enunciado: str, opciones: list[str]) -> str:
     return f"UI-{h[:10]}"
 
 
+def etiquetas_subgrupos() -> dict:
+    """Nombres legibles de los códigos de los subgrupos, leídos de la configuración."""
+    from sinpop.config import load_config
+
+    ter = load_config("territories.yaml")
+    par = load_config("partidos.yaml")
+    return {
+        "ccaa": {c.codigo: c.nombre for c in ter.ccaa},  # type: ignore[attr-defined]
+        "provincia": {c.codigo: c.nombre for c in ter.provincias},  # type: ignore[attr-defined]
+        "recuerdo_voto_generales_familia": {f.id: f.nombre for f in par.familias}  # type: ignore[attr-defined]
+        | dict(SITUACIONES_VOTO),
+        "sexo": {"hombre": "Hombres", "mujer": "Mujeres"},
+        "estudios_3": {
+            "hasta_obligatoria": "Hasta obligatoria",
+            "secundaria_2a_etapa": "Secundaria 2.ª etapa",
+            "superior": "Superior",
+        },
+        "dimensiones": {
+            "edad_4": "Edad",
+            "sexo": "Sexo",
+            "estudios_3": "Estudios",
+            "ccaa": "Comunidad",
+            "recuerdo_voto_generales_familia": "Recuerdo de voto 2023",
+        },
+    }
+
+
 # ---------------------------------------------------------------------------- aplicación
 
 
@@ -199,6 +246,18 @@ class PeticionPregunta(BaseModel):
     escala: str | None = None
     subgrupos: list[str] | None = None
     fecha_referencia: str = "2026-07"
+
+
+class PeticionComparar(BaseModel):
+    enunciado: str = Field(min_length=3)
+    opciones: list[str] = Field(min_length=2)
+    nivel: str = Field(default="CCAA", pattern=r"^(CCAA|PROV)$")
+
+
+class PeticionInforme(BaseModel):
+    tipo: str = Field(pattern=r"^(pregunta|dato)$")
+    datos: dict
+    contexto: dict = {}
 
 
 class PeticionEvento(PeticionPregunta):
@@ -266,6 +325,32 @@ def crear_app():
             q["subgrupos"] = p.subgrupos
         return {"trabajo": _lanzar("pregunta", _predecir, q, p.run_id)}
 
+    @app.post("/api/comparar")
+    def comparar(p: PeticionComparar):
+        """Compara una pregunta entre las comunidades con poblaciones listas (D-080)."""
+        runs = sorted(
+            x["run_id"]
+            for x in poblaciones()
+            if x["lista"] and x["territorio"].startswith(p.nivel + ":") and x["semilla"] == 1
+        )
+        # una población por territorio: la más grande
+        por_ter: dict[str, str] = {}
+        for x in sorted(poblaciones(), key=lambda x: x["tamano_solicitado"]):
+            if x["run_id"] in runs:
+                por_ter[x["territorio"]] = x["run_id"]
+        if len(por_ter) < 2:
+            raise HTTPException(409, "hacen falta al menos dos territorios con población lista")
+        q = {
+            "id": _id_pregunta(p.enunciado, p.opciones),
+            "tipo": "pregunta",
+            "enunciado": p.enunciado,
+            "opciones": p.opciones,
+        }
+        return {
+            "trabajo": _lanzar("comparar", _comparar, q, list(por_ter.values())),
+            "territorios": len(por_ter),
+        }
+
     @app.post("/api/eventos")
     def evento(p: PeticionEvento):
         _comprobar_run(p.run_id)
@@ -289,12 +374,14 @@ def crear_app():
 
     @app.get("/api/banco")
     def banco(q: str, k: int = 6):
+        from sinpop.predict import atributos as AT
         from sinpop.predict import recuperar as R
 
         if len(q.strip()) < 4:
-            return {"preguntas": []}
+            return {"preguntas": [], "atributos": []}
         d = R.indice().similares(q, [], min(k, 20))
         return {
+            "atributos": AT.buscar(q),
             "preguntas": [
                 {
                     "id": r["id"],
@@ -304,35 +391,48 @@ def crear_app():
                     "similitud": round(float(r["similitud"]), 3),
                 }
                 for r in d.iter_rows(named=True)
-            ]
+            ],
         }
+
+    @app.get("/api/atributos/{variable}")
+    def atributo(variable: str, run_id: str):
+        """Dato de la población: distribución ponderada de un atributo calibrado con fuentes
+        oficiales (D-077). No es una predicción: no lleva modelo de confianza."""
+        from sinpop.predict import atributos as AT
+
+        _comprobar_run(run_id)
+        if variable not in AT.catalogo():
+            raise HTTPException(404, "atributo desconocido")
+        from sinpop.predict.salida import AVISO
+
+        return {**AT.distribucion(variable, run_id), "run_id": run_id, "aviso": AVISO}
+
+    @app.get("/api/tamano")
+    def tamano(territorio: str, margen: float = 0.01, detalle: str = "grupos"):
+        """Asistente de tamaño (D-079): margen de simulación por tamaño y techo de confianza."""
+        from sinpop.servicio import tamano as T
+
+        if detalle not in T.DETALLES or not 0.001 <= margen <= 0.2:
+            raise HTTPException(422, "detalle o margen fuera de rango")
+        return T.recomendar(territorio, margen, detalle, TAMANOS)
 
     @app.get("/api/etiquetas")
     def etiquetas():
-        """Nombres legibles de los códigos de los subgrupos, leídos de la configuración."""
-        from sinpop.config import load_config
+        return etiquetas_subgrupos()
 
-        ter = load_config("territories.yaml")
-        par = load_config("partidos.yaml")
-        return {
-            "ccaa": {c.codigo: c.nombre for c in ter.ccaa},  # type: ignore[attr-defined]
-            "provincia": {c.codigo: c.nombre for c in ter.provincias},  # type: ignore[attr-defined]
-            "recuerdo_voto_generales_familia": {f.id: f.nombre for f in par.familias}  # type: ignore[attr-defined]
-            | dict(SITUACIONES_VOTO),
-            "sexo": {"hombre": "Hombres", "mujer": "Mujeres"},
-            "estudios_3": {
-                "hasta_obligatoria": "Hasta obligatoria",
-                "secundaria_2a_etapa": "Secundaria 2.ª etapa",
-                "superior": "Superior",
-            },
-            "dimensiones": {
-                "edad_4": "Edad",
-                "sexo": "Sexo",
-                "estudios_3": "Estudios",
-                "ccaa": "Comunidad",
-                "recuerdo_voto_generales_familia": "Recuerdo de voto 2023",
-            },
-        }
+    @app.post("/api/informe")
+    def informe(p: PeticionInforme):
+        """Informe PDF de un resultado que ya tiene la interfaz (D-078)."""
+        from fastapi.responses import Response
+
+        from sinpop.servicio import informe as INF
+
+        pdf = INF.generar(p.tipo, p.datos, p.contexto, etiquetas_subgrupos())
+        return Response(
+            pdf,
+            media_type="application/pdf",
+            headers={"Content-Disposition": 'attachment; filename="informe_espana_sintetica.pdf"'},
+        )
 
     @app.get("/api/modo")
     def modo():

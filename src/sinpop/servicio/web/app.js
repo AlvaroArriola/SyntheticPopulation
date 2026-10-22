@@ -160,6 +160,7 @@ function elegirTerritorio(codigo, nombre) {
   }
   pintarTamanos();
   refrescarEstilos();
+  asistente();
 }
 
 // ------------------------------------------------------------------ poblaciones
@@ -268,6 +269,19 @@ async function buscarParecidas(texto) {
   if (texto.trim().length < 8) { caja.hidden = true; return; }
   try {
     const r = await api(`/api/banco?q=${encodeURIComponent(texto)}&k=5`);
+    const ula = $("#lista-atributos");
+    ula.innerHTML = "";
+    for (const a of r.atributos || []) {
+      const li = document.createElement("li");
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "sugerencia-dato";
+      b.innerHTML = `${escapar(a.descripcion)}<small>Dato de la población · ${escapar(a.fuente_principal || "")} · ${escapar(a.universo)}</small>`;
+      b.addEventListener("click", () => { caja.hidden = true; mostrarAtributo(a.variable); });
+      li.append(b);
+      ula.append(li);
+    }
+    $("#grupo-atributos").hidden = !(r.atributos || []).length;
     const ul = $("#lista-sugerencias");
     ul.innerHTML = "";
     for (const q of r.preguntas) {
@@ -286,8 +300,133 @@ async function buscarParecidas(texto) {
       li.append(b);
       ul.append(li);
     }
-    caja.hidden = r.preguntas.length === 0;
+    $("#grupo-cis").hidden = r.preguntas.length === 0;
+    caja.hidden = r.preguntas.length === 0 && !(r.atributos || []).length;
   } catch (_) { caja.hidden = true; }
+}
+
+// ------------------------------------------------------------------ datos de la población (D-077)
+const PROCEDENCIA = {
+  observada: "tomada del registro censal de la persona",
+  emparejada: "copiada de una persona parecida de la encuesta oficial",
+  modelada: "predicha con un modelo ajustado a la fuente",
+  extrapolada: "asignada fuera del universo de la fuente",
+};
+
+async function mostrarAtributo(variable) {
+  const p = poblacionActual();
+  const msg = $("#trabajo");
+  if (!p?.lista) { msg.textContent = "Elige primero una población lista."; return; }
+  msg.textContent = "Consultando la población…";
+  try {
+    const d = await api(`/api/atributos/${encodeURIComponent(variable)}?run_id=${encodeURIComponent(p.run_id)}`);
+    msg.textContent = "";
+    pintarAtributo(d, p);
+    guardarHistorial({ tipo: "dato", titulo: d.descripcion, variable, run_id: p.run_id, territorio: estado.territorio, nombre: estado.nombre });
+  } catch (e) {
+    msg.textContent = `No se pudo consultar: ${e.message}`;
+  }
+}
+
+function barrasDato(dist, cats, et) {
+  const filas = cats.map((c) => {
+    const d = dist[c];
+    return `<div class="etiqueta" title="${escapar(et[c] ?? c)}">${escapar(et[c] ?? c)}</div>
+      <div class="pista" data-o="${escapar(et[c] ?? c)}" data-p="${d.p}" data-a95="${d.ic95[0]}" data-b95="${d.ic95[1]}">
+        <span class="ic80" style="left:${100 * d.ic95[0]}%;width:${100 * (d.ic95[1] - d.ic95[0])}%"></span>
+        <span class="barra" style="width:${100 * d.p}%"></span>
+      </div>
+      <div class="valor">${pct(d.p)}</div>`;
+  });
+  return `<div class="barras">${filas.join("")}</div>
+    <div class="leyenda-barras"><span><i style="background:var(--serie)"></i>Proporción</span><span><i style="background:var(--rango)"></i>Margen de simulación (95 %)</span></div>`;
+}
+
+function tablaDato(d, dim) {
+  const et = d.etiquetas;
+  const cats = d.categorias.filter((c) => c !== "NC" || d.total[c].p >= 0.005);
+  const claves = Object.keys(d.por_subgrupo).filter((k) => k.startsWith(dim + "="));
+  if (!claves.length) return "<p class='nota'>Sin desglose para esta dimensión.</p>";
+  const vals = claves.flatMap((k) => cats.map((c) => d.por_subgrupo[k][c].p));
+  const min = Math.min(...vals), max = Math.max(...vals);
+  const cab = cats.map((c) => { const o = et[c] ?? c; return `<th scope="col" title="${escapar(o)}">${escapar(o.length > 14 ? o.slice(0, 13) + "…" : o)}</th>`; }).join("");
+  const filas = claves.map((k) => {
+    const nivel = k.split("=")[1];
+    const celdas = cats.map((c) => {
+      const x = d.por_subgrupo[k][c];
+      const t = max > min ? (x.p - min) / (max - min) : 0.5;
+      const i = Math.round(t * (SEQ.length - 1));
+      return `<td style="background-color:${colorSecuencial(x.p, min, max)};color:${tintaSobre(i)}"
+        data-t="${escapar(nombreNivel(dim, nivel))} · ${escapar(et[c] ?? c)}" data-p="${x.p}" data-a="${x.ic95[0]}" data-b="${x.ic95[1]}">${pct(x.p)}</td>`;
+    }).join("");
+    return `<tr><th scope="row">${escapar(nombreNivel(dim, nivel))}</th>${celdas}</tr>`;
+  });
+  return `<div class="tabla-envoltorio"><table class="tabla-calor dato"><thead><tr><th scope="col"><span class="oculto">Grupo</span></th>${cab}</tr></thead><tbody>${filas.join("")}</tbody></table></div>
+    <p class="nota">Color más intenso, mayor proporción. Pasa el ratón por una celda para ver su margen de simulación.</p>`;
+}
+
+function pintarAtributo(d, pob) {
+  const et = d.etiquetas;
+  const cats = d.categorias.filter((c) => c !== "NC" || d.total[c].p >= 0.005);
+  // para el coloreado del mapa se reutiliza la forma de un resultado de pregunta
+  const opciones = cats.map((c) => et[c] ?? c);
+  const conv = (dist) => Object.fromEntries(cats.map((c) => [et[c] ?? c, dist[c]]));
+  const porSub = Object.fromEntries(Object.entries(d.por_subgrupo).map(([k, v]) => [k, conv(v)]));
+  estado.resultado = { tipo: "dato", opciones, enunciado: d.descripcion, por_subgrupo: porSub,
+    confianza: { por_subgrupo: Object.fromEntries(Object.keys(porSub).map((k) => [k, 1])) }, dato: d };
+  estado.opcionMapa = null;
+  const dims = [...new Set(Object.keys(d.por_subgrupo).map((k) => k.split("=")[0]))];
+  const caja = $("#resultado");
+  caja.hidden = false;
+  const proc = Object.entries(d.procedencia || {}).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1])
+    .map(([k, v]) => `${pct(v)} ${escapar(k)} <span class="nota-inline">(${escapar(PROCEDENCIA[k] || k)})</span>`).join("; ");
+  const fuentes = d.fuentes.map((f) => `<li>${escapar(f.nombre)}${f.organismo ? ` (${escapar(f.organismo)})` : ""}${f.variable_original ? ` · variable ${escapar(f.variable_original)}` : ""}</li>`).join("");
+  const permiteMapa = Object.keys(d.por_subgrupo).some((k) => k.startsWith("ccaa=")) && pob.territorio === "ES";
+  caja.innerHTML = `
+    <span class="sello-dato">Dato de la población · no es una predicción</span>
+    <h3>${escapar(d.descripcion)}</h3>
+    <div class="metas"><span>${escapar(estado.nombre)}</span><span>${pob.tamano.toLocaleString("es-ES")} personas</span><span>Universo: ${escapar(d.universo)} (${pct(d.cuota_universo)} de los adultos)</span></div>
+    <div id="zona-barras">${barrasDato(d.total, cats, et)}</div>
+    <div class="procedencia"><b>De dónde sale.</b> La población sintética está calibrada con las fuentes oficiales; este atributo es ${proc || "—"}. El margen solo recoge el error de simulación: el de la fuente y el del emparejamiento se miden en la validación (reports/fase_06.md y fase_07.md).</div>
+    ${dims.length ? `<p class="seccion-titulo">Por grupos</p>
+      <div class="dimensiones" id="dimensiones">${dims.map((x, i) => `<button aria-pressed="${i === 0}" data-d="${x}">${escapar(estado.etiquetas?.dimensiones?.[x] ?? x)}</button>`).join("")}</div>
+      <div id="zona-tabla">${tablaDato(d, dims[0])}</div>` : ""}
+    ${permiteMapa ? `<p class="seccion-titulo">En el mapa</p><div class="fila"><select id="opcion-mapa" aria-label="Opción para colorear el mapa"><option value="">Elige una opción para colorear las comunidades…</option>${opciones.map((o, i) => `<option value="${i}">${escapar(o)}</option>`).join("")}</select></div>` : ""}
+    <p class="seccion-titulo">Fuentes</p><ul class="fuentes">${fuentes}</ul>
+    <p class="aviso">${escapar(d.aviso)}</p>
+    <div class="acciones-resultado"><button class="secundario" id="descargar" type="button">Descargar JSON</button><button class="secundario" id="descargar-csv" type="button">Descargar CSV</button><button class="secundario" id="descargar-pdf" type="button">Informe PDF</button></div>`;
+  caja.querySelectorAll(".pista").forEach((el) => {
+    el.addEventListener("mousemove", (ev) => mostrarTooltip(ev, `<b>${escapar(el.dataset.o)}</b>: ${pct(+el.dataset.p, 1)}<br>Margen de simulación (95 %): ${pct(+el.dataset.a95, 1)} – ${pct(+el.dataset.b95, 1)}`));
+    el.addEventListener("mouseleave", ocultarTooltip);
+  });
+  const tips = (raiz) => raiz.querySelectorAll(".tabla-calor td").forEach((td) => {
+    td.addEventListener("mousemove", (ev) => mostrarTooltip(ev, `<b>${td.dataset.t}</b><br>${pct(+td.dataset.p, 1)} (margen de simulación: ${pct(+td.dataset.a, 1)} – ${pct(+td.dataset.b, 1)})`));
+    td.addEventListener("mouseleave", ocultarTooltip);
+  });
+  tips(caja);
+  caja.querySelectorAll("#dimensiones button").forEach((b) => b.addEventListener("click", () => {
+    caja.querySelectorAll("#dimensiones button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    $("#zona-tabla").innerHTML = tablaDato(d, b.dataset.d);
+    tips($("#zona-tabla"));
+  }));
+  $("#opcion-mapa")?.addEventListener("change", (e) => {
+    estado.opcionMapa = e.target.value === "" ? null : +e.target.value;
+    if (estado.opcionMapa != null) ponerNivelSinSeleccion("CCAA");
+    pintarMapaResultado();
+  });
+  $("#descargar").addEventListener("click", () => descargar(`${d.variable}_${pob.run_id}.json`, JSON.stringify(d, null, 1), "application/json"));
+  $("#descargar-csv").addEventListener("click", () => descargar(`${d.variable}_${pob.run_id}.csv`, csvDato(d), "text/csv"));
+  $("#descargar-pdf").addEventListener("click", () => informePdf("dato", d, { run_id: pob.run_id, tamano: pob.tamano.toLocaleString("es-ES") }));
+  pintarMapaResultado();
+  caja.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function csvDato(d) {
+  const filas = [["grupo", "categoria", "proporcion", "margen95_inf", "margen95_sup"]];
+  const add = (g, dist) => d.categorias.forEach((c) => filas.push([g, d.etiquetas[c] ?? c, dist[c].p, dist[c].ic95[0], dist[c].ic95[1]]));
+  add("total", d.total);
+  Object.entries(d.por_subgrupo).forEach(([k, v]) => add(k, v));
+  return filas.map((f) => f.map((x) => `"${String(x).replaceAll('"', '""')}"`).join(";")).join("\n");
 }
 
 $("#preguntar").addEventListener("click", async () => {
@@ -311,6 +450,7 @@ $("#preguntar").addEventListener("click", async () => {
       const t = await post("/api/preguntas", { run_id: p.run_id, enunciado, opciones });
       r = await seguir(t.trabajo, msg);
       pintarResultado(r, enunciado, opciones, p);
+      guardarHistorial({ tipo: "pregunta", titulo: enunciado, opciones, r, run_id: p.run_id, territorio: estado.territorio, nombre: estado.nombre });
     }
     actualizarLLM();
   } catch (e) {
@@ -413,11 +553,13 @@ function pintarResultado(r, enunciado, opciones, pob) {
     ${dims.length ? `<p class="seccion-titulo">Por grupos</p>
       <div class="dimensiones" id="dimensiones">${dims.map((d, i) => `<button aria-pressed="${i === 0}" data-d="${d}">${escapar(estado.etiquetas?.dimensiones?.[d] ?? d)}</button>`).join("")}</div>
       <div id="zona-tabla">${tablaSubgrupos(r, estado.dimension, opciones)}</div>` : ""}
-    ${permiteMapa ? `<p class="seccion-titulo">En el mapa</p><div class="fila"><select id="opcion-mapa" aria-label="Opción para colorear el mapa"><option value="">Elige una opción para colorear las comunidades…</option>${opciones.map((o, i) => `<option value="${i}">${escapar(o)}</option>`).join("")}</select></div>` : ""}
+    ${permiteMapa ? `<p class="seccion-titulo">En el mapa</p><div class="fila"><select id="opcion-mapa" aria-label="Opción para colorear el mapa"><option value="">Elige una opción para colorear las comunidades…</option>${opciones.map((o, i) => `<option value="${i}">${escapar(o)}</option>`).join("")}</select></div>
+      <div class="comparar"><button class="secundario" id="comparar" type="button">Comparar comunidades con sus propias poblaciones</button>
+      <p class="nota">Repite la pregunta en cada comunidad con su población de 100 000 personas (sin modelo de lenguaje). Tarda unos minutos.</p><div id="zona-comparar"></div></div>` : ""}
     ${r.preguntas_similares?.length ? `<p class="seccion-titulo">Se apoya en estas preguntas del CIS</p><ol class="parecidas">${r.preguntas_similares.map((x) => `<li>${escapar(x)}</li>`).join("")}</ol>` : ""}
     <p class="aviso">${escapar(r.aviso)}</p>
     <p class="coste">Coste: ${r.coste.llamadas} llamadas al modelo de lenguaje · ${r.coste.eur.toLocaleString("es-ES", { maximumFractionDigits: 3 })} € · ${Math.round(r.coste.segundos)} s</p>
-    <div class="acciones-resultado"><button class="secundario" id="descargar" type="button">Descargar JSON</button></div>`;
+    <div class="acciones-resultado"><button class="secundario" id="descargar-pdf" type="button">Informe PDF</button><button class="secundario" id="descargar-csv" type="button">Descargar CSV</button><button class="secundario" id="descargar" type="button">Descargar JSON</button></div>`;
   activarTooltipsBarras(caja);
   activarTooltipsTabla(caja);
   caja.querySelectorAll(".conmutador button").forEach((b) => b.addEventListener("click", () => {
@@ -435,14 +577,148 @@ function pintarResultado(r, enunciado, opciones, pob) {
     if (estado.opcionMapa != null) ponerNivelSinSeleccion("CCAA");
     pintarMapaResultado();
   });
-  $("#descargar").addEventListener("click", () => {
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(new Blob([JSON.stringify(r, null, 1)], { type: "application/json" }));
-    a.download = `${r.id}.json`;
-    a.click();
-  });
+  $("#comparar")?.addEventListener("click", () => compararComunidades(enunciado, opciones));
+  $("#descargar").addEventListener("click", () => descargar(`${r.id}.json`, JSON.stringify(r, null, 1), "application/json"));
+  $("#descargar-csv").addEventListener("click", () => descargar(`${r.id}.csv`, csvPregunta(r), "text/csv"));
+  $("#descargar-pdf").addEventListener("click", () => informePdf("pregunta", r, { enunciado, run_id: pob.run_id, tamano: pob.tamano.toLocaleString("es-ES") }));
   pintarMapaResultado();
   caja.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// ------------------------------------------------------------------ asistente de tamaño (D-079)
+const TECHO = {
+  alta: "Hay bastantes encuestados del CIS de este territorio: la confianza puede ser alta.",
+  media: "Hay un número moderado de encuestados del CIS de este territorio: la confianza será media como mucho.",
+  baja: "Hay muy pocos encuestados del CIS de este territorio: la confianza será baja con cualquier tamaño. Más personas sintéticas no lo arreglan.",
+};
+async function asistente() {
+  if (!$("#asistente").open) return;
+  const caja = $("#asis-resultado");
+  caja.textContent = "Calculando…";
+  try {
+    const r = await api(`/api/tamano?territorio=${encodeURIComponent(estado.territorio)}&margen=${$("#asis-margen").value}&detalle=${$("#asis-detalle").value}`);
+    const filas = r.tamanos.map((t) => `<tr${t.tamano === r.recomendado ? ' class="recomendado"' : ""}><th scope="row">${miles(t.tamano)}</th><td>± ${(100 * t.margen_prediccion).toLocaleString("es-ES", { maximumFractionDigits: 1 })}</td><td>± ${(100 * t.margen_datos).toLocaleString("es-ES", { maximumFractionDigits: 1 })}</td></tr>`).join("");
+    caja.innerHTML = `
+      <p><b>Recomendado: ${miles(r.recomendado)}.</b> ${r.alcanzable ? "Cumple el margen pedido en el grupo más pequeño" : `Ningún tamaño llega a ese margen en el grupo más pequeño (${pct(r.cuota_grupo_mas_pequeno, 1)} de la población): las predicciones usan como mucho ${miles(r.muestra_prediccion)} personas`} (${pct(r.cuota_grupo_mas_pequeno, 1)} de la población).</p>
+      <table class="tabla-asistente"><thead><tr><th scope="col">Tamaño</th><th scope="col">Margen en predicciones (puntos)</th><th scope="col">Margen en datos de la población</th></tr></thead><tbody>${filas}</tbody></table>
+      ${r.techo_confianza ? `<p class="techo techo-${r.techo_confianza}"><b>Confianza esperable:</b> ${TECHO[r.techo_confianza]} Mediana de ${Math.round(r.encuestados_cis_mediana).toLocaleString("es-ES")} encuestados por pregunta.</p>` : ""}
+      <button class="secundario" id="asis-usar" type="button">Usar ${miles(r.recomendado)}</button>`;
+    $("#asis-usar").addEventListener("click", () => { estado.tamano = r.recomendado; pintarTamanos(); });
+  } catch (e) {
+    caja.textContent = `No se pudo calcular: ${e.message}`;
+  }
+}
+$("#asistente").addEventListener("toggle", asistente);
+$("#asis-detalle").addEventListener("change", asistente);
+$("#asis-margen").addEventListener("change", asistente);
+
+// ------------------------------------------------------------------ historial (solo en este navegador)
+const HISTORIAL = "historial-v1";
+const MAX_HISTORIAL = 10;
+function leerHistorial() {
+  try { return JSON.parse(localStorage.getItem(HISTORIAL) || "[]"); } catch (_) { return []; }
+}
+function guardarHistorial(e) {
+  const h = leerHistorial().filter((x) => !(x.titulo === e.titulo && x.run_id === e.run_id));
+  h.unshift({ ...e, fecha: new Date().toISOString() });
+  for (let n = Math.min(h.length, MAX_HISTORIAL); n > 0; n--) {
+    try { localStorage.setItem(HISTORIAL, JSON.stringify(h.slice(0, n))); break; } catch (_) { /* sin sitio: se guardan menos */ }
+  }
+  pintarHistorial();
+}
+function pintarHistorial() {
+  const h = leerHistorial();
+  $("#historial").hidden = h.length === 0;
+  const ul = $("#lista-historial");
+  ul.innerHTML = "";
+  h.forEach((e) => {
+    const li = document.createElement("li");
+    const b = document.createElement("button");
+    b.type = "button";
+    const cuando = new Date(e.fecha).toLocaleString("es-ES", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+    b.innerHTML = `${escapar(e.titulo)}<small>${e.tipo === "dato" ? "Dato de la población" : "Pregunta"} · ${escapar(e.nombre)} · ${cuando}</small>`;
+    b.addEventListener("click", () => abrirHistorial(e));
+    li.append(b);
+    ul.append(li);
+  });
+}
+function abrirHistorial(e) {
+  if (e.territorio !== estado.territorio) {
+    ponerNivelSinSeleccion(e.territorio.startsWith("PROV") ? "PROV" : "CCAA");
+    estado.nivel = e.territorio === "ES" ? "ES" : e.territorio.startsWith("PROV") ? "PROV" : "CCAA";
+    elegirTerritorio(e.territorio, e.nombre);
+  }
+  const p = estado.poblaciones.find((x) => x.run_id === e.run_id);
+  if (!p) { $("#trabajo").textContent = "Esa población ya no está disponible."; return; }
+  estado.tamano = p.tamano_solicitado;
+  pintarTamanos();
+  if (e.tipo === "dato") mostrarAtributo(e.variable);
+  else { $("#enunciado").value = e.titulo; pintarResultado(e.r, e.titulo, e.opciones, p); }
+}
+$("#borrar-historial").addEventListener("click", () => {
+  try { localStorage.removeItem(HISTORIAL); } catch (_) { /* sin almacenamiento */ }
+  pintarHistorial();
+});
+
+// ------------------------------------------------------------------ comparar comunidades (D-080)
+async function compararComunidades(enunciado, opciones) {
+  const zona = $("#zona-comparar");
+  const boton = $("#comparar");
+  boton.disabled = true;
+  try {
+    const t = await post("/api/comparar", { enunciado, opciones, nivel: "CCAA" });
+    const res = await seguir(t.trabajo, zona);
+    estado.resultado.comparacion = res;
+    const sust = opciones.filter((o) => !NSNC.includes(o));
+    const top = sust.reduce((a, b) => (estado.resultado.total[a].p >= estado.resultado.total[b].p ? a : b));
+    const filas = Object.entries(res.territorios)
+      .map(([k, v]) => ({ k, nombre: estado.etiquetas?.ccaa?.[k.slice(5)] ?? k, p: v.total[top].p, ic: v.total[top].ic80, c: v.confianza }))
+      .sort((a, b) => b.p - a.p);
+    zona.innerHTML = `<p class="nota">«${escapar(top)}» en cada comunidad (intervalo del 80 % y confianza):</p>
+      <table class="tabla-asistente"><thead><tr><th scope="col">Comunidad</th><th scope="col">${escapar(top)}</th><th scope="col">IC 80 %</th><th scope="col">Confianza</th></tr></thead>
+      <tbody>${filas.map((f) => `<tr><th scope="row">${escapar(f.nombre)}</th><td>${pct(f.p)}</td><td>${pct(f.ic[0])} – ${pct(f.ic[1])}</td><td>${pct(f.c)}</td></tr>`).join("")}</tbody></table>`;
+    estado.opcionMapa = opciones.indexOf(top);
+    const sel = $("#opcion-mapa");
+    if (sel) sel.value = String(estado.opcionMapa);
+    ponerNivelSinSeleccion("CCAA");
+    pintarMapaResultado();
+  } catch (e) {
+    zona.textContent = `No se pudo comparar: ${e.message}`;
+  } finally {
+    boton.disabled = false;
+  }
+}
+
+// ------------------------------------------------------------------ exportar
+function descargar(nombre, contenido, tipo) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(contenido instanceof Blob ? contenido : new Blob(["\ufeff" + contenido], { type: `${tipo};charset=utf-8` }));
+  a.download = nombre;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+}
+
+function csvPregunta(r) {
+  const filas = [["grupo", "opcion", "proporcion", "ic80_inf", "ic80_sup", "ic95_inf", "ic95_sup", "confianza"]];
+  const add = (g, dist, c) => Object.entries(dist).forEach(([o, d]) => filas.push([g, o, d.p, d.ic80[0], d.ic80[1], d.ic95[0], d.ic95[1], c ?? ""]));
+  add("total", r.total, r.confianza.total);
+  if (r.medicion_cis) add("como_lo_mediria_el_cis", r.medicion_cis, "");
+  Object.entries(r.por_subgrupo).forEach(([k, v]) => add(k, v, r.confianza.por_subgrupo[k]));
+  return filas.map((f) => f.map((x) => `"${String(x).replaceAll('"', '""')}"`).join(";")).join("\n");
+}
+
+async function informePdf(tipo, datos, extra = {}) {
+  const msg = $("#trabajo");
+  msg.textContent = "Preparando el informe PDF…";
+  try {
+    const contexto = { territorio: estado.territorio, territorio_nombre: estado.nombre, ...extra };
+    const res = await fetch("/api/informe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tipo, datos, contexto }) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    descargar(`informe_${(datos.id || datos.variable || "resultado")}.pdf`, await res.blob());
+    msg.textContent = "";
+  } catch (e) {
+    msg.textContent = `No se pudo generar el informe: ${e.message}`;
+  }
 }
 
 function ponerNivelSinSeleccion(nivel) {
@@ -455,6 +731,10 @@ let rangoMapa = [0, 1];
 function valorMapa(prop) {
   const r = estado.resultado;
   if (!r || estado.opcionMapa == null || prop.nivel !== "CCAA") return null;
+  if (r.comparacion) {
+    const t = r.comparacion.territorios[`CCAA:${prop.codigo}`];
+    return t ? { p: t.total[r.opciones[estado.opcionMapa]].p, c: t.confianza } : null;
+  }
   const k = `ccaa=${prop.codigo}`;
   const d = r.por_subgrupo[k];
   if (!d) return null;
@@ -469,11 +749,14 @@ function pintarMapaResultado() {
   const ley = $("#leyenda-mapa");
   if (estado.opcionMapa == null || !estado.resultado) { ley.hidden = true; refrescarEstilos(); return; }
   const r = estado.resultado;
-  const vals = Object.entries(r.por_subgrupo).filter(([k]) => k.startsWith("ccaa=")).map(([, d]) => d[r.opciones[estado.opcionMapa]].p);
+  const op = r.opciones[estado.opcionMapa];
+  const vals = r.comparacion
+    ? Object.values(r.comparacion.territorios).map((t) => t.total[op].p)
+    : Object.entries(r.por_subgrupo).filter(([k]) => k.startsWith("ccaa=")).map(([, d]) => d[op].p);
   rangoMapa = [Math.min(...vals), Math.max(...vals)];
   for (const c of todas("CCAA")) c.setStyle(estiloMapa);
   ley.hidden = false;
-  ley.innerHTML = `<b>${escapar(r.opciones[estado.opcionMapa])}</b> por comunidad
+  ley.innerHTML = `<b>${escapar(r.opciones[estado.opcionMapa])}</b> por comunidad${r.comparacion ? " (población propia)" : ""}
     <div class="escala">${SEQ.map((v) => `<i style="background:var(${v})"></i>`).join("")}</div>
     <div class="extremos"><span>${pct(rangoMapa[0])}</span><span>${pct(rangoMapa[1])}</span></div>
     <div style="color:var(--texto-3);margin-top:4px">Más transparente: confianza baja.</div>
@@ -552,5 +835,6 @@ window.sinpop = { elegirTerritorio, ponerNivel };
   }
   try { estado.paquete = (await api("/api/modo")).paquete; } catch { estado.paquete = false; }
   await cargarPoblaciones();
+  pintarHistorial();
   actualizarLLM();
 })();

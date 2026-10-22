@@ -135,6 +135,7 @@ def modelos(destino: Path, procesos: int = 2) -> int:
 
 
 def poblaciones(destino: Path) -> list[str]:
+    from sinpop.predict import atributos as AT
     from sinpop.predict import poblacion as P
     from sinpop.servicio.app import poblaciones as listar
 
@@ -149,6 +150,10 @@ def poblaciones(destino: Path) -> list[str]:
         m.write_parquet(destino / "marcos" / f"{rid}.parquet", compression="zstd")
         (destino / "marcos" / f"{rid}.json").write_text(
             json.dumps(p, ensure_ascii=False, indent=1), "utf-8"
+        )
+        (destino / "atributos").mkdir(exist_ok=True)
+        (destino / "atributos" / f"{rid}.json").write_text(
+            json.dumps(AT.todas(rid), ensure_ascii=False, separators=(",", ":")), "utf-8"
         )
         f = REPORTS_DIR / rid / "ficha.md"
         if f.exists():

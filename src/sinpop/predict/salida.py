@@ -321,8 +321,13 @@ def ajustar_territorio(out: dict, r: E.Resultado, clave: str) -> dict:
     return out
 
 
-def predecir_dict(q: dict, run_id: str = "2026-01-01_ES_1000000_s1") -> dict:
-    """Predicción de una pregunta en formato `docs/03` §2.8 (la usan la CLI y el servicio)."""
+def predecir_dict(
+    q: dict, run_id: str = "2026-01-01_ES_1000000_s1", permitir_llm: bool = True
+) -> dict:
+    """Predicción de una pregunta en formato `docs/03` §2.8 (la usan la CLI y el servicio).
+
+    `permitir_llm=False` fuerza el estimador sin modelo de lenguaje (para comparaciones en lote,
+    que si no harían una llamada por territorio)."""
     jsonschema.validate(q, ESQUEMA_ENTRADA)
     from sinpop.llm import cliente as C
     from sinpop.predict import asistido as A
@@ -344,7 +349,8 @@ def predecir_dict(q: dict, run_id: str = "2026-01-01_ES_1000000_s1") -> dict:
     r = E.predecir(p, run_id=run_id)
     sin_analogas = not r.analogas or r.analogas[0]["similitud"] < A.UMBRAL
     cal = calibracion_llm()
-    if sin_analogas and C.disponible() and (cal is None or cal.get("usar", True)):
+    usar = cal is None or cal.get("usar", True)
+    if permitir_llm and sin_analogas and C.disponible() and usar:
         return construir_asistida(p, r, run_id)
     out = construir(r, run_id)
     if clave:
