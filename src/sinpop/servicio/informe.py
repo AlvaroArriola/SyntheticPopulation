@@ -103,6 +103,7 @@ def normalizar(tipo: str, datos: dict, etiquetas: dict) -> dict:
         "fuentes": [],
         "aviso": datos.get("aviso", ""),
         "llm": (datos.get("versiones") or {}).get("modelo_llm"),
+        "justificacion": (datos.get("parametros_llm") or {}).get("justificacion"),
         "etiquetas": etiquetas,
     }
 
@@ -464,6 +465,14 @@ def generar(tipo: str, datos: dict, contexto: dict, etiquetas: dict) -> bytes:
                 fig.text(0.08, y, linea, fontsize=9, color=TEXTO)
                 y -= 0.017
             y -= 0.006
+        if r.get("justificacion"):  # lo que escribió el modelo, tal cual (D-085)
+            y -= 0.01
+            titulo = f"Razonamiento del modelo de lenguaje ({r['llm']})"
+            fig.text(0.08, y, titulo, fontsize=10.5, color=TEXTO, weight="bold")
+            y -= 0.022
+            for linea in textwrap.wrap(f"«{r['justificacion']}»", 100):
+                fig.text(0.08, y, linea, fontsize=8.5, color=TEXTO_2, style="italic")
+                y -= 0.016
         if r["similares"]:
             y -= 0.01
             fig.text(
