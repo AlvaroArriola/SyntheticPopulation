@@ -235,21 +235,35 @@ def ejecutar(
 
 
 def estimar(estudios: dict[str, str] | None = None) -> dict:
+    return C.estimar(todas_las_peticiones(estudios))
+
+
+def todas_las_peticiones(estudios: dict[str, str] | None = None, eventos: bool = True) -> list:
     from sinpop.config import load_config
     from sinpop.predict import evento as EV
 
-    cs = casos(V.VALIDACION if estudios is None else estudios)
-    pets = peticiones(cs)
-    b = EV.banco()
-    for e in load_config("eventos.yaml").eventos:  # type: ignore[attr-defined]
-        for ind in e.indicadores_afectados:
-            if not b.filter((pl.col("evento") == e.id) & (pl.col("indicador") == ind)).is_empty():
-                pets.append(EV.peticion_llm(e, ind))
-    return C.estimar(pets)
+    pets = peticiones(casos(V.VALIDACION if estudios is None else estudios))
+    if eventos:
+        b = EV.banco()
+        for e in load_config("eventos.yaml").eventos:  # type: ignore[attr-defined]
+            for ind in e.indicadores_afectados:
+                if not b.filter(
+                    (pl.col("evento") == e.id) & (pl.col("indicador") == ind)
+                ).is_empty():
+                    pets.append(EV.peticion_llm(e, ind))
+    return pets
+
+
+def exportar(nombre: str = "validacion_f9") -> dict:
+    """Exporta las peticiones de esta evaluación para enviarlas desde la sesión que tiene la
+    clave (`python -m sinpop.llm.cliente --enviar <nombre>`, D-074)."""
+    return C.exportar(todas_las_peticiones(), nombre)
 
 
 if __name__ == "__main__":
-    if "--estimar" in sys.argv:
+    if "--exportar" in sys.argv:
+        print(json.dumps(exportar(), ensure_ascii=False, indent=1))
+    elif "--estimar" in sys.argv:
         print(json.dumps(estimar(), ensure_ascii=False, indent=1))
     else:
         print(json.dumps(ejecutar(), ensure_ascii=False, indent=1))

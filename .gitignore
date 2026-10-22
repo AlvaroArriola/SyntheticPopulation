@@ -12,6 +12,9 @@ logs/llm/**
 !logs/llm/cache/
 !logs/llm/cache/*.json
 !logs/llm/gasto.jsonl
+# peticiones exportadas para enviarlas desde otra sesión (D-074): enunciados públicos y agregados
+!logs/llm/pendientes/
+!logs/llm/pendientes/*.jsonl
 # Python
 __pycache__/
 *.py[cod]

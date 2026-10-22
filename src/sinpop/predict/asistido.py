@@ -24,7 +24,6 @@ from sinpop.predict import estimador as E
 
 UMBRAL = 0.4  # similitud de la mejor análoga por debajo de la cual se usa el LLM (D-069)
 SUBGRUPOS_LLM = ["edad_4", "sexo", "estudios_3", "ccaa"]
-TOLERANCIA_SUMA = 0.03
 ETIQUETAS = {
     "edad_4": "edad",
     "sexo": "sexo",
@@ -121,19 +120,8 @@ def _opciones(opciones: list[str]) -> str:
     return "\n".join(f"{i + 1}. {o}" for i, o in enumerate(opciones))
 
 
-def validador(n: int, claves: list[str]):
-    def _v(s: dict) -> None:
-        dists = [("total", s["total"])] + [(x["clave"], x["distribucion"]) for x in s["subgrupos"]]
-        faltan = set(claves) - {x["clave"] for x in s["subgrupos"]}
-        if faltan:
-            raise ValueError(f"faltan subgrupos: {sorted(faltan)[:5]}")
-        for k, v in dists:
-            if len(v) != n:
-                raise ValueError(f"{k}: {len(v)} proporciones para {n} opciones")
-            if min(v) < 0 or abs(sum(v) - 1) > TOLERANCIA_SUMA:
-                raise ValueError(f"{k}: proporciones negativas o que no suman 1 ({sum(v):.3f})")
-
-    return _v
+def spec_distribucion(n: int, claves: list[str]) -> dict:
+    return {"tipo": "distribucion", "n": n, "claves": list(claves)}
 
 
 def distribuciones(salida: dict) -> dict[str, np.ndarray]:
@@ -157,7 +145,7 @@ def peticion_b2(q: E.Pregunta, claves: list[str] | None = None) -> Peticion:
             "subgrupos": _lista_subgrupos(claves),
         },
         esquema=ESQUEMA_DIST,
-        validar=validador(len(q.opciones), claves),
+        spec=spec_distribucion(len(q.opciones), claves),
     )
 
 
@@ -190,7 +178,7 @@ def peticion_nueva(q: E.Pregunta, claves: list[str] | None = None) -> Peticion:
         tarea="pregunta_nueva",
         variables=p.variables | {"parecidas": parecidas_texto(q)},
         esquema=ESQUEMA_DIST,
-        validar=p.validar,
+        spec=p.spec,
     )
 
 
@@ -204,13 +192,6 @@ def peticion_evento(
     analogos: str,
 ) -> Peticion:
     cats = sorted(antes)
-
-    def _v(s: dict) -> None:
-        if {x["categoria"] for x in s["categorias"]} != set(cats):
-            raise ValueError("las categorías no coinciden con las pedidas")
-        if any(abs(x["cambio_pp"]) > 50 for x in s["categorias"]):
-            raise ValueError("cambio de más de 50 puntos")
-
     return Peticion(
         id=f"evento:{id_}:{indicador}",
         tarea="evento",
@@ -224,5 +205,5 @@ def peticion_evento(
             "analogos": analogos or "(ninguno)",
         },
         esquema=ESQUEMA_EVENTO,
-        validar=_v,
+        spec={"tipo": "evento", "categorias": cats},
     )

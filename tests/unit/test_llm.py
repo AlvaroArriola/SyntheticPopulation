@@ -91,3 +91,18 @@ def test_coste_con_descuento_de_lotes() -> None:
     lleno = C.coste_eur("claude-opus-5-5", 1_000_000, 1_000_000, lote=False)
     lote = C.coste_eur("claude-opus-5-5", 1_000_000, 1_000_000, lote=True)
     assert lleno == pytest.approx(24.0) and lote == pytest.approx(12.0)
+
+
+def test_exportar_y_enviar_desde_otra_sesion(rutas, monkeypatch) -> None:
+    monkeypatch.setattr(C, "PENDIENTES_DIR", rutas / "pendientes")
+    p = A.peticion_b2(Q, CLAVES)
+    info = C.exportar([p], "prueba")
+    assert info["peticiones"] == 1
+    # la «otra sesión» envía el fichero y deja la respuesta en la caché
+    r = C.enviar_pendientes("prueba", C.SimuladoBackend(_ok))
+    assert r["validas"] == 1
+    # aquí, sin backend ni credenciales, la respuesta sale de la caché y vuelve a validarse
+    monkeypatch.delenv("SINPOP_ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    assert C.ejecutar([p])["b2:Q1"]["total"] == [0.5, 0.4, 0.1]
+    assert C.exportar([p], "prueba")["peticiones"] == 0

@@ -24,7 +24,7 @@ import json
 import os
 import time
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -33,6 +33,7 @@ import jsonschema
 from sinpop import REPO_ROOT
 from sinpop.config import load_config
 from sinpop.llm import prompts as P
+from sinpop.llm import validadores as VAL
 
 CARACTERES_POR_TOKEN = 3.0  # cota prudente para estimar la entrada (español, JSON)
 
@@ -51,7 +52,7 @@ class Peticion:
     tarea: str
     variables: dict[str, str]
     esquema: dict
-    validar: Callable[[dict], None] | None = field(default=None, compare=False)
+    spec: dict | None = None  # comprobación semántica (llm/validadores.py)
 
 
 @dataclass
@@ -177,33 +178,45 @@ def registro(p: Peticion) -> dict:
     }
 
 
-def _comprobar(salida: dict, p: Peticion) -> None:
-    jsonschema.validate(salida, p.esquema)
-    if p.validar is not None:
-        p.validar(salida)
+def _comprobar(salida: dict, esquema: dict, spec: dict | None) -> None:
+    jsonschema.validate(salida, esquema)
+    v = VAL.construir(spec)
+    if v is not None:
+        v(salida)
 
 
-def ejecutar(peticiones: list[Peticion], backend: Backend | None = None) -> dict[str, dict | None]:
-    """Devuelve la salida validada de cada petición (o None si no se pudo obtener)."""
+def _valida(salida: dict, esquema: dict, spec: dict | None) -> bool:
+    try:
+        _comprobar(salida, esquema, spec)
+    except (ValueError, KeyError, jsonschema.ValidationError):
+        return False
+    return True
+
+
+def _pendiente(p: Peticion) -> dict:
+    params, clave, meta = _solicitud(p)
+    return {
+        "id": p.id,
+        "clave": clave,
+        "meta": meta,
+        "params": params,
+        "esquema": p.esquema,
+        "spec": p.spec,
+    }
+
+
+def _de_cache(pend: dict) -> dict | None:
+    cache, _ = _rutas()
+    f = cache / f"{pend['clave']}.json"
+    if not f.exists():
+        return None
+    salida = json.loads(f.read_text("utf-8"))["salida"]
+    return salida if _valida(salida, pend["esquema"], pend["spec"]) else None
+
+
+def _comprobar_presupuesto(pendientes: list[dict], lote: bool) -> None:
     c = _cfg()
-    if backend is None:
-        if not disponible():
-            raise LLMNoDisponible("LLM desactivado en configs/llm.yaml o sin credenciales")
-        backend = AnthropicBackend()
-    cache, registro = _rutas()
-    cache.mkdir(parents=True, exist_ok=True)
-    registro.parent.mkdir(parents=True, exist_ok=True)
-    lote = c.presupuesto.usar_lotes
-    out: dict[str, dict | None] = {}
-    pendientes: dict[str, tuple[Peticion, dict, str, dict]] = {}
-    for p in peticiones:
-        params, clave, meta = _solicitud(p)
-        f = cache / f"{clave}.json"
-        if f.exists():
-            out[p.id] = json.loads(f.read_text("utf-8"))["salida"]
-        else:
-            pendientes[p.id] = (p, params, clave, meta)
-    cota = sum(_cota(v[1], lote) for v in pendientes.values())
+    cota = sum(_cota(x["params"], lote) for x in pendientes)
     if cota > c.presupuesto.eur_max_por_ejecucion:
         raise PresupuestoExcedido(
             f"cota {cota:.2f} € > tope por ejecución {c.presupuesto.eur_max_por_ejecucion} €"
@@ -213,23 +226,35 @@ def ejecutar(peticiones: list[Peticion], backend: Backend | None = None) -> dict
             f"gastado {gasto_total():.2f} € + cota {cota:.2f} € > tope total "
             f"{c.presupuesto.eur_max_total} €"
         )
+
+
+def _enviar(pendientes: list[dict], backend: Backend) -> dict[str, dict | None]:
+    """Envía, valida, registra el gasto y guarda en caché; reintenta las salidas inválidas."""
+    c = _cfg()
+    cache, registro = _rutas()
+    cache.mkdir(parents=True, exist_ok=True)
+    registro.parent.mkdir(parents=True, exist_ok=True)
+    lote = c.presupuesto.usar_lotes
+    _comprobar_presupuesto(pendientes, lote)
+    out: dict[str, dict | None] = {}
+    quedan = {x["id"]: x for x in pendientes}
     for _intento in range(c.reintentos_salida_invalida + 1):
-        if not pendientes:
+        if not quedan:
             break
-        resp = backend.enviar([{"custom_id": k, **v[1]} for k, v in pendientes.items()], lote)
+        resp = backend.enviar([{"custom_id": k, **v["params"]} for k, v in quedan.items()], lote)
         hechos = []
-        for k, (p, params, clave, meta) in pendientes.items():
+        for k, x in quedan.items():
             r = resp.get(k)
             if r is None:
                 continue
-            eur = coste_eur(params["model"], r.entrada, r.salida, lote)
+            eur = coste_eur(x["params"]["model"], r.entrada, r.salida, lote)
             salida, error = None, None
             try:
                 if r.texto is None:
                     raise ValueError(f"sin texto (motivo de fin: {r.motivo_fin})")
                 salida = json.loads(r.texto)
-                _comprobar(salida, p)
-            except (ValueError, jsonschema.ValidationError) as e:
+                _comprobar(salida, x["esquema"], x["spec"])
+            except (ValueError, KeyError, jsonschema.ValidationError) as e:
                 salida, error = None, str(e)[:300]
             with registro.open("a", encoding="utf-8") as fh:
                 fh.write(
@@ -237,8 +262,8 @@ def ejecutar(peticiones: list[Peticion], backend: Backend | None = None) -> dict
                         {
                             "fecha": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"),
                             "id": k,
-                            "clave": clave,
-                            **meta,
+                            "clave": x["clave"],
+                            **x["meta"],
                             "lote": lote,
                             "tokens_entrada": r.entrada,
                             "tokens_salida": r.salida,
@@ -251,17 +276,86 @@ def ejecutar(peticiones: list[Peticion], backend: Backend | None = None) -> dict
                     + "\n"
                 )
             if error is None:
-                guardado = {"meta": meta, "salida": salida}
-                (cache / f"{clave}.json").write_text(
+                guardado = {"meta": x["meta"], "salida": salida}
+                (cache / f"{x['clave']}.json").write_text(
                     json.dumps(guardado, ensure_ascii=False, indent=1, sort_keys=True), "utf-8"
                 )
                 out[k] = salida
                 hechos.append(k)
         for k in hechos:
-            pendientes.pop(k)
-    for k in pendientes:
+            quedan.pop(k)
+    for k in quedan:
         out[k] = None
     return out
+
+
+def ejecutar(peticiones: list[Peticion], backend: Backend | None = None) -> dict[str, dict | None]:
+    """Devuelve la salida validada de cada petición (o None si no se pudo obtener). Lo que ya
+    está en caché no necesita credenciales ni gasta nada."""
+    out: dict[str, dict | None] = {}
+    pendientes = []
+    for p in peticiones:
+        x = _pendiente(p)
+        salida = _de_cache(x)
+        if salida is not None:
+            out[p.id] = salida
+        else:
+            pendientes.append(x)
+    if not pendientes:
+        return out
+    if backend is None:
+        if not disponible():
+            raise LLMNoDisponible(
+                f"{len(pendientes)} peticiones sin respuesta en caché, y el LLM está desactivado "
+                "o sin credenciales (o expórtalas: exportar())"
+            )
+        backend = AnthropicBackend()
+    return out | _enviar(pendientes, backend)
+
+
+# ------------------------------------------------ envío desde otra sesión (D-074)
+
+PENDIENTES_DIR = REPO_ROOT / "logs" / "llm" / "pendientes"
+
+
+def exportar(peticiones: list[Peticion], nombre: str) -> dict:
+    """Escribe las peticiones sin respuesta en caché en `logs/llm/pendientes/<nombre>.jsonl`,
+    para enviarlas desde un entorno que tenga la clave (`enviar_pendientes`). Solo contienen lo
+    que vería el modelo: enunciados públicos y agregados (regla 8)."""
+    pend = [x for x in map(_pendiente, peticiones) if _de_cache(x) is None]
+    PENDIENTES_DIR.mkdir(parents=True, exist_ok=True)
+    ruta = PENDIENTES_DIR / f"{nombre}.jsonl"
+    ruta.write_text(
+        "".join(json.dumps(x, ensure_ascii=False, sort_keys=True) + "\n" for x in pend), "utf-8"
+    )
+    lote = _cfg().presupuesto.usar_lotes
+    return {
+        "fichero": str(ruta.relative_to(REPO_ROOT) if ruta.is_relative_to(REPO_ROOT) else ruta),
+        "peticiones": len(pend),
+        "cota_eur": round(sum(_cota(x["params"], lote) for x in pend), 4),
+    }
+
+
+def _leer_pendientes(nombre: str) -> list[dict]:
+    ruta = PENDIENTES_DIR / f"{nombre}.jsonl"
+    return [json.loads(x) for x in ruta.read_text("utf-8").splitlines() if x.strip()]
+
+
+def enviar_pendientes(nombre: str, backend: Backend | None = None) -> dict:
+    """Envía un fichero de peticiones exportado (con los mismos topes de presupuesto)."""
+    pend = [x for x in _leer_pendientes(nombre) if _de_cache(x) is None]
+    if not pend:
+        return {"enviadas": 0, "validas": 0, "gastado_total_eur": round(gasto_total(), 4)}
+    if backend is None:
+        if not credenciales():
+            raise LLMNoDisponible(f"falta la clave en {VARIABLE_CLAVE}")
+        backend = AnthropicBackend()
+    out = _enviar(pend, backend)
+    return {
+        "enviadas": len(pend),
+        "validas": sum(v is not None for v in out.values()),
+        "gastado_total_eur": round(gasto_total(), 4),
+    }
 
 
 def _sin_id(s: dict) -> dict:
@@ -314,3 +408,28 @@ class SimuladoBackend:
             s["custom_id"]: Respuesta(self.responder(s), *self.tokens, "end_turn")
             for s in solicitudes
         }
+
+
+if __name__ == "__main__":
+    import argparse
+
+    a = argparse.ArgumentParser(description="Envío de peticiones exportadas (D-074)")
+    a.add_argument("--enviar", help="nombre del fichero de logs/llm/pendientes/ (sin .jsonl)")
+    a.add_argument("--estimar", help="cota del coste de un fichero exportado, sin enviar nada")
+    args = a.parse_args()
+    if args.estimar:
+        pend = [x for x in _leer_pendientes(args.estimar) if _de_cache(x) is None]
+        lote = _cfg().presupuesto.usar_lotes
+        print(
+            json.dumps(
+                {
+                    "peticiones": len(pend),
+                    "cota_eur": round(sum(_cota(x["params"], lote) for x in pend), 4),
+                    "gastado_eur": round(gasto_total(), 4),
+                    "tope_total_eur": _cfg().presupuesto.eur_max_total,
+                },
+                ensure_ascii=False,
+            )
+        )
+    elif args.enviar:
+        print(json.dumps(enviar_pendientes(args.enviar), ensure_ascii=False))

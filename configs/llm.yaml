@@ -9,7 +9,7 @@
 # data cutoff: Jun 2026» (https://platform.claude.com/docs/en/about-claude/models/overview,
 # consultado el 2026-10-22); se toma el último día del mes, la lectura más conservadora.
 fecha_corte_construccion: 2026-06-30
-activo: false
+activo: true
 modelos:
   - id: claude-opus-5-5
     proveedor: anthropic

@@ -81,7 +81,9 @@ def ejecutar(tag: str) -> dict:
     d = pl.DataFrame(filas, infer_schema_length=None)
 
     llm = None
-    if C.disponible():
+    # con la capa activa, las respuestas salen de la caché (exportadas y enviadas desde la sesión
+    # que tiene la clave, D-074) o se piden en el momento si hay credenciales
+    if C._cfg().activo:
         from sinpop.evaluate import llm as L
 
         llm = L.ejecutar(
