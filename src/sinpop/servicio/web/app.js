@@ -55,13 +55,10 @@ function mostrarTooltip(ev, html) {
 const ocultarTooltip = () => { tooltip.hidden = true; };
 
 // ------------------------------------------------------------------ mapa
-const mapa = L.map("mapa", { zoomControl: true, attributionControl: true, minZoom: 4 }).setView([40.2, -3.6], 6);
+// sin atribución sobre el mapa: el crédito obligatorio de OpenStreetMap va al pie del panel (D-084)
+const mapa = L.map("mapa", { zoomControl: true, attributionControl: false, minZoom: 4 }).setView([40.2, -3.6], 6);
 const TESELAS = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
-L.tileLayer(TESELAS, {
-  maxZoom: 12,
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · Límites: INE',
-}).addTo(mapa);
-mapa.attributionControl.setPrefix(false);
+L.tileLayer(TESELAS, { maxZoom: 12 }).addTo(mapa);
 // recuadro de Canarias: un segundo mapa fijo, con las islas en su sitio y las mismas capas
 const mapaCanarias = L.map("mapa-canarias", {
   zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false,
@@ -526,8 +523,11 @@ function pintarResultado(r, enunciado, opciones, pob) {
       <p title="${escapar(r.confianza.metodo || "")}">Confianza: probabilidad de que el error total de la distribución sea menor de 10 puntos, según el historial de aciertos del sistema en preguntas parecidas.</p>
     </div>
     ${r.parametros_llm?.justificacion ? `<p class="justificacion">«${escapar(r.parametros_llm.justificacion)}»</p>` : ""}
+    ${seccionEvolucion(r, opciones)}
     ${seccionRegiones(estado.resultado, pob)}
     ${seccionGrupos(estado.resultado, tablaPregunta)}
+    ${seccionRetratos(r, opciones)}
+    ${seccionCruce()}
     ${r.preguntas_similares?.length ? `<p class="seccion-titulo">Se apoya en estas preguntas del CIS</p><ol class="parecidas">${r.preguntas_similares.map((x) => `<li>${escapar(x)}</li>`).join("")}</ol>` : ""}
     <p class="aviso">${escapar(r.aviso)}</p>
     <p class="coste">Coste: ${r.coste.llamadas} llamadas al modelo de lenguaje · ${r.coste.eur.toLocaleString("es-ES", { maximumFractionDigits: 3 })} € · ${Math.round(r.coste.segundos)} s</p>
@@ -541,6 +541,9 @@ function pintarResultado(r, enunciado, opciones, pob) {
   }));
   activarGrupos(tablaPregunta, activarTooltipsTabla);
   activarRegiones(enunciado, opciones);
+  activarEvolucion(caja);
+  activarRetratos(r, opciones);
+  activarCruce(enunciado, opciones, pob);
   $("#descargar").addEventListener("click", () => descargar(`${r.id}.json`, JSON.stringify(r, null, 1), "application/json"));
   $("#descargar-csv").addEventListener("click", () => descargar(`${r.id}.csv`, csvPregunta(r), "text/csv"));
   $("#descargar-pdf").addEventListener("click", () => informePdf("pregunta", r, { enunciado, run_id: pob.run_id, tamano: pob.tamano.toLocaleString("es-ES") }));
@@ -574,6 +577,207 @@ async function cargarFidelidad(rid) {
   } catch (_) {
     caja.hidden = true;
   }
+}
+
+// ------------------------------------------------------------------ evolución, retratos y cruces (D-082, D-083)
+// paleta categórica de referencia (dataviz), en orden fijo; NS/NC en gris
+const CAT = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"];
+const GRIS = "#8f8e86";
+const mesNum = (f) => +f.slice(0, 4) * 12 + (+f.slice(5, 7) - 1);
+function colorOpcion(opciones, o) {
+  if (NSNC.includes(o)) return GRIS;
+  const i = sustantivas(opciones).indexOf(o);
+  return i >= 0 && i < CAT.length ? CAT[i] : GRIS;
+}
+
+function seccionEvolucion(r, opciones) {
+  const pts = r.evolucion?.puntos || [];
+  if (pts.length < 3) return "";
+  const W = 420, H = 230, m = { l: 34, r: 92, t: 12, b: 24 };
+  const hoy = mesNum(r.evolucion.hoy + "-01");
+  const x0 = mesNum(pts[0].fecha), x1 = hoy;
+  const series = sustantivas(opciones).slice(0, CAT.length);
+  const dest = r.medicion_cis || r.total;
+  let ymax = 0;
+  for (const p of pts) for (const o of series) ymax = Math.max(ymax, p.dist[o]);
+  for (const o of series) ymax = Math.max(ymax, dest[o].ic80[1]);
+  ymax = Math.min(1, Math.ceil((ymax + 0.02) * 10) / 10);
+  const X = (mm) => m.l + ((mm - x0) / Math.max(x1 - x0, 1)) * (W - m.l - m.r);
+  const Y = (p) => H - m.b - (p / ymax) * (H - m.t - m.b);
+  const ticksY = [0, ymax / 2, ymax].map((v) => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" class="rejilla"/><text x="${m.l - 6}" y="${Y(v) + 3}" class="eje" text-anchor="end">${Math.round(v * 100)} %</text>`).join("");
+  const anios = [];
+  for (let a = Math.ceil(x0 / 12); a * 12 <= x1; a++) anios.push(a);
+  const ticksX = anios.map((a) => `<text x="${X(a * 12)}" y="${H - 6}" class="eje" text-anchor="middle">${a}</text>`).join("");
+  // posiciones de las etiquetas finales sin solaparse
+  const finales = series.map((o) => ({ o, y: Y(dest[o].p) })).sort((a, b) => a.y - b.y);
+  for (let i = 1; i < finales.length; i++) if (finales[i].y - finales[i - 1].y < 11) finales[i].y = finales[i - 1].y + 11;
+  const yEtiqueta = Object.fromEntries(finales.map((f) => [f.o, f.y]));
+  const lineas = series.map((o) => {
+    const c = colorOpcion(opciones, o);
+    const camino = pts.map((p) => `${X(mesNum(p.fecha)).toFixed(1)},${Y(p.dist[o]).toFixed(1)}`).join(" ");
+    const ultimo = pts.at(-1);
+    const d = dest[o];
+    return `<polyline points="${camino}" fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round"/>
+      <line x1="${X(mesNum(ultimo.fecha))}" y1="${Y(ultimo.dist[o])}" x2="${X(hoy)}" y2="${Y(d.p)}" stroke="${c}" stroke-width="1.5" stroke-dasharray="3 3"/>
+      ${pts.map((p) => `<circle cx="${X(mesNum(p.fecha))}" cy="${Y(p.dist[o])}" r="3.2" fill="${c}" stroke="#fff" stroke-width="1.5" class="punto-serie" data-t="${escapar(o)} · ${p.fecha.slice(0, 7)} (estudio ${escapar(p.estudio)})" data-p="${p.dist[o]}"/>`).join("")}
+      <line x1="${X(hoy)}" x2="${X(hoy)}" y1="${Y(d.ic80[0])}" y2="${Y(d.ic80[1])}" stroke="${c}" stroke-width="2"/>
+      <rect x="${X(hoy) - 4.5}" y="${Y(d.p) - 4.5}" width="9" height="9" transform="rotate(45 ${X(hoy)} ${Y(d.p)})" fill="${c}" stroke="#fff" stroke-width="1.5" class="punto-serie" data-t="${escapar(o)} · hoy (estimación, IC 80 % ${pct(d.ic80[0])}–${pct(d.ic80[1])})" data-p="${d.p}"/>
+      <text x="${X(hoy) + 9}" y="${yEtiqueta[o] + 3}" class="etiqueta-serie">${escapar(o.length > 13 ? o.slice(0, 12) + "…" : o)} ${Math.round(100 * d.p)} %</text>`;
+  }).join("");
+  const desde = pts[0].fecha.slice(0, 7), hasta = pts.at(-1).fecha.slice(0, 7);
+  return `<section class="seccion" aria-labelledby="t-evolucion">
+    <h4 class="seccion-titulo" id="t-evolucion">Cómo ha cambiado</h4>
+    <p class="nota">El CIS hizo esta pregunta (o una casi igual) ${pts.length} veces entre ${desde} y ${hasta}. La estimación de hoy pesa más lo reciente: una medición pierde la mitad de su peso cada ${r.evolucion.vida_media_meses} meses (D-082).</p>
+    <div class="leyenda-series">${series.map((o) => `<span><i style="background:${colorOpcion(opciones, o)}"></i>${escapar(o)}</span>`).join("")}</div>
+    <svg class="grafico-evolucion" viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolución de las respuestas desde ${desde} hasta hoy">
+      ${ticksY}${ticksX}
+      <line x1="${X(hoy)}" x2="${X(hoy)}" y1="${m.t}" y2="${H - m.b}" class="linea-hoy"/>
+      <text x="${X(hoy)}" y="${m.t + 2}" class="eje" text-anchor="middle">hoy</text>
+      ${lineas}
+    </svg>
+    <p class="nota">Puntos: lo que midió el CIS en cada barómetro. Rombo: estimación de hoy, como la mediría el CIS, con su intervalo del 80 %.</p>
+  </section>`;
+}
+function activarEvolucion(raiz) {
+  raiz.querySelectorAll(".punto-serie").forEach((el) => {
+    el.addEventListener("mousemove", (ev) => mostrarTooltip(ev, `<b>${el.dataset.t}</b><br>${pct(+el.dataset.p, 1)}`));
+    el.addEventListener("mouseleave", ocultarTooltip);
+  });
+}
+
+// retratos: personas sintéticas concretas con su probabilidad de cada respuesta
+const ACTIVIDAD_UNA = { ocupado: "Trabaja", parado: "En paro", inactivo: "Inactivo" };
+// religiosidad de una persona (las etiquetas de los grupos van en plural)
+const RELIGION_UNA = {
+  catolico_practicante: ["Católico practicante", "Católica practicante"],
+  catolico_no_practicante: ["Católico no practicante", "Católica no practicante"],
+  otra_religion: ["Otra religión", "Otra religión"],
+  agnostico: ["Agnóstico", "Agnóstica"],
+  indiferente: ["Indiferente", "Indiferente"],
+  ateo: ["Ateo", "Atea"],
+};
+const femenino = (t, sexo) => (sexo === "mujer" ? t.replace(/^Inactivo$/, "Inactiva") : t);
+function chipsPersona(p) {
+  const e = estado.etiquetas || {};
+  const chips = [];
+  const prov = e.provincia?.[p.provincia] ?? p.provincia;
+  if (p.provincia && prov !== e.ccaa?.[p.ccaa] && !(e.ccaa?.[p.ccaa] || "").includes(prov)) chips.push(prov);
+  if (p.estudios_3) chips.push(`Estudios: ${(e.estudios_3?.[p.estudios_3] ?? p.estudios_3).toLowerCase()}`);
+  if (p.actividad_3) chips.push(femenino(ACTIVIDAD_UNA[p.actividad_3] ?? p.actividad_3, p.sexo));
+  if (p.tamano_municipio_cis) chips.push(`Municipio de ${(e.tamano_municipio_cis?.[p.tamano_municipio_cis] ?? p.tamano_municipio_cis).toLowerCase()}`);
+  if (RELIGION_UNA[p.religiosidad]) chips.push(RELIGION_UNA[p.religiosidad][p.sexo === "mujer" ? 1 : 0]);
+  if (p.ideologia_bloque) chips.push(`Ideología: ${(e.ideologia_bloque?.[p.ideologia_bloque] ?? p.ideologia_bloque).toLowerCase()}`);
+  if (p.clase_subjetiva && !["NC", "NS"].includes(p.clase_subjetiva)) chips.push(`Clase ${(e.clase_subjetiva?.[p.clase_subjetiva] ?? p.clase_subjetiva).toLowerCase()}`);
+  if (p.recuerdo_voto_generales_familia) chips.push(`Voto 2023: ${(e.recuerdo_voto_generales_familia?.[p.recuerdo_voto_generales_familia] ?? p.recuerdo_voto_generales_familia).toLowerCase()}`);
+  return chips;
+}
+function tarjetaPersona(p, opciones) {
+  const orden = sustantivas(opciones).sort((a, b) => p.probabilidades[b] - p.probabilidades[a]);
+  const top = orden[0];
+  const barra = opciones.map((o) => `<i style="width:${100 * p.probabilidades[o]}%;background:${colorOpcion(opciones, o)}" title="${escapar(o)}: ${pct(p.probabilidades[o])}"></i>`).join("");
+  return `<article class="persona">
+    <div class="persona-cabecera"><span class="avatar" aria-hidden="true">${p.sexo === "mujer" ? "M" : "H"}</span>
+      <div><b>${p.sexo === "mujer" ? "Mujer" : "Hombre"}, ${p.edad} años</b><span>${escapar(estado.etiquetas?.ccaa?.[p.ccaa] ?? "")}</span></div></div>
+    <div class="persona-chips">${chipsPersona(p).map((c) => `<span>${escapar(c)}</span>`).join("")}</div>
+    <p class="persona-respuesta">Lo más probable: <b>«${escapar(top)}»</b> (${pct(p.probabilidades[top])})</p>
+    <div class="barra-apilada" role="img" aria-label="${opciones.map((o) => `${o} ${pct(p.probabilidades[o])}`).join(", ")}">${barra}</div>
+  </article>`;
+}
+let paginaRetratos = 0;
+function seccionRetratos(r, opciones) {
+  if (!r.retratos?.length) return "";
+  paginaRetratos = 0;
+  return `<section class="seccion" aria-labelledby="t-retratos">
+    <div class="cabecera-seccion"><h4 class="seccion-titulo" id="t-retratos">Personas de esta población</h4>
+      <button class="enlace" id="otras-personas" type="button">Ver otras cuatro</button></div>
+    <div class="leyenda-series">${opciones.map((o) => `<span><i style="background:${colorOpcion(opciones, o)}"></i>${escapar(o)}</span>`).join("")}</div>
+    <div class="personas" id="personas"></div>
+    <p class="nota">Son personas sintéticas: perfiles plausibles de esta población, no personas reales. La probabilidad es la de alguien con ese perfil.</p>
+  </section>`;
+}
+function pintarRetratos(r, opciones) {
+  const caja = $("#personas");
+  if (!caja) return;
+  const n = r.retratos.length;
+  const grupo = [0, 1, 2, 3].map((k) => r.retratos[(paginaRetratos * 4 + k) % n]);
+  caja.innerHTML = grupo.map((p) => tarjetaPersona(p, opciones)).join("");
+}
+function activarRetratos(r, opciones) {
+  pintarRetratos(r, opciones);
+  $("#otras-personas")?.addEventListener("click", () => { paginaRetratos++; pintarRetratos(r, opciones); });
+}
+
+// cruce con otra pregunta
+function seccionCruce() {
+  return `<section class="seccion" aria-labelledby="t-cruce">
+    <h4 class="seccion-titulo" id="t-cruce">Cruzar con otra pregunta</h4>
+    <p class="nota">Cómo responde a otra pregunta cada grupo según su respuesta a esta. Por ejemplo, la valoración del Gobierno según cómo se ve la economía.</p>
+    <label class="campo"><span>Otra pregunta</span><input id="cruce-enunciado" type="text" placeholder="Escribe y elige una pregunta parecida del CIS"></label>
+    <ul class="sugerencias-cruce" id="cruce-sugerencias" hidden></ul>
+    <label class="campo"><span>Sus respuestas (separadas por «;»)</span><input id="cruce-opciones" type="text" placeholder="Muy buena; Buena; Regular; Mala; Muy mala"></label>
+    <button class="secundario" id="cruzar" type="button">Cruzar</button>
+    <div id="zona-cruce" aria-live="polite"></div>
+  </section>`;
+}
+function activarCruce(enunciado, opciones, pob) {
+  const inp = $("#cruce-enunciado");
+  if (!inp) return;
+  let t = null;
+  inp.addEventListener("input", () => {
+    clearTimeout(t);
+    t = setTimeout(async () => {
+      const ul = $("#cruce-sugerencias");
+      if (inp.value.trim().length < 6) { ul.hidden = true; return; }
+      try {
+        const r = await api(`/api/banco?q=${encodeURIComponent(inp.value)}&k=5`);
+        ul.innerHTML = r.preguntas.map((q, i) => `<li><button type="button" data-i="${i}">${escapar(q.enunciado)}<small>CIS · ${q.fecha} · ${escapar(q.opciones.slice(0, 4).join(" / "))}${q.opciones.length > 4 ? " …" : ""}</small></button></li>`).join("");
+        ul.hidden = !r.preguntas.length;
+        ul.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+          const q = r.preguntas[+b.dataset.i];
+          inp.value = q.enunciado;
+          $("#cruce-opciones").value = q.opciones.map((o) => o.replace(/^\(NO LEER\)\s*/i, "")).join("; ");
+          ul.hidden = true;
+        }));
+      } catch (_) { ul.hidden = true; }
+    }, 400);
+  });
+  $("#cruzar").addEventListener("click", async () => {
+    const zona = $("#zona-cruce");
+    const b = { enunciado: inp.value.trim(), opciones: $("#cruce-opciones").value.split(";").map((x) => x.trim()).filter(Boolean) };
+    if (b.enunciado.length < 3 || b.opciones.length < 2) { zona.textContent = "Escribe la otra pregunta y al menos dos respuestas."; return; }
+    $("#cruzar").disabled = true;
+    try {
+      const tr = await post("/api/cruce", { run_id: pob.run_id, a: { enunciado, opciones }, b });
+      pintarCruce(await seguir(tr.trabajo, zona));
+    } catch (e) {
+      zona.textContent = `No se pudo cruzar: ${e.message}`;
+    } finally {
+      $("#cruzar").disabled = false;
+    }
+  });
+}
+function pintarCruce(c) {
+  const zona = $("#zona-cruce");
+  const fuerza = c.v_cramer >= 0.3 ? "fuerte" : c.v_cramer >= 0.1 ? "moderada" : "débil";
+  const filas = c.a.opciones.map((oa, i) => ({ oa, i })).filter((x) => c.a.total[x.i] >= 0.005);
+  const cols = c.b.opciones.map((ob, j) => ({ ob, j })).filter((x) => c.b.total[x.j] >= 0.005);
+  // frase destacada: en la respuesta más frecuente a A, la respuesta más probable a B
+  const ia = filas.reduce((a, b) => (c.a.total[a.i] >= c.a.total[b.i] ? a : b)).i;
+  const jb = cols.reduce((a, b) => (c.b_segun_a[ia][a.j] >= c.b_segun_a[ia][b.j] ? a : b)).j;
+  const html = filas.map(({ oa, i }) => {
+    const celdas = cols.map(({ j }) => {
+      const v = c.b_segun_a[i][j];
+      const n = Math.max(0, Math.min(SEQ.length - 1, Math.round(v * (SEQ.length - 1) / 0.8)));
+      return `<td style="background:var(${SEQ[n]});color:${n >= 4 ? "#fff" : "var(--texto)"}">${pct(v)}</td>`;
+    }).join("");
+    return `<tr><th scope="row">${escapar(oa)} <small>(${pct(c.a.total[i])})</small></th>${celdas}</tr>`;
+  }).join("");
+  zona.innerHTML = `
+    <p class="destacado-texto">Entre quienes responden «${escapar(c.a.opciones[ia])}», lo más frecuente es «${escapar(c.b.opciones[jb])}» (${pct(c.b_segun_a[ia][jb])}). Relación <b>${fuerza}</b> (V de Cramér ${c.v_cramer.toLocaleString("es-ES")}).</p>
+    <div class="tabla-envoltorio" tabindex="0" role="region" aria-label="Cruce de las dos preguntas"><table class="tabla-calor tabla-cruce">
+      <thead><tr><th scope="col"><span class="oculto">Respuesta a esta pregunta</span></th>${cols.map(({ ob }) => `<th scope="col" title="${escapar(ob)}">${escapar(ob.length > 12 ? ob.slice(0, 11) + "…" : ob)}</th>`).join("")}</tr></thead>
+      <tbody>${html}</tbody></table></div>
+    <p class="nota">Cada fila suma 100 %: cómo responde a la otra pregunta quien da esa respuesta a esta. ${escapar(c.fuente_relacion.nota)}</p>`;
 }
 
 // ------------------------------------------------------------------ regiones y grupos (D-081)

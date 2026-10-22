@@ -33,6 +33,10 @@ EXCLUIDAS = re.compile(
     r"|(_COD$|R$|R2$|GR$|GRA$)"
 )
 
+# variables que la regla de recodificación («…R$») excluiría por error: no son recodificaciones
+# de otra variable del fichero (no existe su versión sin la R final) (D-082)
+INCLUIDAS = {"ECOPER"}
+
 
 def _opciones(js: str) -> list[str]:
     d = json.loads(js)
@@ -56,7 +60,7 @@ def preguntas() -> pl.DataFrame:
     for var, enun, ops, est in b.select(
         "variable", "enunciado", "opciones", "estudios"
     ).iter_rows():
-        if est not in nac or est not in f or EXCLUIDAS.search(var):
+        if est not in nac or est not in f or (EXCLUIDAS.search(var) and var not in INCLUIDAS):
             continue
         op = _opciones(ops)
         k = len(O.sustantivas(op))

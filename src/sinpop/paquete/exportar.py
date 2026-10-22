@@ -151,6 +151,68 @@ def modelos(destino: Path, procesos: int = 2) -> int:
     return len(out)
 
 
+def _tablas_estudio(filas: list[dict]) -> list[str]:
+    """Tablas cruzadas ponderadas de cada par de preguntas de un mismo estudio (D-083): la
+    relación observada entre dos respuestas, en proporciones agregadas."""
+    from threadpoolctl import threadpool_limits
+
+    from sinpop.predict import estimador as E
+
+    out = []
+    with threadpool_limits(1):
+        resp = {}
+        for f in filas:
+            d = E.encuestados(f["estudio"], f["variable"], {o: o for o in f["opciones"]})
+            if d.height >= 50:
+                cod = {o: k for k, o in enumerate(f["opciones"])}
+                resp[f["id"]] = (
+                    len(f["opciones"]),
+                    d.select(
+                        "encuestado",
+                        pl.col("valor").replace_strict(cod, return_dtype=pl.Int64).alias("c"),
+                        "peso",
+                    ),
+                )
+        ids = sorted(resp)
+        for i, a in enumerate(ids):
+            na, da = resp[a]
+            for b in ids[i + 1 :]:
+                nb, db = resp[b]
+                j = da.join(db.select("encuestado", pl.col("c").alias("cb")), on="encuestado")
+                if j.height < 50:
+                    continue
+                cod = j["c"].to_numpy() * nb + j["cb"].to_numpy()
+                t = np.bincount(cod, weights=j["peso"].to_numpy(), minlength=na * nb)
+                t = (t / t.sum()).reshape(na, nb)
+                linea = {"a": a, "b": b, "n": j.height, "t": np.round(t, 5).tolist()}
+                out.append(json.dumps(linea, separators=(",", ":")))
+    return out
+
+
+def cruces(destino: Path, procesos: int = 2) -> int:
+    from sinpop.predict import banco as B
+
+    ids = set(json.loads(x)["id"] for x in gzip.open(destino / "modelos.jsonl.gz", "rt"))
+    filas = [f for f in B.preguntas().to_dicts() if f["id"] in ids]
+    por_estudio: dict[str, list[dict]] = {}
+    for f in filas:
+        por_estudio.setdefault(f["estudio"], []).append(f)
+    n = 0
+    contexto = multiprocessing.get_context("spawn")
+    with (
+        ProcessPoolExecutor(procesos, mp_context=contexto) as ex,
+        gzip.open(destino / "cruces.jsonl.gz", "wt", encoding="utf-8") as fo,
+    ):
+        for i, lineas in enumerate(
+            ex.map(_tablas_estudio, [por_estudio[k] for k in sorted(por_estudio)]), 1
+        ):
+            for x in lineas:
+                fo.write(x + "\n")
+            n += len(lineas)
+            print(f"estudio {i}/{len(por_estudio)}: {n} tablas", flush=True)
+    return n
+
+
 def poblaciones(destino: Path) -> list[str]:
     from sinpop.predict import atributos as AT
     from sinpop.predict import poblacion as P
@@ -223,6 +285,7 @@ def construir(destino: Path = DESTINO, procesos: int = 2) -> dict:
     auxiliares(destino)
     pobs = poblaciones(destino)
     n = modelos(destino, procesos)
+    cruces(destino, procesos)
     man = {
         "fecha": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"),
         "version_codigo": code_version(),
@@ -243,7 +306,7 @@ if __name__ == "__main__":
     a = argparse.ArgumentParser()
     a.add_argument("destino", nargs="?", default=str(DESTINO))
     a.add_argument("--procesos", type=int, default=2)
-    a.add_argument("--solo", choices=["auxiliares", "poblaciones", "modelos"])
+    a.add_argument("--solo", choices=["auxiliares", "poblaciones", "modelos", "cruces"])
     args = a.parse_args()
     d = Path(args.destino)
     d.mkdir(parents=True, exist_ok=True)
@@ -253,5 +316,7 @@ if __name__ == "__main__":
         print(poblaciones(d))
     elif args.solo == "modelos":
         print(modelos(d, args.procesos))
+    elif args.solo == "cruces":
+        print(cruces(d, args.procesos))
     else:
         print(json.dumps(construir(d, args.procesos), ensure_ascii=False, indent=1))

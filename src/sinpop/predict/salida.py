@@ -186,9 +186,187 @@ def construir(r: E.Resultado, run_id: str) -> dict:
         "preguntas_similares": [a["id"] for a in r.analogas],
         "coste": {"llamadas": 0, "tokens": 0, "eur": 0.0, "segundos": round(r.segundos, 2)},
         "versiones": {"modelo_llm": None, "prompts": None, "poblacion": run_id},
+        "evolucion": {
+            "puntos": E.serie_temporal(q),
+            "hoy": q.fecha_referencia,
+            "vida_media_meses": E.VIDA_MEDIA_MESES,
+        },
+        "retratos": retratos(r, run_id),
     }
     validar(out, q.opciones)
     return out
+
+
+# ---------------------------------------------------------------- retratos y cruces (D-083)
+N_RETRATOS = 24
+CAMPOS_RETRATO = [
+    "sexo",
+    "edad",
+    "provincia",
+    "ccaa",
+    "estudios_3",
+    "actividad_3",
+    "tamano_municipio_cis",
+    "religiosidad",
+    "clase_subjetiva",
+    "ideologia_bloque",
+    "recuerdo_voto_generales_familia",
+]
+
+
+def retratos(r: E.Resultado, run_id: str, n: int = N_RETRATOS) -> list[dict]:
+    """Personas sintéticas concretas, elegidas al azar (con su peso) con una semilla fija por
+    pregunta, con su perfil y la probabilidad de cada respuesta para alguien con ese perfil."""
+    import hashlib
+
+    from sinpop.predict import poblacion as P
+
+    if r.personas is None:
+        return []
+    m = P.marco(run_id)
+    w = m["peso"].to_numpy()
+    semilla = int(hashlib.sha256(f"{r.pregunta.id}|{run_id}".encode()).hexdigest()[:8], 16)
+    idx = np.random.default_rng(semilla).choice(
+        m.height, size=min(n, m.height), replace=False, p=w / w.sum()
+    )
+    cols = [c for c in CAMPOS_RETRATO if c in m.columns]
+    filas = m.select("person_id", *cols)[idx.tolist()].to_dicts()
+    return [
+        f
+        | {
+            "probabilidades": {
+                o: round(float(p), 4)
+                for o, p in zip(r.pregunta.opciones, r.personas[i], strict=True)
+            }
+        }
+        for f, i in zip(filas, idx, strict=True)
+    ]
+
+
+def _llevar_tabla(t: np.ndarray, a: dict, b: dict, qa: E.Pregunta, qb: E.Pregunta) -> np.ndarray:
+    """Tabla observada (opciones propias de las análogas) → opciones de las preguntas."""
+    propias_a = list(E._b0_paquete()[a["id"]]["n_opcion"])
+    propias_b = list(E._b0_paquete()[b["id"]]["n_opcion"])
+    out = np.zeros((len(qa.opciones), len(qb.opciones)))
+    for i, oa in enumerate(propias_a):
+        for j, ob in enumerate(propias_b):
+            if oa in a["mapeo"] and ob in b["mapeo"]:
+                out[qa.opciones.index(a["mapeo"][oa]), qb.opciones.index(b["mapeo"][ob])] += t[i, j]
+    return out / out.sum() if out.sum() > 0 else out
+
+
+def _ipf(t: np.ndarray, filas: np.ndarray, cols: np.ndarray, vueltas: int = 200) -> np.ndarray:
+    """Ajuste proporcional iterativo: conserva la asociación (razones de odds) de `t` y le pone
+    los márgenes `filas` y `cols`."""
+    x = t.copy() + 1e-9
+    for _ in range(vueltas):
+        x *= (filas / x.sum(1))[:, None]
+        x *= (cols / x.sum(0))[None, :]
+    return x / x.sum()
+
+
+def _v_cramer(t: np.ndarray) -> float:
+    ta, tb = t.sum(1), t.sum(0)
+    indep = np.outer(ta, tb)
+    chi = (((t - indep) ** 2) / np.where(indep > 0, indep, 1)).sum()
+    return float(np.sqrt(chi / max(min(len(ta), len(tb)) - 1, 1)))
+
+
+def cruce(qa: dict, qb: dict, run_id: str) -> dict:
+    """Distribución conjunta de dos preguntas en la población (D-083).
+
+    - **Márgenes:** las predicciones de cada pregunta para la población.
+    - **Relación entre las dos:** la observada en el estudio del CIS más reciente y parecido que
+      hizo las dos (tabla cruzada agregada), ajustada a esos márgenes con IPF, que conserva la
+      asociación. Si ningún estudio las hizo juntas, la que pasa por el perfil de las personas
+      (a igual perfil se suponen independientes), que subestima la asociación; se dice cuál es."""
+    from sinpop.predict import opciones as O
+    from sinpop.predict import poblacion as P
+
+    m = P.marco(run_id)
+    w = m["peso"].to_numpy()
+    preg, res = [], []
+    for q in (qa, qb):
+        p = E.Pregunta(
+            q["id"],
+            q["enunciado"],
+            q["opciones"],
+            q.get("escala") or O.escala_probable(q["opciones"]),
+            q.get("fecha_referencia", "2026-07"),
+            [],
+        )
+        r = E.predecir(p, run_id=run_id)
+        if r.personas is None:
+            raise ValueError(
+                f"«{q['enunciado']}» no tiene preguntas parecidas en el banco: hace falta "
+                "el modelo de lenguaje y el cruce no lo usa"
+            )
+        preg.append(p)
+        res.append(r)
+    ra, rb = res
+    ta = ra.sistema["total"] / ra.sistema["total"].sum()
+    tb = rb.sistema["total"] / rb.sistema["total"].sum()
+    perfil = (ra.personas * w[:, None]).T @ rb.personas / w.sum()
+    mejor = None
+    for a in ra.analogas:
+        for b in rb.analogas:
+            if a["estudio"] != b["estudio"] or a["id"] == b["id"]:
+                continue
+            t = E.tabla_conjunta(a["id"], b["id"])
+            if t is None:
+                continue
+            puntos = a["peso_analoga"] * b["peso_analoga"]
+            if mejor is None or puntos > mejor[0]:
+                mejor = (puntos, a, b, t)
+    if mejor is not None:
+        _, a, b, (n, t) = mejor
+        obs = _llevar_tabla(t, a, b, *preg)
+        conj = _ipf(obs, ta, tb)
+        fuente = {
+            "tipo": "observada",
+            "estudio": a["estudio"],
+            "fecha": str(a["fecha"])[:7],
+            "encuestados": n,
+            "pregunta_a": a["enunciado"],
+            "pregunta_b": b["enunciado"],
+            "nota": (
+                f"Relación observada entre las dos preguntas en el estudio {a['estudio']} del CIS "
+                f"({str(a['fecha'])[:7]}, {n} encuestados), ajustada a las respuestas que se "
+                "predicen hoy para la población."
+            ),
+        }
+    else:
+        conj = _ipf(perfil, ta, tb)
+        fuente = {
+            "tipo": "perfil",
+            "nota": (
+                "Ningún estudio del banco hizo las dos preguntas juntas: la relación es la que "
+                "pasa por el perfil de las personas (edad, ideología, religiosidad…). A igual "
+                "perfil se suponen independientes, así que la asociación real puede ser mayor."
+            ),
+        }
+    ta2, tb2 = conj.sum(1), conj.sum(0)
+    cond = conj / np.where(ta2[:, None] > 0, ta2[:, None], 1)
+    return {
+        "run_id": run_id,
+        "a": {
+            "enunciado": qa["enunciado"],
+            "opciones": qa["opciones"],
+            "total": ta2.round(4).tolist(),
+        },
+        "b": {
+            "enunciado": qb["enunciado"],
+            "opciones": qb["opciones"],
+            "total": tb2.round(4).tolist(),
+        },
+        "conjunta": conj.round(5).tolist(),
+        "b_segun_a": cond.round(4).tolist(),
+        "v_cramer": round(_v_cramer(conj), 3),
+        "v_cramer_solo_perfil": round(_v_cramer(perfil), 3),
+        "fuente_relacion": fuente,
+        "resultado_simulado": True,
+        "aviso": AVISO,
+    }
 
 
 def validar(out: dict, opciones: list[str]) -> None:

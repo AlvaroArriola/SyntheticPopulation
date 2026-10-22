@@ -47,6 +47,8 @@ CANDIDATAS = 40
 UMBRAL_RELATIVO = 0.6
 SIMILITUD_MIN = 0.15
 C_MODELO = 0.1
+# semivida (meses) del peso de una análoga por antigüedad: w = similitud² · 0,5^(meses / semivida)
+VIDA_MEDIA_MESES = 3  # D-082: backtest de construcción (12 → 3 meses, −3 % de TVD; −13 % en series)
 C_ESCALA = 0.0025
 S_MIN = 0.01  # suelo de σ: sin él, una opción con p ≈ 0 en todas las análogas da cuantiles absurdos
 # El voto y la ideología empeoran la predicción fuera de la muestra (backtest, D-069): los
@@ -108,7 +110,9 @@ def analogas(q: Pregunta, excluir: pl.Expr | None = None) -> list[dict]:
         m = O.alinear(row["opciones"], q.opciones, q.escala == "ordinal")
         if m is None:
             continue
-        w = row["similitud"] ** 2 * 0.5 ** (_meses(row["fecha"], q.fecha_referencia) / 12)
+        w = row["similitud"] ** 2 * 0.5 ** (
+            _meses(row["fecha"], q.fecha_referencia) / VIDA_MEDIA_MESES
+        )
         out.append({**row, "mapeo": m, "peso_analoga": w})
     out.sort(key=lambda r: (-r["peso_analoga"], r["id"]))
     return out[:K]
@@ -254,6 +258,94 @@ def intervalos(
     return i80, i95
 
 
+def _b0_paquete() -> dict[str, dict]:
+    """Distribuciones observadas (B0) del banco: agregados del paquete (D-076)."""
+    from sinpop.paquete.exportar import DESTINO
+
+    if PK.activo():
+        return PK.modelos()
+    return _b0_fichero(str(DESTINO / "modelos.jsonl.gz"))
+
+
+@cache
+def _b0_fichero(ruta: str) -> dict[str, dict]:
+    import gzip
+    import json
+    from pathlib import Path
+
+    if not Path(ruta).exists():
+        return {}
+    with gzip.open(ruta, "rt", encoding="utf-8") as f:
+        return {x["id"]: {"n_opcion": x["n_opcion"], "b0": x["b0"]} for x in map(json.loads, f)}
+
+
+@cache
+def _cruces() -> dict[tuple[str, str], tuple[int, list]]:
+    """Tablas cruzadas observadas de pares de preguntas del mismo estudio (agregados, D-083)."""
+    import gzip
+    import json
+
+    from sinpop.paquete.exportar import DESTINO
+
+    ruta = PK.ruta("cruces.jsonl.gz") if PK.activo() else DESTINO / "cruces.jsonl.gz"
+    if not ruta.exists():
+        return {}
+    with gzip.open(ruta, "rt", encoding="utf-8") as f:
+        return {(x["a"], x["b"]): (x["n"], x["t"]) for x in map(json.loads, f)}
+
+
+def tabla_conjunta(a: str, b: str) -> tuple[int, np.ndarray] | None:
+    """Proporciones conjuntas observadas de las preguntas `a` (filas) y `b` (columnas), en el
+    orden de sus opciones propias."""
+    c = _cruces()
+    if (a, b) in c:
+        n, t = c[(a, b)]
+        return n, np.array(t)
+    if (b, a) in c:
+        n, t = c[(b, a)]
+        return n, np.array(t).T
+    return None
+
+
+SERIE_RELATIVA = 0.8  # similitud mínima, relativa a la mejor, para contar como la misma pregunta
+
+
+def serie_temporal(q: Pregunta, excluir: pl.Expr | None = None) -> list[dict]:
+    """Cómo respondió el CIS a esta pregunta (o a las casi idénticas) en cada oleada (D-083):
+    distribución observada ponderada, llevada a las opciones de la pregunta."""
+    cand = R.indice().similares(q.enunciado, q.opciones, CANDIDATAS, excluir)
+    if cand.is_empty():
+        return []
+    mejor = cand["similitud"][0]
+    b0 = _b0_paquete()
+    out = []
+    for row in cand.iter_rows(named=True):
+        if row["similitud"] < max(SIMILITUD_MIN, SERIE_RELATIVA * mejor) or row["id"] not in b0:
+            continue
+        m = O.alinear(row["opciones"], q.opciones, q.escala == "ordinal")
+        if m is None:
+            continue
+        x = b0[row["id"]]
+        v = np.zeros(len(q.opciones))
+        for o, p in zip(x["n_opcion"], x["b0"], strict=True):
+            if o in m:
+                v[q.opciones.index(m[o])] += p
+        if v.sum() <= 0:
+            continue
+        v = v / v.sum()
+        out.append(
+            {
+                "id": row["id"],
+                "estudio": row["estudio"],
+                "fecha": str(row["fecha"])[:10],
+                "enunciado": row["enunciado"],
+                "similitud": round(float(row["similitud"]), 3),
+                "dist": {o: round(float(v[j]), 4) for j, o in enumerate(q.opciones)},
+            }
+        )
+    return sorted(out, key=lambda x: (x["fecha"], x["id"]))
+
+
 @dataclass
 class Resultado:
     pregunta: Pregunta
@@ -265,6 +357,9 @@ class Resultado:
     segundos: float
     sistema_cis: dict = field(default_factory=dict)  # como lo mediría el CIS
     sistema_cis_sd: dict = field(default_factory=dict)
+    # probabilidades de cada persona del marco (media ponderada de las análogas): para los
+    # retratos y los cruces entre preguntas (D-083)
+    personas: np.ndarray | None = None
 
 
 def _por_analoga(a: dict, q: Pregunta, marco: pl.DataFrame):
@@ -324,7 +419,7 @@ def predecir(q: Pregunta, excluir: pl.Expr | None = None, run_id: str = P.NACION
     marco = P.marco(run_id)
     if not an:
         return Resultado(q, [], {}, {}, None, {}, 0.0)
-    sis, sis_cis, b1, b0 = [], [], [], []
+    sis, sis_cis, b1, b0, por_persona = [], [], [], [], []
     por_analoga = _por_analoga_paquete if PK.activo() else _por_analoga
     for a in an:
         x = por_analoga(a, q, marco)
@@ -347,6 +442,7 @@ def predecir(q: Pregunta, excluir: pl.Expr | None = None, run_id: str = P.NACION
                     a_cis[k] = v
         sis.append(a_pob)
         sis_cis.append(a_cis)
+        por_persona.append(pr)
         b1.append(_agregar(pr_b1, marco, q.subgrupos, "peso_es"))
         b0.append(obs)
         a["encuestados"] = n
@@ -366,5 +462,7 @@ def predecir(q: Pregunta, excluir: pl.Expr | None = None, run_id: str = P.NACION
     if w:
         scis = dict(scis)
         scis["total"] = w["sistema_cis"] * scis["total"] + w["b0"] * b0c + w["b1"] * b1c["total"]
+    pn = pesos / pesos.sum()
+    personas = sum(w * x for w, x in zip(pn, por_persona, strict=True))
     seg = (dt.datetime.now() - t0).total_seconds()
-    return Resultado(q, an, sistema, sd, b0c, b1c, seg, scis, sdcis)
+    return Resultado(q, an, sistema, sd, b0c, b1c, seg, scis, sdcis, personas)

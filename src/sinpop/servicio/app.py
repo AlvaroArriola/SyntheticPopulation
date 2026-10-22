@@ -13,6 +13,7 @@ Una API HTTP sobre las funciones ya validadas, sin reimplementar ningún método
 - `GET  /api/tamano`       asistente de tamaño según el margen deseado (D-079);
 - `POST /api/informe`      informe PDF de un resultado (D-078);
 - `POST /api/comparar`     la misma pregunta en cada comunidad con su propia población (D-080);
+- `POST /api/cruce`        cruce de dos preguntas (D-083);
 - `GET  /api/llm`          gasto acumulado del modelo de lenguaje frente al tope;
 - `GET  /api/ficha/{run}`  ficha de datos de una población.
 
@@ -176,6 +177,13 @@ def _comparar(q: dict, runs: list[str], avance) -> dict:
     return {"territorios": out, "opciones": q["opciones"]}
 
 
+def _cruce(qa: dict, qb: dict, rid: str, avance) -> dict:
+    from sinpop.predict import salida as S
+
+    avance("Prediciendo las dos preguntas y buscando un estudio que las hiciera juntas…")
+    return S.cruce(qa, qb, rid)
+
+
 def _evento(q: dict, ev: dict, rid: str, avance) -> dict:
     from sinpop.predict import estimador as E
     from sinpop.predict import evento as V
@@ -303,6 +311,17 @@ class PeticionPregunta(BaseModel):
     fecha_referencia: str = "2026-07"
 
 
+class PreguntaSimple(BaseModel):
+    enunciado: str = Field(min_length=3)
+    opciones: list[str] = Field(min_length=2)
+
+
+class PeticionCruce(BaseModel):
+    run_id: str
+    a: PreguntaSimple
+    b: PreguntaSimple
+
+
 class PeticionComparar(BaseModel):
     enunciado: str = Field(min_length=3)
     opciones: list[str] = Field(min_length=2)
@@ -379,6 +398,20 @@ def crear_app():
         if p.subgrupos is not None:
             q["subgrupos"] = p.subgrupos
         return {"trabajo": _lanzar("pregunta", _predecir, q, p.run_id)}
+
+    @app.post("/api/cruce")
+    def cruzar(p: PeticionCruce):
+        """Cruce de dos preguntas: cómo responde a B cada grupo de respuesta a A (D-083)."""
+        _comprobar_run(p.run_id)
+        qa, qb = (
+            {
+                "id": _id_pregunta(x.enunciado, x.opciones),
+                "enunciado": x.enunciado,
+                "opciones": x.opciones,
+            }
+            for x in (p.a, p.b)
+        )
+        return {"trabajo": _lanzar("cruce", _cruce, qa, qb, p.run_id)}
 
     @app.post("/api/comparar")
     def comparar(p: PeticionComparar):

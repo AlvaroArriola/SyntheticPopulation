@@ -295,3 +295,31 @@ textarea:focus, input:focus, select:focus { border-color: var(--acento); outline
 .grupo-titulo { display: block; font-size: 11.5px; color: var(--texto-3); margin-bottom: 3px; }
 .dimensiones button.estrella { font-weight: 600; }
 .nota-leyenda { color: var(--texto-3); margin-top: 4px; }
+.creditos { font-size: 11.5px; color: var(--texto-3); margin: 4px 4px 16px; }
+.creditos a { color: var(--texto-3); }
+
+/* ronda 4 (D-082, D-083): evolución, retratos y cruces */
+.grafico-evolucion { width: 100%; height: auto; display: block; margin: 4px 0; }
+.grafico-evolucion .rejilla { stroke: var(--borde); stroke-width: 1; }
+.grafico-evolucion .eje { font-size: 10px; fill: var(--texto-3); }
+.grafico-evolucion .linea-hoy { stroke: var(--texto-3); stroke-dasharray: 2 3; }
+.grafico-evolucion .etiqueta-serie { font-size: 10px; fill: var(--texto); }
+.leyenda-series { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: var(--texto-2); margin: 6px 0; }
+.leyenda-series i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+.personas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.persona { border: 1px solid var(--borde); border-radius: 12px; padding: 10px; background: var(--superficie); }
+.persona-cabecera { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+.persona-cabecera b { display: block; font-size: 13.5px; }
+.persona-cabecera span { font-size: 12px; color: var(--texto-3); }
+.avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--acento-suave); color: var(--acento-fuerte); display: grid; place-items: center; font-weight: 700; font-size: 13px; flex: 0 0 auto; }
+.persona-chips { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 6px; }
+.persona-chips span { font-size: 11px; background: var(--superficie-2); border-radius: 999px; padding: 2px 7px; color: var(--texto-2); }
+.persona-respuesta { font-size: 12.5px; margin: 0 0 5px; }
+.barra-apilada { display: flex; height: 8px; border-radius: 4px; overflow: hidden; gap: 1px; background: var(--superficie); }
+.barra-apilada i { display: block; height: 100%; }
+.sugerencias-cruce { list-style: none; margin: -4px 0 8px; padding: 0; border: 1px solid var(--borde); border-radius: 10px; max-height: 200px; overflow: auto; }
+.sugerencias-cruce button { display: block; width: 100%; text-align: left; border: 0; border-top: 1px solid var(--borde); background: var(--superficie); padding: 7px 10px; cursor: pointer; font: inherit; font-size: 13px; color: var(--texto); }
+.sugerencias-cruce small { display: block; color: var(--texto-3); font-size: 11.5px; }
+.tabla-cruce th[scope="row"] { white-space: nowrap; }
+.tabla-cruce th small { color: var(--texto-3); }
+@media (max-width: 860px) { .personas { grid-template-columns: 1fr; } }
