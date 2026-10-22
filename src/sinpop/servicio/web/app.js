@@ -482,6 +482,7 @@ function pintarEvento(r, enunciado, opciones, pob) {
     const izq = Math.min(a, d), ancho = Math.abs(d - a);
     return `<div class="etiqueta">${escapar(c.categoria)}</div>
       <div class="pista" data-o="${escapar(c.categoria)}" data-p="${a}" data-a80="${c.ic80_cambio?.[0] ?? 0}" data-b80="${c.ic80_cambio?.[1] ?? 0}" data-a95="${d}" data-b95="${d}">
+        <span class="barra" style="width:${100 * a}%;background:var(--texto-3);opacity:0.35"></span>
         <span class="ic80" style="left:${100 * izq}%;width:${100 * ancho}%"></span>
         <span class="marca-p" style="left:calc(${100 * a}% - 1px);background:var(--texto-3)"></span>
         ${conCambio ? `<span class="marca-p" style="left:calc(${100 * d}% - 1px);background:var(--serie);width:4px"></span>` : ""}
