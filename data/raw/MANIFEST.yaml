@@ -1070,6 +1070,16 @@ ficheros:
   bytes: 266274
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
+- fuente: cartografia_secciones
+  fichero: cartografia_secciones/2024/seccionado_2024.zip
+  tipo: datos
+  edicion: '2024'
+  url_oficial: https://www.ine.es/prodyser/cartografia/seccionado_2024.zip
+  fecha_descarga: '2026-10-22'
+  sha256: df931fa0d372808eb81abb2f2645ed5ecccbd6ed397b85db656980748ddd6bf7
+  bytes: 65690243
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
 - fuente: censo2021_micro_hogares
   fichero: censo2021_micro_hogares/2021/CensoPersonas_2021.zip
   tipo: datos

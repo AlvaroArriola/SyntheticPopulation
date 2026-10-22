@@ -32,6 +32,15 @@ TAMANO = 100_000
 SEMILLA = 20260630
 
 
+def territorio(run_id: str) -> str:
+    """Código del territorio de una población (`ES`, `CCAA:XX`, `PROV:XX`)."""
+    import json
+
+    meta = json.loads((POPULATIONS_DIR / run_id / "metadata.json").read_text("utf-8"))
+    t = meta.get("territorio")
+    return t["codigo"] if isinstance(t, dict) else str(t or "ES")
+
+
 @cache
 def marco(run_id: str = NACIONAL) -> pl.DataFrame:
     d = POPULATIONS_DIR / run_id
@@ -50,7 +59,7 @@ def marco(run_id: str = NACIONAL) -> pl.DataFrame:
     )
     m = (
         perfil_sintetico(persons)
-        .join(persons.select("person_id", "peso"), on="person_id")
+        .join(persons.select("person_id", "peso", "provincia"), on="person_id")
         .join(op, on="person_id")
         .join(pol, on="person_id")
         .sort("person_id")
@@ -68,7 +77,12 @@ def marco(run_id: str = NACIONAL) -> pl.DataFrame:
         pl.when(es).then(pl.col("peso")).otherwise(0.0).alias("peso_es"),
         (pl.col("edad_4") + "|" + pl.col("sexo")).alias("_edad_sexo"),
     )
-    return m.with_columns(pl.Series("peso_cis", rastrillo(m, "peso_es"))).drop("_edad_sexo")
+    t = territorio(run_id)
+    if t == "ES":
+        w = rastrillo(m, "peso_es")
+    else:  # D-075: composición de los encuestados del CIS de ese territorio, sin la comunidad
+        w = rastrillo(m, "peso_es", composicion_cis(t), [k for k in DIMENSIONES_CIS if k != "ccaa"])
+    return m.with_columns(pl.Series("peso_cis", w)).drop("_edad_sexo")
 
 
 DIMENSIONES_CIS = {
@@ -79,12 +93,19 @@ DIMENSIONES_CIS = {
 }
 
 
-def rastrillo(m: pl.DataFrame, peso: str, iteraciones: int = 30) -> np.ndarray:
+def rastrillo(
+    m: pl.DataFrame,
+    peso: str,
+    obj: dict | None = None,
+    dimensiones: list[str] | None = None,
+    iteraciones: int = 30,
+) -> np.ndarray:
     """Raking del peso de los españoles a la composición de las muestras del CIS en grupo de voto,
     edad × sexo, estudios y comunidad (`composicion_cis`)."""
     w = m[peso].to_numpy().copy()
-    obj = composicion_cis()
-    cols = {d: m[c].cast(pl.Utf8).to_numpy() for d, c in DIMENSIONES_CIS.items()}
+    obj = composicion_cis() if obj is None else obj
+    dims = list(DIMENSIONES_CIS) if dimensiones is None else dimensiones
+    cols = {d: m[DIMENSIONES_CIS[d]].cast(pl.Utf8).to_numpy() for d in dims}
     for _ in range(iteraciones):
         for d, col in cols.items():
             tot = w.sum()
@@ -97,10 +118,10 @@ def rastrillo(m: pl.DataFrame, peso: str, iteraciones: int = 30) -> np.ndarray:
 
 
 @cache
-def composicion_cis() -> dict[str, dict[str, float]]:
+def composicion_cis(territorio: str = "ES") -> dict[str, dict[str, float]]:
     """Composición de los encuestados españoles de 18+ de los estudios nacionales del CIS de los
     12 meses anteriores al corte (ponderada): grupo de voto de 2023, edad × sexo, estudios y
-    comunidad."""
+    comunidad. Con un territorio (`CCAA:XX`, `PROV:XX`), solo sus encuestados."""
     import datetime as dt
 
     from sinpop import INTERIM_DIR
@@ -118,6 +139,9 @@ def composicion_cis() -> dict[str, dict[str, float]]:
             | (pl.col("nacionalidad_esp_ext") == "espanola")
         )
     )
+    if territorio != "ES":
+        nivel, cod = territorio.split(":")
+        p = p.filter(pl.col("ccaa" if nivel == "CCAA" else "provincia") == cod)
     d = p.join(RV.respuestas(), on=["estudio", "encuestado"]).with_columns(
         grupo_voto(pl.col("recuerdo")),
         (_edad4(pl.col("edad")) + "|" + pl.col("sexo")).alias("_edad_sexo"),

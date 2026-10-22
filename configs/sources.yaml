@@ -396,3 +396,17 @@ fuentes:
   verificar:
   - microdatos en abierto (CC BY 4.0) en la página de cada estudio; descargar con pausas (el buscador tiene protección
     contra robots)
+- id: cartografia_secciones
+  nombre: Cartografía digitalizada de secciones censales (contornos)
+  organismo: INE
+  capa: A
+  tipo: documentacion
+  url_oficial: https://www.ine.es/prodyser/cartografia/seccionado_2024.zip
+  edicion: '2024'
+  unidad: territorio
+  nivel_geografico: sección censal (con códigos de comunidad y provincia)
+  prioridad: P3
+  descarga: automatica
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  verificar:
+  - solo se usa para dibujar el mapa de la interfaz (F14), agregada a provincias y comunidades

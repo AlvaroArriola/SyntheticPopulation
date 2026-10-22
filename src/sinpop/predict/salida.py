@@ -290,30 +290,69 @@ def construir_asistida(q: E.Pregunta, r: E.Resultado, run_id: str) -> dict:
     return out
 
 
-def predecir_fichero(entrada: Path, run_id: str = "2026-01-01_ES_1000000_s1") -> Path:
-    """Lee `preguntas/<id>.json`, predice y escribe `predicciones/<id>_<run_id>.json`."""
-    q = json.loads(entrada.read_text("utf-8"))
-    jsonschema.validate(q, ESQUEMA_ENTRADA)
-    from sinpop.predict import opciones as O
+def _clave_territorio(t: str) -> str | None:
+    """Subgrupo del marco nacional que equivale a un territorio (`ccaa=XX`, `provincia=XX`)."""
+    if t == "ES":
+        return None
+    nivel, cod = t.split(":")
+    return f"{'ccaa' if nivel == 'CCAA' else 'provincia'}={cod}"
 
+
+def ajustar_territorio(out: dict, r: E.Resultado, clave: str) -> dict:
+    """D-075: en una población de un territorio, el total es un subgrupo del banco nacional. Su
+    incertidumbre y su confianza son las de ese subgrupo (los encuestados del CIS del territorio),
+    no las del total nacional."""
+    if clave not in out["por_subgrupo"] or clave not in r.sistema_sd:
+        return out
+    cal, sim = E.calibracion(), r.analogas[0]["similitud"]
+    q = r.pregunta
+    out["total"] = _dist(q.opciones, r.sistema["total"], r.sistema_sd[clave], cal, sim)
+    out["medicion_cis"] = _dist(q.opciones, r.sistema_cis["total"], r.sistema_sd[clave], cal, sim)
+    c = out["confianza"]
+    c["total"] = c["por_subgrupo"].get(clave, c["total"])
+    c["metodo"] += f"; total con los datos del territorio ({clave})"
+    out["por_subgrupo"].pop(clave, None)
+    c["por_subgrupo"].pop(clave, None)
+    return out
+
+
+def predecir_dict(q: dict, run_id: str = "2026-01-01_ES_1000000_s1") -> dict:
+    """Predicción de una pregunta en formato `docs/03` §2.8 (la usan la CLI y el servicio)."""
+    jsonschema.validate(q, ESQUEMA_ENTRADA)
+    from sinpop.llm import cliente as C
+    from sinpop.predict import asistido as A
+    from sinpop.predict import opciones as O
+    from sinpop.predict import poblacion as P
+
+    clave = _clave_territorio(P.territorio(run_id))
+    subgrupos = list(q.get("subgrupos", list(E.SUBGRUPOS)))
+    if clave and clave.split("=")[0] not in subgrupos:
+        subgrupos.append(clave.split("=")[0])
     p = E.Pregunta(
         q["id"],
         q["enunciado"],
         q["opciones"],
         q.get("escala") or O.escala_probable(q["opciones"]),
         q.get("fecha_referencia", "2026-07"),
-        q.get("subgrupos", list(E.SUBGRUPOS)),
+        subgrupos,
     )
-    from sinpop.llm import cliente as C
-    from sinpop.predict import asistido as A
-
     r = E.predecir(p, run_id=run_id)
     sin_analogas = not r.analogas or r.analogas[0]["similitud"] < A.UMBRAL
     cal = calibracion_llm()
     if sin_analogas and C.disponible() and (cal is None or cal.get("usar", True)):
-        out = construir_asistida(p, r, run_id)
-    else:
-        out = construir(r, run_id)
+        return construir_asistida(p, r, run_id)
+    out = construir(r, run_id)
+    if clave:
+        out = ajustar_territorio(out, r, clave)
+        out["territorio"] = P.territorio(run_id)
+        validar(out, q["opciones"])
+    return out
+
+
+def predecir_fichero(entrada: Path, run_id: str = "2026-01-01_ES_1000000_s1") -> Path:
+    """Lee `preguntas/<id>.json`, predice y escribe `predicciones/<id>_<run_id>.json`."""
+    q = json.loads(entrada.read_text("utf-8"))
+    out = predecir_dict(q, run_id)
     PREDICCIONES_DIR.mkdir(parents=True, exist_ok=True)
     destino = PREDICCIONES_DIR / f"{q['id']}_{run_id}.json"
     destino.write_text(json.dumps(out, ensure_ascii=False, indent=1), "utf-8")
