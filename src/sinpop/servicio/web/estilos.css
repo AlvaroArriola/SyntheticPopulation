@@ -112,10 +112,15 @@ button, input, select, textarea { font: inherit; color: inherit; }
   color: var(--texto-2); font-weight: 500;
 }
 .niveles button[aria-checked="true"] { background: var(--boton); color: #fff; }
-.ir-canarias {
-  position: absolute; left: 16px; bottom: 28px; z-index: 500; border: 1px solid var(--borde);
-  background: var(--superficie); border-radius: 10px; padding: 6px 12px; cursor: pointer;
-  box-shadow: var(--sombra); color: var(--texto-2); font-size: 13px;
+.recuadro-canarias {
+  position: absolute; left: 16px; bottom: 28px; z-index: 500; width: 300px; height: 150px;
+  border: 1px solid var(--borde); border-radius: 12px; overflow: hidden;
+  box-shadow: var(--sombra); background: var(--superficie-2);
+}
+#mapa-canarias { position: absolute; inset: 0; background: var(--superficie-2); }
+.nombre-recuadro {
+  position: absolute; left: 8px; top: 6px; z-index: 600; font-size: 12px; color: var(--texto-2);
+  background: var(--superficie); border-radius: 6px; padding: 1px 6px; pointer-events: none;
 }
 .leyenda-mapa {
   position: absolute; right: 16px; bottom: 28px; z-index: 500; background: var(--superficie);
@@ -257,6 +262,7 @@ textarea:focus, input:focus, select:focus { border-color: var(--acento); outline
   .marca p { display: none; }
   .niveles { left: 56px; right: 12px; transform: none; top: 10px; }
   .niveles button { flex: 1; padding: 7px 6px; }
+  .recuadro-canarias { width: 168px; height: 88px; left: 10px; bottom: 22px; }
 }
 
 .oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

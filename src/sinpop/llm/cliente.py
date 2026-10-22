@@ -385,14 +385,19 @@ class AnthropicBackend:
             for s in solicitudes:
                 out[s["custom_id"]] = self._respuesta(self.cliente.messages.create(**_sin_id(s)))
             return out
-        peticiones = [{"custom_id": s["custom_id"], "params": _sin_id(s)} for s in solicitudes]
+        # la API de lotes solo admite identificadores [a-zA-Z0-9_-]{1,64}: se numeran y se
+        # traducen de vuelta a los nuestros
+        ids = {f"r{i}": s["custom_id"] for i, s in enumerate(solicitudes)}
+        peticiones = [
+            {"custom_id": f"r{i}", "params": _sin_id(s)} for i, s in enumerate(solicitudes)
+        ]
         lote = self.cliente.messages.batches.create(requests=peticiones)
         while self.cliente.messages.batches.retrieve(lote.id).processing_status != "ended":
             time.sleep(self.ESPERA_S)
         out = {}
         for r in self.cliente.messages.batches.results(lote.id):
             if r.result.type == "succeeded":
-                out[r.custom_id] = self._respuesta(r.result.message)
+                out[ids[r.custom_id]] = self._respuesta(r.result.message)
         return out
 
 

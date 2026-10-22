@@ -69,11 +69,29 @@ $("#tema").addEventListener("click", () => {
 
 // ------------------------------------------------------------------ mapa
 const mapa = L.map("mapa", { zoomControl: true, attributionControl: true, minZoom: 4 }).setView([40.2, -3.6], 6);
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+const TESELAS = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+L.tileLayer(TESELAS, {
   maxZoom: 12,
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · límites: INE',
 }).addTo(mapa);
+// recuadro de Canarias: un segundo mapa fijo, con las islas en su sitio y las mismas capas
+const mapaCanarias = L.map("mapa-canarias", {
+  zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false,
+  doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false, zoomSnap: 0.25,
+}).setView([28.4, -15.9], 6);
+L.tileLayer(TESELAS, { maxZoom: 12 }).addTo(mapaCanarias);
+const CANARIAS = new Set(["CCAA:05", "PROV:35", "PROV:38"]);
 const capas = { CCAA: null, PROV: null };
+const capasCanarias = { CCAA: null, PROV: null };
+const todas = (n) => [capas[n], capasCanarias[n]].filter(Boolean);
+function mostrarNivel(nivel) {
+  for (const n of ["CCAA", "PROV"]) {
+    if (capas[n] && mapa.hasLayer(capas[n])) mapa.removeLayer(capas[n]);
+    if (capasCanarias[n] && mapaCanarias.hasLayer(capasCanarias[n])) mapaCanarias.removeLayer(capasCanarias[n]);
+  }
+  capas[nivel].addTo(mapa);
+  capasCanarias[nivel].addTo(mapaCanarias);
+}
 let geo = null;
 
 function estiloBase(f) {
@@ -88,9 +106,9 @@ function estiloBase(f) {
   };
 }
 
-function crearCapa(nivel) {
+function crearCapa(nivel, soloCanarias = false) {
   return L.geoJSON(geo, {
-    filter: (f) => f.properties.nivel === nivel,
+    filter: (f) => f.properties.nivel === nivel && (!soloCanarias || CANARIAS.has(f.properties.territorio)),
     style: estiloBase,
     onEachFeature: (f, capa) => {
       capa.bindTooltip(() => etiquetaTerritorio(f), { sticky: true, className: "etiqueta-territorio" });
@@ -115,21 +133,16 @@ function etiquetaTerritorio(f) {
 }
 
 function refrescarEstilos() {
-  for (const n of ["CCAA", "PROV"]) if (capas[n]) capas[n].setStyle(estado.opcionMapa != null && n === "CCAA" ? estiloMapa : estiloBase);
+  for (const n of ["CCAA", "PROV"]) for (const c of todas(n)) c.setStyle(estado.opcionMapa != null && n === "CCAA" ? estiloMapa : estiloBase);
 }
 
 function ponerNivel(nivel) {
   estado.nivel = nivel;
   document.querySelectorAll(".niveles button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.nivel === nivel)));
-  for (const n of ["CCAA", "PROV"]) {
-    if (capas[n] && mapa.hasLayer(capas[n])) mapa.removeLayer(capas[n]);
-  }
-  const visible = nivel === "PROV" ? "PROV" : "CCAA";
-  if (capas[visible]) capas[visible].addTo(mapa);
+  if (capas.CCAA) mostrarNivel(nivel === "PROV" ? "PROV" : "CCAA");
   if (nivel === "ES") elegirTerritorio("ES", "España");
 }
 document.querySelectorAll(".niveles button").forEach((b) => b.addEventListener("click", () => ponerNivel(b.dataset.nivel)));
-$("#canarias").addEventListener("click", () => mapa.flyTo([28.3, -15.8], 7));
 
 function elegirTerritorio(codigo, nombre) {
   if (estado.nivel === "ES" && codigo !== "ES") {
@@ -434,8 +447,7 @@ function pintarResultado(r, enunciado, opciones, pob) {
 
 function ponerNivelSinSeleccion(nivel) {
   document.querySelectorAll(".niveles button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.nivel === nivel)));
-  for (const n of ["CCAA", "PROV"]) if (capas[n] && mapa.hasLayer(capas[n])) mapa.removeLayer(capas[n]);
-  capas[nivel].addTo(mapa);
+  mostrarNivel(nivel);
 }
 
 // coloreado del mapa con una opción del resultado (solo población nacional, desglose por comunidad)
@@ -459,7 +471,7 @@ function pintarMapaResultado() {
   const r = estado.resultado;
   const vals = Object.entries(r.por_subgrupo).filter(([k]) => k.startsWith("ccaa=")).map(([, d]) => d[r.opciones[estado.opcionMapa]].p);
   rangoMapa = [Math.min(...vals), Math.max(...vals)];
-  capas.CCAA.setStyle(estiloMapa);
+  for (const c of todas("CCAA")) c.setStyle(estiloMapa);
   ley.hidden = false;
   ley.innerHTML = `<b>${escapar(r.opciones[estado.opcionMapa])}</b> por comunidad
     <div class="escala">${SEQ.map((v) => `<i style="background:var(${v})"></i>`).join("")}</div>
@@ -526,9 +538,15 @@ window.sinpop = { elegirTerritorio, ponerNivel };
     estado.etiquetas = et;
     capas.CCAA = crearCapa("CCAA");
     capas.PROV = crearCapa("PROV");
+    capasCanarias.CCAA = crearCapa("CCAA", true);
+    capasCanarias.PROV = crearCapa("PROV", true);
     capas.CCAA.addTo(mapa);
-    mapa.fitBounds(capas.CCAA.getBounds().pad(-0.05), { maxZoom: 6 });
-    mapa.setView([40.0, -3.7], mapa.getZoom());
+    capasCanarias.CCAA.addTo(mapaCanarias);
+    mapaCanarias.invalidateSize();
+    mapaCanarias.fitBounds(capasCanarias.CCAA.getBounds(), { padding: [6, 6] });
+    // vista inicial: península, Baleares, Ceuta y Melilla (Canarias va en su recuadro)
+    const sinCanarias = L.featureGroup(capas.CCAA.getLayers().filter((c) => !CANARIAS.has(c.feature.properties.territorio)));
+    mapa.fitBounds(sinCanarias.getBounds(), { padding: [24, 24], maxZoom: 7 });
   } catch (e) {
     $("#estado-poblacion").textContent = `No se pudo cargar el mapa: ${e.message}`;
   }
