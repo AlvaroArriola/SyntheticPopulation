@@ -98,3 +98,25 @@ def test_margen_de_simulacion() -> None:
     # 1,96·√(0,25/n): con 10 000 personas y todo el grupo, ±0,98 puntos
     assert T._margen(10_000, 1.0) == pytest.approx(0.0098, abs=1e-4)
     assert T._margen(10_000, 0.25) == pytest.approx(2 * T._margen(10_000, 1.0))
+
+
+@pytest.mark.parametrize(
+    ("pregunta", "esperado"),
+    [
+        ("¿Cómo calificaría usted la situación económica actual de España?", None),
+        ("¿Cuál es su situación económica personal?", None),
+        ("¿Cómo valora la situación política?", None),
+        ("¿Cómo valora la sanidad pública?", None),
+        ("¿Le preocupa el paro?", None),
+        ("¿Cuál es su situación laboral actual?", "relacion_actividad"),
+        ("¿Está usted en paro?", "relacion_actividad"),
+        ("¿Cuál es su nivel de estudios?", "nivel_estudios"),
+        ("¿Cuál es su ocupación?", "ocupacion"),
+        ("¿Vive usted de alquiler o en propiedad?", "tenencia_vivienda"),
+        ("¿Ha comprado algo por internet en los últimos meses?", "compra_online"),
+    ],
+)
+def test_dato_oficial_solo_cuando_corresponde(pregunta, esperado) -> None:
+    """D-081: el parecido de texto no basta («situación económica» no es «situación laboral»)."""
+    r = A.buscar(pregunta)
+    assert (r[0]["variable"] if r else None) == esperado

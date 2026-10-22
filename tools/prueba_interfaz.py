@@ -127,8 +127,8 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
         pg.evaluate("() => { window.sinpop.ponerNivel('ES'); }")
         pg.wait_for_timeout(300)
         pg.fill("#enunciado", "¿Cómo diría que es su estado de salud en general?")
-        pg.wait_for_selector("#grupo-atributos:not([hidden]) li", timeout=60000)
-        pg.click("#lista-atributos button")
+        pg.wait_for_selector("#lista-atributos button:has-text('Salud')", timeout=60000)
+        pg.click("#lista-atributos button:has-text('Salud')")
         pg.wait_for_selector("#resultado .sello-dato", timeout=300000)
         pg.wait_for_timeout(500)
         res["pantallas"]["dato"] = pg.evaluate(

@@ -31,7 +31,7 @@ atributos:
     etiquetas: {nunca: Nunca, ocasional: Ocasionalmente, habitual: Habitualmente, NC: N.C.}
     universo: personas ocupadas
   relacion_actividad:
-    busqueda: [situación laboral, trabaja actualmente, está en paro, situación de actividad, jubilado]
+    busqueda: [cuál es su situación laboral actual, trabaja actualmente, está en paro, desempleado, jubilado, empleo]
     etiquetas: {ocupado: Trabaja, parado: En paro, jubilado_pensionista: Jubilado o pensionista, incapacidad_permanente: Incapacidad permanente, estudiante: Estudiante, otra_inactividad: Otra inactividad, NC: N.C.}
   situacion_profesional:
     busqueda: [situación profesional, asalariado o autónomo, contrato indefinido o temporal]
@@ -46,7 +46,7 @@ atributos:
     etiquetas: {si: Sector público, "no": Sector privado, NC: N.C.}
     universo: personas ocupadas
   ocupacion:
-    busqueda: [ocupación, a qué se dedica, profesión, trabajo que realiza]
+    busqueda: [cuál es su ocupación, ocupación, a qué se dedica, profesión, trabajo que realiza]
     etiquetas:
       "0": Ocupaciones militares
       "1": Directores y gerentes

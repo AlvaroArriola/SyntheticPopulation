@@ -28,7 +28,9 @@ from sinpop import CONFIGS_DIR, POPULATIONS_DIR
 from sinpop import paquete as PK
 
 SUBGRUPOS = ["edad_4", "sexo", "estudios_3", "ccaa", "provincia"]
-UMBRAL = 0.18  # similitud mínima para proponer un atributo
+UMBRAL = (
+    0.26  # similitud mínima para proponer un atributo (calibrada con preguntas de prueba, D-081)
+)
 Z95 = 1.96
 
 
@@ -106,8 +108,55 @@ def fuente_texto(variable: str) -> str:
     return ", ".join(dict.fromkeys(SIGLAS.get(i, i) for i in ids))
 
 
+# palabras que aparecen en muchas preguntas y no identifican el atributo
+GENERICAS = {
+    "situacion",
+    "actual",
+    "actualmente",
+    "usted",
+    "general",
+    "frecuencia",
+    "personas",
+    "persona",
+    "tiene",
+    "dispone",
+    "cuantas",
+    "como",
+    "cual",
+    "diria",
+    "nivel",
+    "tipo",
+    "economica",
+    "economico",
+    "relacion",
+    "actividad",
+}
+
+
+def _palabras(texto: str) -> set[str]:
+    import re
+    import unicodedata
+
+    t = unicodedata.normalize("NFKD", texto.lower()).encode("ascii", "ignore").decode()
+    return {w for w in re.findall(r"[a-z]+", t) if len(w) >= 4 and w not in GENERICAS}
+
+
+@cache
+def _claves(variable: str) -> set[str]:
+    c = catalogo()[variable]
+    return {w[:5] for w in _palabras(" ".join([c["descripcion"], *c["busqueda"]]))}
+
+
+def _comparte_clave(enunciado: str, variable: str) -> bool:
+    """La pregunta tiene que contener alguna palabra propia del atributo (por la raíz de cinco
+    letras): el parecido de texto solo, con fórmulas como «¿cuál es su situación…?», confunde la
+    situación laboral con la económica."""
+    return any(w[:5] in _claves(variable) for w in _palabras(enunciado))
+
+
 def buscar(enunciado: str, opciones: list[str] | None = None, k: int = 3) -> list[dict]:
     d = indice().similares(enunciado, opciones or [], k=k)
+    d = d.filter(pl.col("id").map_elements(lambda v: _comparte_clave(enunciado, v), pl.Boolean))
     return [
         {
             "variable": r["id"],
