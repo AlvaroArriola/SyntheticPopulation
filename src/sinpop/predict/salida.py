@@ -223,7 +223,10 @@ def retratos(r: E.Resultado, run_id: str, n: int = N_RETRATOS) -> list[dict]:
 
     if r.personas is None:
         return []
-    m = P.marco(run_id)
+    try:
+        m = P.marco(run_id)
+    except FileNotFoundError:  # evaluación con un identificador sin población (F9, F11)
+        return []
     w = m["peso"].to_numpy()
     semilla = int(hashlib.sha256(f"{r.pregunta.id}|{run_id}".encode()).hexdigest()[:8], 16)
     idx = np.random.default_rng(semilla).choice(
