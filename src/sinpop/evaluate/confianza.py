@@ -33,9 +33,9 @@ DESTINO = REPORTS_DIR / "fase_10_validacion.json"
 FILAS = REPORTS_DIR / "fase_10" / "validacion_confianza.csv"
 
 
-def filas(limite: int | None = None) -> pl.DataFrame:
+def filas(limite: int | None = None, estudios: dict[str, str] | None = None) -> pl.DataFrame:
     out = []
-    for estudio, fecha in V.VALIDACION.items():
+    for estudio, fecha in (V.VALIDACION if estudios is None else estudios).items():
         p, lg, banco = V._cargar(estudio, fecha)
         qs = V.preguntas(banco, estudio, fecha)
         if limite:

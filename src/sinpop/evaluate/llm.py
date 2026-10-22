@@ -220,7 +220,7 @@ def ejecutar(
     ev = EV.backtest_llm(backend) if eventos else pl.DataFrame()
     if ev.height:
         ev.drop("ic95_real").write_csv(DETALLE / "evento_backtest_llm.csv")
-        por_evento = ev.group_by("evento").agg(pl.col("direccion_correcta").mean() >= 0.5)
+        por_evento = ev.group_by("evento").agg(pl.col("direccion_correcta").mean() > 0.5)
         res["g9_6_llm"] = {
             "pares": ev.height,
             "pares_correctos": int(ev["direccion_correcta"].sum()),

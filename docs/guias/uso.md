@@ -137,4 +137,6 @@ python -m pytest -q tests/test_no_leakage.py   # nadie fuera de src/sinpop/evalu
 sinpop validate --phase N                # puerta de cualquier fase
 ```
 
+La evaluación final (F11) se ejecuta una sola vez, desde una etiqueta git congelada y sin cambios locales: `python -m sinpop.evaluate.final --tag <etiqueta>`. Si ya existe `reports/fase_11_evaluacion.json`, se niega a repetirse.
+
 Antes de usar los resultados, lee los límites de uso (`docs/guias/limites_de_uso.md`).

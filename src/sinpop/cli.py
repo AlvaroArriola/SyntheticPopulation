@@ -365,7 +365,13 @@ def predict(
 @app.command()
 def evaluate(tag: Annotated[str, typer.Option(help="Etiqueta git congelada")]) -> None:
     """Evaluación final sin contaminación, una sola vez (F11)."""
-    _pendiente("evaluate", "F11")
+    # La CLI no importa sinpop.evaluate: solo ese paquete toca la ventana de evaluación (regla 5,
+    # tests/test_no_leakage.py). La evaluación se lanza como módulo propio.
+    typer.echo(
+        f"La evaluación final se ejecuta aislada: python -m sinpop.evaluate.final --tag {tag}",
+        err=True,
+    )
+    raise typer.Exit(code=2)
 
 
 if __name__ == "__main__":  # pragma: no cover

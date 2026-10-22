@@ -1762,6 +1762,131 @@ def _g10_3() -> Check:
     )
 
 
+def _aprobacion(titulo: str, id_: str, desc: str, informe: str) -> Check:
+    texto = (REPO_ROOT / "DECISIONS.md").read_text(encoding="utf-8")
+    i = texto.find(f"### Aprobación de {titulo}")
+    ok = i >= 0 and "**Estado:** aprobada" in texto[i : i + 400]
+    return Check(
+        id_,
+        desc,
+        True if ok else None,
+        "aprobada" if ok else f"pendiente ({informe})",
+        "aprobación",
+    )
+
+
+def _f11() -> dict | None:
+    import json
+
+    ruta = REPO_ROOT / "reports" / "fase_11_evaluacion.json"
+    return json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else None
+
+
+def _g11_1() -> Check:
+    d, desc = _f11(), "Evaluación ejecutada desde la etiqueta congelada, sin cambios"
+    um = "etiqueta git, HEAD en la etiqueta y árbol limpio"
+    if d is None:
+        return Check("G11.1", desc, False, "sin ejecutar (python -m sinpop.evaluate.final)", um)
+    g = d["git"]
+    ok = bool(g.get("commit")) and g.get("limpio") is True
+    return Check("G11.1", desc, ok, f"{g['tag']} ({(g.get('commit') or '')[:8]})", um)
+
+
+def _g11_2() -> Check:
+    d, desc = _f11(), "Informe con baselines, subgrupos, territorios y calibración de la confianza"
+    um = "todas las secciones presentes"
+    if d is None:
+        return Check("G11.2", desc, False, "sin ejecutar", um)
+    t = d["todas"]
+    faltan = [
+        k
+        for k, v in {
+            "baselines": t.get("b0") is not None and t.get("b1") is not None,
+            "subgrupos": t["subgrupos"]["sistema"] is not None,
+            "territorios": t["ccaa"]["sistema"] is not None,
+            "confianza": "confianza" in d,
+            "políticas": d["politicas"]["preguntas"] > 0,
+            "vida cotidiana": d["vida_cotidiana"]["preguntas"] > 0,
+            "informe": (REPO_ROOT / "reports" / "fase_11.md").exists(),
+        }.items()
+        if not v
+    ]
+    valor = f"{t['preguntas']} preguntas" + (f"; faltan: {', '.join(faltan)}" if faltan else "")
+    return Check("G11.2", desc, not faltan, valor, um)
+
+
+def _g11_3_human() -> Check:
+    return _aprobacion(
+        "F11", "G11.3", "Revisión humana de la evaluación final", "reports/fase_11.md"
+    )
+
+
+def _g12_1_human() -> Check:
+    return _aprobacion(
+        "G12.1",
+        "G12.1",
+        "Una persona ajena genera y valida una población con la guía",
+        "docs/guias/uso.md",
+    )
+
+
+def _g12_2() -> Check:
+    import json
+
+    desc = "La guía de actualización se prueba sustituyendo una fuente por otra edición"
+    ruta = REPO_ROOT / "reports" / "fase_12" / "prueba_actualizacion.json"
+    if not ruta.exists():
+        return Check("G12.2", desc, False, "sin prueba (reports/fase_12/)", "prueba superada")
+    d = json.loads(ruta.read_text("utf-8"))
+    return Check("G12.2", desc, bool(d.get("superada")), d.get("resumen", ""), "prueba superada")
+
+
+def _g12_3() -> Check:
+    """Lista de comprobación de docs/08 §3, con lo que se puede comprobar automáticamente."""
+    import json
+
+    import yaml
+
+    from sinpop import RAW_DIR
+
+    desc = "Lista de comprobación de 08_uso_y_licencias.md"
+    man = yaml.safe_load((RAW_DIR / "MANIFEST.yaml").read_text("utf-8"))["ficheros"]
+    fallos = []
+    if any(not f.get("condiciones") for f in man):
+        fallos.append("ficheros sin condiciones en el manifiesto")
+    citas = REPO_ROOT / "docs" / "guias" / "fuentes_y_citas.md"
+    texto = citas.read_text("utf-8") if citas.exists() else ""
+    sin_cita = sorted({f["fuente"] for f in man if f"`{f['fuente']}`" not in texto})
+    if sin_cita:
+        fallos.append(f"fuentes sin cita: {', '.join(sin_cita)}")
+    # al LLM no le llegan microdatos: la caché solo guarda la salida y sus metadatos, y el
+    # registro solo tokens y coste; ninguna petición lleva identificadores de encuestados
+    for f in (REPO_ROOT / "logs" / "llm" / "cache").glob("*.json"):
+        c = json.loads(f.read_text("utf-8"))
+        if set(c) != {"meta", "salida"}:
+            fallos.append(f"caché con campos inesperados: {f.name}")
+            break
+    pred = list((REPO_ROOT / "reports" / "fase_09" / "predicciones").glob("*.json"))
+    sin_marca = [
+        p.name for p in pred if not json.loads(p.read_text("utf-8")).get("resultado_simulado")
+    ]
+    if sin_marca:
+        fallos.append(f"salidas sin marca de simulación: {len(sin_marca)}")
+    valor = (
+        "; ".join(fallos)
+        if fallos
+        else (
+            f"{len(man)} ficheros con condiciones; citas en docs/guias/fuentes_y_citas.md; "
+            f"{len(pred)} salidas marcadas como simuladas"
+        )
+    )
+    return Check("G12.3", desc, not fallos, valor, "4/4 puntos de docs/08 §3")
+
+
+def _g12_4_human() -> Check:
+    return _aprobacion("F12", "G12.4", "Revisión humana final", "reports/fase_12.md")
+
+
 PHASES: dict[int | str, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
@@ -1789,6 +1914,8 @@ PHASES: dict[int | str, list[Callable[[], Check]]] = {
     "8c": [_g8c_1, _g8c_2, _g8c_3],
     9: [_g9_1, _g9_2, _g9_3, _g9_4, _g9_5, _g9_6, _g9_7],
     10: [_g10_1, _g10_2, _g10_3],
+    11: [_g11_1, _g11_2, _g11_3_human],
+    12: [_g12_1_human, _g12_2, _g12_3, _g12_4_human],
     "8b": [
         _g8b_1,
         _g8b_2,

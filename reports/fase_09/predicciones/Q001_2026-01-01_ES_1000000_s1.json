@@ -1,6 +1,8 @@
 {
  "id": "Q001",
  "run_id": "2026-01-01_ES_1000000_s1",
+ "resultado_simulado": true,
+ "aviso": "Resultado simulado con una población sintética (docs/08): describe distribuciones de grupo, no a personas reales, y no sustituye a una encuesta.",
  "total": {
   "Muy buena": {
    "p": 0.033238,
@@ -3368,7 +3370,7 @@
   "llamadas": 0,
   "tokens": 0,
   "eur": 0.0,
-  "segundos": 28.36
+  "segundos": 24.06
  },
  "versiones": {
   "modelo_llm": null,
