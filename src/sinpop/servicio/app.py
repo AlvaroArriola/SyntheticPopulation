@@ -156,9 +156,13 @@ def _lanzar(tipo: str, funcion, *args) -> str:
 
 def _predecir(q: dict, rid: str, avance) -> dict:
     from sinpop.predict import salida as S
+    from sinpop.servicio import informe as INF
 
     avance("Buscando preguntas parecidas y aplicando el modelo a la población…")
-    return S.predecir_dict(q, rid)
+    out = S.predecir_dict(q, rid)
+    # lectura en texto, solo de presentación: la misma que el PDF, con reglas fijas (D-078)
+    out["resumen"] = INF.resumen(INF.normalizar("pregunta", out, etiquetas_subgrupos()))
+    return out
 
 
 def _comparar(q: dict, runs: list[str], avance) -> dict:

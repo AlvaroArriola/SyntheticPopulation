@@ -516,6 +516,7 @@ function pintarResultado(r, enunciado, opciones, pob) {
       <button aria-pressed="true" data-v="total">Lo que piensa la población</button>
       <button aria-pressed="false" data-v="medicion_cis">Como lo mediría el CIS</button>
     </div>
+    ${r.resumen?.length ? `<div class="en-resumen"><b>En resumen</b><ul>${r.resumen.slice(0, 4).map((f) => `<li>${escapar(f)}</li>`).join("")}</ul></div>` : ""}
     <div id="zona-barras">${barras(r.total, opciones)}</div>
     <div class="confianza">
       <span class="numero">${pct(conf)}</span>

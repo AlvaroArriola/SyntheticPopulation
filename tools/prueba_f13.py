@@ -23,7 +23,8 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parents[1]
 DESTINO = RAIZ / "reports" / "fase_13"
 POR_DEFECTO = ["2026-01-01_ES_1000000_s1", "2026-01-01_CCAA_13_100000_s1"]
-IGNORAR = {"segundos"}
+# «resumen» es texto de presentación que solo añade el servicio (D-078)
+IGNORAR = {"segundos", "resumen"}
 
 
 def _limpio(x):
