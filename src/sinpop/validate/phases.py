@@ -1887,6 +1887,101 @@ def _g12_4_human() -> Check:
     return _aprobacion("F12", "G12.4", "Revisión humana final", "reports/fase_12.md")
 
 
+def _json_informe(*partes: str) -> dict | None:
+    import json
+
+    ruta = REPO_ROOT.joinpath("reports", *partes)
+    return json.loads(ruta.read_text("utf-8")) if ruta.exists() else None
+
+
+def _pytest(*nodos: str) -> tuple[bool, str]:
+    import subprocess
+    import sys
+
+    r = subprocess.run(
+        [sys.executable, "-m", "pytest", "-q", *nodos],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+    )
+    return r.returncode == 0, (r.stdout.strip().splitlines() or [""])[-1]
+
+
+def _g13_1() -> Check:
+    desc = "Servicio y CLI devuelven el mismo resultado en las preguntas y eventos de ejemplo"
+    um = "JSON idéntico salvo tiempos"
+    d = _json_informe("fase_13", "prueba_servicio.json")
+    if d is None:
+        return Check("G13.1", desc, False, "sin prueba (python tools/prueba_f13.py)", um)
+    hechos = [c for c in d["casos"] if "omitido" not in c]
+    dif = sum(bool(c["diferencias"]) for c in hechos)
+    return Check("G13.1", desc, d["g13_1"], f"{len(hechos) - dif}/{len(hechos)} idénticos", um)
+
+
+def _g13_2() -> Check:
+    desc = "Respuestas del servicio con esquema §2.8, marca, aviso, intervalos y confianza"
+    um = "0 fallos de formato"
+    d = _json_informe("fase_13", "prueba_servicio.json")
+    if d is None:
+        return Check("G13.2", desc, False, "sin prueba (python tools/prueba_f13.py)", um)
+    n = sum(len(c.get("formato", [])) for c in d["casos"])
+    return Check("G13.2", desc, d["g13_2"], f"{n} fallos", um)
+
+
+def _g13_3() -> Check:
+    ok, txt = _pytest("tests/unit/test_servicio.py::test_g13_3_sin_rutas_a_microdatos")
+    return Check(
+        "G13.3", "Ninguna ruta devuelve microdatos ni datos de evaluación", ok, txt, "test pasa"
+    )
+
+
+def _g13_4() -> Check:
+    ok, txt = _pytest(
+        "tests/unit/test_servicio.py::test_g13_4_el_llm_solo_pasa_por_el_cliente_con_presupuesto",
+        "tests/unit/test_llm.py::test_presupuesto_bloquea_antes_de_enviar",
+    )
+    return Check(
+        "G13.4", "El presupuesto del LLM se respeta igual que en la CLI", ok, txt, "tests pasan"
+    )
+
+
+def _g14(id_: str, clave: str, desc: str, um: str) -> Check:
+    d = _json_informe("fase_14", "prueba_interfaz.json")
+    if d is None:
+        return Check(id_, desc, False, "sin prueba (python tools/prueba_interfaz.py)", um)
+    valor = {
+        "g14_1": f"{len(d['pantallas'])} pantallas; {len(d['errores_js'])} errores JS",
+        "g14_2": "cifras con intervalo, confianza y aviso" if d["g14_2"] else "faltan elementos",
+        "g14_3": f"{len(d['accesibilidad'])} avisos de axe-core",
+    }[clave]
+    return Check(id_, desc, bool(d[clave]), valor, um)
+
+
+def _g14_1() -> Check:
+    return _g14(
+        "G14.1", "g14_1", "Pruebas de extremo a extremo de pregunta, evento y exploración", "pasan"
+    )
+
+
+def _g14_2() -> Check:
+    return _g14(
+        "G14.2",
+        "g14_2",
+        "Ninguna cifra sin intervalo y confianza; aviso en todos los resultados",
+        "test automático",
+    )
+
+
+def _g14_3() -> Check:
+    return _g14(
+        "G14.3", "g14_3", "Accesibilidad sin errores graves (axe-core)", "0 críticos o graves"
+    )
+
+
+def _g14_4_human() -> Check:
+    return _aprobacion("F14", "G14.4", "Revisión humana de la interfaz", "reports/fase_14.md")
+
+
 PHASES: dict[int | str, list[Callable[[], Check]]] = {
     0: [_g0_1_pytest, _g0_2_configs, _g0_3_leakage, _g0_4_help],
     1: [
@@ -1916,6 +2011,8 @@ PHASES: dict[int | str, list[Callable[[], Check]]] = {
     10: [_g10_1, _g10_2, _g10_3],
     11: [_g11_1, _g11_2, _g11_3_human],
     12: [_g12_1_human, _g12_2, _g12_3, _g12_4_human],
+    13: [_g13_1, _g13_2, _g13_3, _g13_4],
+    14: [_g14_1, _g14_2, _g14_3, _g14_4_human],
     "8b": [
         _g8b_1,
         _g8b_2,

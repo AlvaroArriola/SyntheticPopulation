@@ -36,6 +36,10 @@ def territorio(run_id: str) -> str:
     """Código del territorio de una población (`ES`, `CCAA:XX`, `PROV:XX`)."""
     import json
 
+    from sinpop import paquete as PK
+
+    if PK.activo():
+        return json.loads(PK.ruta("marcos", f"{run_id}.json").read_text("utf-8"))["territorio"]
     meta = json.loads((POPULATIONS_DIR / run_id / "metadata.json").read_text("utf-8"))
     t = meta.get("territorio")
     return t["codigo"] if isinstance(t, dict) else str(t or "ES")
@@ -43,6 +47,10 @@ def territorio(run_id: str) -> str:
 
 @cache
 def marco(run_id: str = NACIONAL) -> pl.DataFrame:
+    from sinpop import paquete as PK
+
+    if PK.activo():  # paquete portable (D-076): el marco ya calculado
+        return pl.read_parquet(PK.ruta("marcos", f"{run_id}.parquet"))
     d = POPULATIONS_DIR / run_id
     persons = pl.read_parquet(d / "persons.parquet")
     op = pl.read_parquet(
@@ -122,6 +130,12 @@ def composicion_cis(territorio: str = "ES") -> dict[str, dict[str, float]]:
     """Composición de los encuestados españoles de 18+ de los estudios nacionales del CIS de los
     12 meses anteriores al corte (ponderada): grupo de voto de 2023, edad × sexo, estudios y
     comunidad. Con un territorio (`CCAA:XX`, `PROV:XX`), solo sus encuestados."""
+    from sinpop import paquete as PK
+
+    if PK.activo():
+        import json
+
+        return json.loads(PK.ruta("composicion_cis.json").read_text("utf-8"))[territorio]
     import datetime as dt
 
     from sinpop import INTERIM_DIR

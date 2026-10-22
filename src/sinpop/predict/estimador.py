@@ -31,6 +31,7 @@ import numpy as np
 import polars as pl
 
 from sinpop import INTERIM_DIR, PROCESSED_DIR
+from sinpop import paquete as PK
 from sinpop.opinion.valores import COLUMNAS, Modelo, _edad_grupo
 from sinpop.politics import ideologia as ID
 from sinpop.politics import recuerdo as RV
@@ -57,7 +58,9 @@ COLUMNAS_VOTO = COLUMNAS_SISTEMA + ["grupo_voto", "ideologia_bloque"]
 SUBGRUPO_VOTO = "recuerdo_voto_generales_familia"
 COLUMNAS_B1 = COLUMNAS
 SUBGRUPOS = ["edad_4", "sexo", "estudios_3", "ccaa", "recuerdo_voto_generales_familia"]
-CALIBRACION = PROCESSED_DIR / "predict" / "calibracion.json"
+CALIBRACION = (
+    PK.ruta("calibracion.json") if PK.activo() else PROCESSED_DIR / "predict" / "calibracion.json"
+)
 
 
 @dataclass
@@ -248,6 +251,56 @@ class Resultado:
     sistema_cis_sd: dict = field(default_factory=dict)
 
 
+def _por_analoga(a: dict, q: Pregunta, marco: pl.DataFrame):
+    """Modelos de una análoga ajustados con sus encuestados (microdatos del CIS)."""
+    d = encuestados(a["estudio"], a["variable"], a["mapeo"])
+    if d.height < 50:
+        return None
+    pr = _modelo(d, COLUMNAS_SISTEMA, q.opciones, marco)
+    prv = _modelo(d, COLUMNAS_VOTO, q.opciones, marco) if SUBGRUPO_VOTO in q.subgrupos else None
+    pr_b1 = _modelo(d, COLUMNAS_B1, q.opciones, marco)
+    n_sub = {
+        f"{g}={lv}": n
+        for g in q.subgrupos
+        if g in d.columns
+        for lv, n in d.group_by(g).len().iter_rows()
+    }
+    return pr, prv, pr_b1, _observada(d, q.opciones), d.height, n_sub
+
+
+def _por_analoga_paquete(a: dict, q: Pregunta, marco: pl.DataFrame):
+    """Lo mismo con los modelos ya ajustados del paquete portable (D-076): se ajustaron sobre las
+    opciones propias de la análoga y aquí se llevan a las de la pregunta sumando las que la
+    alineación funde (`a["mapeo"]`); las opciones que la alineación deja fuera se descartan y se
+    renormaliza, como hace el filtro de encuestados del modo completo."""
+    x = PK.modelos().get(a["id"])
+    if x is None:
+        return None
+    m = a["mapeo"]
+    n = sum(x["n_opcion"].get(o, 0) for o in m)
+    if n < 50:
+        return None
+
+    def llevar(p: np.ndarray, clases: list[str]) -> np.ndarray:
+        out = np.zeros((p.shape[0], len(q.opciones)))
+        for j, c in enumerate(clases):
+            if c in m:
+                out[:, q.opciones.index(m[c])] += p[:, j]
+        s = out.sum(1, keepdims=True)
+        return out / np.where(s > 0, s, 1)
+
+    def pr(clave: str) -> np.ndarray:
+        return llevar(*PK.probabilidades(x["modelos"][clave], marco))
+
+    propias = list(x["n_opcion"])
+    obs = llevar(np.array([x["b0"]]), propias)[0]
+    frac = n / x["n"]
+    dims = set(q.subgrupos)
+    n_sub = {k: v * frac for k, v in x["n_sub"].items() if k.split("=")[0] in dims}
+    prv = pr("voto") if SUBGRUPO_VOTO in q.subgrupos else None
+    return pr("sistema"), prv, pr("b1"), obs, n, n_sub
+
+
 def predecir(q: Pregunta, excluir: pl.Expr | None = None, run_id: str = P.NACIONAL) -> Resultado:
     t0 = dt.datetime.now()
     an = analogas(q, excluir)
@@ -255,19 +308,19 @@ def predecir(q: Pregunta, excluir: pl.Expr | None = None, run_id: str = P.NACION
     if not an:
         return Resultado(q, [], {}, {}, None, {}, 0.0)
     sis, sis_cis, b1, b0 = [], [], [], []
+    por_analoga = _por_analoga_paquete if PK.activo() else _por_analoga
     for a in an:
-        d = encuestados(a["estudio"], a["variable"], a["mapeo"])
-        if d.height < 50:
+        x = por_analoga(a, q, marco)
+        if x is None:
             a["peso_analoga"] = 0.0
             sis.append(None)
             sis_cis.append(None)
             continue
-        pr = _modelo(d, COLUMNAS_SISTEMA, q.opciones, marco)
+        pr, prv, pr_b1, obs, n, n_sub = x
         otros = [g for g in q.subgrupos if g != SUBGRUPO_VOTO]
         a_pob = _agregar(pr, marco, otros)
         a_cis = _agregar(pr, marco, otros, "peso_cis")
-        if SUBGRUPO_VOTO in q.subgrupos:
-            prv = _modelo(d, COLUMNAS_VOTO, q.opciones, marco)
+        if prv is not None:
             for k, v in _agregar(prv, marco, [SUBGRUPO_VOTO]).items():
                 if k != "total":
                     a_pob[k] = v
@@ -276,17 +329,10 @@ def predecir(q: Pregunta, excluir: pl.Expr | None = None, run_id: str = P.NACION
                     a_cis[k] = v
         sis.append(a_pob)
         sis_cis.append(a_cis)
-        b1.append(
-            _agregar(_modelo(d, COLUMNAS_B1, q.opciones, marco), marco, q.subgrupos, "peso_es")
-        )
-        b0.append(_observada(d, q.opciones))
-        a["encuestados"] = d.height
-        a["n_sub"] = {
-            f"{g}={lv}": n
-            for g in q.subgrupos
-            if g in d.columns
-            for lv, n in d.group_by(g).len().iter_rows()
-        }
+        b1.append(_agregar(pr_b1, marco, q.subgrupos, "peso_es"))
+        b0.append(obs)
+        a["encuestados"] = n
+        a["n_sub"] = n_sub
     validas = [i for i, s in enumerate(sis) if s is not None]
     an = [an[i] for i in validas]
     if not an:

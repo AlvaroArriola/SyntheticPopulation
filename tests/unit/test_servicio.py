@@ -51,3 +51,45 @@ def test_run_id_sigue_la_convencion() -> None:
 def test_la_interfaz_se_sirve(cliente) -> None:
     html = cliente.get("/").text
     assert "España sintética" in html and "vendor/leaflet/leaflet.js" in html
+
+
+RUTAS_PERMITIDAS = {
+    "/",
+    "/api/territorios",
+    "/api/poblaciones",
+    "/api/preguntas",
+    "/api/eventos",
+    "/api/trabajos/{tid}",
+    "/api/banco",
+    "/api/etiquetas",
+    "/api/modo",
+    "/api/llm",
+    "/api/ficha/{rid}",
+}
+
+
+def test_g13_3_sin_rutas_a_microdatos(cliente) -> None:
+    """G13.3: solo hay rutas conocidas, el servicio no lee data/raw ni data/interim, y ninguna
+    respuesta de las rutas de consulta lleva columnas de microdatos."""
+    from pathlib import Path
+
+    rutas = {r.path for r in A.crear_app().routes if r.path.startswith("/api") or r.path == "/"}
+    assert rutas <= RUTAS_PERMITIDAS
+    fuente = Path(A.__file__).read_text("utf-8")
+    for prohibido in ("RAW_DIR", "INTERIM_DIR", "data/raw", "data/interim", "read_parquet"):
+        assert prohibido not in fuente
+    texto = cliente.get("/api/banco", params={"q": "situación económica"}).text
+    for columna in ("peso_cis", "ponde", "person_id", "idhogar"):
+        assert columna not in texto
+
+
+def test_g13_4_el_llm_solo_pasa_por_el_cliente_con_presupuesto() -> None:
+    """G13.4: el servicio no llama al proveedor por su cuenta; todo pasa por
+    `llm.cliente.ejecutar`, que comprueba el presupuesto antes de enviar
+    (`test_llm.test_presupuesto_bloquea_antes_de_enviar`)."""
+    from pathlib import Path
+
+    for f in Path(A.__file__).parent.glob("*.py"):
+        fuente = f.read_text("utf-8")
+        for prohibido in ("anthropic", "AnthropicBackend", "_enviar", "messages.create"):
+            assert prohibido not in fuente, (f.name, prohibido)

@@ -370,7 +370,9 @@ def predict(
             [],
         )
         out = V.predecir_pregunta(q, ev["descripcion"], fecha, ev.get("ambito", "ES"), run)
-    out = {"id": e["id"], "resultado_simulado": True, **out}
+    from sinpop.predict.salida import AVISO
+
+    out = {"id": e["id"], "run_id": run, "resultado_simulado": True, "aviso": AVISO, **out}
     PREDICCIONES_DIR.mkdir(parents=True, exist_ok=True)
     destino = PREDICCIONES_DIR / f"{e['id']}_evento.json"
     destino.write_text(json.dumps(out, ensure_ascii=False, indent=1, default=str), "utf-8")
@@ -393,8 +395,15 @@ def evaluate(tag: Annotated[str, typer.Option(help="Etiqueta git congelada")]) -
 def serve(
     host: Annotated[str, typer.Option(help="Dirección de escucha")] = "127.0.0.1",
     port: Annotated[int, typer.Option(help="Puerto")] = 8000,
+    paquete: Annotated[
+        Path | None, typer.Option(help="Carpeta del paquete portable (sin microdatos, D-076)")
+    ] = None,
 ) -> None:
     """Abre la interfaz web y el servicio de consulta local (F13-F14)."""
+    if paquete is not None:
+        import os
+
+        os.environ["SINPOP_PAQUETE"] = str(paquete.resolve())
     from sinpop.servicio.app import servir
 
     typer.echo(f"Interfaz en http://{host}:{port}  (Ctrl+C para salir)")

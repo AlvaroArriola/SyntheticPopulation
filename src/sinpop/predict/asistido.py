@@ -157,12 +157,20 @@ def parecidas_texto(q: E.Pregunta, k: int = 5) -> str:
     cand = R.indice().similares(
         q.enunciado, q.opciones, k, pl.col("fecha") >= f"{q.fecha_referencia}-01"
     )
+    from sinpop import paquete as PK
+
     filas = []
     for a in cand.iter_rows(named=True):
-        d = E.encuestados(a["estudio"], a["variable"], {o: o for o in a["opciones"]})
-        if d.height < 50:
-            continue
-        p = E._observada(d, a["opciones"])
+        if PK.activo():  # distribución observada guardada en el paquete (D-076)
+            x = PK.modelos().get(a["id"])
+            if x is None:
+                continue
+            p = np.asarray(x["b0"])
+        else:
+            d = E.encuestados(a["estudio"], a["variable"], {o: o for o in a["opciones"]})
+            if d.height < 50:
+                continue
+            p = E._observada(d, a["opciones"])
         dist = "; ".join(f"{o} {100 * x:.0f} %" for o, x in zip(a["opciones"], p, strict=True))
         filas.append(
             f"- ({a['fecha'][:7]}, similitud {a['similitud']:.2f}) {a['enunciado']}: {dist}"

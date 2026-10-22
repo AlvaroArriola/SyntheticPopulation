@@ -19,6 +19,7 @@ import jsonschema
 import numpy as np
 
 from sinpop import PROCESSED_DIR, REPORTS_DIR
+from sinpop import paquete as PK
 from sinpop.predict import estimador as E
 
 PREDICCIONES_DIR = REPORTS_DIR / "fase_09" / "predicciones"
@@ -209,7 +210,11 @@ def validar(out: dict, opciones: list[str]) -> None:
                 raise ValueError(f"{out['id']} {k} {o}: intervalos incoherentes")
 
 
-CALIBRACION_LLM = PROCESSED_DIR / "predict" / "calibracion_llm.json"
+CALIBRACION_LLM = (
+    PK.ruta("calibracion_llm.json")
+    if PK.activo()
+    else PROCESSED_DIR / "predict" / "calibracion_llm.json"
+)
 
 
 def calibracion_llm() -> dict | None:

@@ -112,7 +112,7 @@ Las salidas son **resultados simulados**: lo indican el campo `resultado_simulad
 
 ## 6. Capa opcional de modelo de lenguaje
 
-Está **desactivada** por defecto y todo funciona sin ella (D-069, D-071). Se usa solo donde el método gratuito no llega:
+Todo funciona sin ella (D-069, D-071): sin clave en el entorno, el sistema no llama a ningún modelo. Se usa solo donde el método gratuito no llega:
 - preguntas sin precedentes en el banco;
 - la dirección del cambio en el modo evento;
 - el baseline B2.
@@ -120,7 +120,7 @@ Está **desactivada** por defecto y todo funciona sin ella (D-069, D-071). Se us
 Para activarla:
 
 1. Pon la clave del proveedor en el entorno, **nunca** en un fichero del repositorio: `export SINPOP_ANTHROPIC_API_KEY=…`.
-2. En `configs/llm.yaml`, cambia `activo: false` por `activo: true`.
+2. Comprueba que `configs/llm.yaml` tiene `activo: true` (con `false` se apaga aunque haya clave).
 3. Antes de gastar nada, consulta la cota de coste: `python -m sinpop.evaluate.llm --estimar`.
 
 Garantías:
@@ -129,7 +129,27 @@ Garantías:
 - **Registro de gasto:** `logs/llm/gasto.jsonl`.
 - **Privacidad:** al modelo solo le llegan enunciados públicos y agregados, nunca microdatos.
 
-## 7. Comprobar que todo está bien
+## 7. Interfaz web en tu ordenador (paquete portable)
+
+La interfaz (F13-F14) necesita las poblaciones y los modelos, pero **no** los microdatos. El paquete portable (`dist/paquete/`, D-076) lleva solo agregados y poblaciones sintéticas, así que basta con el repositorio:
+
+```bash
+git clone <url del repositorio> && cd SyntheticPopulation
+python -m venv .venv && source .venv/bin/activate      # en Windows: .venv\Scripts\activate
+pip install -e ".[web]"
+sinpop serve --paquete dist/paquete                    # abre http://127.0.0.1:8000
+```
+
+En la interfaz:
+- **Mapa:** elige España, una comunidad o una provincia (botones de nivel arriba del mapa). El fondo de OpenStreetMap necesita conexión a internet.
+- **Tamaño:** número de personas de la población. En modo paquete solo se pueden usar las poblaciones que van dentro (las marcadas como listas); generar poblaciones nuevas necesita los datos originales (sección 4).
+- **Pregunta:** escribe el enunciado y sus opciones. Mientras escribes, salen preguntas parecidas del banco del CIS. El resultado trae la distribución con intervalos del 80 % y del 95 %, la confianza, los subgrupos y las preguntas del CIS en las que se apoya.
+- **Evento:** describe un acontecimiento y su fecha para ver el antes y el cambio esperado sobre la pregunta.
+- **Modelo de lenguaje (opcional):** con `SINPOP_ANTHROPIC_API_KEY` en el entorno, las preguntas sin precedentes y los eventos usan el modelo, con los topes de la sección 6. Sin clave, la interfaz lo dice y devuelve solo lo que se puede calcular sin él.
+
+Donde están los datos, el paquete se rehace con `python -m sinpop.paquete.exportar` (≈ 1-2 h) y la interfaz completa, que sí genera poblaciones, se abre con `sinpop serve`.
+
+## 8. Comprobar que todo está bien
 
 ```bash
 python -m pytest -q                      # tests (los de integración necesitan los datos en local)

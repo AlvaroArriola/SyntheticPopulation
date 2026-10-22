@@ -8,6 +8,7 @@ DOM que ninguna cifra sale sin intervalo ni confianza y que el aviso de simulaci
 Uso: `python tools/prueba_interfaz.py [url] [chromium]`.
 """
 
+# ruff: noqa: E501  (código JavaScript incrustado)
 from __future__ import annotations
 
 import json

@@ -60,6 +60,10 @@ def run_id(territorio: str, tamano: int, semilla: int = 1) -> str:
 
 
 def poblaciones() -> list[dict]:
+    from sinpop import paquete as PK
+
+    if PK.activo():  # paquete portable (D-076): solo las poblaciones que trae
+        return [json.loads(f.read_text("utf-8")) for f in sorted(PK.ruta("marcos").glob("*.json"))]
     out = []
     for d in sorted(POPULATIONS_DIR.glob(f"{FECHA}_*")):
         meta_f = d / "metadata.json"
@@ -229,6 +233,14 @@ def crear_app():
     def generar(p: PeticionPoblacion):
         if p.tamano not in TAMANOS:
             raise HTTPException(422, f"tamaño no admitido; usa uno de {TAMANOS}")
+        from sinpop import paquete as PK
+
+        if PK.activo():
+            raise HTTPException(
+                409,
+                "Con el paquete portable no se pueden generar poblaciones nuevas: hacen falta los "
+                "microdatos del Censo. Elige una de las poblaciones incluidas.",
+            )
         rid = run_id(p.territorio, p.tamano, p.semilla)
         ya = next((x for x in poblaciones() if x["run_id"] == rid and x["lista"]), None)
         if ya:
@@ -322,6 +334,12 @@ def crear_app():
             },
         }
 
+    @app.get("/api/modo")
+    def modo():
+        from sinpop import paquete as PK
+
+        return {"paquete": PK.activo()}
+
     @app.get("/api/llm")
     def llm():
         from sinpop.llm import cliente as C
@@ -336,7 +354,9 @@ def crear_app():
 
     @app.get("/api/ficha/{rid}", response_class=PlainTextResponse)
     def ficha(rid: str):
-        f = REPORTS_DIR / rid / "ficha.md"
+        from sinpop import paquete as PK
+
+        f = PK.ruta("fichas", f"{rid}.md") if PK.activo() else REPORTS_DIR / rid / "ficha.md"
         if not f.exists():
             raise HTTPException(404, "esta población no tiene ficha de datos")
         return f.read_text("utf-8")

@@ -27,7 +27,10 @@ from sinpop.temporal import indicadores as T
 
 
 def banco() -> pl.DataFrame:
-    return pl.read_parquet(EV.DESTINO).filter(pl.col("grupo") == "nacional")
+    from sinpop import paquete as PK
+
+    f = PK.ruta("banco_efectos_eventos.parquet") if PK.activo() else EV.DESTINO
+    return pl.read_parquet(f).filter(pl.col("grupo") == "nacional")
 
 
 def tipos() -> dict[str, str]:

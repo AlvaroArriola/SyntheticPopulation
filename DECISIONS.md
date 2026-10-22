@@ -1713,3 +1713,35 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - Con Haiku, la cota de la validación baja de 9,60 € a 2,24 €.
   - Las preguntas sin precedentes y el modo evento, que sí son producto, siguen con Opus.
   - Consecuencia que hay que declarar: B2 mide «un LLM barato sin anclaje», no «el mejor LLM sin anclaje». Si el sistema gana a B2, la comparación no demuestra que gane a cualquier LLM.
+
+## D-075 · Predicción por territorio y servicio local (F13) (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F13 (servicio) y F14 (interfaz).
+- **Estado:** decisión del agente, con la delegación expresa de la persona responsable el 2026-10-22.
+- **Petición:** la interfaz deja elegir España, una comunidad o una provincia en un mapa y el número de personas a generar.
+- **Predicción por territorio** (`predict/poblacion.py`, `predict/salida.py`):
+  - El marco gana la columna `provincia`.
+  - El rastrillo usa la composición del CIS **del propio territorio** (sin la dimensión `ccaa`, que es constante dentro de él).
+  - La incertidumbre y la confianza del total salen del subgrupo `ccaa=XX` o `provincia=XX`, que es lo que de verdad se sabe de ese territorio con los encuestados disponibles. Así una provincia pequeña sale con intervalos anchos y confianza baja, en lugar de heredar la precisión nacional.
+  - Alternativa descartada: recortar el marco nacional al territorio. Con 1 millón de personas, Soria quedaría con unas 1.900 y los pesos nacionales no cuadran con la estructura de la provincia.
+- **Servicio** (`servicio/app.py`): FastAPI sobre las mismas funciones que la CLI (`predict.salida.predecir_dict`), sin reimplementar métodos. Generar una población se encola y se ejecuta de una en una, con el mismo comando que la CLI.
+- **Mapa:** recintos del seccionado del INE (2024) disueltos a provincias y comunidades y simplificados a 600 m (`servicio/mapa.py`). Las teselas de fondo son de OpenStreetMap y se cargan en el navegador de quien usa la interfaz.
+- **Tamaños:** 10.000, 50.000, 100.000, 500.000 y 1.000.000 personas.
+
+## D-076 · Paquete portable de predicción (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F13-F14.
+- **Estado:** decisión del agente, con la delegación expresa de la persona responsable el 2026-10-22.
+- **Problema:** los microdatos solo existen en el entorno de trabajo, que no expone puertos. La persona responsable no puede abrir la interfaz desde ahí, y los microdatos no pueden salir (regla 8, condiciones de la ESS y del CIS).
+- **Solución** (`sinpop/paquete/`): `python -m sinpop.paquete.exportar` ajusta, donde están los datos, los tres modelos que usa la predicción para cada pregunta del banco y guarda **solo agregados**:
+  - coeficientes, término independiente y codificación de los predictores de cada modelo;
+  - distribución observada ponderada por opción y número de encuestados por opción y por nivel de cada subgrupo;
+  - el banco (enunciados públicos), las calibraciones, el modelo de confianza y el banco de efectos de eventos;
+  - los marcos de las poblaciones sintéticas ya generadas, **sin variables de la ESS** ni identificadores de hogar, y la composición agregada del CIS por territorio.
+- **Uso:** `sinpop serve --paquete <carpeta>` (variable `SINPOP_PAQUETE`). La predicción aplica los modelos guardados a la población sintética en lugar de reajustarlos. La correspondencia de opciones con la pregunta nueva se hace sumando probabilidades de las opciones propias según el alineamiento, como en el modo completo.
+- **Límites declarados:**
+  - En modo paquete no se generan poblaciones nuevas: solo se consultan las que van en el paquete.
+  - El resultado puede diferir ligeramente del modo completo, porque el modo completo ajusta el modelo sobre las opciones ya fusionadas. La diferencia se mide y se publica en `reports/fase_13.md`.
+- **Riesgo de reidentificación:** los coeficientes de una regresión logística regularizada con predictores categóricos y los recuentos por grupo son agregados. No se guardan recuentos de cruces de varias variables. Los recuentos por nivel de un solo subgrupo ya se publican en las fichas.

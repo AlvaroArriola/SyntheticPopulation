@@ -43,6 +43,10 @@ def _opciones(js: str) -> list[str]:
 @cache
 def preguntas() -> pl.DataFrame:
     """id, estudio, variable, fecha, enunciado, opciones (lista, en orden de código)."""
+    from sinpop import paquete as PK
+
+    if PK.activo():  # paquete portable (D-076): el banco ya filtrado
+        return pl.read_parquet(PK.ruta("banco.parquet"))
     from sinpop.temporal.indicadores import estudios_temporales
 
     nac = set(estudios_temporales())

@@ -24,6 +24,7 @@ import polars as pl
 from threadpoolctl import threadpool_limits
 
 from sinpop import PROCESSED_DIR
+from sinpop import paquete as PK
 
 # un hilo en ajuste y predicción: los datos son pequeños y OpenMP, con otros procesos en marcha,
 # se sobresuscribe (minutos en lugar de segundos)
@@ -44,10 +45,13 @@ SENALES = {
     "recurrente": 1,
     "es_subgrupo": -1,
 }
-DESTINO = PROCESSED_DIR / "confidence" / "modelo.pkl"
+_BASE = PROCESSED_DIR / "confidence"
+if PK.activo():  # paquete portable (D-076)
+    _BASE = PK.ruta("confianza")
+DESTINO = _BASE / "modelo.pkl"
 # isotónica ajustada en la ventana de validación (docs/04, F10, tarea 3) por
 # `sinpop.evaluate.confianza`; si existe, se aplica encima del modelo
-RECALIBRACION = PROCESSED_DIR / "confidence" / "recalibracion.pkl"
+RECALIBRACION = _BASE / "recalibracion.pkl"
 
 
 def _x(d: pl.DataFrame) -> np.ndarray:
