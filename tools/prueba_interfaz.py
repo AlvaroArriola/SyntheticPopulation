@@ -149,6 +149,17 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
             ".map(v => ({id: v.id, impacto: v.impact, nodos: v.nodes.length}))"
         )
 
+        # opciones propias pegadas con «;» y plantilla «responsable» (D-085)
+        pg.click("#vaciar-opciones")
+        pg.fill("#nueva-opcion", "Al Gobierno central; A la comunidad autónoma ; ; Al ayuntamiento")
+        pg.click("#anadir-opcion")
+        n_propias = pg.evaluate("() => window.sinpop.estado.opciones.length")
+        pg.select_option("#plantillas", "responsable")
+        res["pantallas"]["opciones_propias"] = {
+            "pegadas": n_propias,
+            "plantilla": pg.evaluate("() => window.sinpop.estado.opciones.length"),
+        }
+
         # móvil (solo hay modo claro, D-081)
         movil = b.new_page(viewport={"width": 390, "height": 844})
         movil.goto(url, wait_until="domcontentloaded")
@@ -172,6 +183,7 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
         and pr.get("evento", {}).get("filas")
         and pr.get("grupos_destacados", 0) >= 5
         and pr.get("fidelidad")
+        and pr.get("opciones_propias") == {"pegadas": 3, "plantilla": 6}
         and not res["errores_js"]
     )
     res["g14_2"] = all(

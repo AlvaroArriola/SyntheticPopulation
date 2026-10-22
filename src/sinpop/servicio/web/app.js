@@ -1139,7 +1139,7 @@ async function actualizarLLM() {
 }
 
 // gancho para las pruebas de extremo a extremo (tools/prueba_interfaz.py)
-window.sinpop = { elegirTerritorio, ponerNivel };
+window.sinpop = { elegirTerritorio, ponerNivel, estado };
 
 // ------------------------------------------------------------------ arranque
 (async function iniciar() {
