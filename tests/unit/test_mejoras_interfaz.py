@@ -120,3 +120,27 @@ def test_dato_oficial_solo_cuando_corresponde(pregunta, esperado) -> None:
     """D-081: el parecido de texto no basta («situación económica» no es «situación laboral»)."""
     r = A.buscar(pregunta)
     assert (r[0]["variable"] if r else None) == esperado
+
+
+def test_fallo_del_llm_cae_al_estimador_sin_llm(monkeypatch) -> None:
+    """D-085: si el LLM no da una salida válida, la interfaz recibe la estimación sin LLM con un
+    aviso, no un error."""
+    from types import SimpleNamespace
+
+    from sinpop.llm import cliente as C
+    from sinpop.predict import estimador as E
+    from sinpop.predict import poblacion as P
+    from sinpop.predict import salida as S
+
+    def falla(*a):
+        raise ValueError("el modelo de lenguaje no devolvió una salida válida")
+
+    monkeypatch.setattr(P, "territorio", lambda run_id: "ES")
+    monkeypatch.setattr(E, "predecir", lambda p, run_id: SimpleNamespace(analogas=[]))
+    monkeypatch.setattr(C, "disponible", lambda: True)
+    monkeypatch.setattr(S, "calibracion_llm", lambda: None)
+    monkeypatch.setattr(S, "construir_asistida", falla)
+    monkeypatch.setattr(S, "construir", lambda r, run_id: {"aviso": "Simulado.", "parametros": {}})
+    out = S.predecir_dict({"id": "x", "tipo": "pregunta", "enunciado": "¿Qué?", "opciones": ["Sí", "No"]}, "r")
+    assert "no dio una respuesta válida" in out["aviso"]
+    assert "ValueError" in out["parametros"]["llm_fallo"]

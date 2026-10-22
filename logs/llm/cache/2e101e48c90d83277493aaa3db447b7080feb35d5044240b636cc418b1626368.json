@@ -1,0 +1,45 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 0,
+    "categoria": "A la Unión Europea"
+   },
+   {
+    "cambio_pp": -0.3,
+    "categoria": "A ninguno"
+   },
+   {
+    "cambio_pp": -0.7,
+    "categoria": "A todos por igual"
+   },
+   {
+    "cambio_pp": -0.5,
+    "categoria": "Al Gobierno central"
+   },
+   {
+    "cambio_pp": 0.2,
+    "categoria": "Al ayuntamiento"
+   },
+   {
+    "cambio_pp": 1.6,
+    "categoria": "Al gobierno de la comunidad autónoma"
+   },
+   {
+    "cambio_pp": 0,
+    "categoria": "N.C."
+   },
+   {
+    "cambio_pp": -0.3,
+    "categoria": "N.S."
+   }
+  ],
+  "justificacion": "Al aprobar un tope estatal a los alquileres, el Gobierno central se coloca en el centro del debate sobre vivienda. Una parte del electorado de izquierda tenderá a culparlo menos, aunque la oposición le atribuirá los efectos sobre la oferta, de modo que el efecto neto sobre esa categoría será pequeño. A la vez, el choque con las comunidades del PP que se nieguen a aplicarlo trasladará algo de culpa hacia los gobiernos autonómicos. Los análogos políticos mueven los indicadores entre 1 y 5 puntos, así que espero cambios modestos, de alrededor de 1-2 puntos."
+ }
+}

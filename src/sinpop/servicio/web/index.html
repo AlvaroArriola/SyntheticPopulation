@@ -111,16 +111,25 @@
         </div>
         <div class="campo">
           <span>Opciones de respuesta</span>
+          <p class="ayuda-opciones">Pon tus propias respuestas (por ejemplo «Al Gobierno central», «A la comunidad autónoma»…), una a una con Intro o varias separadas por «;». También puedes partir de una plantilla.</p>
           <div class="opciones" id="opciones"></div>
           <div class="fila">
-            <input id="nueva-opcion" type="text" placeholder="Añadir opción y pulsar Intro" aria-label="Nueva opción">
-            <select id="plantillas" aria-label="Plantillas de opciones">
+            <input id="nueva-opcion" type="text" placeholder="Escribe una respuesta" aria-label="Nueva respuesta">
+            <button class="secundario" id="anadir-opcion" type="button">Añadir</button>
+          </div>
+          <div class="fila">
+            <select id="plantillas" aria-label="Plantillas de respuestas">
               <option value="">Plantillas…</option>
               <option value="si_no">Sí / No</option>
               <option value="acuerdo">De acuerdo (5)</option>
               <option value="valoracion">Muy buena … Muy mala</option>
               <option value="intensidad">Mucho … Nada</option>
+              <option value="responsable">¿A quién culpa? (Gobierno, comunidad…)</option>
+              <option value="confianza">Confianza (4)</option>
+              <option value="frecuencia">Frecuencia (4)</option>
+              <option value="prioridad">Prioridad (4)</option>
             </select>
+            <button class="enlace" id="vaciar-opciones" type="button">Vaciar</button>
           </div>
           <label class="casilla"><input type="checkbox" id="nsnc" checked> Incluir «N.S.» y «N.C.»</label>
         </div>

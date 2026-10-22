@@ -29,15 +29,16 @@ tareas:
     modelo: claude-haiku-5-5
     prompt: b2@v1
     esfuerzo: low
-    max_tokens: 6000
+    # 6000 cortaba el 19 % de las respuestas (motivo de fin max_tokens) con 28 subgrupos (D-085)
+    max_tokens: 12000
   pregunta_nueva:
     modelo: claude-opus-5-5
-    prompt: pregunta_nueva@v1
+    prompt: pregunta_nueva@v2
     esfuerzo: medium
     max_tokens: 6000
   evento:
     modelo: claude-opus-5-5
-    prompt: evento@v1
+    prompt: evento@v2
     esfuerzo: medium
     max_tokens: 3000
 presupuesto:

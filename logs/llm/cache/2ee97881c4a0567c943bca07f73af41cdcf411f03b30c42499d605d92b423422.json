@@ -1,0 +1,387 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "pregunta_nueva@v2",
+  "prompt_sha256": "4500dc4f7e1cd580ff41ed6c56eb69c85b5e800e04da1b7c4436e1ba13df1d85",
+  "tarea": "pregunta_nueva"
+ },
+ "salida": {
+  "justificacion": "No hay una pregunta de referencia idéntica. Las preguntas sobre qué administración debe resolver problemas sectoriales (agricultura, incendios) muestran que el Gobierno central concentra buena parte de la atribución y que las comunidades autónomas reciben una parte menor, con una «No sabe» de en torno al 2-8 %. En vivienda, problema percibido de forma muy extendida, espero que «a todos por igual» sea la respuesta mayoritaria, seguida del Gobierno central. He puesto más culpa a la comunidad autónoma en Madrid y algo más de «No sabe» entre mayores y personas con menos estudios.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.27,
+     0.11,
+     0.05,
+     0.02,
+     0.42,
+     0.05,
+     0.065,
+     0.015
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.3,
+     0.11,
+     0.045,
+     0.015,
+     0.41,
+     0.04,
+     0.065,
+     0.015
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.3,
+     0.1,
+     0.04,
+     0.015,
+     0.41,
+     0.04,
+     0.075,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.29,
+     0.085,
+     0.03,
+     0.01,
+     0.385,
+     0.035,
+     0.125,
+     0.04
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.31,
+     0.1,
+     0.04,
+     0.015,
+     0.4,
+     0.045,
+     0.07,
+     0.02
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.275,
+     0.1,
+     0.04,
+     0.015,
+     0.41,
+     0.035,
+     0.095,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.28,
+     0.08,
+     0.035,
+     0.015,
+     0.405,
+     0.035,
+     0.12,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.3,
+     0.1,
+     0.04,
+     0.015,
+     0.415,
+     0.04,
+     0.07,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.295,
+     0.125,
+     0.045,
+     0.015,
+     0.4,
+     0.045,
+     0.055,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.29,
+     0.1,
+     0.04,
+     0.015,
+     0.41,
+     0.035,
+     0.085,
+     0.025
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.3,
+     0.09,
+     0.04,
+     0.015,
+     0.41,
+     0.04,
+     0.08,
+     0.025
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.27,
+     0.1,
+     0.04,
+     0.015,
+     0.43,
+     0.04,
+     0.08,
+     0.025
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.27,
+     0.13,
+     0.05,
+     0.015,
+     0.41,
+     0.04,
+     0.065,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.27,
+     0.12,
+     0.045,
+     0.015,
+     0.42,
+     0.04,
+     0.07,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.3,
+     0.09,
+     0.04,
+     0.015,
+     0.41,
+     0.04,
+     0.08,
+     0.025
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.31,
+     0.08,
+     0.035,
+     0.015,
+     0.41,
+     0.04,
+     0.085,
+     0.025
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.31,
+     0.08,
+     0.035,
+     0.015,
+     0.41,
+     0.04,
+     0.085,
+     0.025
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.31,
+     0.09,
+     0.045,
+     0.02,
+     0.39,
+     0.045,
+     0.08,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.29,
+     0.11,
+     0.04,
+     0.015,
+     0.41,
+     0.04,
+     0.075,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.31,
+     0.08,
+     0.035,
+     0.015,
+     0.41,
+     0.035,
+     0.09,
+     0.025
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.28,
+     0.09,
+     0.04,
+     0.015,
+     0.42,
+     0.04,
+     0.09,
+     0.025
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.27,
+     0.14,
+     0.04,
+     0.015,
+     0.4,
+     0.04,
+     0.075,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.31,
+     0.09,
+     0.035,
+     0.015,
+     0.41,
+     0.04,
+     0.08,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.27,
+     0.1,
+     0.045,
+     0.015,
+     0.42,
+     0.045,
+     0.08,
+     0.025
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.28,
+     0.1,
+     0.05,
+     0.015,
+     0.41,
+     0.05,
+     0.075,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.3,
+     0.09,
+     0.04,
+     0.015,
+     0.41,
+     0.04,
+     0.08,
+     0.025
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.31,
+     0.07,
+     0.05,
+     0.015,
+     0.4,
+     0.04,
+     0.09,
+     0.025
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.31,
+     0.07,
+     0.05,
+     0.015,
+     0.4,
+     0.04,
+     0.09,
+     0.025
+    ]
+   }
+  ],
+  "total": [
+   0.29,
+   0.1,
+   0.04,
+   0.015,
+   0.405,
+   0.04,
+   0.085,
+   0.025
+  ]
+ }
+}

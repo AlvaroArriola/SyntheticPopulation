@@ -7,6 +7,10 @@ const PLANTILLAS = {
   acuerdo: ["Muy de acuerdo", "De acuerdo", "Ni de acuerdo ni en desacuerdo", "En desacuerdo", "Muy en desacuerdo"],
   valoracion: ["Muy buena", "Buena", "Regular", "Mala", "Muy mala"],
   intensidad: ["Mucho", "Bastante", "Poco", "Nada"],
+  responsable: ["Al Gobierno central", "Al gobierno de la comunidad autónoma", "Al ayuntamiento", "A la Unión Europea", "A todos por igual", "A ninguno"],
+  confianza: ["Mucha confianza", "Bastante confianza", "Poca confianza", "Ninguna confianza"],
+  frecuencia: ["Siempre o casi siempre", "A menudo", "A veces", "Nunca o casi nunca"],
+  prioridad: ["Muy prioritario", "Bastante prioritario", "Poco prioritario", "Nada prioritario"],
 };
 const NSNC = ["N.S.", "N.C."];
 const SEQ = ["--seq-1", "--seq-2", "--seq-3", "--seq-4", "--seq-5", "--seq-6", "--seq-7"];
@@ -227,13 +231,21 @@ function pintarOpciones() {
     cont.append(c);
   });
 }
+// respuestas propias: una a una con Intro o «Añadir», o varias separadas por «;» o saltos de línea
+function anadirOpciones() {
+  const inp = $("#nueva-opcion");
+  const nuevas = inp.value.split(/[;\n]/).map((x) => x.trim()).filter(Boolean);
+  for (const v of nuevas) if (!estado.opciones.includes(v) && !NSNC.includes(v)) estado.opciones.push(v);
+  inp.value = "";
+  pintarOpciones();
+}
 $("#nueva-opcion").addEventListener("keydown", (e) => {
   if (e.key !== "Enter") return;
   e.preventDefault();
-  const v = e.target.value.trim();
-  if (v && !estado.opciones.includes(v)) { estado.opciones.push(v); pintarOpciones(); }
-  e.target.value = "";
+  anadirOpciones();
 });
+$("#anadir-opcion").addEventListener("click", anadirOpciones);
+$("#vaciar-opciones").addEventListener("click", () => { estado.opciones = []; pintarOpciones(); $("#nueva-opcion").focus(); });
 $("#plantillas").addEventListener("change", (e) => {
   if (PLANTILLAS[e.target.value]) { estado.opciones = [...PLANTILLAS[e.target.value]]; pintarOpciones(); }
   e.target.value = "";

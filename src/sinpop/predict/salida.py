@@ -532,8 +532,27 @@ def predecir_dict(
     cal = calibracion_llm()
     usar = cal is None or cal.get("usar", True)
     if permitir_llm and sin_analogas and C.disponible() and usar:
-        return construir_asistida(p, r, run_id)
+        try:
+            out = construir_asistida(p, r, run_id)
+        except Exception as e:  # sin respuesta válida del LLM: estimador sin LLM, avisándolo (D-085)
+            fallo = f"{type(e).__name__}: {e}"
+        else:
+            # en una población de comunidad, el total es el subgrupo de esa comunidad
+            if clave in out["por_subgrupo"]:
+                out["total"] = out["medicion_cis"] = out["por_subgrupo"].pop(clave)
+                out["confianza"]["por_subgrupo"].pop(clave, None)
+            if clave:
+                out["territorio"] = P.territorio(run_id)
+            validar(out, q["opciones"])
+            return out
+    else:
+        fallo = None
     out = construir(r, run_id)
+    if fallo:
+        out["aviso"] += (
+            " El modelo de lenguaje no dio una respuesta válida; se muestra la estimación sin él."
+        )
+        out["parametros"]["llm_fallo"] = fallo[:300]
     if clave:
         out = ajustar_territorio(out, r, clave)
         out["territorio"] = P.territorio(run_id)

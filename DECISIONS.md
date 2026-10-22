@@ -1864,6 +1864,11 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Recalibración:** calibración de intervalos (F9) y modelo de confianza (F10) reajustados con el nuevo estimador.
   - Validación cruzada del backtest: ECE de 0,018 a 0,017; Spearman del error predicho de 0,764 a 0,781.
   - La evaluación en la ventana de validación (F9, F10) se ha rehecho antes de congelar F11.
+  - **Resultado en la ventana de validación** (107 preguntas, antes → después; `reports/fase_09_validacion.json` y `fase_10_validacion.json`):
+    - TVD del sistema: todas 0,068 → 0,066; recurrentes 0,050 → 0,048; nuevas 0,143 → 0,138; subgrupos 0,077 → 0,076.
+    - Políticas: 0,058 → 0,062. Empeoran: la intención de voto se mueve menos de lo que el peso de lo reciente supone. Se acepta, porque el conjunto mejora.
+    - Cobertura de los intervalos: IC80 0,76 → 0,74 e IC95 0,95 → 0,93, dentro de los rangos de G9.5.
+    - Confianza calibrada: ECE 0,047 → 0,028; Spearman con el error 0,764 → 0,743, muy por encima de 0,4. La puerta F10 se supera.
 - **Banco: ECOPER.** La regla que excluye las recodificaciones del CIS (variables terminadas en «R») dejaba fuera ECOPER, la valoración de la situación económica personal, que se pregunta cada mes. ECOPER no es la recodificación de ninguna otra variable. Se añade por lista (`banco.INCLUIDAS`), con 39 preguntas más. Las otras dos variables afectadas no son preguntas de opinión: la nacionalidad (perfil) y la intención de voto alternativa (D-005).
 - **Fuentes de opinión fuera del CIS:**
   - La ESS (ronda 11, 2023) no entra en el banco: sus etiquetas están en inglés, no está su cuestionario oficial en español y traducir los enunciados sería inventar texto (regla 2). Ya se usa para construir los valores de la población (D-066).
@@ -1897,3 +1902,35 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Atribución:** OpenStreetMap exige citarlo cuando se usan sus teselas (licencia ODbL y política de uso de teselas). Se quita del mapa y se pone al pie del panel («Mapa: © colaboradores de OpenStreetMap · Límites: INE»). Si se quiere quitar del todo, la alternativa es prescindir del fondo de OpenStreetMap y dejar solo los límites del INE.
 - **Lotes del LLM solo con 10 peticiones o más** (`cliente.MIN_LOTE`): un lote de la API tardó tres horas en esta sesión. Una consulta desde la interfaz tiene que responder en segundos y va directa, a precio completo. Las evaluaciones siguen yendo en lote, con el 50 % de descuento.
 - **«En resumen»:** cada resultado empieza con el texto por reglas del PDF (D-078). Es presentación que añade el servicio y no la CLI; G13.1 lo excluye de la comparación.
+
+## D-085 · LLM sin lotes, justificación obligatoria, respaldo sin LLM y opciones a medida (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F9, F11 y F14.
+- **Estado:** pedido por la persona responsable: «es importante que soluciones lo del LLM»; «si yo puedo poner también las opciones de respuesta… a quién culpabilizas de X cosa».
+- **Sin lotes** (`configs/llm.yaml`: `usar_lotes: false`). Corrige D-084.
+  - Un lote tardó unas tres horas y otro se quedó parado; hubo que cancelarlo.
+  - El descuento del 50 % no compensa una noche sin resultados, porque el presupuesto total sobra (gasto < 1 € de 15 €).
+  - Todas las llamadas van directas. `cliente.MIN_LOTE` se conserva para cuando vuelvan a activarse.
+- **Justificación obligatoria** (`validadores._justificacion`):
+  - Opus devolvía «x» como justificación en 5 de 19 preguntas nuevas y en 3 de 3 intentos desde la interfaz.
+  - La justificación iba al final del esquema, tras cientos de números.
+  - La salida se rechaza si la justificación tiene menos de 30 caracteres o menos de 8 caracteres distintos.
+  - Prompts `pregunta_nueva@v2` y `evento@v2`: la justificación va primero y se pide explícita.
+  - En los esquemas `ESQUEMA_NUEVA` y `ESQUEMA_EVENTO` la justificación es la primera propiedad. La salida estructurada genera en ese orden.
+  - Comprobado: tres preguntas y un evento seguidos devuelven justificaciones de 3 a 5 frases que citan las referencias.
+  - B2 conserva su esquema y su prompt (`b2@v1`).
+- **B2, `max_tokens` de 6000 a 12000:** con 28 subgrupos, Haiku agotaba los tokens en el 19 % de las llamadas (26 de 139). Repetir B2 cuesta unos 0,15 €.
+- **Respaldo sin LLM** (`salida.predecir_dict`):
+  - Si el LLM falla (salida no válida, error de red o tope de gasto), la interfaz recibe la estimación por análogas.
+  - Esa estimación lleva un aviso visible y la causa en `parametros.llm_fallo`, en lugar de un error.
+  - En una población de comunidad, el total del LLM es su subgrupo `ccaa=XX`, no el nacional.
+- **Opciones a medida en la interfaz:**
+  - Las opciones se escriben una a una, o pegadas separadas por «;» o por saltos de línea.
+  - Plantillas nuevas: responsable (Gobierno central, comunidad autónoma, ayuntamiento, Unión Europea, todos por igual, ninguno), confianza, frecuencia y prioridad.
+  - Botón «Vaciar».
+  - «No sabe» y «No contesta» se añaden como opciones legítimas: la casilla viene marcada por defecto.
+  - Una pregunta con opciones nuevas sin análogas en el banco va al LLM anclado (D-071) y, si no hay LLM, al estimador por perfil con la confianza que corresponda.
+- **Alternativas descartadas:**
+  - Reintentar sin límite: gasta presupuesto sin arreglar la causa.
+  - Generar una justificación por reglas cuando falta: sería texto que el modelo no escribió.

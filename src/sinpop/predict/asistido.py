@@ -53,9 +53,25 @@ ESQUEMA_DIST = {
     "additionalProperties": False,
 }
 
+_JUSTIFICACION = {
+    "type": "string",
+    "description": "Dos o tres frases con las referencias en que se apoya la estimación.",
+}
+
+# B2 conserva su esquema (y su caché); en las salidas que se enseñan al usuario la justificación va
+# primero: al final, tras cientos de números, el modelo la dejaba en «x» (D-085)
+ESQUEMA_NUEVA = {
+    "type": "object",
+    "properties": {"justificacion": _JUSTIFICACION}
+    | {k: v for k, v in ESQUEMA_DIST["properties"].items() if k != "justificacion"},
+    "required": ["justificacion", "total", "subgrupos"],
+    "additionalProperties": False,
+}
+
 ESQUEMA_EVENTO = {
     "type": "object",
     "properties": {
+        "justificacion": _JUSTIFICACION,
         "categorias": {
             "type": "array",
             "items": {
@@ -68,9 +84,8 @@ ESQUEMA_EVENTO = {
                 "additionalProperties": False,
             },
         },
-        "justificacion": {"type": "string"},
     },
-    "required": ["categorias", "justificacion"],
+    "required": ["justificacion", "categorias"],
     "additionalProperties": False,
 }
 
@@ -185,7 +200,7 @@ def peticion_nueva(q: E.Pregunta, claves: list[str] | None = None) -> Peticion:
         id=f"nueva:{q.id}",
         tarea="pregunta_nueva",
         variables=p.variables | {"parecidas": parecidas_texto(q)},
-        esquema=ESQUEMA_DIST,
+        esquema=ESQUEMA_NUEVA,
         spec=p.spec,
     )
 
