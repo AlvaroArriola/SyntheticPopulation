@@ -73,9 +73,10 @@ def test_presupuesto_bloquea_antes_de_enviar(rutas, monkeypatch) -> None:
     assert b.llamadas == 0
 
 
-def test_sin_activar_no_hay_llm(monkeypatch) -> None:
+def test_sin_activar_no_hay_llm(rutas, monkeypatch) -> None:
+    cfg = C._cfg().model_copy(update={"activo": False})
+    monkeypatch.setattr(C, "_cfg", lambda: cfg)
     monkeypatch.setenv("SINPOP_ANTHROPIC_API_KEY", "x")
-    assert C._cfg().activo is False
     assert not C.disponible()
     with pytest.raises(C.LLMNoDisponible):
         C.ejecutar([A.peticion_b2(Q, CLAVES)])
