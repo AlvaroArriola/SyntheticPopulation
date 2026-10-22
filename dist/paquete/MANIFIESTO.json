@@ -1,0 +1,32 @@
+{
+ "fecha": "2026-10-22T09:50:20+00:00",
+ "version_codigo": "git:5d782d9",
+ "scikit_learn": "1.9.1",
+ "preguntas_con_modelo": 2736,
+ "poblaciones": [
+  "2026-01-01_CCAA_01_100000_s1",
+  "2026-01-01_CCAA_02_100000_s1",
+  "2026-01-01_CCAA_03_100000_s1",
+  "2026-01-01_CCAA_04_100000_s1",
+  "2026-01-01_CCAA_05_100000_s1",
+  "2026-01-01_CCAA_06_100000_s1",
+  "2026-01-01_CCAA_07_100000_s1",
+  "2026-01-01_CCAA_08_100000_s1",
+  "2026-01-01_CCAA_09_100000_s1",
+  "2026-01-01_CCAA_10_100000_s1",
+  "2026-01-01_CCAA_11_100000_s1",
+  "2026-01-01_CCAA_12_100000_s1",
+  "2026-01-01_CCAA_13_100000_s1",
+  "2026-01-01_CCAA_14_100000_s1",
+  "2026-01-01_CCAA_15_100000_s1",
+  "2026-01-01_CCAA_16_100000_s1",
+  "2026-01-01_CCAA_17_100000_s1",
+  "2026-01-01_CCAA_18_100000_s1",
+  "2026-01-01_CCAA_19_100000_s1",
+  "2026-01-01_ES_1000000_s1",
+  "2026-01-01_PROV_44_10000_s1"
+ ],
+ "contenido": "modelos ajustados (coeficientes), distribuciones y recuentos agregados, banco de enunciados públicos, marcos de poblaciones sintéticas; sin microdatos (D-076)",
+ "fuentes": "ver docs/guias/fuentes_y_citas.md",
+ "aviso": "Resultados simulados con una población sintética: describen distribuciones de grupo, no a personas reales, y no sustituyen a una encuesta."
+}

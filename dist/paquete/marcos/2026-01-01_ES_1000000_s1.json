@@ -1,0 +1,14 @@
+{
+ "run_id": "2026-01-01_ES_1000000_s1",
+ "territorio": "ES",
+ "tamano": 999974,
+ "tamano_solicitado": 1000000,
+ "semilla": 1,
+ "capas": {
+  "persons": true,
+  "opinion": true,
+  "politics": true
+ },
+ "lista": true,
+ "ficha": true
+}

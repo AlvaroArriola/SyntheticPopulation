@@ -1,0 +1,14 @@
+{
+ "run_id": "2026-01-01_CCAA_13_100000_s1",
+ "territorio": "CCAA:13",
+ "tamano": 99986,
+ "tamano_solicitado": 100000,
+ "semilla": 1,
+ "capas": {
+  "persons": true,
+  "opinion": true,
+  "politics": true
+ },
+ "lista": true,
+ "ficha": false
+}

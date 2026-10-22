@@ -1,0 +1,14 @@
+{
+ "run_id": "2026-01-01_PROV_44_10000_s1",
+ "territorio": "PROV:44",
+ "tamano": 10006,
+ "tamano_solicitado": 10000,
+ "semilla": 1,
+ "capas": {
+  "persons": true,
+  "opinion": true,
+  "politics": true
+ },
+ "lista": true,
+ "ficha": false
+}

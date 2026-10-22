@@ -24,5 +24,6 @@ __pycache__/
 .hypothesis/
 .venv/
 build/
-dist/
+dist/*
+!dist/paquete/
 data/raw/MANIFEST.lock

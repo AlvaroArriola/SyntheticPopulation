@@ -20,6 +20,7 @@ const estado = {
   poblaciones: [],
   opciones: [...PLANTILLAS.valoracion],
   modo: "pregunta",
+  paquete: false,
   etiquetas: null,
   resultado: null,
   vista: "total",
@@ -139,6 +140,11 @@ function elegirTerritorio(codigo, nombre) {
   estado.nombre = nombre;
   $("#territorio-nombre").textContent = nombre;
   if (codigo !== "ES" && estado.tamano === 1_000_000) estado.tamano = 100_000;
+  // si el tamaño elegido no está listo y hay otro que sí, se pasa a ese
+  const listos = estado.poblaciones.filter((p) => p.territorio === codigo && p.lista && p.semilla === 1);
+  if (listos.length && !listos.some((p) => p.tamano_solicitado === estado.tamano)) {
+    estado.tamano = Math.max(...listos.map((p) => p.tamano_solicitado));
+  }
   pintarTamanos();
   refrescarEstilos();
 }
@@ -165,6 +171,9 @@ function pintarTamanos() {
   const e = $("#estado-poblacion");
   if (p?.lista) {
     e.innerHTML = `<span class="indicador" style="background:var(--bueno)"></span><span>Lista para preguntar · ${p.tamano.toLocaleString("es-ES")} personas sintéticas</span>`;
+  } else if (estado.paquete) {
+    // el paquete portable no tiene microdatos: solo se consultan las poblaciones que trae
+    e.innerHTML = `<span class="indicador" style="background:var(--texto-3)"></span><span>No incluida en el paquete. Elige un tamaño con punto verde; para generar otras hacen falta los datos originales.</span>`;
   } else {
     const minutos = estado.tamano >= 500_000 ? "30-60 minutos" : estado.tamano >= 100_000 ? "unos 10 minutos" : "unos minutos";
     e.innerHTML = `<span class="indicador" style="background:var(--texto-3)"></span><span>${p ? "Le faltan capas" : "Aún no generada"} · tarda ${minutos}</span>`;
@@ -522,6 +531,7 @@ window.sinpop = { elegirTerritorio, ponerNivel };
   } catch (e) {
     $("#estado-poblacion").textContent = `No se pudo cargar el mapa: ${e.message}`;
   }
+  try { estado.paquete = (await api("/api/modo")).paquete; } catch { estado.paquete = false; }
   await cargarPoblaciones();
   actualizarLLM();
 })();

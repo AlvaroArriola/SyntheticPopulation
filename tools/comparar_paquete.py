@@ -40,9 +40,15 @@ def main(n: int = 40, run: str = "2026-01-01_ES_1000000_s1") -> dict:
 
     from sinpop.predict import banco as B
 
-    b = B.preguntas().sample(n, seed=1)
+    # enunciados con contenido (el banco tiene algunos residuales como «Otros»)
+    b = B.preguntas().filter(pl.col("enunciado").str.len_chars() >= 25).sample(n, seed=1)
     qs = [
-        {"id": f"CMP-{i:03d}", "enunciado": f["enunciado"], "opciones": f["opciones"]}
+        {
+            "id": f"CMP-{i:03d}",
+            "tipo": "pregunta",
+            "enunciado": f["enunciado"],
+            "opciones": f["opciones"],
+        }
         for i, f in enumerate(b.select("enunciado", "opciones").to_dicts())
     ]
     tmp = Path(tempfile.mkdtemp())
