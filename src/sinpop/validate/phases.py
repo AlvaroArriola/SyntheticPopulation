@@ -1899,12 +1899,13 @@ def _pytest(*nodos: str) -> tuple[bool, str]:
     import sys
 
     r = subprocess.run(
-        [sys.executable, "-m", "pytest", "-q", *nodos],
+        [sys.executable, "-m", "pytest", "-q", "-p", "no:warnings", *nodos],
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
     )
-    return r.returncode == 0, (r.stdout.strip().splitlines() or [""])[-1]
+    ok = r.returncode == 0
+    return ok, f"{len(nodos)} tests pasan" if ok else r.stdout.strip()[-200:]
 
 
 def _g13_1() -> Check:

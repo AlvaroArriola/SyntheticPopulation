@@ -1,0 +1,30 @@
+{
+ "casos": [
+  {
+   "run_id": "2026-01-01_ES_1000000_s1",
+   "tipo": "pregunta",
+   "diferencias": [],
+   "formato": []
+  },
+  {
+   "run_id": "2026-01-01_ES_1000000_s1",
+   "tipo": "evento",
+   "diferencias": [],
+   "formato": []
+  },
+  {
+   "run_id": "2026-01-01_CCAA_13_100000_s1",
+   "tipo": "pregunta",
+   "diferencias": [],
+   "formato": []
+  },
+  {
+   "run_id": "2026-01-01_CCAA_13_100000_s1",
+   "tipo": "evento",
+   "diferencias": [],
+   "formato": []
+  }
+ ],
+ "g13_1": true,
+ "g13_2": true
+}
