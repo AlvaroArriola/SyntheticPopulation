@@ -1,0 +1,61 @@
+{
+ "id": "E002",
+ "resultado_simulado": true,
+ "indicador": null,
+ "pregunta": "¿Cómo calificaría usted la situación económica actual de España?",
+ "fecha_evento": "2026-11-01",
+ "metodo_antes": "estadistico",
+ "preguntas_similares": [
+  "CIS-3567-ECOESP",
+  "CIS-3562-ECOESP",
+  "CIS-3557-ECOESP",
+  "CIS-3546-ECOESP",
+  "CIS-3544-ECOESP"
+ ],
+ "categorias": [
+  {
+   "categoria": "Muy buena",
+   "antes": 0.03323845135727453,
+   "despues": null,
+   "cambio": null
+  },
+  {
+   "categoria": "Buena",
+   "antes": 0.3385707734288722,
+   "despues": null,
+   "cambio": null
+  },
+  {
+   "categoria": "Regular",
+   "antes": 0.060755970371574715,
+   "despues": null,
+   "cambio": null
+  },
+  {
+   "categoria": "Mala",
+   "antes": 0.3669064748760923,
+   "despues": null,
+   "cambio": null
+  },
+  {
+   "categoria": "Muy mala",
+   "antes": 0.18322884691941005,
+   "despues": null,
+   "cambio": null
+  },
+  {
+   "categoria": "N.S.",
+   "antes": 0.011347602165724701,
+   "despues": null,
+   "cambio": null
+  },
+  {
+   "categoria": "N.C.",
+   "antes": 0.00595188088105146,
+   "despues": null,
+   "cambio": null
+  }
+ ],
+ "metodo": null,
+ "motivo": "el efecto de un evento sobre una pregunta cualquiera necesita el modelo de lenguaje (D-071, D-073); configs/llm.yaml está desactivado"
+}

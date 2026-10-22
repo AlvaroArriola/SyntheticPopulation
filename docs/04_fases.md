@@ -1,6 +1,6 @@
 # 04 · Fases del proyecto
 
-El proyecto tiene **13 fases** (la fase 8 se divide en tres subfases). Cada una tiene un objetivo, entradas, tareas, entregables y una **puerta de salida**: comprobaciones que deben superarse para darla por terminada. Las métricas y los umbrales de cada comprobación están en `05_validacion.md` y en `configs/thresholds.yaml`.
+El proyecto tiene **15 fases** (la fase 8 se divide en tres subfases; F13 y F14, la interfaz, se añadieron el 2026-10-22, D-073). Cada una tiene un objetivo, entradas, tareas, entregables y una **puerta de salida**: comprobaciones que deben superarse para darla por terminada. Las métricas y los umbrales de cada comprobación están en `05_validacion.md` y en `configs/thresholds.yaml`.
 
 | Fase | Nombre | Bloque | Revisión humana |
 | --- | --- | --- | --- |
@@ -19,6 +19,8 @@ El proyecto tiene **13 fases** (la fase 8 se divide en tres subfases). Cada una 
 | F10 | Modelo de confianza | Extensión | No |
 | F11 | Evaluación final sin contaminación | Extensión | **Sí** |
 | F12 | Empaquetado y documentación final | Extensión | **Sí** |
+| F13 | Servicio de consulta (API local) | Interfaz | No |
+| F14 | Interfaz web | Interfaz | **Sí** |
 
 Reglas generales para todas las fases:
 
@@ -428,6 +430,75 @@ Reglas generales para todas las fases:
 - [ ] G12.2 La guía de actualización se prueba sustituyendo una fuente por una edición distinta.
 - [ ] G12.3 Lista de comprobación de `08_uso_y_licencias.md` completada.
 - [ ] G12.4 **Revisión humana** final.
+
+---
+
+## F13 · Servicio de consulta (API local)
+
+**Objetivo:** que la población se pueda consultar desde una interfaz sin pasar por la línea de comandos, con las mismas garantías que la CLI. Se empieza cuando F12 está cerrada, salvo lo que la revisión humana de F11 o F12 pida.
+
+**Tareas**
+
+1. Un servicio HTTP local (`src/sinpop/servicio/`) sobre las funciones ya validadas (`predict`, `predict.evento`, fichas y auditorías). No reimplementa ningún método: si la CLI y el servicio dan resultados distintos, el fallo es del servicio.
+2. Operaciones:
+   - listar las poblaciones generadas, con su ficha;
+   - predecir una pregunta (formato `03_arquitectura.md` §2.8) o un evento;
+   - buscar en el banco de preguntas;
+   - consultar el gasto del LLM y el presupuesto restante.
+3. Las peticiones lentas (más de unos segundos) se ejecutan en segundo plano y se consultan por su identificador.
+4. El servicio nunca lee `data/eval/` ni devuelve microdatos originales: solo agregados y personas sintéticas (`tests/test_no_leakage.py` cubre el paquete).
+
+**Entregables:** `src/sinpop/servicio/`, `reports/fase_13.md`.
+
+**Puerta F13**
+
+- [ ] G13.1 Para las preguntas y eventos de ejemplo, el servicio y la CLI devuelven el mismo resultado (mismo JSON salvo los tiempos).
+- [ ] G13.2 Cada respuesta del servicio pasa el esquema de §2.8 y lleva `resultado_simulado`, el aviso, los intervalos y la confianza.
+- [ ] G13.3 Ninguna ruta devuelve microdatos originales ni datos de evaluación (test automático).
+- [ ] G13.4 El presupuesto del LLM se respeta igual que en la CLI: una petición que lo superaría se rechaza antes de enviarse.
+
+---
+
+## F14 · Interfaz web
+
+**Objetivo:** una interfaz web cuidada, clara y agradable para hacer preguntas a la población y entender las respuestas, sin esconder la incertidumbre.
+
+**Tareas**
+
+1. **Diseño:** flujos y maqueta de cada pantalla, revisados por la persona responsable antes de programar:
+   - escribir una pregunta o partir de una del banco;
+   - elegir la población y los subgrupos;
+   - describir un evento;
+   - explorar la población.
+2. **Pantalla de pregunta:**
+   - la distribución con sus intervalos;
+   - las vistas «población» y «como lo mediría el CIS»;
+   - los desgloses por edad, sexo, estudios, comunidad (mapa) y recuerdo de voto;
+   - la confianza de cada cifra, de forma visible;
+   - las preguntas del banco en las que se apoya;
+   - el aviso de resultado simulado.
+3. **Pantalla de evento:** antes, después y cambio, con su incertidumbre; si interviene el LLM, su justificación.
+4. **Exploración de la población:**
+   - la ficha de datos;
+   - los semáforos de la auditoría de F7;
+   - perfiles agregados y algunas personas sintéticas de ejemplo, presentadas como tales.
+5. **Coste visible:** el gasto del LLM de cada consulta y el acumulado frente al tope.
+6. **Calidad:**
+   - en español;
+   - modo claro y oscuro;
+   - accesible (contraste, teclado, lectores de pantalla);
+   - adaptada al móvil;
+   - sin dependencias de servicios externos para los datos.
+7. **Pruebas de extremo a extremo** con el navegador.
+
+**Entregables:** la aplicación web, `reports/fase_14.md` con capturas.
+
+**Puerta F14**
+
+- [ ] G14.1 Las pruebas de extremo a extremo cubren las pantallas de pregunta, evento y exploración, y pasan.
+- [ ] G14.2 Ninguna cifra aparece sin su intervalo y su confianza, y el aviso de simulación está en todas las pantallas de resultados (test automático).
+- [ ] G14.3 Accesibilidad: sin errores graves en una auditoría automática.
+- [ ] G14.4 **Revisión humana** de la interfaz.
 
 ---
 

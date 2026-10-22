@@ -1,0 +1,13 @@
+{
+  "id": "E002",
+  "tipo": "evento",
+  "enunciado": "¿Cómo calificaría usted la situación económica actual de España?",
+  "opciones": ["Muy buena", "Buena", "Regular", "Mala", "Muy mala", "N.S.", "N.C."],
+  "escala": "ordinal",
+  "poblacion": {"territorio": "ES", "universo": "18+"},
+  "evento": {
+    "descripcion": "Ejemplo: el Gobierno anuncia una subida general de impuestos sobre la renta",
+    "fecha": "2026-11-01",
+    "ambito": "ES"
+  }
+}

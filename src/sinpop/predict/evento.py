@@ -288,3 +288,118 @@ def backtest_llm(backend=None) -> pl.DataFrame:
             }
         )
     return pl.DataFrame(filas)
+
+
+# ------------------------------------------------- evento sobre una pregunta cualquiera (D-073)
+
+
+def resumen_banco() -> str:
+    """Los eventos del banco con el mayor cambio observado en cada indicador (orden de magnitud
+    habitual para el LLM cuando la pregunta no es uno de los indicadores)."""
+    from sinpop.config import load_config
+
+    desc = {e.id: e for e in load_config("eventos.yaml").eventos}  # type: ignore[attr-defined]
+    b = banco().filter(~pl.col("ambito").str.starts_with("CCAA:"))
+    top = (
+        b.sort(pl.col("efecto").abs(), descending=True)
+        .group_by("evento", "indicador", maintain_order=True)
+        .first()
+        .sort("evento", "indicador")
+    )
+    filas = []
+    for (ev,), g in top.group_by("evento", maintain_order=True):
+        e = desc[ev]
+        cambios = "; ".join(
+            f"{i}: {c} {100 * x:+.1f}"
+            for i, c, x in g.select("indicador", "categoria", "efecto").iter_rows()
+        )
+        filas.append(f"- {e.fecha} {e.descripcion} ({e.tipo}): {cambios}")
+    return "\n".join(filas)
+
+
+def incertidumbre_generica() -> float:
+    """Desviación típica de los cambios observados en el banco nacional: la incertidumbre del
+    cambio cuando no hay eventos análogos medidos sobre la misma pregunta."""
+    b = banco().filter(~pl.col("ambito").str.starts_with("CCAA:"))
+    return float(b["efecto"].std())
+
+
+def predecir_pregunta(
+    q, descripcion: str, fecha: dt.date, ambito: str = "ES", run_id: str | None = None
+) -> dict:
+    """Efecto de un evento sobre una pregunta cerrada cualquiera (`docs/03` §2.8).
+
+    - **Antes:** la predicción de la pregunta en el mes del evento (componente estadístico; si no
+      tiene análogas y el LLM está activo, el LLM anclado).
+    - **Cambio:** lo propone el LLM con la descripción del evento y el orden de magnitud de los
+      eventos del banco. Sin LLM no hay forma honesta de saber qué opciones suben o bajan: se
+      devuelve el antes y se dice.
+    - **Incertidumbre del cambio:** la dispersión de los cambios observados en el banco.
+    """
+    from sinpop.llm import cliente as C
+    from sinpop.predict import asistido as A
+    from sinpop.predict import estimador as E
+    from sinpop.predict import poblacion as P
+
+    r = E.predecir(q, run_id=run_id or P.NACIONAL)
+    if r.analogas:
+        antes = r.sistema["total"] / r.sistema["total"].sum()
+        metodo_antes = "estadistico"
+    elif C.disponible():
+        pet = A.peticion_nueva(q)
+        s = C.ejecutar([pet])[pet.id]
+        if s is None:
+            raise ValueError(f"{q.id}: sin análogas y el LLM no devolvió una salida válida")
+        antes, metodo_antes = A.distribuciones(s)["total"], "llm_anclado"
+    else:
+        raise ValueError(f"{q.id}: sin preguntas parecidas en el banco y sin LLM activo")
+    base = {
+        "indicador": None,
+        "pregunta": q.enunciado,
+        "fecha_evento": str(fecha),
+        "metodo_antes": metodo_antes,
+        "preguntas_similares": [a["id"] for a in r.analogas],
+    }
+    if not C.disponible():
+        return base | {
+            "categorias": [
+                {"categoria": o, "antes": float(p), "despues": None, "cambio": None}
+                for o, p in zip(q.opciones, antes, strict=True)
+            ],
+            "metodo": None,
+            "motivo": "el efecto de un evento sobre una pregunta cualquiera necesita el modelo "
+            "de lenguaje (D-071, D-073); configs/llm.yaml está desactivado",
+        }
+    pet = A.peticion_evento(
+        q.id,
+        str(fecha),
+        descripcion,
+        ambito,
+        q.enunciado,
+        dict(zip(q.opciones, map(float, antes), strict=True)),
+        resumen_banco(),
+    )
+    s = C.ejecutar([pet])[pet.id]
+    if s is None:
+        raise ValueError(f"{q.id}: el LLM no devolvió un cambio válido")
+    cambio = {c["categoria"]: c["cambio_pp"] / 100 for c in s["categorias"]}
+    despues = np.clip(antes + np.array([cambio.get(o, 0.0) for o in q.opciones]), 0, 1)
+    despues = despues / despues.sum()
+    sd = incertidumbre_generica()
+    reg = C.registro(pet)
+    return base | {
+        "metodo": "llm",
+        "justificacion_llm": s["justificacion"],
+        "categorias": [
+            {
+                "categoria": o,
+                "antes": float(a),
+                "despues": float(d),
+                "cambio": float(d - a),
+                "ic80_cambio": [float(d - a - 1.2816 * sd), float(d - a + 1.2816 * sd)],
+            }
+            for o, a, d in zip(q.opciones, antes, despues, strict=True)
+        ],
+        "coste": {"llamadas": reg["llamadas"], "tokens": reg["tokens"], "eur": reg["eur"]},
+        "versiones": {"modelo_llm": reg["modelo"], "prompts": reg["prompt"]},
+    }

@@ -1669,3 +1669,26 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - que las salidas estén marcadas como simuladas.
   - Se añade al registro de fuentes la ECEPOV 2021, que estaba en el manifiesto y no en `sources.yaml`.
 - **Guías:** `docs/guias/uso.md`, `actualizacion.md` (fuentes, elecciones, actualización mensual y cambio de modelo) y `limites_de_uso.md`. La ficha de modelo final se escribe tras F11, con sus resultados.
+
+## D-073 · Eventos sobre cualquier pregunta y fases de interfaz (F13-F14) (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F9 (completar el formato de `docs/03` §2.8) y la planificación de F13-F14.
+- **Estado:** el plan es de la persona responsable; el diseño, del agente.
+- **Petición de la persona responsable** (2026-10-22):
+  - Para mañana necesita una población funcional, a la que pueda hacer preguntas y que devuelva todo lo indicado en la documentación.
+  - Después quiere una interfaz «super chula».
+  - Pide añadirla como fases, pero acabar antes la población.
+- **Evento sobre una pregunta cualquiera:**
+  - `docs/03` §2.8 define el evento como una descripción y una fecha más «la pregunta sobre la que se mide el efecto». Hasta ahora solo se medía sobre los indicadores de `configs/temporal.yaml`.
+  - `predict.evento.predecir_pregunta` mide el efecto sobre la pregunta del fichero:
+    - **antes:** la predicción del sistema;
+    - **cambio:** lo propone el LLM con la descripción y el orden de magnitud del banco de eventos;
+    - **incertidumbre:** la dispersión de los cambios observados en el banco (desviación típica 0,033).
+  - Sin LLM no hay forma honesta de saber qué opciones suben: se devuelve el antes y se dice por qué falta el cambio. No se inventa una dirección.
+  - El evento sobre indicadores sigue igual.
+  - Alternativa descartada: llevar el efecto medio de los eventos del mismo tipo a la pregunta. Solo existe para los indicadores medidos, y en F9 ya falló en dirección (6/15).
+- **Fases nuevas** (`docs/04`):
+  - **F13:** servicio de consulta local sobre las funciones validadas, sin reimplementar métodos.
+  - **F14:** interfaz web, con revisión humana.
+  - Empiezan cuando la población esté terminada (F11 y F12).

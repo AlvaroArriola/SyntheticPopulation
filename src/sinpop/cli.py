@@ -347,14 +347,29 @@ def predict(
 
     e = json.loads(event.read_text("utf-8"))  # type: ignore[union-attr]
     ev = e["evento"]
-    out = V.predecir(
-        ev["indicador"],
-        dt.date.fromisoformat(ev["fecha"]),
-        ev["tipo"],
-        ev.get("ambito", "ES"),
-        ev.get("descripcion"),
-        e["id"],
-    )
+    fecha = dt.date.fromisoformat(ev["fecha"])
+    if "indicador" in ev:  # indicador de configs/temporal.yaml
+        out = V.predecir(
+            ev["indicador"],
+            fecha,
+            ev["tipo"],
+            ev.get("ambito", "ES"),
+            ev.get("descripcion"),
+            e["id"],
+        )
+    else:  # efecto sobre la pregunta del fichero (docs/03 §2.8)
+        from sinpop.predict import estimador as E
+        from sinpop.predict import opciones as O
+
+        q = E.Pregunta(
+            e["id"],
+            e["enunciado"],
+            e["opciones"],
+            e.get("escala") or O.escala_probable(e["opciones"]),
+            ev["fecha"][:7],
+            [],
+        )
+        out = V.predecir_pregunta(q, ev["descripcion"], fecha, ev.get("ambito", "ES"), run)
     out = {"id": e["id"], "resultado_simulado": True, **out}
     PREDICCIONES_DIR.mkdir(parents=True, exist_ok=True)
     destino = PREDICCIONES_DIR / f"{e['id']}_evento.json"
