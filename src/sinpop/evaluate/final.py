@@ -47,7 +47,13 @@ def comprobar_congelacion(tag: str) -> dict:
     except subprocess.CalledProcessError as e:
         raise EvaluacionNoPermitida(f"no existe la etiqueta {tag}") from e
     head = _git("rev-parse", "HEAD")
-    cambios = _git("status", "--porcelain", "--untracked-files=no")
+    # la congelación es del código: las respuestas del LLM que llegan desde la sesión con la clave
+    # (logs/llm/, D-074) y los informes (reports/) son resultados, no código
+    cambios = "\n".join(
+        x
+        for x in _git("status", "--porcelain", "--untracked-files=no").splitlines()
+        if not x[3:].startswith(("logs/llm/", "reports/"))
+    )
     if head != commit_tag:
         raise EvaluacionNoPermitida(f"HEAD ({head[:8]}) no es la etiqueta {tag} ({commit_tag[:8]})")
     if cambios:
@@ -155,9 +161,25 @@ def ejecutar(tag: str) -> dict:
     return res
 
 
+def exportar_llm(tag: str, nombre: str = "evaluacion_f11") -> dict:
+    """Exporta, desde la etiqueta congelada, las peticiones al LLM de la evaluación final para
+    enviarlas desde la sesión que tiene la clave (D-074). Solo lleva enunciados y opciones de la
+    ventana y agregados del banco: nunca las respuestas de la ventana."""
+    from sinpop.evaluate import llm as L
+    from sinpop.llm import cliente as C
+
+    comprobar_congelacion(tag)
+    return C.exportar(L.todas_las_peticiones(V.EVALUACION_FINAL, eventos=False), nombre)
+
+
 if __name__ == "__main__":
     import argparse
 
     a = argparse.ArgumentParser(description="Evaluación final (F11), una sola vez")
     a.add_argument("--tag", required=True, help="etiqueta git congelada")
-    print(json.dumps(ejecutar(a.parse_args().tag), ensure_ascii=False, indent=1, default=str))
+    a.add_argument("--exportar-llm", action="store_true", help="solo exporta las peticiones al LLM")
+    args = a.parse_args()
+    if args.exportar_llm:
+        print(json.dumps(exportar_llm(args.tag), ensure_ascii=False, indent=1))
+    else:
+        print(json.dumps(ejecutar(args.tag), ensure_ascii=False, indent=1, default=str))

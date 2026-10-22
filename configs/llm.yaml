@@ -25,7 +25,8 @@ modelos:
 # registrada en DECISIONS.md y obliga a revalidar.
 tareas:
   b2:
-    modelo: claude-opus-5-5
+    # Haiku: B2 es un baseline de comparación, no el producto (D-074)
+    modelo: claude-haiku-5-5
     prompt: b2@v1
     esfuerzo: low
     max_tokens: 6000

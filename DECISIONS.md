@@ -1692,3 +1692,24 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - **F13:** servicio de consulta local sobre las funciones validadas, sin reimplementar métodos.
   - **F14:** interfaz web, con revisión humana.
   - Empiezan cuando la población esté terminada (F11 y F12).
+
+## D-074 · Envío al LLM desde la sesión con la clave y B2 con Haiku (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F9-F11 (capa de LLM).
+- **Estado:** decisión del agente, con la delegación expresa de la persona responsable el 2026-10-22: «Trabaja por tu cuenta y sigue siempre lo que creas que es óptimo y recomendado».
+- **Problema:**
+  - La clave del LLM (variable `SINPOP_ANTHROPIC_API_KEY`) solo llega a las sesiones que se abren después de configurarla.
+  - Los datos (9,6 GB, parte de ellos descargados a mano) solo existen en la sesión de trabajo y no pueden salir de su entorno (regla 8).
+- **Solución** (`llm/cliente.py`: `exportar`, `enviar_pendientes`, `python -m sinpop.llm.cliente --enviar`):
+  1. La sesión de trabajo construye las peticiones exactas y las sube a la rama (`logs/llm/pendientes/<nombre>.jsonl`). Llevan solo enunciados públicos, la composición agregada de la población y resultados ponderados agregados del CIS, lo mismo que vería el modelo.
+  2. La sesión con la clave las envía, con los mismos topes de presupuesto y la misma validación, y sube la caché y el registro de gasto.
+  3. La sesión de trabajo lee las respuestas de la caché (sin clave ni gasto) y las vuelve a validar.
+  - Las comprobaciones semánticas se describen como datos (`llm/validadores.py`) para que valgan igual en las dos sesiones.
+- **Congelación de F11:** comprueba el código. Los cambios en `logs/llm/` (respuestas) y `reports/` no la rompen, para poder recibir las respuestas de la evaluación final sin mover la etiqueta.
+- **B2 con `claude-haiku-5-5` en lugar de `claude-opus-5-5`:**
+  - B2 es la referencia que el sistema tiene que mejorar, no una parte del producto.
+  - Con Opus se llevaba 9,2 € de cota de un tope de 15 € para todo el proyecto, sin margen para F11.
+  - Con Haiku, la cota de la validación baja de 9,60 € a 2,24 €.
+  - Las preguntas sin precedentes y el modo evento, que sí son producto, siguen con Opus.
+  - Consecuencia que hay que declarar: B2 mide «un LLM barato sin anclaje», no «el mejor LLM sin anclaje». Si el sistema gana a B2, la comparación no demuestra que gane a cualquier LLM.
