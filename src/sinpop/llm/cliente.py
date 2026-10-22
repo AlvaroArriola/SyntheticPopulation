@@ -138,6 +138,15 @@ def _solicitud(p: Peticion) -> tuple[dict, str, dict]:
     return params, clave, meta
 
 
+# por debajo de este número de peticiones no se usa la API de lotes: un lote puede tardar horas y
+# una consulta desde la interfaz tiene que responder en segundos (D-084)
+MIN_LOTE = 10
+
+
+def _usar_lote(n: int) -> bool:
+    return _cfg().presupuesto.usar_lotes and n >= MIN_LOTE
+
+
 def _cota(params: dict, lote: bool) -> float:
     chars = len(params["system"]) + sum(len(m["content"]) for m in params["messages"])
     chars += len(json.dumps(params["output_config"]))
@@ -147,8 +156,8 @@ def _cota(params: dict, lote: bool) -> float:
 def estimar(peticiones: list[Peticion]) -> dict:
     """Cota superior del coste de las peticiones que no están en caché (no llama a nadie)."""
     cache, _ = _rutas()
-    lote = _cfg().presupuesto.usar_lotes
     pend = [s for s in map(_solicitud, peticiones) if not (cache / f"{s[1]}.json").exists()]
+    lote = _usar_lote(len(pend))
     return {
         "peticiones": len(peticiones),
         "en_cache": len(peticiones) - len(pend),
@@ -234,7 +243,7 @@ def _enviar(pendientes: list[dict], backend: Backend) -> dict[str, dict | None]:
     cache, registro = _rutas()
     cache.mkdir(parents=True, exist_ok=True)
     registro.parent.mkdir(parents=True, exist_ok=True)
-    lote = c.presupuesto.usar_lotes
+    lote = _usar_lote(len(pendientes))
     _comprobar_presupuesto(pendientes, lote)
     out: dict[str, dict | None] = {}
     quedan = {x["id"]: x for x in pendientes}
@@ -328,7 +337,7 @@ def exportar(peticiones: list[Peticion], nombre: str) -> dict:
     ruta.write_text(
         "".join(json.dumps(x, ensure_ascii=False, sort_keys=True) + "\n" for x in pend), "utf-8"
     )
-    lote = _cfg().presupuesto.usar_lotes
+    lote = _usar_lote(len(pend))
     return {
         "fichero": str(ruta.relative_to(REPO_ROOT) if ruta.is_relative_to(REPO_ROOT) else ruta),
         "peticiones": len(pend),
@@ -424,7 +433,7 @@ if __name__ == "__main__":
     args = a.parse_args()
     if args.estimar:
         pend = [x for x in _leer_pendientes(args.estimar) if _de_cache(x) is None]
-        lote = _cfg().presupuesto.usar_lotes
+        lote = _usar_lote(len(pend))
         print(
             json.dumps(
                 {
