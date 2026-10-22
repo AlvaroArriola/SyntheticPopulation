@@ -1841,3 +1841,59 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - En España se reproducen 26 de las 27 cifras con una diferencia menor del 10 %.
   - La que no: personas que nunca usan internet, un 9,2 % frente al 8,3 % de la TIC-H, ya señalada en la ficha.
   - El paquete lleva estas auditorías (`auditoria/<run_id>.json`). La de Teruel 10 000 se hizo con `sinpop audit`.
+
+## D-082 · Peso de lo reciente: semivida de 3 meses; ECOPER en el banco (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F9-F10 (método), antes de congelar F11.
+- **Estado:** pedido por la persona responsable («lo que midió el CIS puede ser de 2023 y nosotros estar en 2026… no hay que tomar nada por hecho»); el método y la evidencia son del agente.
+- **Pregunta:** ¿cómo llevar a hoy lo que se midió hace meses o años?
+- **Evidencia (datos de construcción, sin la ventana de evaluación):**
+  1. **Series que se repiten** (89 series de 6 oleadas o más, 1.239 preguntas): se predice cada oleada solo con las anteriores, a 3, 6, 12 y 24 meses.
+     - Extrapolar la tendencia **empeora** a cualquier plazo: con 3 meses, TVD 0,042-0,046 frente a 0,040 con el último valor.
+     - Suavizar las oleadas recientes **mejora**: con 3 meses, TVD 0,0375 con regresión local o media con semivida de 3 meses, frente a 0,0396.
+     - El error crece con la distancia: 0,040 a 3 meses y 0,072 a 24 meses.
+  2. **Todas las preguntas** (385 de 2025-07 a 2026-06, baseline B0 con la selección de análogas del estimador):
+     - TVD 0,120 con semivida de 12 meses, 0,1175 con 6, **0,1158 con 3** y 0,1163 con 1,5.
+     - En las recurrentes, de 0,048 a 0,042 (−13 %).
+  3. **Estimador completo** (backtest de construcción de F9, 170 preguntas): TVD del sistema de 0,1087 a 0,1069; medición CIS de 0,1080 a 0,1060. Los intervalos apenas cambian (q80 de 1,206 a 1,210).
+- **Decisión:**
+  - `estimador.VIDA_MEDIA_MESES = 3`: el peso de una análoga es similitud² · 0,5^(meses / 3).
+  - No se extrapolan tendencias.
+  - El paso del tiempo también entra en la confianza: el modelo de F10 usa la antigüedad de la análoga más reciente.
+- **Recalibración:** calibración de intervalos (F9) y modelo de confianza (F10) reajustados con el nuevo estimador.
+  - Validación cruzada del backtest: ECE de 0,018 a 0,017; Spearman del error predicho de 0,764 a 0,781.
+  - La evaluación en la ventana de validación (F9, F10) se ha rehecho antes de congelar F11.
+- **Banco: ECOPER.** La regla que excluye las recodificaciones del CIS (variables terminadas en «R») dejaba fuera ECOPER, la valoración de la situación económica personal, que se pregunta cada mes. ECOPER no es la recodificación de ninguna otra variable. Se añade por lista (`banco.INCLUIDAS`), con 39 preguntas más. Las otras dos variables afectadas no son preguntas de opinión: la nacionalidad (perfil) y la intención de voto alternativa (D-005).
+- **Fuentes de opinión fuera del CIS:**
+  - La ESS (ronda 11, 2023) no entra en el banco: sus etiquetas están en inglés, no está su cuestionario oficial en español y traducir los enunciados sería inventar texto (regla 2). Ya se usa para construir los valores de la población (D-066).
+  - Los centros autonómicos (CEO, Euskobarómetro…) no se pueden descargar desde este entorno (D-011); quedan como mejora con descarga manual.
+  - La población se calibra con cifras de 2026: ECP 2026, EPA del 2T de 2026 y voto oficial.
+
+## D-083 · Evolución de cada pregunta, retratos y cruces entre preguntas (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F14.
+- **Estado:** a elección del agente («añádele cosas… que tengan un fuerte impacto»).
+- **Evolución** (`estimador.serie_temporal`):
+  - Muestra cada vez que el CIS hizo la pregunta, o una casi idéntica (similitud de al menos el 80 % de la mejor y opciones alineables), con su distribución observada ponderada.
+  - Añade la estimación de hoy como la mediría el CIS, con su IC del 80 %.
+  - Los B0 salen de los agregados del paquete, así que funciona igual sin microdatos.
+- **Retratos** (`salida.retratos`):
+  - 24 personas sintéticas elegidas al azar con su peso, con una semilla fija por pregunta y población.
+  - Cada una con su perfil y la probabilidad de cada respuesta, que es la media ponderada de las análogas para su perfil.
+  - Se presentan como perfiles plausibles, no como personas reales (`docs/08` §2).
+- **Cruce de dos preguntas** (`salida.cruce`, `POST /api/cruce`):
+  - **Márgenes:** las predicciones de las dos preguntas para la población.
+  - **Relación entre ellas:** la observada en el estudio del CIS que hizo las dos. Se elige el par de análogas del mismo estudio con más peso, es decir, el más reciente y parecido. Se ajusta a los márgenes con IPF, que conserva las razones de odds.
+  - **Sin estudio común:** la relación que pasa por el perfil, con el aviso de que subestima la asociación. Comprobado con la economía de España frente a la personal: V = 0,047 por perfil, cuando en la realidad están muy relacionadas.
+  - **Tablas en el paquete** (`cruces.jsonl.gz`): 95.569 tablas cruzadas ponderadas, en proporciones, de los pares de preguntas de un mismo estudio. Son agregados con al menos 50 encuestados por par.
+
+## D-084 · Mapa sin textos encima, consultas al LLM sin lotes y resumen en texto (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F14.
+- **Estado:** pedido por la persona responsable (quitar la atribución y la etiqueta de Canarias del mapa); el resto lo propone el agente.
+- **Atribución:** OpenStreetMap exige citarlo cuando se usan sus teselas (licencia ODbL y política de uso de teselas). Se quita del mapa y se pone al pie del panel («Mapa: © colaboradores de OpenStreetMap · Límites: INE»). Si se quiere quitar del todo, la alternativa es prescindir del fondo de OpenStreetMap y dejar solo los límites del INE.
+- **Lotes del LLM solo con 10 peticiones o más** (`cliente.MIN_LOTE`): un lote de la API tardó tres horas en esta sesión. Una consulta desde la interfaz tiene que responder en segundos y va directa, a precio completo. Las evaluaciones siguen yendo en lote, con el 50 % de descuento.
+- **«En resumen»:** cada resultado empieza con el texto por reglas del PDF (D-078). Es presentación que añade el servicio y no la CLI; G13.1 lo excluye de la comparación.
