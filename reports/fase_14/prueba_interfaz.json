@@ -25,10 +25,10 @@
    "aviso": true
   },
   "dato": {
-   "barras": 6,
+   "barras": 5,
    "margen": true,
    "procedencia": true,
-   "fuentes": 5,
+   "fuentes": 2,
    "aviso": true
   }
  },
