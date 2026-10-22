@@ -1,8 +1,8 @@
 {
- "fecha": "2026-10-22T18:52:34+00:00",
- "version_codigo": "git:efa9c48-dirty",
+ "fecha": "2026-10-22T21:38:15+00:00",
+ "version_codigo": "git:27e17eb-dirty",
  "scikit_learn": "1.9.1",
- "preguntas_con_modelo": 2736,
+ "preguntas_con_modelo": 2775,
  "poblaciones": [
   "2026-01-01_CCAA_01_100000_s1",
   "2026-01-01_CCAA_02_100000_s1",
