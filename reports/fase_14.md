@@ -1,29 +1,41 @@
 # Fase 14 · Interfaz web
 
 **Estado:** puertas automáticas superadas (`reports/fase_14_puerta.md`). **Pendiente de revisión humana (G14.4).**
-**Fecha:** 2026-10-22 · **Decisiones:** D-073, D-075, D-076
+**Fecha:** 2026-10-22 · **Decisiones:** D-073, D-075 a D-085
 **Comando:** `sinpop serve --paquete dist/paquete` y, con el servicio en marcha, `python tools/prueba_interfaz.py http://127.0.0.1:8000 && sinpop validate --phase 14`
 
 ## Qué es
 
-Una página (`src/sinpop/servicio/web/`) servida por `sinpop serve`, sin pasos de compilación:
+Una página (`src/sinpop/servicio/web/`) servida por `sinpop serve`, sin pasos de compilación. Recorrido de la demo: `docs/guias/demo.md`.
 
-- **Mapa** (Leaflet 1.9.4 con teselas de OpenStreetMap): selector de nivel (España, comunidades, provincias). Se pulsa un territorio para elegirlo. Los territorios con población lista se ven más marcados, y al pasar el ratón se ven los tamaños disponibles.
-- **Tamaño:** 10 mil, 50 mil, 100 mil, 500 mil y 1 millón de personas. Un punto verde marca las poblaciones listas.
-  - Con los datos originales se puede generar una población nueva desde ahí.
-  - En modo paquete, la interfaz avisa de que ese tamaño no está incluido y, al elegir territorio, pasa sola al tamaño disponible.
-- **Pregunta:** enunciado, opciones con plantillas habituales y la casilla «Incluir N.S. y N.C.». Mientras se escribe aparecen preguntas parecidas del banco del CIS, que se pueden reutilizar.
+- **Mapa** (Leaflet 1.9.4 con teselas de OpenStreetMap, crédito al pie del panel):
+  - selector de nivel (España, comunidades, provincias);
+  - Canarias en un recuadro con sus islas;
+  - se pulsa un territorio para elegirlo.
+- **Tamaño:** de 10 mil a 1 millón de personas, con el asistente «¿Qué tamaño necesito?» según el margen deseado (D-079).
+- **«¿Se parece a la población real?»:** la fidelidad de la población frente a las cifras oficiales, de la auditoría de F7 (D-081).
+- **Pregunta:**
+  - enunciado y opciones propias, escritas una a una o pegadas con «;»;
+  - plantillas (acuerdo, valoración, intensidad, responsable, confianza, frecuencia, prioridad);
+  - «N.S.» y «N.C.» por defecto (D-085);
+  - mientras se escribe aparecen las preguntas parecidas del banco del CIS y, si lo que se pregunta ya es un atributo de la población, el **dato oficial** (INE y otras fuentes, D-077).
 - **Resultado:**
-  - barras con la estimación y los intervalos del 80 % y del 95 %;
-  - la confianza en una cifra grande, con su explicación;
-  - pestaña «Lo que piensa la población» / «Como lo mediría el CIS»;
-  - tabla de calor por subgrupos (edad, sexo, estudios, comunidad, recuerdo de voto);
-  - mapa coloreado por comunidad para la opción que se elija;
+  - «En resumen», un texto por reglas a partir de las cifras;
+  - barras con intervalos del 80 % y del 95 % y la confianza en una cifra grande;
+  - «Lo que piensa la población» frente a «Como lo mediría el CIS»;
+  - evolución en el tiempo;
+  - desglose por comunidades y provincias con el mapa coloreado;
+  - grupos ampliados (ideología, voto, religiosidad, clase, tamaño de municipio…), con los más distintos destacados;
+  - retratos;
+  - cruce con otra pregunta;
   - las preguntas del CIS en que se apoya;
-  - el aviso de resultado simulado.
-- **«¿Y si ocurre…?» (evento):** muestra el antes y el después con el intervalo del cambio. Sin modelo de lenguaje enseña el antes y explica por qué no hay cambio estimado (D-073).
-- **Gasto del LLM** frente al tope, siempre visible arriba. Modo oscuro y diseño para móvil.
-- Colores, marcas y accesibilidad siguen la guía de visualización (paleta validada, una escala secuencial de un solo tono, texto en tinta y no en el color de la serie, tabla con valores escritos).
+  - el aviso de resultado simulado (D-081, D-083).
+- **Preguntas sin precedentes:** con clave, responde el modelo de lenguaje anclado en el banco, con su justificación. Si falla, se muestra la estimación sin él con un aviso (D-085).
+- **«¿Y si ocurre…?» (evento):** el cambio esperado por categoría con la explicación del modelo. Sin modelo de lenguaje enseña el antes y explica por qué no hay cambio estimado (D-073).
+- **Exportar:** PDF con resumen y gráficos, CSV y JSON (D-078). Las consultas recientes se guardan en el navegador.
+- **Comparar comunidades:** cada comunidad con su propia población (D-080).
+- **Gasto del LLM** frente al tope, siempre visible arriba. Solo modo claro (D-081), con diseño para móvil.
+- Colores, marcas y accesibilidad siguen la guía de visualización: paleta validada, escala secuencial de un solo tono, texto en tinta y no en el color de la serie, tabla con valores escritos.
 
 ## Pruebas (con el paquete, en una copia limpia del repositorio sin `data/`)
 
@@ -45,8 +57,7 @@ Capturas en `reports/fase_14/`:
 4. mapa coloreado;
 5. comunidad;
 6. evento;
-7. modo oscuro;
-8. móvil.
+7. móvil.
 
 En el contenedor de trabajo las teselas de OpenStreetMap están bloqueadas, por eso las capturas muestran solo los límites del INE. En un equipo con internet se ve el mapa de fondo.
 
