@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v1",
+  "prompt_sha256": "fdf90794003d185beb2898461229b348e1bd5b63684ae27a9e2bba6ce1652f50",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Sira Rego es una figura pública de perfil medio, por lo que una parte muy amplia de la población responde No sabe; entre quienes opinan, la valoración se reparte de forma parecida entre grupos, con algo más de conocimiento y valoración positiva en los perfiles con estudios superiores.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.14,
+     0.24,
+     0.6,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.16,
+     0.24,
+     0.58,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.16,
+     0.25,
+     0.57,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.15,
+     0.25,
+     0.58,
+     0.02
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.16,
+     0.25,
+     0.57,
+     0.02
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.14,
+     0.24,
+     0.6,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.13,
+     0.21,
+     0.64,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.16,
+     0.26,
+     0.56,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.19,
+     0.3,
+     0.49,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.15,
+     0.24,
+     0.59,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.15,
+     0.25,
+     0.58,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.17,
+     0.27,
+     0.54,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.16,
+     0.24,
+     0.58,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.15,
+     0.23,
+     0.6,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.16,
+     0.24,
+     0.58,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.15,
+     0.24,
+     0.59,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.15,
+     0.24,
+     0.59,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.16,
+     0.25,
+     0.57,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.16,
+     0.24,
+     0.58,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.14,
+     0.23,
+     0.61,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.15,
+     0.24,
+     0.59,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.17,
+     0.26,
+     0.55,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.15,
+     0.24,
+     0.59,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.16,
+     0.25,
+     0.57,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.17,
+     0.27,
+     0.54,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.15,
+     0.24,
+     0.59,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.15,
+     0.23,
+     0.6,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.15,
+     0.23,
+     0.6,
+     0.02
+    ]
+   }
+  ],
+  "total": [
+   0.15,
+   0.25,
+   0.58,
+   0.02
+  ]
+ }
+}

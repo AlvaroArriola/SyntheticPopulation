@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v1",
+  "prompt_sha256": "fdf90794003d185beb2898461229b348e1bd5b63684ae27a9e2bba6ce1652f50",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Margarita Robles, ministra de Defensa, es una figura conocida con valoración moderada y una proporción alta de no sabe, que es habitual en valoraciones de cargos de la Administración central. Las diferencias por edad, sexo, estudios y comunidad son pequeñas, con algo más de no sabe entre quienes tienen menos estudios y mayor valoración positiva entre quienes tienen estudios superiores.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.2,
+     0.24,
+     0.42,
+     0.14
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.2,
+     0.26,
+     0.39,
+     0.15
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.2,
+     0.25,
+     0.39,
+     0.16
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.2,
+     0.23,
+     0.39,
+     0.18
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.21,
+     0.26,
+     0.38,
+     0.15
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.19,
+     0.24,
+     0.42,
+     0.15
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.2,
+     0.22,
+     0.42,
+     0.16
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.2,
+     0.25,
+     0.4,
+     0.15
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.2,
+     0.29,
+     0.36,
+     0.15
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.2,
+     0.24,
+     0.41,
+     0.15
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.21,
+     0.25,
+     0.38,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.19,
+     0.25,
+     0.4,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.2,
+     0.26,
+     0.38,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.2,
+     0.23,
+     0.41,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.19,
+     0.25,
+     0.39,
+     0.17
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.22,
+     0.24,
+     0.38,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.21,
+     0.24,
+     0.39,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.2,
+     0.24,
+     0.39,
+     0.17
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.2,
+     0.23,
+     0.41,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.21,
+     0.22,
+     0.41,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.2,
+     0.25,
+     0.39,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.2,
+     0.26,
+     0.38,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.21,
+     0.24,
+     0.4,
+     0.15
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.19,
+     0.26,
+     0.39,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.19,
+     0.25,
+     0.4,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.2,
+     0.25,
+     0.39,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.21,
+     0.22,
+     0.42,
+     0.15
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.21,
+     0.22,
+     0.42,
+     0.15
+    ]
+   }
+  ],
+  "total": [
+   0.2,
+   0.25,
+   0.4,
+   0.15
+  ]
+ }
+}

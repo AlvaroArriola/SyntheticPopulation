@@ -1,0 +1,242 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v1",
+  "prompt_sha256": "fdf90794003d185beb2898461229b348e1bd5b63684ae27a9e2bba6ce1652f50",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "El nivel de conocimiento de un dirigente político de primer nivel como Félix Bolaños crece con la edad y con el nivel de estudios, al estar más expuestas las personas mayores y con más formación a la información política, y varía según la comunidad por su mayor presencia mediática en Madrid frente a territorios con menor cobertura. Las diferencias por sexo se mantienen moderadas.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.38,
+     0.59,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.52,
+     0.45,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.62,
+     0.35,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.63,
+     0.34,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.6,
+     0.37,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.5,
+     0.47,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.44,
+     0.53,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.58,
+     0.39,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.7,
+     0.27,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.5,
+     0.47,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.56,
+     0.41,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.55,
+     0.42,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.5,
+     0.47,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.45,
+     0.52,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.55,
+     0.42,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.55,
+     0.42,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.52,
+     0.45,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.55,
+     0.42,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.5,
+     0.47,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.52,
+     0.45,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.5,
+     0.47,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.72,
+     0.25,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.5,
+     0.47,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.58,
+     0.39,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.6,
+     0.37,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.56,
+     0.41,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.45,
+     0.52,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.45,
+     0.52,
+     0.03
+    ]
+   }
+  ],
+  "total": [
+   0.55,
+   0.42,
+   0.03
+  ]
+ }
+}

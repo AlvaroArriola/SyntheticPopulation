@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v1",
+  "prompt_sha256": "fdf90794003d185beb2898461229b348e1bd5b63684ae27a9e2bba6ce1652f50",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Las personas mayores y con menor nivel educativo suelen apoyar más el refuerzo fronterizo, mientras que los jóvenes y los universitarios se muestran más reticentes; el sexo apenas introduce diferencias. Las comunidades con mayor exposición a la llegada de personas migrantes por vía marítima o terrestre, como Ceuta, Melilla y Canarias, tienden a mostrar más apoyo, y las más urbanas y plurales, como Cataluña o el País Vasco, algo menos.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.45,
+     0.42,
+     0.1,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.52,
+     0.36,
+     0.09,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.58,
+     0.31,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.62,
+     0.27,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.57,
+     0.31,
+     0.09,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.53,
+     0.35,
+     0.09,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.62,
+     0.26,
+     0.09,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.55,
+     0.34,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.45,
+     0.44,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.58,
+     0.3,
+     0.09,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.6,
+     0.29,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.5,
+     0.37,
+     0.1,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.55,
+     0.34,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.6,
+     0.29,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.52,
+     0.36,
+     0.09,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.6,
+     0.29,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.62,
+     0.27,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.48,
+     0.41,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.57,
+     0.31,
+     0.09,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.6,
+     0.29,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.53,
+     0.35,
+     0.09,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.54,
+     0.36,
+     0.07,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.61,
+     0.28,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.45,
+     0.44,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.42,
+     0.47,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.56,
+     0.33,
+     0.08,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.65,
+     0.25,
+     0.07,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.64,
+     0.26,
+     0.07,
+     0.03
+    ]
+   }
+  ],
+  "total": [
+   0.55,
+   0.33,
+   0.09,
+   0.03
+  ]
+ }
+}

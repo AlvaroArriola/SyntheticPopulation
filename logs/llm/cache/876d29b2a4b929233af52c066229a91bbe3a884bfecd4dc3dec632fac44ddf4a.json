@@ -1,0 +1,242 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v1",
+  "prompt_sha256": "fdf90794003d185beb2898461229b348e1bd5b63684ae27a9e2bba6ce1652f50",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Feijóo es el líder del principal partido de la oposición desde 2022 y tiene un nivel de reconocimiento muy alto en toda la población, por lo que casi todos los grupos superan el 90 % de «conoce». Las diferencias son menores y se concentran en la menor exposición política de los jóvenes y de las personas con estudios básicos, y en comunidades donde el PP tiene menos peso electoral, como el País Vasco o Cataluña.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.92,
+     0.05,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.94,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.96,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.96,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.95,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.95,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.94,
+     0.03,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.95,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.97,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.95,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.95,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.95,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.95,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.94,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.95,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.96,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.94,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.92,
+     0.05,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.94,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.95,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.98,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.97,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.95,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.94,
+     0.04,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.91,
+     0.06,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.95,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.92,
+     0.05,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.92,
+     0.05,
+     0.03
+    ]
+   }
+  ],
+  "total": [
+   0.95,
+   0.03,
+   0.02
+  ]
+ }
+}

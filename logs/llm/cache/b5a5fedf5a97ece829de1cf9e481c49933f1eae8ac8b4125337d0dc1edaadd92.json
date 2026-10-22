@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "pregunta_nueva@v1",
+  "prompt_sha256": "7fed1634087186de61b9af35a32748e647155c7077b8ec610429fddb0f50c087",
+  "tarea": "pregunta_nueva"
+ },
+ "salida": {
+  "justificacion": "Sin referencias directas; me baso en preguntas del CIS sobre crisis con Marruecos (Ceuta 2021), donde la percepción de injerencias externas era mayoritaria entre quienes opinan pero con un N.S. elevado por desconocimiento, mayor en mayores, mujeres y menos estudios.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.44,
+     0.22,
+     0.32,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.47,
+     0.2,
+     0.31,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.46,
+     0.19,
+     0.33,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.39,
+     0.19,
+     0.39,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.49,
+     0.21,
+     0.28,
+     0.02
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.39,
+     0.19,
+     0.4,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.36,
+     0.19,
+     0.42,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.45,
+     0.21,
+     0.32,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.52,
+     0.21,
+     0.25,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.46,
+     0.2,
+     0.32,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.43,
+     0.2,
+     0.35,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.43,
+     0.2,
+     0.35,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.43,
+     0.2,
+     0.35,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.47,
+     0.19,
+     0.32,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.43,
+     0.2,
+     0.35,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.42,
+     0.2,
+     0.36,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.42,
+     0.2,
+     0.36,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.42,
+     0.21,
+     0.35,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.44,
+     0.2,
+     0.34,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.42,
+     0.19,
+     0.37,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.41,
+     0.2,
+     0.37,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.47,
+     0.2,
+     0.31,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.45,
+     0.2,
+     0.33,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.43,
+     0.21,
+     0.34,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.42,
+     0.22,
+     0.34,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.43,
+     0.2,
+     0.35,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.55,
+     0.18,
+     0.25,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.55,
+     0.18,
+     0.25,
+     0.02
+    ]
+   }
+  ],
+  "total": [
+   0.44,
+   0.2,
+   0.34,
+   0.02
+  ]
+ }
+}
