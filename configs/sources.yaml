@@ -275,6 +275,20 @@ fuentes:
   verificar:
   - microdatos en abierto (CC BY 4.0) en la página de cada estudio; descargar con pausas (el buscador tiene protección
     contra robots)
+- id: ecepov2021
+  nombre: Encuesta de Características Esenciales de la Población y las Viviendas (ECEPOV) 2021
+  organismo: INE
+  capa: C
+  tipo: microdatos
+  url_oficial: https://www.ine.es/ftp/microdatos/ecepov/datos_2021.zip
+  edicion: '2021'
+  universo: personas en viviendas familiares
+  unidad: persona
+  nivel_geografico: CCAA
+  prioridad: P3
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  verificar: []
+  descarga: automatica
 - id: ess
   nombre: European Social Survey, ronda 11 (y 12 si está publicada)
   organismo: ESS ERIC
