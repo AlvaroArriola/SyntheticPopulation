@@ -52,7 +52,7 @@ En el contenedor de trabajo las teselas de OpenStreetMap están bloqueadas, por 
 
 ## Paquete portable frente al modo completo
 
-La comparación está en `reports/fase_13/comparacion_paquete.json`; ver D-076.
+En 40 preguntas del banco: TVD media 0,0000, máxima 0,0002 y la misma confianza (`reports/fase_13/comparacion_paquete.json`, D-076).
 
 ## Para la revisión humana (G14.4)
 

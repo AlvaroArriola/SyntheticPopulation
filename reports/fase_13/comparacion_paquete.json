@@ -1,0 +1,210 @@
+{
+ "run_id": "2026-01-01_ES_1000000_s1",
+ "preguntas": 40,
+ "tvd_media": 0.0,
+ "tvd_p90": 0.0,
+ "tvd_max": 0.0002,
+ "dif_confianza_media_abs": 0.0,
+ "filas": [
+  {
+   "id": "CMP-000",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-001",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-002",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-003",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-004",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-005",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-006",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-007",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-008",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-009",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-010",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-011",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-012",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-013",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-014",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-015",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-016",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-017",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-018",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-019",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-020",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-021",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-022",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-023",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-024",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-025",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-026",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-027",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-028",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-029",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-030",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-031",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-032",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-033",
+   "tvd": 9.549999999997278e-05,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-034",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-035",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-036",
+   "tvd": 0.00024049999999998075,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-037",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-038",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  },
+  {
+   "id": "CMP-039",
+   "tvd": 0.0,
+   "dif_confianza": 0.0
+  }
+ ]
+}

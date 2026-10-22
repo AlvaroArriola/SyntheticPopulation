@@ -18,7 +18,7 @@
 | `GET /api/etiquetas`, `/api/modo`, `/api/llm`, `/api/ficha/{run}` | Etiquetas, modo (completo o paquete), gasto del LLM y ficha de datos |
 
 - **Predicción por territorio (D-075):** sobre una población de una comunidad o una provincia, el rastrillo usa la composición del CIS de ese territorio. La incertidumbre y la confianza del total salen de lo que se sabe de ese territorio, así que las provincias pequeñas tienen intervalos más anchos.
-- **Paquete portable (D-076):** `sinpop serve --paquete dist/paquete` funciona sin microdatos (`docs/guias/uso.md` §7).
+- **Paquete portable (D-076):** `sinpop serve --paquete dist/paquete` funciona sin microdatos (`docs/guias/uso.md` §7). Probado en una copia limpia del repositorio sin `data/`. Frente al modo completo, en 40 preguntas del banco: TVD media 0,0000, máxima 0,0002 y la misma confianza (`reports/fase_13/comparacion_paquete.json`).
 
 ## Puerta
 
