@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import gzip
 import json
+import multiprocessing
 import shutil
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -120,9 +121,12 @@ def modelos(destino: Path, procesos: int = 2) -> int:
     filas = B.preguntas().to_dicts()
     trozos = [filas[i :: procesos * 8] for i in range(procesos * 8)]
     out = []
-    with ProcessPoolExecutor(procesos) as ex:
-        for parte in ex.map(_lote, trozos):
+    # «spawn»: con «fork» los hilos de Polars del proceso padre dejan bloqueados a los hijos
+    contexto = multiprocessing.get_context("spawn")
+    with ProcessPoolExecutor(procesos, mp_context=contexto) as ex:
+        for i, parte in enumerate(ex.map(_lote, trozos), 1):
             out += parte
+            print(f"lote {i}/{len(trozos)}: {len(out)} preguntas", flush=True)
     out.sort(key=lambda x: x["id"])
     with gzip.open(destino / "modelos.jsonl.gz", "wt", encoding="utf-8") as f:
         for x in out:
