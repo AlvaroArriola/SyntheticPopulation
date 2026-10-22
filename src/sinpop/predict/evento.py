@@ -367,8 +367,9 @@ def predecir_pregunta(
                 for o, p in zip(q.opciones, antes, strict=True)
             ],
             "metodo": None,
-            "motivo": "el efecto de un evento sobre una pregunta cualquiera necesita el modelo "
-            "de lenguaje (D-071, D-073); configs/llm.yaml está desactivado",
+            "motivo": "Para estimar el cambio que provoca el evento hace falta el modelo de "
+            "lenguaje, que no está disponible ahora (desactivado o sin clave en esta sesión). Se "
+            "muestra solo la situación antes del evento (D-071, D-073).",
         }
     pet = A.peticion_evento(
         q.id,

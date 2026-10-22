@@ -1,0 +1,32 @@
+{
+ "pantallas": {
+  "pregunta_es": {
+   "barras": 7,
+   "barras_sin_intervalo": 0,
+   "confianza_total": true,
+   "celdas": 28,
+   "celdas_sin_confianza": 0,
+   "aviso": true
+  },
+  "mapa_coloreado": true,
+  "comunidad_lista": true,
+  "pregunta_comunidad": {
+   "barras": 7,
+   "barras_sin_intervalo": 0,
+   "confianza_total": true,
+   "celdas": 28,
+   "celdas_sin_confianza": 0,
+   "aviso": true
+  },
+  "evento": {
+   "filas": 7,
+   "aviso": true
+  }
+ },
+ "errores_js": [],
+ "accesibilidad": [],
+ "movil_sin_scroll_horizontal": true,
+ "g14_1": true,
+ "g14_2": true,
+ "g14_3": true
+}

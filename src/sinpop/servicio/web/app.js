@@ -164,10 +164,10 @@ function pintarTamanos() {
   const p = poblacionActual();
   const e = $("#estado-poblacion");
   if (p?.lista) {
-    e.innerHTML = `<span class="indicador" style="background:var(--bueno)"></span> Lista para preguntar · ${p.tamano.toLocaleString("es-ES")} personas sintéticas`;
+    e.innerHTML = `<span class="indicador" style="background:var(--bueno)"></span><span>Lista para preguntar · ${p.tamano.toLocaleString("es-ES")} personas sintéticas</span>`;
   } else {
     const minutos = estado.tamano >= 500_000 ? "30-60 minutos" : estado.tamano >= 100_000 ? "unos 10 minutos" : "unos minutos";
-    e.innerHTML = `<span class="indicador" style="background:var(--texto-3)"></span> ${p ? "Le faltan capas" : "Aún no generada"} · tarda ${minutos}`;
+    e.innerHTML = `<span class="indicador" style="background:var(--texto-3)"></span><span>${p ? "Le faltan capas" : "Aún no generada"} · tarda ${minutos}</span>`;
     const b = document.createElement("button");
     b.className = "secundario";
     b.textContent = "Generar población";
@@ -352,7 +352,7 @@ function tablaSubgrupos(r, dim, opciones) {
     }).join("");
     return `<tr><th scope="row">${escapar(nombreNivel(dim, nivel))}</th>${celdas}</tr>`;
   });
-  return `<div class="tabla-envoltorio"><table class="tabla-calor"><thead><tr><th></th>${cab}</tr></thead><tbody>${filas.join("")}</tbody></table></div>
+  return `<div class="tabla-envoltorio"><table class="tabla-calor"><thead><tr><th scope="col"><span class="oculto">Grupo</span></th>${cab}</tr></thead><tbody>${filas.join("")}</tbody></table></div>
     <p class="nota">Color más intenso, mayor proporción. Las celdas rayadas tienen confianza baja (menos del 50 %): pocos datos para ese grupo.</p>`;
 }
 
@@ -503,6 +503,9 @@ async function actualizarLLM() {
     $("#llm").textContent = r.activo ? `LLM ${f(r.gastado_eur)} € de ${f(r.tope_total_eur)} €` : "LLM desactivado";
   } catch (_) { /* informativo */ }
 }
+
+// gancho para las pruebas de extremo a extremo (tools/prueba_interfaz.py)
+window.sinpop = { elegirTerritorio, ponerNivel };
 
 // ------------------------------------------------------------------ arranque
 (async function iniciar() {

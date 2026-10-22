@@ -7,8 +7,10 @@
   --borde: #e2e0da;
   --texto: #0b0b0b;
   --texto-2: #52514e;
-  --texto-3: #7a7974;
+  --texto-3: #63625d;
   --acento: #2a78d6;
+  --boton: #256abf;
+  --boton-hover: #1c5cab;
   --acento-fuerte: #1c5cab;
   --acento-suave: #cde2fb;
   --serie: #2a78d6;
@@ -109,7 +111,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   border: 0; background: transparent; padding: 7px 14px; border-radius: 9px; cursor: pointer;
   color: var(--texto-2); font-weight: 500;
 }
-.niveles button[aria-checked="true"] { background: var(--acento); color: #fff; }
+.niveles button[aria-checked="true"] { background: var(--boton); color: #fff; }
 .ir-canarias {
   position: absolute; left: 16px; bottom: 28px; z-index: 500; border: 1px solid var(--borde);
   background: var(--superficie); border-radius: 10px; padding: 6px 12px; cursor: pointer;
@@ -124,7 +126,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .leyenda-mapa .escala i { flex: 1; height: 10px; }
 .leyenda-mapa .escala i + i { margin-left: 2px; }
 .leyenda-mapa .extremos { display: flex; justify-content: space-between; color: var(--texto-3); }
-.leyenda-mapa button { margin-top: 6px; border: 0; background: none; color: var(--acento); cursor: pointer; padding: 0; }
+.leyenda-mapa button { margin-top: 6px; border: 0; background: none; color: var(--boton); cursor: pointer; padding: 0; }
 .leaflet-container { font: inherit; }
 .leaflet-tooltip.etiqueta-territorio {
   background: var(--superficie); color: var(--texto); border: 1px solid var(--borde);
@@ -156,6 +158,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .tamanos button[aria-checked="true"] { border-color: var(--acento); background: var(--acento-suave); color: var(--acento-fuerte); }
 .tamanos button .punto { position: absolute; top: 5px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--bueno); }
 .estado-poblacion { margin-top: 10px; font-size: 13.5px; color: var(--texto-2); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.estado-poblacion > span:nth-child(2) { flex: 1; min-width: 0; }
 .estado-poblacion .indicador { width: 9px; height: 9px; border-radius: 50%; flex: none; }
 .secundario {
   border: 1px solid var(--acento); color: var(--acento-fuerte); background: transparent; border-radius: 10px;
@@ -182,7 +185,7 @@ textarea:focus, input:focus, select:focus { border-color: var(--acento); outline
 .opcion button { border: 0; background: transparent; cursor: pointer; color: var(--texto-3); width: 20px; height: 20px; border-radius: 50%; line-height: 1; }
 .opcion button:hover { background: var(--borde); color: var(--texto); }
 .sugerencias { margin: -4px 0 12px; border: 1px solid var(--borde); border-radius: 12px; overflow: hidden; }
-.sugerencias-titulo { margin: 0; padding: 8px 12px; font-size: 12px; color: var(--texto-3); background: var(--superficie-2); text-transform: uppercase; letter-spacing: 0.04em; }
+.sugerencias-titulo { margin: 0; padding: 8px 12px; font-size: 12px; color: var(--texto-2); background: var(--superficie-2); text-transform: uppercase; letter-spacing: 0.04em; }
 .sugerencias ul { list-style: none; margin: 0; padding: 0; max-height: 220px; overflow: auto; }
 .sugerencias li button {
   display: block; width: 100%; text-align: left; border: 0; border-top: 1px solid var(--borde);
@@ -191,10 +194,10 @@ textarea:focus, input:focus, select:focus { border-color: var(--acento); outline
 .sugerencias li button:hover { background: var(--superficie-2); }
 .sugerencias small { display: block; color: var(--texto-3); font-size: 12px; margin-top: 2px; }
 .primario {
-  width: 100%; border: 0; border-radius: 12px; padding: 12px; background: var(--acento); color: #fff;
+  width: 100%; border: 0; border-radius: 12px; padding: 12px; background: var(--boton); color: #fff;
   font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.15s;
 }
-.primario:hover { background: var(--acento-fuerte); }
+.primario:hover { background: var(--boton-hover); }
 .primario:disabled { opacity: 0.55; cursor: progress; }
 .trabajo { min-height: 20px; margin: 10px 0 0; font-size: 13px; color: var(--texto-2); display: flex; gap: 8px; align-items: center; }
 .girando { width: 14px; height: 14px; border: 2px solid var(--acento-suave); border-top-color: var(--acento); border-radius: 50%; animation: giro 0.8s linear infinite; flex: none; }
@@ -252,4 +255,8 @@ textarea:focus, input:focus, select:focus { border-color: var(--acento); outline
   body { display: block; }
   .tamanos { grid-template-columns: repeat(3, 1fr); }
   .marca p { display: none; }
+  .niveles { left: 56px; right: 12px; transform: none; top: 10px; }
+  .niveles button { flex: 1; padding: 7px 6px; }
 }
+
+.oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
