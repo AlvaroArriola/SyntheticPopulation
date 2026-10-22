@@ -426,7 +426,7 @@ function csvDato(d) {
   const add = (g, dist) => d.categorias.forEach((c) => filas.push([g, d.etiquetas[c] ?? c, dist[c].p, dist[c].ic95[0], dist[c].ic95[1]]));
   add("total", d.total);
   Object.entries(d.por_subgrupo).forEach(([k, v]) => add(k, v));
-  return filas.map((f) => f.map((x) => `"${String(x).replaceAll('"', '""')}"`).join(";")).join("\n");
+  return aCsv(filas);
 }
 
 $("#preguntar").addEventListener("click", async () => {
@@ -690,6 +690,11 @@ async function compararComunidades(enunciado, opciones) {
 }
 
 // ------------------------------------------------------------------ exportar
+// CSV para Excel en español: separador «;» y decimales con coma (el JSON queda para programas)
+function aCsv(filas) {
+  const celda = (x) => (typeof x === "number" ? String(x).replace(".", ",") : `"${String(x).replaceAll('"', '""')}"`);
+  return filas.map((f) => f.map(celda).join(";")).join("\n");
+}
 function descargar(nombre, contenido, tipo) {
   const a = document.createElement("a");
   a.href = URL.createObjectURL(contenido instanceof Blob ? contenido : new Blob(["\ufeff" + contenido], { type: `${tipo};charset=utf-8` }));
@@ -704,7 +709,7 @@ function csvPregunta(r) {
   add("total", r.total, r.confianza.total);
   if (r.medicion_cis) add("como_lo_mediria_el_cis", r.medicion_cis, "");
   Object.entries(r.por_subgrupo).forEach(([k, v]) => add(k, v, r.confianza.por_subgrupo[k]));
-  return filas.map((f) => f.map((x) => `"${String(x).replaceAll('"', '""')}"`).join(";")).join("\n");
+  return aCsv(filas);
 }
 
 async function informePdf(tipo, datos, extra = {}) {
@@ -759,7 +764,7 @@ function pintarMapaResultado() {
   ley.innerHTML = `<b>${escapar(r.opciones[estado.opcionMapa])}</b> por comunidad${r.comparacion ? " (población propia)" : ""}
     <div class="escala">${SEQ.map((v) => `<i style="background:var(${v})"></i>`).join("")}</div>
     <div class="extremos"><span>${pct(rangoMapa[0])}</span><span>${pct(rangoMapa[1])}</span></div>
-    <div style="color:var(--texto-3);margin-top:4px">Más transparente: confianza baja.</div>
+    ${r.tipo === "dato" ? "" : '<div style="color:var(--texto-3);margin-top:4px">Más transparente: confianza baja.</div>'}
     <button type="button" id="quitar-mapa">Quitar coloreado</button>`;
   $("#quitar-mapa").addEventListener("click", () => { estado.opcionMapa = null; const s = $("#opcion-mapa"); if (s) s.value = ""; pintarMapaResultado(); });
 }
