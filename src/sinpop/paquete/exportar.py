@@ -53,13 +53,30 @@ COLUMNAS_MARCO = [
     "peso_es",
     "peso_cis",
 ]
+# todos los desgloses de la interfaz (estimador.SUBGRUPOS_AMPLIADOS, D-081)
 SUBGRUPOS_N = [
     "edad_4",
     "sexo",
     "estudios_3",
+    "actividad_3",
+    "tamano_municipio_cis",
     "ccaa",
     "provincia",
+    "ideologia_bloque",
     "recuerdo_voto_generales_familia",
+    "religiosidad",
+    "clase_subjetiva",
+]
+# campos de la auditoría de F7 que se publican: cifras agregadas frente a la oficial
+CAMPOS_AUDITORIA = [
+    "grupo",
+    "nombre",
+    "proporcion_sintetica",
+    "proporcion_oficial",
+    "ratio",
+    "fuente",
+    "semaforo",
+    "motivo",
 ]
 
 
@@ -155,6 +172,17 @@ def poblaciones(destino: Path) -> list[str]:
         (destino / "atributos" / f"{rid}.json").write_text(
             json.dumps(AT.todas(rid), ensure_ascii=False, separators=(",", ":")), "utf-8"
         )
+        aud = REPORTS_DIR / "fase_07" / f"{rid}_auditoria.json"
+        if not aud.exists():  # poblaciones auditadas fuera de F7 (`sinpop audit`)
+            aud = REPORTS_DIR / rid / "auditoria.json"
+        if aud.exists():
+            (destino / "auditoria").mkdir(exist_ok=True)
+            filas = [
+                {c: x.get(c) for c in CAMPOS_AUDITORIA} for x in json.loads(aud.read_text("utf-8"))
+            ]
+            (destino / "auditoria" / f"{rid}.json").write_text(
+                json.dumps(filas, ensure_ascii=False, indent=1), "utf-8"
+            )
         f = REPORTS_DIR / rid / "ficha.md"
         if f.exists():
             shutil.copy(f, destino / "fichas" / f"{rid}.md")

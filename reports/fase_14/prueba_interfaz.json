@@ -4,17 +4,19 @@
    "barras": 7,
    "barras_sin_intervalo": 0,
    "confianza_total": true,
-   "celdas": 28,
+   "celdas": 77,
    "celdas_sin_confianza": 0,
    "aviso": true
   },
   "mapa_coloreado": true,
+  "grupos_destacados": 9,
+  "fidelidad": true,
   "comunidad_lista": true,
   "pregunta_comunidad": {
    "barras": 7,
    "barras_sin_intervalo": 0,
    "confianza_total": true,
-   "celdas": 28,
+   "celdas": 70,
    "celdas_sin_confianza": 0,
    "aviso": true
   },

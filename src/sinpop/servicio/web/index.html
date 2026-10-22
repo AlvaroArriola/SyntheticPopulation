@@ -23,9 +23,6 @@
     </div>
     <div class="cabecera-acciones">
       <span class="pildora" id="llm" title="Gasto acumulado del modelo de lenguaje frente al tope del proyecto">LLM —</span>
-      <button class="icono" id="tema" type="button" aria-label="Cambiar entre modo claro y oscuro" title="Modo claro u oscuro">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
-      </button>
     </div>
   </header>
 
@@ -45,6 +42,16 @@
     </section>
 
     <aside class="panel" aria-label="Consulta">
+      <details class="tarjeta como-funciona" id="como-funciona" open>
+        <summary>¿Cómo funciona?</summary>
+        <ol>
+          <li><b>Elige dónde.</b> España entera, o pulsa una comunidad o una provincia en el mapa.</li>
+          <li><b>Elige cuántas personas sintéticas.</b> Si dudas, abre «¿Qué tamaño necesito?».</li>
+          <li><b>Escribe una pregunta</b> y sus respuestas posibles. Verás el resultado con su margen de error y su confianza, por regiones y por grupos (edad, ideología…).</li>
+        </ol>
+        <p>Si lo que preguntas ya lo mide el INE (salud, empleo, vivienda…), te ofrecemos el <b>dato oficial</b> directamente. Todo son resultados simulados: describen grupos, no a personas reales.</p>
+      </details>
+
       <section class="tarjeta" aria-labelledby="t-territorio">
         <div class="paso"><span>1</span><h2 id="t-territorio">Territorio</h2></div>
         <p class="territorio" id="territorio-nombre">España</p>
@@ -55,6 +62,10 @@
         <div class="paso"><span>2</span><h2 id="t-tamano">Tamaño de la población</h2></div>
         <div class="tamanos" role="radiogroup" aria-label="Número de personas sintéticas" id="tamanos"></div>
         <div class="estado-poblacion" id="estado-poblacion" aria-live="polite"></div>
+        <details class="fidelidad" id="fidelidad" hidden>
+          <summary id="fidelidad-resumen">¿Se parece a la población real?</summary>
+          <div id="fidelidad-cuerpo"></div>
+        </details>
         <details class="asistente" id="asistente">
           <summary>¿Qué tamaño necesito?</summary>
           <div class="fila">
@@ -89,11 +100,13 @@
         </label>
         <div class="sugerencias" id="sugerencias" hidden>
           <div id="grupo-atributos" hidden>
-            <p class="sugerencias-titulo">La población ya lo sabe · datos del INE y otras fuentes</p>
+            <p class="sugerencias-titulo">Dato oficial disponible</p>
+            <p class="sugerencias-ayuda">Tu pregunta coincide con algo que las estadísticas oficiales ya miden. Ábrelo para verlo directamente, sin estimar.</p>
             <ul id="lista-atributos"></ul>
           </div>
           <div id="grupo-cis" hidden>
-            <p class="sugerencias-titulo">Preguntas parecidas del CIS</p>
+            <p class="sugerencias-titulo">Preguntas parecidas que ya hizo el CIS</p>
+            <p class="sugerencias-ayuda">Pulsa una para copiar su enunciado y sus respuestas.</p>
             <ul id="lista-sugerencias"></ul>
           </div>
         </div>

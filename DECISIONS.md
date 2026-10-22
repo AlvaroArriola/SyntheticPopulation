@@ -1806,3 +1806,38 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - recuadro de Canarias con las islas;
   - límites sin huecos vacíos: las zonas sin secciones censales, como los territorios mancomunados, se rellenan con el territorio que las rodea, y solo se conservan los enclaves reales;
   - nombres naturales («Las Palmas»).
+
+## D-081 · Subgrupos ampliados, desglose por regiones, interfaz más clara y fidelidad visible (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F14 (revisión de la persona responsable).
+- **Estado:** pedido por la persona responsable:
+  - «me falta la división también por subgrupos… a elección del modelo o del usuario»;
+  - «que una pregunta a nivel nacional pueda desglosarse por región»;
+  - «lo más intuitiva posible»; «la estética oscura no me gusta»;
+  - «que la población sea lo más fehaciente a la real en todo momento».
+  
+  El diseño es del agente.
+- **Subgrupos ampliados** (`estimador.SUBGRUPOS_AMPLIADOS`): edad, sexo, estudios, situación laboral, tamaño del municipio, comunidad, provincia, ideología (bloques del CIS: 1-4, 5-6 y 7-10), recuerdo de voto, religiosidad y clase social autopercibida. Las predicciones de la interfaz los piden todos. La evaluación (F9-F11) sigue con `SUBGRUPOS`, así que sus resultados no cambian.
+  - **Ideología con el modelo de voto:** igual que el recuerdo de voto, el desglose por ideología usa el modelo que incluye voto e ideología. Sin él, los grupos ideológicos solo se distinguirían por su perfil (D-069 limita esos predictores a los desgloses). Comprobado con Q001: «Mala» sale con un 32 % en la izquierda y un 41 % en la derecha.
+  - **Confianza por grupo:** sale de los encuestados del CIS de ese grupo. El paquete guarda ahora los recuentos de todos los desgloses (`exportar.SUBGRUPOS_N`); si no, el modelo de confianza usaría el total y sería demasiado optimista. El modelo de F10 se ajustó con los desgloses de `SUBGRUPOS`. Aplicarlo a los nuevos es una extrapolación, pero sus señales (encuestados del grupo, desacuerdo entre análogas…) no dependen de qué desglose sea.
+- **A elección del modelo o de quien usa la interfaz:**
+  - La interfaz ordena los grupos por cuánto separan las respuestas: mayor diferencia entre grupos con confianza de al menos el 50 %, sin NS/NC.
+  - Marca con ★ los tres que más separan y abre el primero.
+  - Lo resume en una frase («Lo que más cambia es…»).
+  - Se puede elegir cualquier otro grupo.
+  - El PDF incluye los cuatro que más separan.
+- **Por regiones:** toda pregunta sobre España muestra un ranking por comunidades o por provincias de la respuesta principal, que se puede cambiar. Cada fila lleva su intervalo y su confianza, y el mapa se colorea solo con ese nivel. Sobre una comunidad, el ranking es por provincias. Se mantiene la opción de recalcular cada comunidad con su propia población (D-080).
+- **Más clara:**
+  - guía «¿Cómo funciona?» de tres pasos;
+  - «Dato oficial disponible» en lugar de «La población ya lo sabe», con una línea de explicación y las fuentes con su sigla («ECV (INE), Encuesta de Salud (INE)»);
+  - nombres naturales de comunidades y provincias;
+  - atribución del mapa sin el prefijo de Leaflet; la de OpenStreetMap es obligatoria por su licencia;
+  - recuadro de Canarias que se reencuadra al cambiar de tamaño.
+- **Solo modo claro:** se quitan el tema oscuro y su botón.
+- **Fidelidad visible:**
+  - Cada población muestra «¿Se parece a la población real?».
+  - Contiene los grupos vigilados de la auditoría de F7 (cifras agregadas frente a la oficial, con su fuente) y el estado del semáforo.
+  - En España se reproducen 26 de las 27 cifras con una diferencia menor del 10 %.
+  - La que no: personas que nunca usan internet, un 9,2 % frente al 8,3 % de la TIC-H, ya señalada en la ficha.
+  - El paquete lleva estas auditorías (`auditoria/<run_id>.json`). La de Teruel 10 000 se hizo con `sinpop audit`.

@@ -206,12 +206,14 @@ def _id_pregunta(enunciado: str, opciones: list[str]) -> str:
 def etiquetas_subgrupos() -> dict:
     """Nombres legibles de los códigos de los subgrupos, leídos de la configuración."""
     from sinpop.config import load_config
+    from sinpop.predict import estimador as E
+    from sinpop.servicio.mapa import nombre_natural
 
     ter = load_config("territories.yaml")
     par = load_config("partidos.yaml")
     return {
-        "ccaa": {c.codigo: c.nombre for c in ter.ccaa},  # type: ignore[attr-defined]
-        "provincia": {c.codigo: c.nombre for c in ter.provincias},  # type: ignore[attr-defined]
+        "ccaa": {c.codigo: nombre_natural(c.nombre) for c in ter.ccaa},  # type: ignore[attr-defined]
+        "provincia": {c.codigo: nombre_natural(c.nombre) for c in ter.provincias},  # type: ignore[attr-defined]
         "recuerdo_voto_generales_familia": {f.id: f.nombre for f in par.familias}  # type: ignore[attr-defined]
         | dict(SITUACIONES_VOTO),
         "sexo": {"hombre": "Hombres", "mujer": "Mujeres"},
@@ -220,13 +222,66 @@ def etiquetas_subgrupos() -> dict:
             "secundaria_2a_etapa": "Secundaria 2.ª etapa",
             "superior": "Superior",
         },
+        "actividad_3": {"ocupado": "Trabajan", "parado": "En paro", "inactivo": "Inactivos"},
+        "tamano_municipio_cis": {
+            "hasta_2000": "Hasta 2.000 hab.",
+            "de_2001_a_10000": "2.001 a 10.000 hab.",
+            "de_10001_a_50000": "10.001 a 50.000 hab.",
+            "de_50001_a_100000": "50.001 a 100.000 hab.",
+            "mas_de_100000": "Más de 100.000 hab.",
+        },
+        # autoubicación 1-10 del CIS: 1-4 izquierda, 5-6 centro, 7-10 derecha (bloque_cis)
+        "ideologia_bloque": {
+            "izquierda": "Izquierda (1-4)",
+            "centro": "Centro (5-6)",
+            "derecha": "Derecha (7-10)",
+            "NS_NC": "No se ubica",
+        },
+        "religiosidad": {
+            "catolico_practicante": "Católicos practicantes",
+            "catolico_no_practicante": "Católicos no practicantes",
+            "otra_religion": "Otra religión",
+            "agnostico": "Agnósticos",
+            "indiferente": "Indiferentes",
+            "ateo": "Ateos",
+            "NC": "No contesta",
+        },
+        "clase_subjetiva": {
+            "alta": "Alta",
+            "media_alta": "Media alta",
+            "media": "Media",
+            "media_baja": "Media baja",
+            "baja": "Baja",
+            "obrera": "Obrera o trabajadora",
+            "no_cree_clases": "No cree en las clases",
+            "otras": "Otras",
+            "NS": "No sabe",
+            "NC": "No contesta",
+        },
         "dimensiones": {
             "edad_4": "Edad",
             "sexo": "Sexo",
             "estudios_3": "Estudios",
+            "actividad_3": "Situación laboral",
+            "tamano_municipio_cis": "Tamaño del municipio",
             "ccaa": "Comunidad",
+            "provincia": "Provincia",
+            "ideologia_bloque": "Ideología",
             "recuerdo_voto_generales_familia": "Recuerdo de voto 2023",
+            "religiosidad": "Religiosidad",
+            "clase_subjetiva": "Clase social (autopercibida)",
         },
+        "grupos_dimensiones": {
+            "Perfil": ["edad_4", "sexo", "estudios_3", "actividad_3", "tamano_municipio_cis"],
+            "Territorio": ["ccaa", "provincia"],
+            "Valores y política": [
+                "ideologia_bloque",
+                "recuerdo_voto_generales_familia",
+                "religiosidad",
+                "clase_subjetiva",
+            ],
+        },
+        "subgrupos_ampliados": E.SUBGRUPOS_AMPLIADOS,
     }
 
 
@@ -415,6 +470,34 @@ def crear_app():
         if detalle not in T.DETALLES or not 0.001 <= margen <= 0.2:
             raise HTTPException(422, "detalle o margen fuera de rango")
         return T.recomendar(territorio, margen, detalle, TAMANOS)
+
+    @app.get("/api/auditoria/{rid}")
+    def auditoria(rid: str):
+        """¿Se parece a la población real? Auditoría de F7 (grupos vigilados frente a la cifra
+        oficial) de la población, si está auditada."""
+        from sinpop import REPORTS_DIR
+        from sinpop import paquete as PK
+
+        if PK.activo():
+            ruta = PK.ruta("auditoria", f"{rid}.json")
+        else:
+            ruta = REPORTS_DIR / "fase_07" / f"{rid}_auditoria.json"
+            if not ruta.exists():
+                ruta = REPORTS_DIR / rid / "auditoria.json"
+        if not ruta.exists():
+            raise HTTPException(404, "población sin auditoría")
+        filas = json.loads(ruta.read_text("utf-8"))
+        campos = (
+            "grupo",
+            "nombre",
+            "proporcion_sintetica",
+            "proporcion_oficial",
+            "ratio",
+            "fuente",
+            "semaforo",
+            "motivo",
+        )
+        return {"run_id": rid, "grupos": [{c: f.get(c) for c in campos} for f in filas]}
 
     @app.get("/api/etiquetas")
     def etiquetas():

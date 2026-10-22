@@ -32,7 +32,11 @@ DESTINO = Path(__file__).parent / "web" / "territorios.geojson"
 
 def nombre_natural(n: str) -> str:
     """«Palmas, Las» → «Las Palmas»: los nombres del INE llevan el artículo pospuesto."""
-    m = re.fullmatch(r"(.+), (La|Las|El|Los|Les|L'|A|O|As|Os|Illes|Comunidad de|Comunitat)", n)
+    m = re.fullmatch(
+        r"(.+), (La|Las|El|Los|Les|L'|A|O|As|Os|Illes|Comunidad de|Comunidad Foral de|Comunitat|"
+        r"Región de|Principado de|Ciudad Autónoma de)",
+        n,
+    )
     if not m:
         return n
     sep = "" if m.group(2).endswith("'") else " "

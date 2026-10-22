@@ -26,6 +26,7 @@ const estado = {
   vista: "total",
   dimension: null,
   opcionMapa: null,
+  nivelMapa: "CCAA",
 };
 
 // ------------------------------------------------------------------ utilidades
@@ -53,27 +54,14 @@ function mostrarTooltip(ev, html) {
 }
 const ocultarTooltip = () => { tooltip.hidden = true; };
 
-// ------------------------------------------------------------------ tema
-function aplicarTema(t) {
-  if (t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme;
-  try { t ? localStorage.setItem("tema", t) : localStorage.removeItem("tema"); } catch (_) { /* sin almacenamiento */ }
-  if (estado.resultado) pintarMapaResultado();
-}
-try { const t = localStorage.getItem("tema"); if (t) document.documentElement.dataset.theme = t; } catch (_) { /* sin almacenamiento */ }
-$("#tema").addEventListener("click", () => {
-  const oscuro = document.documentElement.dataset.theme
-    ? document.documentElement.dataset.theme === "dark"
-    : matchMedia("(prefers-color-scheme: dark)").matches;
-  aplicarTema(oscuro ? "light" : "dark");
-});
-
 // ------------------------------------------------------------------ mapa
 const mapa = L.map("mapa", { zoomControl: true, attributionControl: true, minZoom: 4 }).setView([40.2, -3.6], 6);
 const TESELAS = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 L.tileLayer(TESELAS, {
   maxZoom: 12,
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · límites: INE',
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · Límites: INE',
 }).addTo(mapa);
+mapa.attributionControl.setPrefix(false);
 // recuadro de Canarias: un segundo mapa fijo, con las islas en su sitio y las mismas capas
 const mapaCanarias = L.map("mapa-canarias", {
   zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false,
@@ -133,7 +121,7 @@ function etiquetaTerritorio(f) {
 }
 
 function refrescarEstilos() {
-  for (const n of ["CCAA", "PROV"]) for (const c of todas(n)) c.setStyle(estado.opcionMapa != null && n === "CCAA" ? estiloMapa : estiloBase);
+  for (const n of ["CCAA", "PROV"]) for (const c of todas(n)) c.setStyle(estado.opcionMapa != null && n === estado.nivelMapa ? estiloMapa : estiloBase);
 }
 
 function ponerNivel(nivel) {
@@ -183,6 +171,7 @@ function pintarTamanos() {
   }
   const p = poblacionActual();
   const e = $("#estado-poblacion");
+  cargarFidelidad(p?.lista ? p.run_id : null);
   if (p?.lista) {
     e.innerHTML = `<span class="indicador" style="background:var(--bueno)"></span><span>Lista para preguntar · ${p.tamano.toLocaleString("es-ES")} personas sintéticas</span>`;
   } else if (estado.paquete) {
@@ -276,7 +265,7 @@ async function buscarParecidas(texto) {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "sugerencia-dato";
-      b.innerHTML = `${escapar(a.descripcion)}<small>Dato de la población · ${escapar(a.fuente_principal || "")} · ${escapar(a.universo)}</small>`;
+      b.innerHTML = `${escapar(a.descripcion)}<small>Dato oficial · ${escapar(a.fuente_texto || a.fuente_principal || "")} · ${escapar(a.universo)}</small>`;
       b.addEventListener("click", () => { caja.hidden = true; mostrarAtributo(a.variable); });
       li.append(b);
       ula.append(li);
@@ -372,27 +361,24 @@ function pintarAtributo(d, pob) {
   const opciones = cats.map((c) => et[c] ?? c);
   const conv = (dist) => Object.fromEntries(cats.map((c) => [et[c] ?? c, dist[c]]));
   const porSub = Object.fromEntries(Object.entries(d.por_subgrupo).map(([k, v]) => [k, conv(v)]));
-  estado.resultado = { tipo: "dato", opciones, enunciado: d.descripcion, por_subgrupo: porSub,
+  estado.resultado = { tipo: "dato", opciones, enunciado: d.descripcion, total: conv(d.total), por_subgrupo: porSub,
     confianza: { por_subgrupo: Object.fromEntries(Object.keys(porSub).map((k) => [k, 1])) }, dato: d };
-  estado.opcionMapa = null;
-  const dims = [...new Set(Object.keys(d.por_subgrupo).map((k) => k.split("=")[0]))];
+  prepararMapa(estado.resultado);
+  const tablaD = (dim) => tablaDato(d, dim);
   const caja = $("#resultado");
   caja.hidden = false;
   const proc = Object.entries(d.procedencia || {}).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1])
     .map(([k, v]) => `${pct(v)} ${escapar(k)} <span class="nota-inline">(${escapar(PROCEDENCIA[k] || k)})</span>`).join("; ");
   const fuentes = d.fuentes.map((f) => `<li>${escapar(f.nombre)}${f.organismo ? ` (${escapar(f.organismo)})` : ""}${f.variable_original ? ` · variable ${escapar(f.variable_original)}` : ""}</li>`).join("");
-  const permiteMapa = Object.keys(d.por_subgrupo).some((k) => k.startsWith("ccaa=")) && pob.territorio === "ES";
   caja.innerHTML = `
-    <span class="sello-dato">Dato de la población · no es una predicción</span>
+    <span class="sello-dato">Dato oficial · se lee de la población, no se estima</span>
     <h3>${escapar(d.descripcion)}</h3>
     <div class="metas"><span>${escapar(estado.nombre)}</span><span>${pob.tamano.toLocaleString("es-ES")} personas</span><span>Universo: ${escapar(d.universo)} (${pct(d.cuota_universo)} de los adultos)</span></div>
     <div id="zona-barras">${barrasDato(d.total, cats, et)}</div>
     <div class="procedencia"><b>De dónde sale.</b> La población sintética está calibrada con las fuentes oficiales; este atributo es ${proc || "—"}. El margen solo recoge el error de simulación: el de la fuente y el del emparejamiento se miden en la validación (reports/fase_06.md y fase_07.md).</div>
-    ${dims.length ? `<p class="seccion-titulo">Por grupos</p>
-      <div class="dimensiones" id="dimensiones">${dims.map((x, i) => `<button aria-pressed="${i === 0}" data-d="${x}">${escapar(estado.etiquetas?.dimensiones?.[x] ?? x)}</button>`).join("")}</div>
-      <div id="zona-tabla">${tablaDato(d, dims[0])}</div>` : ""}
-    ${permiteMapa ? `<p class="seccion-titulo">En el mapa</p><div class="fila"><select id="opcion-mapa" aria-label="Opción para colorear el mapa"><option value="">Elige una opción para colorear las comunidades…</option>${opciones.map((o, i) => `<option value="${i}">${escapar(o)}</option>`).join("")}</select></div>` : ""}
-    <p class="seccion-titulo">Fuentes</p><ul class="fuentes">${fuentes}</ul>
+    ${seccionRegiones(estado.resultado, pob)}
+    ${seccionGrupos(estado.resultado, tablaD)}
+    <h4 class="seccion-titulo">Fuentes</h4><ul class="fuentes">${fuentes}</ul>
     <p class="aviso">${escapar(d.aviso)}</p>
     <div class="acciones-resultado"><button class="secundario" id="descargar" type="button">Descargar JSON</button><button class="secundario" id="descargar-csv" type="button">Descargar CSV</button><button class="secundario" id="descargar-pdf" type="button">Informe PDF</button></div>`;
   caja.querySelectorAll(".pista").forEach((el) => {
@@ -404,16 +390,8 @@ function pintarAtributo(d, pob) {
     td.addEventListener("mouseleave", ocultarTooltip);
   });
   tips(caja);
-  caja.querySelectorAll("#dimensiones button").forEach((b) => b.addEventListener("click", () => {
-    caja.querySelectorAll("#dimensiones button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-    $("#zona-tabla").innerHTML = tablaDato(d, b.dataset.d);
-    tips($("#zona-tabla"));
-  }));
-  $("#opcion-mapa")?.addEventListener("change", (e) => {
-    estado.opcionMapa = e.target.value === "" ? null : +e.target.value;
-    if (estado.opcionMapa != null) ponerNivelSinSeleccion("CCAA");
-    pintarMapaResultado();
-  });
+  activarGrupos(tablaD, tips);
+  activarRegiones(d.descripcion, opciones);
   $("#descargar").addEventListener("click", () => descargar(`${d.variable}_${pob.run_id}.json`, JSON.stringify(d, null, 1), "application/json"));
   $("#descargar-csv").addEventListener("click", () => descargar(`${d.variable}_${pob.run_id}.csv`, csvDato(d), "text/csv"));
   $("#descargar-pdf").addEventListener("click", () => informePdf("dato", d, { run_id: pob.run_id, tamano: pob.tamano.toLocaleString("es-ES") }));
@@ -447,7 +425,7 @@ $("#preguntar").addEventListener("click", async () => {
       r = await seguir(t.trabajo, msg);
       pintarEvento(r, enunciado, opciones, p);
     } else {
-      const t = await post("/api/preguntas", { run_id: p.run_id, enunciado, opciones });
+      const t = await post("/api/preguntas", { run_id: p.run_id, enunciado, opciones, subgrupos: estado.etiquetas?.subgrupos_ampliados });
       r = await seguir(t.trabajo, msg);
       pintarResultado(r, enunciado, opciones, p);
       guardarHistorial({ tipo: "pregunta", titulo: enunciado, opciones, r, run_id: p.run_id, territorio: estado.territorio, nombre: estado.nombre });
@@ -528,18 +506,16 @@ function activarTooltipsTabla(raiz) {
 
 function pintarResultado(r, enunciado, opciones, pob) {
   estado.resultado = { ...r, opciones, enunciado };
-  estado.opcionMapa = null;
-  const dims = [...new Set(Object.keys(r.por_subgrupo).map((k) => k.split("=")[0]))];
-  estado.dimension = dims[0] ?? null;
+  prepararMapa(estado.resultado);
   const caja = $("#resultado");
   caja.hidden = false;
   const conf = r.confianza.total;
   const llm = r.versiones?.modelo_llm ? `con ${escapar(r.versiones.modelo_llm)}` : "sin modelo de lenguaje";
-  const permiteMapa = Object.keys(r.por_subgrupo).some((k) => k.startsWith("ccaa=")) && pob.territorio === "ES";
+  const tablaPregunta = (dim) => tablaSubgrupos(r, dim, opciones);
   caja.innerHTML = `
     <h3>${escapar(enunciado)}</h3>
     <div class="metas"><span>${escapar(estado.nombre)}</span><span>${pob.tamano.toLocaleString("es-ES")} personas</span><span>Estimador ${llm}</span></div>
-    <div class="conmutador" role="group" aria-label="Qué se estima">
+    <div class="conmutador" id="vista" role="group" aria-label="Qué se estima">
       <button aria-pressed="true" data-v="total">Lo que piensa la población</button>
       <button aria-pressed="false" data-v="medicion_cis">Como lo mediría el CIS</button>
     </div>
@@ -550,39 +526,184 @@ function pintarResultado(r, enunciado, opciones, pob) {
       <p title="${escapar(r.confianza.metodo || "")}">Confianza: probabilidad de que el error total de la distribución sea menor de 10 puntos, según el historial de aciertos del sistema en preguntas parecidas.</p>
     </div>
     ${r.parametros_llm?.justificacion ? `<p class="justificacion">«${escapar(r.parametros_llm.justificacion)}»</p>` : ""}
-    ${dims.length ? `<p class="seccion-titulo">Por grupos</p>
-      <div class="dimensiones" id="dimensiones">${dims.map((d, i) => `<button aria-pressed="${i === 0}" data-d="${d}">${escapar(estado.etiquetas?.dimensiones?.[d] ?? d)}</button>`).join("")}</div>
-      <div id="zona-tabla">${tablaSubgrupos(r, estado.dimension, opciones)}</div>` : ""}
-    ${permiteMapa ? `<p class="seccion-titulo">En el mapa</p><div class="fila"><select id="opcion-mapa" aria-label="Opción para colorear el mapa"><option value="">Elige una opción para colorear las comunidades…</option>${opciones.map((o, i) => `<option value="${i}">${escapar(o)}</option>`).join("")}</select></div>
-      <div class="comparar"><button class="secundario" id="comparar" type="button">Comparar comunidades con sus propias poblaciones</button>
-      <p class="nota">Repite la pregunta en cada comunidad con su población de 100 000 personas (sin modelo de lenguaje). Tarda unos minutos.</p><div id="zona-comparar"></div></div>` : ""}
+    ${seccionRegiones(estado.resultado, pob)}
+    ${seccionGrupos(estado.resultado, tablaPregunta)}
     ${r.preguntas_similares?.length ? `<p class="seccion-titulo">Se apoya en estas preguntas del CIS</p><ol class="parecidas">${r.preguntas_similares.map((x) => `<li>${escapar(x)}</li>`).join("")}</ol>` : ""}
     <p class="aviso">${escapar(r.aviso)}</p>
     <p class="coste">Coste: ${r.coste.llamadas} llamadas al modelo de lenguaje · ${r.coste.eur.toLocaleString("es-ES", { maximumFractionDigits: 3 })} € · ${Math.round(r.coste.segundos)} s</p>
     <div class="acciones-resultado"><button class="secundario" id="descargar-pdf" type="button">Informe PDF</button><button class="secundario" id="descargar-csv" type="button">Descargar CSV</button><button class="secundario" id="descargar" type="button">Descargar JSON</button></div>`;
   activarTooltipsBarras(caja);
   activarTooltipsTabla(caja);
-  caja.querySelectorAll(".conmutador button").forEach((b) => b.addEventListener("click", () => {
-    caja.querySelectorAll(".conmutador button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  caja.querySelectorAll("#vista button").forEach((b) => b.addEventListener("click", () => {
+    caja.querySelectorAll("#vista button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
     $("#zona-barras").innerHTML = barras(r[b.dataset.v], opciones);
     activarTooltipsBarras($("#zona-barras"));
   }));
-  caja.querySelectorAll("#dimensiones button").forEach((b) => b.addEventListener("click", () => {
-    caja.querySelectorAll("#dimensiones button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-    $("#zona-tabla").innerHTML = tablaSubgrupos(r, b.dataset.d, opciones);
-    activarTooltipsTabla($("#zona-tabla"));
-  }));
-  $("#opcion-mapa")?.addEventListener("change", (e) => {
-    estado.opcionMapa = e.target.value === "" ? null : +e.target.value;
-    if (estado.opcionMapa != null) ponerNivelSinSeleccion("CCAA");
-    pintarMapaResultado();
-  });
-  $("#comparar")?.addEventListener("click", () => compararComunidades(enunciado, opciones));
+  activarGrupos(tablaPregunta, activarTooltipsTabla);
+  activarRegiones(enunciado, opciones);
   $("#descargar").addEventListener("click", () => descargar(`${r.id}.json`, JSON.stringify(r, null, 1), "application/json"));
   $("#descargar-csv").addEventListener("click", () => descargar(`${r.id}.csv`, csvPregunta(r), "text/csv"));
   $("#descargar-pdf").addEventListener("click", () => informePdf("pregunta", r, { enunciado, run_id: pob.run_id, tamano: pob.tamano.toLocaleString("es-ES") }));
   pintarMapaResultado();
   caja.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// ------------------------------------------------------------------ fidelidad (D-081)
+// ¿Se parece a la población real? Grupos vigilados de la auditoría de F7 frente a la cifra oficial
+const ESTADO_AUDITORIA = {
+  verde: ["Cuadra", "bueno"],
+  ambar: ["Cuadra con matices", "aviso"],
+  rojo: ["Revisar", "critico"],
+};
+let fidelidadCargada = null;
+async function cargarFidelidad(rid) {
+  const caja = $("#fidelidad");
+  if (!rid) { caja.hidden = true; fidelidadCargada = null; return; }
+  if (rid === fidelidadCargada) return;
+  fidelidadCargada = rid;
+  try {
+    const d = await api(`/api/auditoria/${encodeURIComponent(rid)}`);
+    const filas = d.grupos.filter((g) => g.proporcion_oficial != null && g.proporcion_sintetica != null);
+    const cuadran = filas.filter((g) => g.ratio != null && Math.abs(g.ratio - 1) <= 0.1).length;
+    $("#fidelidad-resumen").innerHTML = `¿Se parece a la población real? <span class="fidelidad-cifra">${cuadran} de ${filas.length} cifras oficiales reproducidas</span>`;
+    $("#fidelidad-cuerpo").innerHTML = `<p class="nota">Comparación con fuentes oficiales (INE, ECV, EPA…) de los grupos que más fácilmente salen mal en una población sintética. «Reproducida» = diferencia menor del 10 %. El estado también revisa el perfil del grupo y que no salga de pocas personas repetidas.</p>
+      <div class="tabla-envoltorio" tabindex="0" role="region" aria-label="Comparación con cifras oficiales"><table class="tabla-asistente tabla-fidelidad"><thead><tr><th scope="col">Grupo</th><th scope="col">Sintética</th><th scope="col">Oficial</th><th scope="col">Estado</th></tr></thead><tbody>
+      ${filas.map((g) => { const [txt, color] = ESTADO_AUDITORIA[g.semaforo] || ["—", "texto-3"]; return `<tr title="${escapar(g.fuente || "")}${g.motivo ? " · " + escapar(g.motivo) : ""}"><th scope="row">${escapar(g.nombre)}</th><td>${pct(g.proporcion_sintetica, 1)}</td><td>${pct(g.proporcion_oficial, 1)}</td><td><span class="punto-estado" style="background:var(--${color})"></span>${txt}</td></tr>`; }).join("")}
+      </tbody></table></div>`;
+    caja.hidden = false;
+  } catch (_) {
+    caja.hidden = true;
+  }
+}
+
+// ------------------------------------------------------------------ regiones y grupos (D-081)
+const PREFIJO = { CCAA: "ccaa", PROV: "provincia" };
+const TERRITORIALES = ["ccaa", "provincia"];
+const sustantivas = (ops) => ops.filter((o) => !NSNC.includes(o));
+const confDe = (r, k) => r.confianza?.por_subgrupo?.[k] ?? 1;
+const intervaloDe = (x) => x.ic80 || x.ic95;
+function opcionPrincipal(r) {
+  const s = sustantivas(r.opciones);
+  return s.reduce((a, b) => (r.total[a].p >= r.total[b].p ? a : b));
+}
+function nivelesRegion(r) {
+  return ["CCAA", "PROV"].filter((n) => Object.keys(r.por_subgrupo).filter((k) => k.startsWith(PREFIJO[n] + "=")).length >= 2);
+}
+function valorRegion(r, nivel, codigo, op) {
+  if (nivel === "CCAA" && r.comparacion) {
+    const t = r.comparacion.territorios[`CCAA:${codigo}`];
+    return t ? { p: t.total[op].p, ic: t.total[op].ic80, c: t.confianza } : null;
+  }
+  const k = `${PREFIJO[nivel]}=${codigo}`;
+  const d = r.por_subgrupo[k]?.[op];
+  return d ? { p: d.p, ic: intervaloDe(d), c: confDe(r, k) } : null;
+}
+function codigosRegion(r, nivel) {
+  return Object.keys(r.por_subgrupo).filter((k) => k.startsWith(PREFIJO[nivel] + "=")).map((k) => k.split("=")[1]);
+}
+function nombreRegion(nivel, codigo) {
+  return estado.etiquetas?.[PREFIJO[nivel]]?.[codigo] ?? codigo;
+}
+
+function seccionRegiones(r, pob) {
+  const niveles = nivelesRegion(r);
+  if (!niveles.length) return "";
+  const comparable = niveles.includes("CCAA") && pob.territorio === "ES" && r.tipo !== "dato";
+  return `<section class="seccion" aria-labelledby="t-regiones">
+    <div class="cabecera-seccion"><h4 class="seccion-titulo" id="t-regiones">Por regiones</h4>
+      ${niveles.length > 1 ? `<div class="conmutador mini" role="group" aria-label="Nivel" id="nivel-region">${niveles.map((n) => `<button type="button" aria-pressed="${n === estado.nivelMapa}" data-n="${n}">${n === "CCAA" ? "Comunidades" : "Provincias"}</button>`).join("")}</div>` : ""}
+    </div>
+    <label class="campo-mini fila-opcion"><span>Respuesta que se compara</span>
+      <select id="opcion-region">${r.opciones.map((o, i) => `<option value="${i}"${i === estado.opcionMapa ? " selected" : ""}>${escapar(o)}</option>`).join("")}</select></label>
+    <div id="lista-regiones" class="lista-regiones" tabindex="0" role="region" aria-label="Ranking por regiones"></div>
+    <p class="nota">El mapa se colorea igual. ${r.tipo === "dato" ? "" : "Las filas más claras tienen confianza baja (pocos encuestados del CIS en esa región)."}</p>
+    ${comparable ? `<div class="comparar"><button class="secundario" id="comparar" type="button">Recalcular cada comunidad con su propia población</button>
+      <p class="nota">Más fino que el desglose de la población nacional: usa las 19 poblaciones de 100 000 personas. Tarda unos 2 minutos.</p><div id="zona-comparar"></div></div>` : ""}
+  </section>`;
+}
+
+function pintarListaRegiones() {
+  const r = estado.resultado;
+  const caja = $("#lista-regiones");
+  if (!r || !caja) return;
+  const op = r.opciones[estado.opcionMapa];
+  const filas = codigosRegion(r, estado.nivelMapa)
+    .map((c) => ({ c, nombre: nombreRegion(estado.nivelMapa, c), v: valorRegion(r, estado.nivelMapa, c, op) }))
+    .filter((x) => x.v)
+    .sort((a, b) => b.v.p - a.v.p);
+  const max = Math.max(...filas.map((x) => x.v.ic?.[1] ?? x.v.p), 0.01);
+  caja.innerHTML = filas.map((x) => `<div class="fila-region${x.v.c < 0.5 ? " baja" : ""}" data-t="${escapar(x.nombre)}" data-p="${x.v.p}" data-a="${x.v.ic?.[0] ?? ""}" data-b="${x.v.ic?.[1] ?? ""}" data-c="${x.v.c}">
+      <span class="nombre">${escapar(x.nombre)}</span>
+      <span class="pista-mini">${x.v.ic ? `<em style="left:${(100 * x.v.ic[0]) / max}%;width:${(100 * (x.v.ic[1] - x.v.ic[0])) / max}%"></em>` : ""}<i style="width:${(100 * x.v.p) / max}%"></i></span>
+      <span class="valor">${pct(x.v.p)}</span></div>`).join("");
+  caja.querySelectorAll(".fila-region").forEach((el) => {
+    el.addEventListener("mousemove", (ev) => mostrarTooltip(ev, `<b>${el.dataset.t}</b><br>${escapar(op)}: ${pct(+el.dataset.p, 1)}${el.dataset.a !== "" ? `<br>${r.tipo === "dato" ? "Margen de simulación" : "IC 80 %"}: ${pct(+el.dataset.a, 1)} – ${pct(+el.dataset.b, 1)}` : ""}${r.tipo === "dato" ? "" : `<br>Confianza: ${pct(+el.dataset.c)}`}`));
+    el.addEventListener("mouseleave", ocultarTooltip);
+  });
+}
+
+function activarRegiones(enunciado, opciones) {
+  $("#opcion-region")?.addEventListener("change", (e) => { estado.opcionMapa = +e.target.value; pintarListaRegiones(); pintarMapaResultado(); });
+  document.querySelectorAll("#nivel-region button").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll("#nivel-region button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    estado.nivelMapa = b.dataset.n;
+    pintarListaRegiones();
+    pintarMapaResultado();
+  }));
+  $("#comparar")?.addEventListener("click", () => compararComunidades(enunciado, opciones));
+  pintarListaRegiones();
+}
+
+// grupos (sin los territoriales, que van en «Por regiones»), ordenados por cuánto separan las
+// respuestas; los tres que más separan llevan una estrella
+function destacados(r) {
+  const dims = [...new Set(Object.keys(r.por_subgrupo).map((k) => k.split("=")[0]))].filter((d) => !TERRITORIALES.includes(d));
+  return dims.map((d) => {
+    const ks = Object.keys(r.por_subgrupo).filter((k) => k.startsWith(d + "=") && confDe(r, k) >= 0.5 && !/=(NC|NS|NS_NC)$/.test(k));
+    let mejor = { d, dif: 0 };
+    for (const o of sustantivas(r.opciones)) {
+      const v = ks.map((k) => ({ k, p: r.por_subgrupo[k][o].p })).sort((a, b) => a.p - b.p);
+      if (v.length >= 2 && v.at(-1).p - v[0].p > mejor.dif) mejor = { d, dif: v.at(-1).p - v[0].p, o, lo: v[0], hi: v.at(-1) };
+    }
+    return mejor;
+  }).sort((a, b) => b.dif - a.dif);
+}
+
+function seccionGrupos(r, tabla) {
+  const des = destacados(r);
+  if (!des.length) return "";
+  estado.dimension = des[0].d;
+  const estrellas = new Set(des.slice(0, 3).filter((x) => x.dif >= 0.05).map((x) => x.d));
+  const nombreDim = (d) => estado.etiquetas?.dimensiones?.[d] ?? d;
+  const presentes = new Set(des.map((x) => x.d));
+  const grupos = Object.entries(estado.etiquetas?.grupos_dimensiones || { Grupos: [...presentes] })
+    .map(([t, ds]) => [t, ds.filter((d) => presentes.has(d))]).filter(([, ds]) => ds.length);
+  const top = des[0];
+  const frase = top.dif >= 0.05
+    ? `Lo que más cambia es <b>${escapar(nombreDim(top.d).toLowerCase())}</b>: «${escapar(top.o)}» va del ${pct(top.lo.p)} (${escapar(nombreNivel(top.d, top.lo.k.split("=")[1]))}) al ${pct(top.hi.p)} (${escapar(nombreNivel(top.d, top.hi.k.split("=")[1]))}).`
+    : "Las diferencias entre grupos son pequeñas (menos de 5 puntos).";
+  return `<section class="seccion" aria-labelledby="t-grupos">
+    <h4 class="seccion-titulo" id="t-grupos">Por grupos</h4>
+    <p class="destacado-texto">${frase}</p>
+    ${grupos.map(([t, ds]) => `<div class="grupo-dims"><span class="grupo-titulo">${escapar(t)}</span>
+      <div class="dimensiones">${ds.map((d) => `<button type="button" aria-pressed="${d === estado.dimension}" data-d="${d}"${estrellas.has(d) ? ' class="estrella" title="Separa mucho las respuestas"' : ""}>${estrellas.has(d) ? "★ " : ""}${escapar(nombreDim(d))}</button>`).join("")}</div></div>`).join("")}
+    <div id="zona-tabla">${tabla(estado.dimension)}</div>
+  </section>`;
+}
+
+function activarGrupos(tabla, tips) {
+  document.querySelectorAll(".grupo-dims button").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll(".grupo-dims button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    estado.dimension = b.dataset.d;
+    $("#zona-tabla").innerHTML = tabla(b.dataset.d);
+    tips($("#zona-tabla"));
+  }));
+}
+
+function prepararMapa(r) {
+  const niveles = nivelesRegion(r);
+  estado.nivelMapa = niveles[0] ?? "CCAA";
+  estado.opcionMapa = niveles.length ? r.opciones.indexOf(opcionPrincipal(r)) : null;
 }
 
 // ------------------------------------------------------------------ asistente de tamaño (D-079)
@@ -667,20 +788,11 @@ async function compararComunidades(enunciado, opciones) {
   boton.disabled = true;
   try {
     const t = await post("/api/comparar", { enunciado, opciones, nivel: "CCAA" });
-    const res = await seguir(t.trabajo, zona);
-    estado.resultado.comparacion = res;
-    const sust = opciones.filter((o) => !NSNC.includes(o));
-    const top = sust.reduce((a, b) => (estado.resultado.total[a].p >= estado.resultado.total[b].p ? a : b));
-    const filas = Object.entries(res.territorios)
-      .map(([k, v]) => ({ k, nombre: estado.etiquetas?.ccaa?.[k.slice(5)] ?? k, p: v.total[top].p, ic: v.total[top].ic80, c: v.confianza }))
-      .sort((a, b) => b.p - a.p);
-    zona.innerHTML = `<p class="nota">«${escapar(top)}» en cada comunidad (intervalo del 80 % y confianza):</p>
-      <table class="tabla-asistente"><thead><tr><th scope="col">Comunidad</th><th scope="col">${escapar(top)}</th><th scope="col">IC 80 %</th><th scope="col">Confianza</th></tr></thead>
-      <tbody>${filas.map((f) => `<tr><th scope="row">${escapar(f.nombre)}</th><td>${pct(f.p)}</td><td>${pct(f.ic[0])} – ${pct(f.ic[1])}</td><td>${pct(f.c)}</td></tr>`).join("")}</tbody></table>`;
-    estado.opcionMapa = opciones.indexOf(top);
-    const sel = $("#opcion-mapa");
-    if (sel) sel.value = String(estado.opcionMapa);
-    ponerNivelSinSeleccion("CCAA");
+    estado.resultado.comparacion = await seguir(t.trabajo, zona);
+    zona.innerHTML = '<p class="nota"><b>Mostrando cada comunidad con su propia población.</b></p>';
+    estado.nivelMapa = "CCAA";
+    document.querySelectorAll("#nivel-region button").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.n === "CCAA")));
+    pintarListaRegiones();
     pintarMapaResultado();
   } catch (e) {
     zona.textContent = `No se pudo comparar: ${e.message}`;
@@ -731,42 +843,37 @@ function ponerNivelSinSeleccion(nivel) {
   mostrarNivel(nivel);
 }
 
-// coloreado del mapa con una opción del resultado (solo población nacional, desglose por comunidad)
+// coloreado del mapa con una respuesta del resultado, por comunidades o por provincias
 let rangoMapa = [0, 1];
 function valorMapa(prop) {
   const r = estado.resultado;
-  if (!r || estado.opcionMapa == null || prop.nivel !== "CCAA") return null;
-  if (r.comparacion) {
-    const t = r.comparacion.territorios[`CCAA:${prop.codigo}`];
-    return t ? { p: t.total[r.opciones[estado.opcionMapa]].p, c: t.confianza } : null;
-  }
-  const k = `ccaa=${prop.codigo}`;
-  const d = r.por_subgrupo[k];
-  if (!d) return null;
-  return { p: d[r.opciones[estado.opcionMapa]].p, c: r.confianza.por_subgrupo[k] };
+  if (!r || estado.opcionMapa == null || prop.nivel !== estado.nivelMapa) return null;
+  const v = valorRegion(r, prop.nivel, prop.codigo, r.opciones[estado.opcionMapa]);
+  return v ? { p: v.p, c: v.c } : null;
 }
 function estiloMapa(f) {
   const v = valorMapa(f.properties);
   if (!v) return { color: css("--texto-3"), weight: 0.6, fillOpacity: 0.05 };
-  return { color: css("--superficie"), weight: 1.2, opacity: 1, fillColor: colorSecuencial(v.p, ...rangoMapa), fillOpacity: v.c < 0.5 ? 0.45 : 0.85 };
+  return { color: "#ffffff", weight: 1.2, opacity: 1, fillColor: colorSecuencial(v.p, ...rangoMapa), fillOpacity: v.c < 0.5 ? 0.45 : 0.85 };
 }
 function pintarMapaResultado() {
   const ley = $("#leyenda-mapa");
   if (estado.opcionMapa == null || !estado.resultado) { ley.hidden = true; refrescarEstilos(); return; }
   const r = estado.resultado;
   const op = r.opciones[estado.opcionMapa];
-  const vals = r.comparacion
-    ? Object.values(r.comparacion.territorios).map((t) => t.total[op].p)
-    : Object.entries(r.por_subgrupo).filter(([k]) => k.startsWith("ccaa=")).map(([, d]) => d[op].p);
+  const nivel = estado.nivelMapa;
+  const vals = codigosRegion(r, nivel).map((c) => valorRegion(r, nivel, c, op)?.p).filter((x) => x != null);
+  if (!vals.length) { ley.hidden = true; refrescarEstilos(); return; }
   rangoMapa = [Math.min(...vals), Math.max(...vals)];
-  for (const c of todas("CCAA")) c.setStyle(estiloMapa);
+  ponerNivelSinSeleccion(nivel);
+  for (const c of todas(nivel)) c.setStyle(estiloMapa);
   ley.hidden = false;
-  ley.innerHTML = `<b>${escapar(r.opciones[estado.opcionMapa])}</b> por comunidad${r.comparacion ? " (población propia)" : ""}
+  ley.innerHTML = `<b>${escapar(op)}</b> por ${nivel === "CCAA" ? "comunidad" : "provincia"}${r.comparacion && nivel === "CCAA" ? " (población propia)" : ""}
     <div class="escala">${SEQ.map((v) => `<i style="background:var(${v})"></i>`).join("")}</div>
     <div class="extremos"><span>${pct(rangoMapa[0])}</span><span>${pct(rangoMapa[1])}</span></div>
-    ${r.tipo === "dato" ? "" : '<div style="color:var(--texto-3);margin-top:4px">Más transparente: confianza baja.</div>'}
-    <button type="button" id="quitar-mapa">Quitar coloreado</button>`;
-  $("#quitar-mapa").addEventListener("click", () => { estado.opcionMapa = null; const s = $("#opcion-mapa"); if (s) s.value = ""; pintarMapaResultado(); });
+    ${r.tipo === "dato" ? "" : '<div class="nota-leyenda">Más transparente: confianza baja.</div>'}
+    <button type="button" id="quitar-mapa">Quitar colores</button>`;
+  $("#quitar-mapa").addEventListener("click", () => { estado.opcionMapa = null; pintarMapaResultado(); });
 }
 
 // ------------------------------------------------------------------ evento
@@ -830,8 +937,13 @@ window.sinpop = { elegirTerritorio, ponerNivel };
     capasCanarias.PROV = crearCapa("PROV", true);
     capas.CCAA.addTo(mapa);
     capasCanarias.CCAA.addTo(mapaCanarias);
-    mapaCanarias.invalidateSize();
-    mapaCanarias.fitBounds(capasCanarias.CCAA.getBounds(), { padding: [6, 6] });
+    // el recuadro se encuadra cuando ya tiene tamaño (fuentes cargadas, panel colocado) y cada vez
+    // que cambia: si no, Leaflet lo calcula con 0 px y las islas quedan fuera de la vista
+    const encuadrar = () => { mapaCanarias.invalidateSize(); mapaCanarias.fitBounds(capasCanarias.CCAA.getBounds(), { padding: [8, 8] }); };
+    encuadrar();
+    requestAnimationFrame(encuadrar);
+    window.addEventListener("load", encuadrar);
+    if (window.ResizeObserver) new ResizeObserver(encuadrar).observe($("#mapa-canarias"));
     // vista inicial: península, Baleares, Ceuta y Melilla (Canarias va en su recuadro)
     const sinCanarias = L.featureGroup(capas.CCAA.getLayers().filter((c) => !CANARIAS.has(c.feature.properties.territorio)));
     mapa.fitBounds(sinCanarias.getBounds(), { padding: [24, 24], maxZoom: 7 });

@@ -56,8 +56,24 @@ S_MIN = 0.01  # suelo de σ: sin él, una opción con p ≈ 0 en todas las anál
 COLUMNAS_SISTEMA = COLUMNAS + ["religiosidad", "clase_subjetiva"]
 COLUMNAS_VOTO = COLUMNAS_SISTEMA + ["grupo_voto", "ideologia_bloque"]
 SUBGRUPO_VOTO = "recuerdo_voto_generales_familia"
+# desgloses que necesitan el modelo con voto e ideología: sin ellos los grupos no se distinguen
+SUBGRUPOS_VOTO = (SUBGRUPO_VOTO, "ideologia_bloque")
 COLUMNAS_B1 = COLUMNAS
 SUBGRUPOS = ["edad_4", "sexo", "estudios_3", "ccaa", "recuerdo_voto_generales_familia"]
+# desgloses que ofrece la interfaz (D-081); la evaluación (F9-F11) sigue con SUBGRUPOS
+SUBGRUPOS_AMPLIADOS = [
+    "edad_4",
+    "sexo",
+    "estudios_3",
+    "actividad_3",
+    "tamano_municipio_cis",
+    "ccaa",
+    "provincia",
+    "ideologia_bloque",
+    "recuerdo_voto_generales_familia",
+    "religiosidad",
+    "clase_subjetiva",
+]
 CALIBRACION = (
     PK.ruta("calibracion.json") if PK.activo() else PROCESSED_DIR / "predict" / "calibracion.json"
 )
@@ -257,7 +273,8 @@ def _por_analoga(a: dict, q: Pregunta, marco: pl.DataFrame):
     if d.height < 50:
         return None
     pr = _modelo(d, COLUMNAS_SISTEMA, q.opciones, marco)
-    prv = _modelo(d, COLUMNAS_VOTO, q.opciones, marco) if SUBGRUPO_VOTO in q.subgrupos else None
+    con_voto = any(g in q.subgrupos for g in SUBGRUPOS_VOTO)
+    prv = _modelo(d, COLUMNAS_VOTO, q.opciones, marco) if con_voto else None
     pr_b1 = _modelo(d, COLUMNAS_B1, q.opciones, marco)
     n_sub = {
         f"{g}={lv}": n
@@ -297,7 +314,7 @@ def _por_analoga_paquete(a: dict, q: Pregunta, marco: pl.DataFrame):
     frac = n / x["n"]
     dims = set(q.subgrupos)
     n_sub = {k: v * frac for k, v in x["n_sub"].items() if k.split("=")[0] in dims}
-    prv = pr("voto") if SUBGRUPO_VOTO in q.subgrupos else None
+    prv = pr("voto") if any(g in q.subgrupos for g in SUBGRUPOS_VOTO) else None
     return pr("sistema"), prv, pr("b1"), obs, n, n_sub
 
 
@@ -317,14 +334,15 @@ def predecir(q: Pregunta, excluir: pl.Expr | None = None, run_id: str = P.NACION
             sis_cis.append(None)
             continue
         pr, prv, pr_b1, obs, n, n_sub = x
-        otros = [g for g in q.subgrupos if g != SUBGRUPO_VOTO]
+        otros = [g for g in q.subgrupos if g not in SUBGRUPOS_VOTO]
+        de_voto = [g for g in q.subgrupos if g in SUBGRUPOS_VOTO]
         a_pob = _agregar(pr, marco, otros)
         a_cis = _agregar(pr, marco, otros, "peso_cis")
         if prv is not None:
-            for k, v in _agregar(prv, marco, [SUBGRUPO_VOTO]).items():
+            for k, v in _agregar(prv, marco, de_voto).items():
                 if k != "total":
                     a_pob[k] = v
-            for k, v in _agregar(prv, marco, [SUBGRUPO_VOTO], "peso_cis").items():
+            for k, v in _agregar(prv, marco, de_voto, "peso_cis").items():
                 if k != "total":
                     a_cis[k] = v
         sis.append(a_pob)

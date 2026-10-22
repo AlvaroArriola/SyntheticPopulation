@@ -63,10 +63,17 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
         pg.wait_for_timeout(500)
         res["pantallas"]["pregunta_es"] = pg.evaluate(COMPROBAR_RESULTADO)
         pg.screenshot(path=DESTINO / "3_resultado.png")
-        pg.select_option("#opcion-mapa", "3")
+        # el mapa se colorea solo con la respuesta principal y hay ranking por regiones (D-081)
         pg.wait_for_timeout(800)
         res["pantallas"]["mapa_coloreado"] = pg.evaluate(
             "() => !document.querySelector('#leyenda-mapa').hidden"
+            " && document.querySelectorAll('#lista-regiones .fila-region').length >= 17"
+        )
+        res["pantallas"]["grupos_destacados"] = pg.evaluate(
+            "() => document.querySelectorAll('.grupo-dims button').length"
+        )
+        res["pantallas"]["fidelidad"] = pg.evaluate(
+            "() => !document.querySelector('#fidelidad').hidden"
         )
         pg.screenshot(path=DESTINO / "4_mapa_coloreado.png")
 
@@ -142,10 +149,7 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
             ".map(v => ({id: v.id, impacto: v.impact, nodos: v.nodes.length}))"
         )
 
-        # modo oscuro y móvil
-        pg.evaluate("document.documentElement.dataset.theme='dark'")
-        pg.wait_for_timeout(400)
-        pg.screenshot(path=DESTINO / "7_oscuro.png")
+        # móvil (solo hay modo claro, D-081)
         movil = b.new_page(viewport={"width": 390, "height": 844})
         movil.goto(url, wait_until="domcontentloaded")
         movil.wait_for_timeout(2500)
@@ -166,6 +170,8 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
         "pregunta_es" in pr
         and pr.get("mapa_coloreado")
         and pr.get("evento", {}).get("filas")
+        and pr.get("grupos_destacados", 0) >= 5
+        and pr.get("fidelidad")
         and not res["errores_js"]
     )
     res["g14_2"] = all(

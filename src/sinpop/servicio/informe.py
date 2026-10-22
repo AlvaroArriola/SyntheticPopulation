@@ -36,9 +36,17 @@ DIMENSIONES = {
     "edad_4": "Edad",
     "sexo": "Sexo",
     "estudios_3": "Estudios",
+    "actividad_3": "Situación laboral",
+    "tamano_municipio_cis": "Tamaño del municipio",
+    "ideologia_bloque": "Ideología",
     "recuerdo_voto_generales_familia": "Recuerdo de voto 2023",
+    "religiosidad": "Religiosidad",
+    "clase_subjetiva": "Clase social (autopercibida)",
     "ccaa": "Comunidad",
+    "provincia": "Provincia",
 }
+TERRITORIALES = ("ccaa", "provincia")
+MAX_DIMENSIONES_PDF = 4
 EDAD = {"18-34": "18–34", "35-49": "35–49", "50-64": "50–64", "65+": "65 y más"}
 
 
@@ -133,7 +141,7 @@ def resumen(r: dict) -> list[str]:
     # mayor diferencia entre grupos para la opción más frecuente
     mejor = None
     for dim in DIMENSIONES:
-        if dim == "ccaa":
+        if dim in TERRITORIALES:
             continue
         # solo grupos con datos suficientes (confianza ≥ 50 % cuando la hay)
         vals = {
@@ -342,6 +350,29 @@ def _mapa(fig, r: dict, opcion: str) -> None:
     cb.ax.xaxis.set_major_formatter(lambda v, _: _pct(v))
 
 
+def _destacadas(r: dict) -> list[str]:
+    """Dimensiones no territoriales ordenadas por cuánto separan las respuestas (la mayor
+    diferencia entre grupos con confianza ≥ 50 %), como en la interfaz."""
+    sust = [o for o in r["opciones"] if o not in ("N.S.", "N.C.")]
+    out = []
+    for dim in DIMENSIONES:
+        if dim in TERRITORIALES:
+            continue
+        ks = [
+            k
+            for k in r["por_subgrupo"]
+            if k.split("=", 1)[0] == dim
+            and r["conf_sub"].get(k, 1) >= 0.5
+            and k.split("=", 1)[1] not in ("NC", "NS", "NS_NC")
+        ]
+        if len(ks) < 2:
+            continue
+        sub = r["por_subgrupo"]
+        dif = max(max(sub[k][o]["p"] for k in ks) - min(sub[k][o]["p"] for k in ks) for o in sust)
+        out.append((dif, dim))
+    return [d for _, d in sorted(out, reverse=True)]
+
+
 def _similares(ids: list[str]) -> list[str]:
     """Enunciado, estudio y fecha de las preguntas del CIS en que se apoya la predicción."""
     if not ids:
@@ -384,11 +415,7 @@ def generar(tipo: str, datos: dict, contexto: dict, etiquetas: dict) -> bytes:
     r["similares"] = _similares(r["similares"])
     if contexto.get("enunciado"):
         r["titulo"] = contexto["enunciado"]
-    dims = [
-        d
-        for d in DIMENSIONES
-        if d != "ccaa" and any(k.startswith(d + "=") for k in r["por_subgrupo"])
-    ]
+    dims = _destacadas(r)[:MAX_DIMENSIONES_PDF]
     hay_mapa = contexto.get("territorio") == "ES" and any(
         k.startswith("ccaa=") for k in r["por_subgrupo"]
     )

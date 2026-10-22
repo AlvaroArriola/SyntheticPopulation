@@ -23,7 +23,8 @@ def test_territorios_tiene_comunidades_y_provincias(cliente) -> None:
 
 def test_etiquetas_salen_de_la_configuracion(cliente) -> None:
     e = cliente.get("/api/etiquetas").json()
-    assert e["ccaa"]["13"].startswith("Madrid") and len(e["provincia"]) == 52
+    assert e["ccaa"]["13"] == "Comunidad de Madrid" and len(e["provincia"]) == 52
+    assert e["provincia"]["35"] == "Las Palmas"  # nombre natural, no «Palmas, Las»
     assert "socialdemocrata" in e["recuerdo_voto_generales_familia"]
 
 
@@ -65,6 +66,7 @@ RUTAS_PERMITIDAS = {
     "/api/tamano",
     "/api/informe",
     "/api/comparar",
+    "/api/auditoria/{rid}",
     "/api/etiquetas",
     "/api/modo",
     "/api/llm",

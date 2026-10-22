@@ -1,4 +1,5 @@
-/* España sintética · interfaz (F14). Paleta: instancia de referencia validada (dataviz). */
+/* España sintética · interfaz (F14). Paleta: instancia de referencia validada (dataviz).
+   Solo modo claro, a petición de la persona responsable (D-081). */
 :root {
   color-scheme: light;
   --fondo: #f4f3ef;
@@ -22,41 +23,6 @@
   --radio: 16px;
   --seq-1: #cde2fb; --seq-2: #9ec5f4; --seq-3: #6da7ec; --seq-4: #3987e5; --seq-5: #256abf; --seq-6: #184f95; --seq-7: #0d366b;
 }
-@media (prefers-color-scheme: dark) {
-  :root:where(:not([data-theme="light"])) {
-    color-scheme: dark;
-    --fondo: #121211;
-    --superficie: #1a1a19;
-    --superficie-2: #232321;
-    --borde: #33332f;
-    --texto: #f0efec;
-    --texto-2: #c3c2b7;
-    --texto-3: #8f8e86;
-    --acento: #3987e5;
-    --acento-fuerte: #86b6ef;
-    --acento-suave: #184f95;
-    --serie: #3987e5;
-    --rango: rgba(57, 135, 229, 0.28);
-    --sombra: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
-  }
-}
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --fondo: #121211;
-  --superficie: #1a1a19;
-  --superficie-2: #232321;
-  --borde: #33332f;
-  --texto: #f0efec;
-  --texto-2: #c3c2b7;
-  --texto-3: #8f8e86;
-  --acento: #3987e5;
-  --acento-fuerte: #86b6ef;
-  --acento-suave: #184f95;
-  --serie: #3987e5;
-  --rango: rgba(57, 135, 229, 0.28);
-  --sombra: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
-}
-
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
 body {
@@ -98,10 +64,6 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .disposicion { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr minmax(380px, 470px); }
 .mapa-envoltorio { position: relative; min-height: 320px; }
 #mapa { position: absolute; inset: 0; background: var(--superficie-2); }
-:root[data-theme="dark"] .leaflet-tile-pane { filter: brightness(0.62) contrast(1.1) saturate(0.6); }
-@media (prefers-color-scheme: dark) {
-  :root:where(:not([data-theme="light"])) .leaflet-tile-pane { filter: brightness(0.62) contrast(1.1) saturate(0.6); }
-}
 .niveles {
   position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 500;
   display: flex; gap: 4px; padding: 4px; background: var(--superficie); border-radius: 12px;
@@ -299,3 +261,37 @@ textarea:focus, input:focus, select:focus { border-color: var(--acento); outline
 .techo-alta { border-left-color: var(--bueno); }
 .techo-media { border-left-color: var(--aviso); }
 .techo-baja { border-left-color: var(--critico); }
+
+/* ronda 3 (D-081): guía, fidelidad, regiones y grupos */
+.como-funciona summary { cursor: pointer; font-weight: 600; font-size: 15px; }
+.como-funciona ol { margin: 10px 0 8px; padding-left: 20px; font-size: 13.5px; color: var(--texto-2); display: grid; gap: 6px; }
+.como-funciona p { margin: 0; font-size: 13px; color: var(--texto-2); }
+.sugerencias-ayuda { margin: 0; padding: 0 12px 8px; font-size: 12.5px; color: var(--texto-2); background: var(--superficie-2); }
+.fidelidad { margin-top: 12px; border-top: 1px solid var(--borde); padding-top: 10px; }
+.fidelidad summary { cursor: pointer; font-weight: 600; color: var(--texto-2); font-size: 14px; }
+.fidelidad-cifra { display: block; font-weight: 500; color: var(--texto-3); font-size: 12.5px; margin: 2px 0 0 18px; }
+.tabla-fidelidad td, .tabla-fidelidad th { font-size: 12.5px; }
+.tabla-fidelidad th[scope="row"] { white-space: normal; font-weight: 500; color: var(--texto); }
+.tabla-fidelidad td:last-child { text-align: left; white-space: nowrap; }
+.punto-estado { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+.seccion { margin-top: 6px; }
+.seccion h4.seccion-titulo { margin: 18px 0 8px; }
+.cabecera-seccion { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.conmutador.mini { margin: 10px 0 0; flex: 0 0 auto; }
+.conmutador.mini button { padding: 4px 10px; font-size: 12.5px; }
+.fila-opcion { margin: 4px 0 8px; max-width: 280px; }
+.fila-opcion select { padding: 6px 8px; border: 1px solid var(--borde); border-radius: 8px; background: var(--superficie); font: inherit; font-size: 13px; color: var(--texto); }
+.lista-regiones { max-height: 300px; overflow: auto; display: grid; gap: 3px; padding-right: 4px; }
+.fila-region { display: grid; grid-template-columns: minmax(110px, 40%) 1fr 48px; gap: 8px; align-items: center; font-size: 13px; padding: 2px 0; }
+.fila-region .nombre { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fila-region .valor { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.pista-mini { position: relative; height: 12px; background: var(--superficie-2); border-radius: 3px; }
+.pista-mini i { position: absolute; left: 0; top: 2px; height: 8px; background: var(--serie); border-radius: 0 3px 3px 0; }
+.pista-mini em { position: absolute; top: 0; height: 12px; background: var(--rango); border-radius: 3px; }
+.fila-region.baja .pista-mini i { opacity: 0.4; }
+.fila-region.baja .nombre, .fila-region.baja .valor { color: var(--texto-3); }
+.destacado-texto { font-size: 13.5px; margin: 0 0 10px; background: var(--acento-suave); border-radius: 10px; padding: 8px 10px; color: var(--texto); }
+.grupo-dims { margin-bottom: 6px; }
+.grupo-titulo { display: block; font-size: 11.5px; color: var(--texto-3); margin-bottom: 3px; }
+.dimensiones button.estrella { font-weight: 600; }
+.nota-leyenda { color: var(--texto-3); margin-top: 4px; }

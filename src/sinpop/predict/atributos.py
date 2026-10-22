@@ -27,7 +27,7 @@ import yaml
 from sinpop import CONFIGS_DIR, POPULATIONS_DIR
 from sinpop import paquete as PK
 
-SUBGRUPOS = ["edad_4", "sexo", "estudios_3", "ccaa"]
+SUBGRUPOS = ["edad_4", "sexo", "estudios_3", "ccaa", "provincia"]
 UMBRAL = 0.18  # similitud mínima para proponer un atributo
 Z95 = 1.96
 
@@ -83,6 +83,29 @@ def indice():
     return Indice(pl.DataFrame(filas))
 
 
+# siglas habituales de las fuentes para mostrarlas en una línea
+SIGLAS = {
+    "ecv": "ECV (INE)",
+    "epa": "EPA (INE)",
+    "tic_h": "TIC-H (INE)",
+    "encuesta_salud": "Encuesta de Salud (INE)",
+    "censo": "Censo (INE)",
+    "censo2021": "Censo 2021 (INE)",
+    "censo_anual": "Censo Anual (INE)",
+    "padron_continuo": "Padrón (INE)",
+    "atlas_renta": "Atlas de renta (INE)",
+    "ecp": "ECP (INE)",
+}
+
+
+def fuente_texto(variable: str) -> str:
+    import re
+
+    fp = catalogo()[variable]["fuente_principal"] or ""
+    ids = [x for x in re.split(r"[\s/+]+", fp) if x]
+    return ", ".join(dict.fromkeys(SIGLAS.get(i, i) for i in ids))
+
+
 def buscar(enunciado: str, opciones: list[str] | None = None, k: int = 3) -> list[dict]:
     d = indice().similares(enunciado, opciones or [], k=k)
     return [
@@ -91,6 +114,7 @@ def buscar(enunciado: str, opciones: list[str] | None = None, k: int = 3) -> lis
             "descripcion": catalogo()[r["id"]]["descripcion"],
             "universo": catalogo()[r["id"]]["universo"],
             "fuente_principal": catalogo()[r["id"]]["fuente_principal"],
+            "fuente_texto": fuente_texto(r["id"]),
             "similitud": round(float(r["similitud"]), 3),
         }
         for r in d.iter_rows(named=True)
