@@ -1,0 +1,322 @@
+[
+ {
+  "grupo": "mayores_85",
+  "nombre": "Personas de 85 años o más",
+  "proporcion_sintetica": 0.013651092087366989,
+  "proporcion_oficial": 0.013635108390481888,
+  "ratio": 1.0011722456783885,
+  "fuente": "ECP 2026 (residentes por edad y sexo)",
+  "semaforo": "verde",
+  "motivo": null
+ },
+ {
+  "grupo": "mayores_solos",
+  "nombre": "Personas de 65+ que viven solas",
+  "proporcion_sintetica": 0.02487935439393325,
+  "proporcion_oficial": 0.025469709001621387,
+  "ratio": 0.9768213053533296,
+  "fuente": "Censo 2021 (hogares unipersonales de 65+) sobre residentes en viviendas familiares ECP 2026",
+  "semaforo": "verde",
+  "motivo": null
+ },
+ {
+  "grupo": "nacidos_fuera_espanoles",
+  "nombre": "Nacidos fuera de España con nacionalidad española",
+  "proporcion_sintetica": 0.12200976078086247,
+  "proporcion_oficial": 0.11973537620453215,
+  "ratio": 1.0189950927489067,
+  "fuente": "Censo Anual exhaustivo a 01/01/2025 (microdatos)",
+  "semaforo": "verde",
+  "motivo": null
+ },
+ {
+  "grupo": "ceuta_melilla",
+  "nombre": "Residentes en Ceuta y Melilla",
+  "proporcion_sintetica": 1.0,
+  "proporcion_oficial": null,
+  "ratio": null,
+  "fuente": null,
+  "semaforo": "verde",
+  "motivo": "sin cifra oficial para este territorio"
+ },
+ {
+  "grupo": "municipios_menos_2000",
+  "nombre": "Residentes en municipios de menos de 2.000 habitantes",
+  "proporcion_sintetica": 0.0,
+  "proporcion_oficial": 0.0,
+  "ratio": null,
+  "fuente": "Padrón 2025 (población por tamaño de municipio)",
+  "semaforo": "verde",
+  "motivo": null
+ },
+ {
+  "grupo": "islas_no_capitalinas",
+  "nombre": "Residentes en islas no capitalinas",
+  "proporcion_sintetica": null,
+  "proporcion_oficial": null,
+  "ratio": null,
+  "fuente": null,
+  "semaforo": "no_medible",
+  "motivo": "Insularidad. No medible en la población base, porque los microdatos del Censo no identifican los municipios de menos de 10.000 habitantes; se puede construir como territorio por lista de municipios (F5)"
+ },
+ {
+  "grupo": "monoparentales",
+  "nombre": "Hogares monoparentales",
+  "proporcion_sintetica": 0.11143030419100514,
+  "proporcion_oficial": 0.11142017305531861,
+  "ratio": 1.0000909273016612,
+  "fuente": "Censo 2021 (tipo de hogar por tamaño) sobre hogares ECP 2026",
+  "semaforo": "verde",
+  "motivo": null
+ },
+ {
+  "grupo": "limitacion_grave",
+  "nombre": "Personas de 16+ con limitación grave (GALI)",
+  "proporcion_sintetica": 0.031001213979937384,
+  "proporcion_oficial": 0.030716471309108238,
+  "ratio": 1.0092700319631023,
+  "fuente": "ECV 2025 (16+, viviendas familiares)",
+  "semaforo": "verde",
+  "motivo": null
+ },
+ {
+  "grupo": "jovenes_ni_ni",
+  "nombre": "Jóvenes de 20 a 24 que ni estudian ni trabajan",
+  "proporcion_sintetica": 0.18735795454545454,
+  "proporcion_oficial": null,
+  "ratio": null,
+  "fuente": null,
+  "semaforo": "verde",
+  "motivo": "sin cifra oficial para este territorio"
+ },
+ {
+  "grupo": "parados",
+  "nombre": "Personas en paro (16+)",
+  "proporcion_sintetica": 0.1258184925911496,
+  "proporcion_oficial": 0.12648130731905277,
+  "ratio": 0.9947595835151262,
+  "fuente": "EPA 2T 2026 con el reparto del Censo Anual 2024 (objetivo actividad_sexo, D-046)",
+  "semaforo": "verde",
+  "motivo": null
+ },
+ {
+  "grupo": "sin_estudios",
+  "nombre": "Personas de 15+ sin estudios (analfabetas o con primaria incompleta)",
+  "proporcion_sintetica": 0.12831077830275964,
+  "proporcion_oficial": 0.1269936233237513,
+  "ratio": 1.0103718198168932,
+  "fuente": "Censo Anual a 01/01/2024, tabla 66601 («Sin estudios», 15+)",
+  "semaforo": "verde",
+  "motivo": null
+ },
+ {
+  "grupo": "privacion_severa",
+  "nombre": "Personas de 16+ en carencia material y social severa",
+  "proporcion_sintetica": 0.10923263689221135,
+  "proporcion_oficial": 0.1097169573661095,
+  "ratio": 0.9955857281725192,
+  "fuente": "ECV 2025 (16+, viviendas familiares; vrMATSOCDEP)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nunca_internet",
+  "nombre": "Personas de 16+ que nunca usan internet",
+  "proporcion_sintetica": 0.06607884480224906,
+  "proporcion_oficial": 0.04751868812902293,
+  "ratio": 1.3905864703762763,
+  "fuente": "TIC-H 2025 (16+, viviendas familiares)",
+  "semaforo": "verde",
+  "motivo": null
+ },
+ {
+  "grupo": "abstencion_generales",
+  "nombre": "Abstencionistas en las generales de 2023",
+  "proporcion_sintetica": null,
+  "proporcion_oficial": null,
+  "ratio": null,
+  "fuente": null,
+  "semaforo": "pendiente",
+  "motivo": "capa politica (F8)"
+ },
+ {
+  "grupo": "partidos_pequenos_regionalistas",
+  "nombre": "Votantes de partidos pequeños y regionalistas",
+  "proporcion_sintetica": null,
+  "proporcion_oficial": null,
+  "ratio": null,
+  "fuente": null,
+  "semaforo": "pendiente",
+  "motivo": "capa politica (F8)"
+ },
+ {
+  "grupo": "sin_derecho_voto_generales",
+  "nombre": "Residentes sin derecho a voto en generales",
+  "proporcion_sintetica": null,
+  "proporcion_oficial": null,
+  "ratio": null,
+  "fuente": null,
+  "semaforo": "pendiente",
+  "motivo": "capa politica (F8)"
+ },
+ {
+  "grupo": "sin_ubicacion_ideologica",
+  "nombre": "Personas sin ubicación ideológica",
+  "proporcion_sintetica": null,
+  "proporcion_oficial": null,
+  "ratio": null,
+  "fuente": null,
+  "semaforo": "pendiente",
+  "motivo": "capa politica (F8)"
+ },
+ {
+  "grupo": "nacionalidad_alemania",
+  "nombre": "Nacionalidad alemania",
+  "proporcion_sintetica": 0.0015301224097927833,
+  "proporcion_oficial": 0.001541854213651218,
+  "ratio": 0.9923911069188228,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_argentina",
+  "nombre": "Nacionalidad argentina",
+  "proporcion_sintetica": 0.00017001360108808705,
+  "proporcion_oficial": 0.00042418154830395376,
+  "ratio": 0.4008038580835704,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_china",
+  "nombre": "Nacionalidad china",
+  "proporcion_sintetica": 0.0008400672053764301,
+  "proporcion_oficial": 0.0005133299581166292,
+  "ratio": 1.6365053161100833,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_colombia",
+  "nombre": "Nacionalidad colombia",
+  "proporcion_sintetica": 0.006120489639171133,
+  "proporcion_oficial": 0.006104541123947165,
+  "ratio": 1.002612565776878,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_ecuador",
+  "nombre": "Nacionalidad ecuador",
+  "proporcion_sintetica": 0.0017801424113929115,
+  "proporcion_oficial": 8.789908869148988e-05,
+  "ratio": 20.252114531481592,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_francia",
+  "nombre": "Nacionalidad francia",
+  "proporcion_sintetica": 0.0012100968077446196,
+  "proporcion_oficial": 0.0011908560431720904,
+  "ratio": 1.016157086897991,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_honduras",
+  "nombre": "Nacionalidad honduras",
+  "proporcion_sintetica": 2.000160012801024e-05,
+  "proporcion_oficial": 9.4528869609242e-05,
+  "ratio": 0.21159250301724442,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_italia",
+  "nombre": "Nacionalidad italia",
+  "proporcion_sintetica": 0.0009400752060164813,
+  "proporcion_oficial": 0.0006211027753486448,
+  "ratio": 1.5135582118253894,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_marruecos",
+  "nombre": "Nacionalidad marruecos",
+  "proporcion_sintetica": 0.10958876710136811,
+  "proporcion_oficial": 0.10946559996778206,
+  "ratio": 1.0011251674829562,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "verde",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_paraguay",
+  "nombre": "Nacionalidad paraguay",
+  "proporcion_sintetica": 0.00018001440115209216,
+  "proporcion_oficial": 0.00010973887329129658,
+  "ratio": 1.6403886403521983,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_peru",
+  "nombre": "Nacionalidad peru",
+  "proporcion_sintetica": 0.0001000080006400512,
+  "proporcion_oficial": 0.0009221857136282048,
+  "ratio": 0.10844670348078193,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_reino_unido",
+  "nombre": "Nacionalidad reino_unido",
+  "proporcion_sintetica": 0.0002400192015361229,
+  "proporcion_oficial": 0.0004433926681088049,
+  "ratio": 0.5413242455268208,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_rumania",
+  "nombre": "Nacionalidad rumania",
+  "proporcion_sintetica": 0.00038003040243219456,
+  "proporcion_oficial": 0.00027461741151562583,
+  "ratio": 1.3838539964920276,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_ucrania",
+  "nombre": "Nacionalidad ucrania",
+  "proporcion_sintetica": 0.00011000880070405633,
+  "proporcion_oficial": 0.00017427385280986796,
+  "ratio": 0.6312409976043593,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ },
+ {
+  "grupo": "nacionalidad_venezuela",
+  "nombre": "Nacionalidad venezuela",
+  "proporcion_sintetica": 0.003940315225218018,
+  "proporcion_oficial": 0.003909100301468221,
+  "ratio": 1.007985193866239,
+  "fuente": "Censo Anual exhaustivo 2025 sobre extranjeros ECP 2026 (nacionalidad_top)",
+  "semaforo": "rojo",
+  "motivo": null
+ }
+]

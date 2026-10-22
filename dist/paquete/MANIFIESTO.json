@@ -1,6 +1,6 @@
 {
- "fecha": "2026-10-22T18:18:33+00:00",
- "version_codigo": "git:1bd342a-dirty",
+ "fecha": "2026-10-22T18:52:34+00:00",
+ "version_codigo": "git:efa9c48-dirty",
  "scikit_learn": "1.9.1",
  "preguntas_con_modelo": 2736,
  "poblaciones": [
@@ -26,7 +26,7 @@
   "2026-01-01_ES_1000000_s1",
   "2026-01-01_PROV_44_10000_s1"
  ],
- "contenido": "modelos ajustados (coeficientes), distribuciones y recuentos agregados, banco de enunciados públicos, marcos de poblaciones sintéticas y distribuciones de sus atributos (D-077); sin microdatos (D-076)",
+ "contenido": "modelos ajustados (coeficientes), distribuciones y recuentos agregados, banco de enunciados públicos, marcos de poblaciones sintéticas; sin microdatos (D-076)",
  "fuentes": "ver docs/guias/fuentes_y_citas.md",
  "aviso": "Resultados simulados con una población sintética: describen distribuciones de grupo, no a personas reales, y no sustituyen a una encuesta."
 }
