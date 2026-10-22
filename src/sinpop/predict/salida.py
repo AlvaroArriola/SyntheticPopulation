@@ -22,6 +22,10 @@ from sinpop import PROCESSED_DIR, REPORTS_DIR
 from sinpop.predict import estimador as E
 
 PREDICCIONES_DIR = REPORTS_DIR / "fase_09" / "predicciones"
+AVISO = (
+    "Resultado simulado con una población sintética (docs/08): describe distribuciones de grupo, "
+    "no a personas reales, y no sustituye a una encuesta."
+)
 
 _DIST = {
     "type": "object",
@@ -150,6 +154,8 @@ def construir(r: E.Resultado, run_id: str) -> dict:
     out = {
         "id": q.id,
         "run_id": run_id,
+        "resultado_simulado": True,
+        "aviso": AVISO,
         "total": _dist(q.opciones, r.sistema["total"], r.sistema_sd["total"], cal, sim),
         "medicion_cis": _dist(
             q.opciones, r.sistema_cis["total"], r.sistema_cis_sd["total"], cal, sim
@@ -250,6 +256,8 @@ def construir_asistida(q: E.Pregunta, r: E.Resultado, run_id: str) -> dict:
     out = {
         "id": q.id,
         "run_id": run_id,
+        "resultado_simulado": True,
+        "aviso": AVISO,
         "total": _dist_llm(q.opciones, dist["total"], cal),
         "medicion_cis": _dist_llm(q.opciones, dist["total"], cal),
         "por_subgrupo": {k: _dist_llm(q.opciones, v, cal) for k, v in dist.items() if k != "total"},

@@ -85,26 +85,65 @@ def antes(indicador: str, fecha: dt.date, ccaa: str | None = None) -> pl.DataFra
     )
 
 
-def predecir(indicador: str, fecha: dt.date, tipo: str, ambito: str = "ES") -> dict:
+def predecir(
+    indicador: str,
+    fecha: dt.date,
+    tipo: str,
+    ambito: str = "ES",
+    descripcion: str | None = None,
+    id_: str = "evento",
+) -> dict:
+    """Antes, después y cambio. Con el LLM activo y una descripción del evento, el cambio lo
+    propone el LLM (D-071) y la incertidumbre sigue siendo la de los eventos análogos."""
     ccaa = ambito.split(":")[1] if ambito.startswith("CCAA:") else None
     a = antes(indicador, fecha, ccaa)
     ef = efecto_por_analogia(indicador, tipo, ambito)
-    if ef is None:
+    llm = None
+    if descripcion:
+        from sinpop.llm import cliente as C
+
+        if C.disponible():
+            from sinpop.predict import asistido as A
+
+            pet = A.peticion_evento(
+                id_,
+                str(fecha),
+                descripcion,
+                ambito,
+                indicador,
+                dict(a.select("categoria", "antes").iter_rows()),
+                analogos_texto(indicador, tipo, ambito),
+            )
+            llm = C.ejecutar([pet])[pet.id]
+    if ef is None and llm is None:
         return {
             "indicador": indicador,
             "antes": a.to_dicts(),
             "cambio": None,
             "motivo": f"sin eventos de tipo {tipo} en el banco",
         }
-    x = a.join(ef, on="categoria", how="left").with_columns(
-        pl.col("cambio").fill_null(0.0), pl.col("incertidumbre").fill_null(0.0)
-    )
+    x = a
+    if ef is not None:
+        x = x.join(ef.select("categoria", "cambio", "incertidumbre"), on="categoria", how="left")
+    else:
+        x = x.with_columns(
+            pl.lit(None, pl.Float64).alias("cambio"),
+            pl.lit(None, pl.Float64).alias("incertidumbre"),
+        )
+    if llm is not None:
+        cambio_llm = {c["categoria"]: c["cambio_pp"] / 100 for c in llm["categorias"]}
+        x = x.with_columns(
+            pl.col("categoria").replace_strict(cambio_llm, default=0.0).alias("cambio")
+        )
+    x = x.with_columns(pl.col("cambio").fill_null(0.0), pl.col("incertidumbre").fill_null(0.0))
     despues = np.clip(x["antes"].to_numpy() + x["cambio"].to_numpy(), 0, 1)
     despues = despues / despues.sum()
     x = x.with_columns(pl.Series("despues", despues))
     return {
         "indicador": indicador,
         "mes_antes": a["mes"][0],
+        "metodo": "llm" if llm is not None else "analogia",
+        "justificacion_llm": llm["justificacion"] if llm is not None else None,
         "categorias": [
             {
                 "categoria": r["categoria"],
@@ -118,7 +157,9 @@ def predecir(indicador: str, fecha: dt.date, tipo: str, ambito: str = "ES") -> d
             }
             for r in x.iter_rows(named=True)
         ],
-        "eventos_analogos": sorted(set(sum((v or [] for v in ef["analogos"].to_list()), []))),
+        "eventos_analogos": sorted(set(sum((v or [] for v in ef["analogos"].to_list()), [])))
+        if ef is not None
+        else [],
     }
 
 

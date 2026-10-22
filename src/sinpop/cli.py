@@ -276,7 +276,22 @@ def politics(
     election: Annotated[str, typer.Option(help="Elección de referencia")] = "generales-2023",
 ) -> None:
     """Asigna la capa política calibrada a resultados oficiales (F8B)."""
-    _pendiente("politics", "F8B")
+    from sinpop import POPULATIONS_DIR
+
+    if election != "generales-2023":
+        typer.echo(
+            "Solo está calibrada la elección generales-2023 (D-067). Para otra, sigue la guía de "
+            "actualización tras unas elecciones (docs/guias/actualizacion.md).",
+            err=True,
+        )
+        raise typer.Exit(code=2)
+    if not (POPULATIONS_DIR / run / "opinion.parquet").exists():
+        typer.echo(f"{run}: falta opinion.parquet (sinpop opinion --run {run})", err=True)
+        raise typer.Exit(code=1)
+    from sinpop.politics.run import construir
+
+    m = construir(run)
+    typer.echo(f"{run}: politics.parquet · {m.get('personas', '')} adultos")
 
 
 @app.command()
@@ -286,7 +301,23 @@ def temporal(
     to: Annotated[str, typer.Option(help="Periodo final AAAA-MM")] = "2026-06",
 ) -> None:
     """Genera las trayectorias temporales de los rasgos (F8C)."""
-    _pendiente("temporal", "F8C")
+    import yaml
+
+    from sinpop import CONFIGS_DIR
+
+    periodo = yaml.safe_load((CONFIGS_DIR / "temporal.yaml").read_text("utf-8"))["periodo"]
+    desde, hasta = periodo["desde"], periodo["hasta"]
+    if (from_, to) != (desde, hasta):
+        typer.echo(
+            f"El periodo lo fija configs/temporal.yaml ({desde} a {hasta}); cambiarlo es una "
+            "decisión registrada que obliga a revalidar F8C.",
+            err=True,
+        )
+        raise typer.Exit(code=2)
+    from sinpop.temporal.trayectorias import construir
+
+    m = construir(run)
+    typer.echo(f"{run}: trajectories.parquet · {m.get('filas', '')} filas")
 
 
 @app.command()
@@ -295,8 +326,40 @@ def predict(
     question: Annotated[Path | None, typer.Option(help="preguntas/<id>.json")] = None,
     event: Annotated[Path | None, typer.Option(help="preguntas/<id>.json de tipo evento")] = None,
 ) -> None:
-    """Predice la distribución de respuestas a una pregunta o el efecto de un evento (F9)."""
-    _pendiente("predict", "F9")
+    """Predice la distribución de respuestas a una pregunta o el efecto de un evento (F9).
+
+    Las salidas son resultados simulados (docs/08), no una encuesta."""
+    import json
+
+    if (question is None) == (event is None):
+        typer.echo("Indica --question o --event (uno de los dos).", err=True)
+        raise typer.Exit(code=2)
+    if question is not None:
+        from sinpop.predict.salida import predecir_fichero
+
+        destino = predecir_fichero(question, run)
+        typer.echo(f"Predicción (resultado simulado): {destino}")
+        return
+    import datetime as dt
+
+    from sinpop.predict import evento as V
+    from sinpop.predict.salida import PREDICCIONES_DIR
+
+    e = json.loads(event.read_text("utf-8"))  # type: ignore[union-attr]
+    ev = e["evento"]
+    out = V.predecir(
+        ev["indicador"],
+        dt.date.fromisoformat(ev["fecha"]),
+        ev["tipo"],
+        ev.get("ambito", "ES"),
+        ev.get("descripcion"),
+        e["id"],
+    )
+    out = {"id": e["id"], "resultado_simulado": True, **out}
+    PREDICCIONES_DIR.mkdir(parents=True, exist_ok=True)
+    destino = PREDICCIONES_DIR / f"{e['id']}_evento.json"
+    destino.write_text(json.dumps(out, ensure_ascii=False, indent=1, default=str), "utf-8")
+    typer.echo(f"Evento (resultado simulado): {destino}")
 
 
 @app.command()

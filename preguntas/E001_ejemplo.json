@@ -1,0 +1,11 @@
+{
+  "id": "E001",
+  "tipo": "evento",
+  "evento": {
+    "fecha": "2026-05-17",
+    "descripcion": "Elecciones autonómicas de Andalucía",
+    "tipo": "politico",
+    "ambito": "CCAA:01",
+    "indicador": "cercania_partido"
+  }
+}

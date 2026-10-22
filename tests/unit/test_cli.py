@@ -26,7 +26,18 @@ def test_pending_commands_exit_with_code_2() -> None:
         app, ["build", "--territory", "MUNIS:configs/territorios/ejemplo_almeria.yaml"]
     )
     assert r.exit_code == 2
-    r = CliRunner().invoke(app, ["politics", "--run", "x"])
+    r = CliRunner().invoke(app, ["evaluate", "--tag", "x"])
+    assert r.exit_code == 2
+
+
+def test_politics_y_predict_validan_sus_argumentos() -> None:
+    r = CliRunner().invoke(app, ["politics", "--run", "no_existe"])
+    assert r.exit_code == 1
+    r = CliRunner().invoke(app, ["politics", "--run", "x", "--election", "generales-2019"])
+    assert r.exit_code == 2
+    r = CliRunner().invoke(app, ["predict", "--run", "x"])
+    assert r.exit_code == 2
+    r = CliRunner().invoke(app, ["temporal", "--run", "x", "--from", "2020-01"])
     assert r.exit_code == 2
 
 
