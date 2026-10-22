@@ -44,7 +44,7 @@ Una página (`src/sinpop/servicio/web/`) servida por `sinpop serve`, sin pasos d
 | ID | Resultado | Evidencia |
 | --- | --- | --- |
 | G14.1 Extremo a extremo | ✅ | Pregunta sobre España, mapa coloreado, pregunta sobre Madrid (100 000), evento y exploración; 0 errores de JavaScript |
-| G14.2 Ninguna cifra sin intervalo ni confianza | ✅ | En el DOM: 7/7 barras con IC 80 % y 95 %, 28/28 celdas con confianza y aviso de simulación en todos los resultados, también en el evento |
+| G14.2 Ninguna cifra sin intervalo ni confianza | ✅ | En el DOM: 7/7 barras con IC 80 % y 95 %, 77/77 celdas de subgrupo con confianza y aviso de simulación en todos los resultados, también en el evento |
 | G14.3 Accesibilidad | ✅ | axe-core: 0 avisos |
 | G14.4 Revisión humana | ⏸️ | Pendiente |
 
@@ -57,7 +57,11 @@ Capturas en `reports/fase_14/`:
 4. mapa coloreado;
 5. comunidad;
 6. evento;
-7. móvil.
+8. móvil;
+9. dato de la población;
+10. asistente de tamaño.
+
+También se comprueban las opciones propias pegadas con «;» y la plantilla «responsable» (D-085).
 
 En el contenedor de trabajo las teselas de OpenStreetMap están bloqueadas, por eso las capturas muestran solo los límites del INE. En un equipo con internet se ve el mapa de fondo.
 

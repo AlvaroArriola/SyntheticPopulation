@@ -30,6 +30,10 @@
    "procedencia": true,
    "fuentes": 2,
    "aviso": true
+  },
+  "opciones_propias": {
+   "pegadas": 3,
+   "plantilla": 6
   }
  },
  "errores_js": [],
