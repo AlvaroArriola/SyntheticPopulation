@@ -76,8 +76,17 @@ def _rutas() -> tuple[Path, Path]:
     return cache, REPO_ROOT / c.logs_dir / "gasto.jsonl"
 
 
+# Variable propia del proyecto: si la clave se guardara como ANTHROPIC_API_KEY, la usarían también
+# otras herramientas del entorno (por ejemplo, el propio agente de código) y gastarían de ella.
+VARIABLE_CLAVE = "SINPOP_ANTHROPIC_API_KEY"
+
+
+def _clave() -> str | None:
+    return os.environ.get(VARIABLE_CLAVE) or os.environ.get("ANTHROPIC_API_KEY")
+
+
 def credenciales() -> bool:
-    return any(os.environ.get(v) for v in ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN"))
+    return bool(_clave())
 
 
 def disponible() -> bool:
@@ -267,7 +276,7 @@ class AnthropicBackend:
     def __init__(self) -> None:
         import anthropic
 
-        self.cliente = anthropic.Anthropic()
+        self.cliente = anthropic.Anthropic(api_key=_clave())
 
     @staticmethod
     def _respuesta(msg: Any) -> Respuesta:

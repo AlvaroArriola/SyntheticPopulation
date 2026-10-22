@@ -119,7 +119,7 @@ Está **desactivada** por defecto y todo funciona sin ella (D-069, D-071). Se us
 
 Para activarla:
 
-1. Pon la clave del proveedor en el entorno, **nunca** en un fichero del repositorio: `export ANTHROPIC_API_KEY=…`.
+1. Pon la clave del proveedor en el entorno, **nunca** en un fichero del repositorio: `export SINPOP_ANTHROPIC_API_KEY=…`.
 2. En `configs/llm.yaml`, cambia `activo: false` por `activo: true`.
 3. Antes de gastar nada, consulta la cota de coste: `python -m sinpop.evaluate.llm --estimar`.
 

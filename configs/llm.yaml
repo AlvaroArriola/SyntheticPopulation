@@ -2,7 +2,7 @@
 #
 # Plug-and-play: con `activo: false` ninguna parte del sistema llama a un modelo y todo funciona
 # con el componente estadístico. Para activarlo hacen falta `activo: true` y la clave del
-# proveedor en el entorno (ANTHROPIC_API_KEY), nunca en este fichero ni en el repositorio.
+# proveedor en el entorno (SINPOP_ANTHROPIC_API_KEY), nunca en este fichero ni en el repositorio.
 #
 # Contaminación: la fecha de corte de conocimiento de cada modelo no puede ser posterior a la de
 # construcción (se comprueba al cargar). Los modelos de Anthropic de la tabla declaran «Training
