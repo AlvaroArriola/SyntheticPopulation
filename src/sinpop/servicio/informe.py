@@ -527,7 +527,8 @@ def generar(tipo: str, datos: dict, contexto: dict, etiquetas: dict) -> bytes:
             filas = [len([k for k in r["por_subgrupo"] if k.startswith(d + "=")]) for d in dims]
             alto_total, y = 0.78, 0.86
             for d, n in zip(dims, filas, strict=True):
-                h = alto_total * n / sum(filas) - 0.05
+                # cada bloque recibe altura según sus filas, con un mínimo para los de pocas filas
+                h = alto_total * (n + 2) / sum(f + 2 for f in filas) - 0.05
                 ax = fig.add_axes([0.36, y - h, 0.56, h])
                 _calor(ax, r, d)
                 y -= h + 0.06
