@@ -99,9 +99,12 @@ def buscar(enunciado: str, opciones: list[str] | None = None, k: int = 3) -> lis
 
 
 def _tabla(d: pl.DataFrame, v: str, cats: list[str]) -> dict:
-    t = dict(d.group_by(v).agg(pl.col("peso").sum()).iter_rows())
-    tot = sum(t.values()) or 1.0
-    return {c: t.get(c, 0.0) / tot for c in cats}
+    # sumas secuenciales en el orden del fichero (numpy), para que el resultado no dependa del
+    # reparto entre hilos (regla 6)
+    col = d[v].cast(pl.Utf8).fill_null("").to_numpy()
+    w = d["peso"].to_numpy().astype(float)
+    tot = float(w.sum()) or 1.0
+    return {c: float(w[col == c].sum()) / tot for c in cats}
 
 
 def _con_margen(d: pl.DataFrame, v: str, cats: list[str]) -> dict:

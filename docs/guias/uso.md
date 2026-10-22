@@ -145,6 +145,11 @@ En la interfaz:
 - **Tamaño:** número de personas de la población. En modo paquete solo se pueden usar las poblaciones que van dentro (las marcadas como listas); generar poblaciones nuevas necesita los datos originales (sección 4).
 - **Pregunta:** escribe el enunciado y sus opciones. Mientras escribes, salen preguntas parecidas del banco del CIS. El resultado trae la distribución con intervalos del 80 % y del 95 %, la confianza, los subgrupos y las preguntas del CIS en las que se apoya.
 - **Evento:** describe un acontecimiento y su fecha para ver el antes y el cambio esperado sobre la pregunta.
+- **Datos de la población (INE y otras fuentes):** si lo que preguntas ya es un atributo de la población (salud, uso de internet, situación laboral, llegar a fin de mes, vivienda, renta…), la interfaz lo propone arriba de las sugerencias. Se muestra como **dato, no como predicción**: proporción ponderada, margen de simulación, de dónde sale cada valor (registro censal, emparejado con la encuesta oficial…) y la fuente con su variable original (D-077).
+- **¿Qué tamaño necesito?** (debajo de los tamaños): según el detalle que quieras ver y el margen de simulación que aceptes, recomienda un tamaño y te dice cuánta confianza puedes esperar en ese territorio. La confianza depende sobre todo de cuántos encuestados tiene el CIS allí; más personas sintéticas no la suben (D-079).
+- **Exportar:** cada resultado se descarga como **informe PDF** (resumen automático y cuatro páginas de gráficos), **CSV** (para Excel en español) o **JSON** (D-078).
+- **Comparar comunidades:** sobre una pregunta de España, repite la pregunta en cada comunidad con su propia población y colorea el mapa con esos valores (D-080).
+- **Consultas recientes:** las últimas diez se guardan en tu navegador y se reabren sin recalcular.
 - **Modelo de lenguaje (opcional):** con `SINPOP_ANTHROPIC_API_KEY` en el entorno, las preguntas sin precedentes y los eventos usan el modelo, con los topes de la sección 6. Sin clave, la interfaz lo dice y devuelve solo lo que se puede calcular sin él.
 
 Donde están los datos, el paquete se rehace con `python -m sinpop.paquete.exportar` (≈ 1-2 h) y la interfaz completa, que sí genera poblaciones, se abre con `sinpop serve`.

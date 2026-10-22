@@ -156,14 +156,26 @@ def composicion_cis(territorio: str = "ES") -> dict[str, dict[str, float]]:
     if territorio != "ES":
         nivel, cod = territorio.split(":")
         p = p.filter(pl.col("ccaa" if nivel == "CCAA" else "provincia") == cod)
-    d = p.join(RV.respuestas(), on=["estudio", "encuestado"]).with_columns(
-        grupo_voto(pl.col("recuerdo")),
-        (_edad4(pl.col("edad")) + "|" + pl.col("sexo")).alias("_edad_sexo"),
-        (pl.col("peso") / pl.col("peso").mean().over("estudio")).alias("peso"),
+    d = (
+        p.join(RV.respuestas(), on=["estudio", "encuestado"])
+        .with_columns(
+            grupo_voto(pl.col("recuerdo")),
+            (_edad4(pl.col("edad")) + "|" + pl.col("sexo")).alias("_edad_sexo"),
+        )
+        .sort("estudio", "encuestado")
     )
+    # sumas secuenciales en orden fijo (numpy): las agregaciones en paralelo de Polars dejan
+    # ruido de 1e-16 que cambia los pesos del rastrillo de una ejecución a otra (regla 6)
+    estudio = d["estudio"].to_numpy()
+    _, ie = np.unique(estudio, return_inverse=True)
+    w = d["peso"].to_numpy().astype(float)
+    media = np.bincount(ie, weights=w) / np.bincount(ie)
+    w = w / media[ie]
     out = {}
     for dim in DIMENSIONES_CIS:
-        t = d.filter(pl.col(dim).is_not_null()).group_by(dim).agg(pl.col("peso").sum())
-        tot = t["peso"].sum()
-        out[dim] = {g: w / tot for g, w in t.iter_rows()}
+        col = d[dim].to_numpy()
+        ok = np.array([x is not None for x in col])
+        claves, inv = np.unique(col[ok].astype(str), return_inverse=True)
+        sumas = np.bincount(inv, weights=w[ok])
+        out[dim] = {str(g): float(x / sumas.sum()) for g, x in zip(claves, sumas, strict=True)}
     return out
