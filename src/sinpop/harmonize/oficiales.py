@@ -356,25 +356,45 @@ def _w(df: pl.DataFrame, cond: pl.Expr, peso: str = "peso") -> float:
     return float(df.filter(cond)[peso].sum())
 
 
-def encuestas() -> list[Cifra]:
-    out: list[Cifra] = []
-    # ---------------------------------------------------- EPA 2T2026 (nota de prensa EPA2T26)
-    epa = pl.read_parquet(INTERIM_DIR / "epa.parquet")
-    ref = "INE, nota de prensa EPA 2T2026"
+# Cifras de la nota de prensa de cada edición de la EPA (data/raw/epa/<edición>/EPA<t>T<aa>.pdf).
+# Una edición nueva necesita aquí sus cifras antes de armonizarla (guía de actualización, §1).
+CIFRAS_EPA = {
+    "2T2026": {
+        "ocupados": 22_779_000,
+        "parados": 2_495_300,
+        "tasa_paro": 9.87,
+        "publico": 3_646_900,
+    },
+    "1T2026": {
+        "ocupados": 22_293_000,
+        "parados": 2_708_600,
+        "tasa_paro": 10.83,
+        "publico": 3_662_500,
+    },
+}
+
+
+def cifras_epa(epa: pl.DataFrame, edicion: str | None = None) -> list[Cifra]:
+    from sinpop.harmonize.encuestas import edicion_epa
+
+    ed = edicion or edicion_epa()
+    if ed not in CIFRAS_EPA:
+        raise KeyError(f"faltan las cifras oficiales de la EPA {ed} (nota de prensa) en CIFRAS_EPA")
+    c, ref = CIFRAS_EPA[ed], f"INE, nota de prensa EPA {ed}"
     oc = _w(epa, pl.col("relacion_actividad_3") == "ocupado")
     pa = _w(epa, pl.col("relacion_actividad_3") == "parado")
     pub = _w(
         epa, (pl.col("relacion_actividad_3") == "ocupado") & (pl.col("sector_publico") == "si")
     )
-    out += [
-        Cifra("epa", "2T2026", "Ocupados", "España", 22_779_000, round(oc), 50, "exacta", ref),
-        Cifra("epa", "2T2026", "Parados", "España", 2_495_300, round(pa), 50, "exacta", ref),
+    return [
+        Cifra("epa", ed, "Ocupados", "España", c["ocupados"], round(oc), 50, "exacta", ref),
+        Cifra("epa", ed, "Parados", "España", c["parados"], round(pa), 50, "exacta", ref),
         Cifra(
             "epa",
-            "2T2026",
+            ed,
             "Tasa de paro, %",
             "España",
-            9.87,
+            c["tasa_paro"],
             _pct(pa, oc + pa),
             0.005,
             "exacta",
@@ -382,16 +402,22 @@ def encuestas() -> list[Cifra]:
         ),
         Cifra(
             "epa",
-            "2T2026",
+            ed,
             "Asalariados del sector público",
             "España",
-            3_646_900,
+            c["publico"],
             round(pub),
             50,
             "exacta",
             ref,
         ),
     ]
+
+
+def encuestas() -> list[Cifra]:
+    out: list[Cifra] = []
+    # ---------------------------------------------------- EPA (nota de prensa de la edición)
+    out += cifras_epa(pl.read_parquet(INTERIM_DIR / "epa.parquet"))
     # ---------------------------------------------------- ECV 2025 (nota de prensa ECV2025)
     ecv = pl.read_parquet(INTERIM_DIR / "ecv.parquet")
     ref = "INE, nota de prensa ECV 2025"

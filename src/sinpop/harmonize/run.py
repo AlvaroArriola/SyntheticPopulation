@@ -109,7 +109,7 @@ def _pasos() -> list[Paso]:
             lambda: censos.censo_anual_exhaustivo(tam=t()),
         ),
         Paso("ecv", "ecv", ("ecv/2025/",), encuestas.ecv),
-        Paso("epa", "epa", ("epa/2T2026/",), encuestas.epa),
+        Paso("epa", "epa", (f"epa/{encuestas.edicion_epa()}/",), encuestas.epa),
         Paso("tic_h", "tic_h", ("tic_h/2025/",), encuestas.tic_h),
         Paso(
             "encuesta_salud", "encuesta_salud", ("encuesta_salud/2023/",), encuestas.encuesta_salud

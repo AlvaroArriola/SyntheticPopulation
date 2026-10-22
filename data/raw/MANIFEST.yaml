@@ -6536,6 +6536,36 @@ ficheros:
   condiciones: 'INE: citar al INE como fuente del dato primario'
   via: automatica
 - fuente: epa
+  fichero: epa/1T2026/EPA1T26.pdf
+  tipo: metodologia
+  edicion: 1T2026
+  url_oficial: https://www.ine.es/dyngs/Prensa/EPA1T26.pdf
+  fecha_descarga: '2026-10-22'
+  sha256: 519c491fb2f85bb5bc633cd007c4495a9dfd1941dbd90561d0e183253b32e5b2
+  bytes: 224258
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: epa
+  fichero: epa/1T2026/datos_1t26.zip
+  tipo: datos
+  edicion: 1T2026
+  url_oficial: https://www.ine.es/ftp/microdatos/epa/datos_1t26.zip
+  fecha_descarga: '2026-10-22'
+  sha256: 131982744855e51b99f81eb7fc4ea727ffbc000f74b2ee737000db7e912560c6
+  bytes: 20714241
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: epa
+  fichero: epa/1T2026/extraido/md_EPA_2026T1.parquet
+  tipo: datos
+  edicion: 1T2026
+  url_oficial: https://www.ine.es/ftp/microdatos/epa/datos_1t26.zip#md_EPA_2026T1.parquet
+  fecha_descarga: '2026-10-22'
+  sha256: 9e5dd50ffd5a7a121137a038b4d393e0c1d88f33d7310156fbcb8ff0d73e32d3
+  bytes: 3214459
+  condiciones: 'INE: citar al INE como fuente del dato primario'
+  via: automatica
+- fuente: epa
   fichero: epa/2T2026/EPA2T26.pdf
   tipo: metodologia
   edicion: 2T2026

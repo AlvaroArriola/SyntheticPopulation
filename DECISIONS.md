@@ -1637,3 +1637,35 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - **Umbral propuesto:** 1,25 (V-LLM-ESTEREOTIPO, `estado: propuesta`). `docs/06` no fija número; **necesita aprobación humana**. Mientras tanto, G9.7 queda en revisión humana aunque se cumpla.
   - **Homogeneidad:** no aplica, porque no se simulan personas.
   - **Auditoría de justificaciones:** todas se guardan en `reports/fase_09/llm_justificaciones.csv` y se revisan a mano; el resultado va a `llm_auditoria_justificaciones.json`.
+
+## D-072 · F11 preparada, CLI completa y F12 sin LLM (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F11-F12 (preparación); revisión humana pendiente en G11.3, G12.1 y G12.4.
+- **Estado:** decisión del agente.
+- **F11** (`src/sinpop/evaluate/final.py`):
+  - **Etiqueta congelada:** se niega a ejecutarse si HEAD no es la etiqueta o si hay cambios sin confirmar.
+  - **Una sola vez:** se niega a repetirse si ya existe `reports/fase_11_evaluacion.json`.
+  - **Qué mide:** el sistema, B0, B1 y B2 en total, por subgrupo y por comunidad, más la cobertura y la calibración de la confianza declarada. Separa las preguntas políticas de las de vida cotidiana.
+  - **Sistema final:** el LLM anclado en las preguntas sin análogas fiables, solo si en validación se decidió usarlo (D-071); el componente estadístico en el resto.
+  - **Comando:** se lanza con `python -m sinpop.evaluate.final --tag <etiqueta>` y no desde `sinpop evaluate`. La CLI no puede importar `sinpop.evaluate` (regla 5, `tests/test_no_leakage.py`), y no se ha sorteado el test.
+  - **Tarea 5 de F11 (estimación antes de una elección real):** solo es posible si hay una elección entre la congelación del código y su resultado. Se comprobará al congelar. No se inventa ninguna.
+- **CLI:**
+  - `sinpop politics`, `sinpop temporal` y `sinpop predict` (preguntas y eventos) estaban como «pendiente» y ahora ejecutan las capas ya validadas.
+  - Las opciones que el sistema no soporta (otra elección de referencia u otro periodo temporal) se rechazan con un mensaje, en lugar de producir algo no validado.
+  - Todas las salidas de predicción llevan `resultado_simulado: true` y un aviso (`docs/08` §2.3).
+- **Fecha de corte única:** `tests/unit/test_corte.py` exige que las constantes de corte de cada capa coincidan con `fecha_corte_construccion` (`configs/llm.yaml`). Se descarta refactorizar código ya validado: el test basta para que un cambio de corte no quede a medias.
+- **EPA:**
+  - La edición se lee de `configs/sources.yaml` (`edicion_epa`, `ruta_epa`).
+  - Las cifras oficiales están por edición en `oficiales.CIFRAS_EPA`. Para el 1T 2026 se han tomado de la nota de prensa del INE EPA1T26, registrada en el manifiesto.
+  - Con la edición en uso (2T 2026) el fichero armonizado es idéntico, byte a byte, al de producción.
+- **G12.2:** `tools/prueba_actualizacion.py` sustituye la EPA 2T 2026 por la 1T 2026 siguiendo la guía, en una carpeta temporal.
+  - Resultado: 0 valores fuera de dominio, 4/4 cifras de la nota de prensa reproducidas y producción intacta.
+  - La prueba también destapó que el resto de fuentes tienen la edición escrita en el código. La guía lo dice y apunta al modelo de la EPA.
+- **G12.3:** se comprueba automáticamente:
+  - las condiciones de cada fichero del manifiesto;
+  - una cita para cada fuente (`docs/guias/fuentes_y_citas.md`, generado con `python -m sinpop.audit.citas`);
+  - que la caché del LLM solo guarde salidas y metadatos;
+  - que las salidas estén marcadas como simuladas.
+  - Se añade al registro de fuentes la ECEPOV 2021, que estaba en el manifiesto y no en `sources.yaml`.
+- **Guías:** `docs/guias/uso.md`, `actualizacion.md` (fuentes, elecciones, actualización mensual y cambio de modelo) y `limites_de_uso.md`. La ficha de modelo final se escribe tras F11, con sus resultados.

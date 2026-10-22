@@ -1,0 +1,41 @@
+{
+ "fuente": "epa",
+ "edicion_en_uso": "2T2026",
+ "edicion_nueva": "1T2026",
+ "filas": 111344,
+ "fuera_de_dominio": {},
+ "cifras": [
+  {
+   "cifra": "Ocupados",
+   "oficial": 22293000,
+   "reproducida": 22292950,
+   "diferencia": -50,
+   "tolerancia": 50
+  },
+  {
+   "cifra": "Parados",
+   "oficial": 2708600,
+   "reproducida": 2708607,
+   "diferencia": 7,
+   "tolerancia": 50
+  },
+  {
+   "cifra": "Tasa de paro, %",
+   "oficial": 10.83,
+   "reproducida": 10.8338,
+   "diferencia": 0.0038000000000000256,
+   "tolerancia": 0.005
+  },
+  {
+   "cifra": "Asalariados del sector público",
+   "oficial": 3662500,
+   "reproducida": 3662454,
+   "diferencia": -46,
+   "tolerancia": 50
+  }
+ ],
+ "produccion_sin_cambios": true,
+ "edicion_en_uso_reproduce_produccion": true,
+ "superada": true,
+ "resumen": "EPA 2T2026 → 1T2026: 111344 filas; fuera de dominio: 0 columnas; cifras de la nota de prensa 4/4; producción intacta: True; 2T2026 reproduce el fichero de producción: True"
+}

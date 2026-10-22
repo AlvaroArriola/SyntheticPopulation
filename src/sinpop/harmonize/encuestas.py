@@ -13,7 +13,21 @@ from sinpop import RAW_DIR
 from sinpop.harmonize.core import edad_4, edad_5, recode
 
 ECV = RAW_DIR / "ecv/2025/extraido"
-EPA = RAW_DIR / "epa/2T2026/extraido/md_EPA_2026T2.parquet"
+
+
+def edicion_epa() -> str:
+    """Edición de la EPA en uso: la de `configs/sources.yaml` (guía de actualización, §1)."""
+    from sinpop.config import load_config
+
+    return next(f.edicion for f in load_config("sources.yaml").fuentes if f.id == "epa")  # type: ignore[attr-defined]
+
+
+def ruta_epa(edicion: str | None = None):
+    """Microdatos de una edición trimestral, p. ej. 2T2026 → epa/2T2026/extraido/md_EPA_2026T2."""
+    ed = edicion or edicion_epa()
+    return RAW_DIR / f"epa/{ed}/extraido/md_EPA_{ed[2:]}T{ed[0]}.parquet"
+
+
 TIC = RAW_DIR / "tic_h/2025/extraido/FicheroCuestionario/md_TICHcuestionario_2025.parquet"
 SAL = RAW_DIR / "encuesta_salud/2023/extraido/ESdEadulto_2023/md_ESdEadulto_2023.parquet"
 
@@ -295,7 +309,7 @@ def _actividad_epa(df: pl.DataFrame, menor16: pl.Expr) -> pl.Series:
 
 def epa() -> pl.DataFrame:
     cols = COLS_EPA
-    df = pl.read_parquet(EPA, columns=cols).with_columns(
+    df = pl.read_parquet(ruta_epa(), columns=cols).with_columns(
         pl.col(c).cast(pl.Utf8).fill_null("") for c in cols if c != "FACTOREL"
     )
     s = "epa"

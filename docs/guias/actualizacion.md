@@ -13,9 +13,16 @@ Nunca se relaja un umbral para que una puerta pase.
 Por ejemplo, la ECV 2026, la EPA del trimestre siguiente o la ECP a 1 de enero de 2027.
 
 1. **Descargar y registrar.**
-   - Ejecuta `sinpop ingest --source <id> --url <url oficial>`, o `--ine-table <id>` para las tablas del INE.
+   - Ejecuta `sinpop ingest --source <id> --url <url oficial> --edition <edición> --tipo datos`, o `--ine-table <id>` para las tablas del INE.
+   - Descarga también la nota de prensa (`--tipo metodologia`).
+   - Si el zip trae el fichero de microdatos, extráelo con `sinpop ingest --source <id> --edition <edición> --extract "<patrón>"`.
    - El manifiesto `data/raw/MANIFEST.yaml` guarda la edición, la URL y el SHA-256.
    - Actualiza `edicion` y `url_oficial` de la fuente en `configs/sources.yaml`.
+   - **Dónde vive la edición en el código:**
+     - **EPA:** se lee de `sources.yaml`, sin tocar código.
+     - **Resto de fuentes:** la ruta de la edición sigue escrita en el paso de `src/sinpop/harmonize/run.py` y en la constante de ruta del lector (`harmonize/encuestas.py`, `harmonize/censos.py`). Cámbiala allí siguiendo el modelo de la EPA (`edicion_epa`, `ruta_epa`).
+   - **Cifras oficiales:** añade las de la nota de prensa de la edición nueva en `src/sinpop/harmonize/oficiales.py` (para la EPA, en `CIFRAS_EPA`). Sin ellas, la comprobación se detiene.
+   - **Prueba de esta guía (G12.2):** `python tools/prueba_actualizacion.py` sustituye la EPA 2T 2026 por la 1T 2026 en una carpeta temporal. El resultado está en `reports/fase_12/prueba_actualizacion.json`.
 2. **Comprobar el diseño de registro** contra el de la edición anterior (regla 2).
    - Si cambia un código, una categoría o un nombre de variable, se actualiza su recodificación en `configs/variables.yaml`, verificada contra el diseño de registro nuevo.
    - Un código no documentado detiene el proceso y se registra como duda.
