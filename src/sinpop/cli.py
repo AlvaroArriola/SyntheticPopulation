@@ -389,5 +389,17 @@ def evaluate(tag: Annotated[str, typer.Option(help="Etiqueta git congelada")]) -
     raise typer.Exit(code=2)
 
 
+@app.command()
+def serve(
+    host: Annotated[str, typer.Option(help="Dirección de escucha")] = "127.0.0.1",
+    port: Annotated[int, typer.Option(help="Puerto")] = 8000,
+) -> None:
+    """Abre la interfaz web y el servicio de consulta local (F13-F14)."""
+    from sinpop.servicio.app import servir
+
+    typer.echo(f"Interfaz en http://{host}:{port}  (Ctrl+C para salir)")
+    servir(host, port)
+
+
 if __name__ == "__main__":  # pragma: no cover
     app()

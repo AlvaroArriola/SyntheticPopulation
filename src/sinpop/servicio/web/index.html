@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>España sintética</title>
+  <meta name="description" content="Pregunta a una población sintética de las personas adultas residentes en España. Resultados simulados.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%232a78d6'/%3E%3Ccircle cx='11' cy='13' r='3' fill='white'/%3E%3Ccircle cx='21' cy='13' r='3' fill='white' opacity='.7'/%3E%3Ccircle cx='16' cy='21' r='3' fill='white' opacity='.85'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="cabecera">
+    <div class="marca">
+      <span class="logo" aria-hidden="true"><i></i><i></i><i></i></span>
+      <div>
+        <h1>España sintética</h1>
+        <p>Población sintética de 18 años o más · datos hasta junio de 2026</p>
+      </div>
+    </div>
+    <div class="cabecera-acciones">
+      <span class="pildora" id="llm" title="Gasto acumulado del modelo de lenguaje frente al tope del proyecto">LLM —</span>
+      <button class="icono" id="tema" type="button" aria-label="Cambiar entre modo claro y oscuro" title="Modo claro u oscuro">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="disposicion">
+    <section class="mapa-envoltorio" aria-label="Mapa para elegir el territorio">
+      <div id="mapa"></div>
+      <div class="niveles" role="radiogroup" aria-label="Nivel territorial">
+        <button role="radio" aria-checked="true" data-nivel="ES">España</button>
+        <button role="radio" aria-checked="false" data-nivel="CCAA">Comunidades</button>
+        <button role="radio" aria-checked="false" data-nivel="PROV">Provincias</button>
+      </div>
+      <div class="leyenda-mapa" id="leyenda-mapa" hidden></div>
+      <button class="ir-canarias" id="canarias" type="button">Canarias</button>
+    </section>
+
+    <aside class="panel" aria-label="Consulta">
+      <section class="tarjeta" aria-labelledby="t-territorio">
+        <div class="paso"><span>1</span><h2 id="t-territorio">Territorio</h2></div>
+        <p class="territorio" id="territorio-nombre">España</p>
+        <p class="ayuda">Elige el nivel arriba del mapa y pulsa una comunidad o una provincia.</p>
+      </section>
+
+      <section class="tarjeta" aria-labelledby="t-tamano">
+        <div class="paso"><span>2</span><h2 id="t-tamano">Tamaño de la población</h2></div>
+        <div class="tamanos" role="radiogroup" aria-label="Número de personas sintéticas" id="tamanos"></div>
+        <div class="estado-poblacion" id="estado-poblacion" aria-live="polite"></div>
+      </section>
+
+      <section class="tarjeta" aria-labelledby="t-pregunta">
+        <div class="paso"><span>3</span><h2 id="t-pregunta">Pregunta</h2></div>
+        <div class="pestanas" role="tablist">
+          <button role="tab" aria-selected="true" data-modo="pregunta" id="tab-pregunta">Pregunta</button>
+          <button role="tab" aria-selected="false" data-modo="evento" id="tab-evento">¿Y si ocurre…?</button>
+        </div>
+        <label class="campo">
+          <span>Enunciado</span>
+          <textarea id="enunciado" rows="3" placeholder="Por ejemplo: ¿Cómo calificaría usted la situación económica actual de España?"></textarea>
+        </label>
+        <div class="sugerencias" id="sugerencias" hidden>
+          <p class="sugerencias-titulo">Preguntas parecidas del CIS</p>
+          <ul id="lista-sugerencias"></ul>
+        </div>
+        <div class="campo">
+          <span>Opciones de respuesta</span>
+          <div class="opciones" id="opciones"></div>
+          <div class="fila">
+            <input id="nueva-opcion" type="text" placeholder="Añadir opción y pulsar Intro" aria-label="Nueva opción">
+            <select id="plantillas" aria-label="Plantillas de opciones">
+              <option value="">Plantillas…</option>
+              <option value="si_no">Sí / No</option>
+              <option value="acuerdo">De acuerdo (5)</option>
+              <option value="valoracion">Muy buena … Muy mala</option>
+              <option value="intensidad">Mucho … Nada</option>
+            </select>
+          </div>
+          <label class="casilla"><input type="checkbox" id="nsnc" checked> Incluir «N.S.» y «N.C.»</label>
+        </div>
+        <div class="evento-campos" id="evento-campos" hidden>
+          <label class="campo"><span>¿Qué ocurre?</span>
+            <textarea id="evento-descripcion" rows="2" placeholder="Por ejemplo: el Gobierno anuncia una subida del salario mínimo"></textarea>
+          </label>
+          <label class="campo"><span>Fecha del evento</span>
+            <input id="evento-fecha" type="date" value="2026-11-01">
+          </label>
+        </div>
+        <button class="primario" id="preguntar" type="button">Preguntar a la población</button>
+        <p class="trabajo" id="trabajo" aria-live="polite"></p>
+      </section>
+
+      <section class="tarjeta resultado" id="resultado" hidden aria-live="polite"></section>
+    </aside>
+  </main>
+
+  <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
