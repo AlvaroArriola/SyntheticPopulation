@@ -33,7 +33,7 @@ tareas:
     max_tokens: 12000
   pregunta_nueva:
     modelo: claude-opus-5-5
-    prompt: pregunta_nueva@v2
+    prompt: pregunta_nueva@v3
     esfuerzo: medium
     max_tokens: 6000
   evento:

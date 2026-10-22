@@ -207,7 +207,14 @@ def _evento(q: dict, ev: dict, rid: str, avance) -> dict:
     )
     from sinpop.predict.salida import AVISO
 
-    return {"id": q["id"], "run_id": rid, "resultado_simulado": True, "aviso": AVISO, **out}
+    return {
+        "id": q["id"],
+        "run_id": rid,
+        "resultado_simulado": True,
+        "aviso": AVISO,
+        **out,
+        "historial": V.historial(),
+    }
 
 
 def _id_pregunta(enunciado: str, opciones: list[str]) -> str:

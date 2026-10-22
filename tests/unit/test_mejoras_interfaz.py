@@ -145,3 +145,17 @@ def test_fallo_del_llm_cae_al_estimador_sin_llm(monkeypatch) -> None:
     out = S.predecir_dict(q, "r")
     assert "no dio una respuesta válida" in out["aviso"]
     assert "ValueError" in out["parametros"]["llm_fallo"]
+
+
+def test_historial_de_eventos_en_el_paquete(tmp_path, monkeypatch) -> None:
+    """D-086: el resultado de un evento lleva su acierto medido; en el paquete sale de un JSON."""
+    import json
+
+    from sinpop import paquete as PK
+    from sinpop.predict import evento as V
+
+    h = {"con_llm": {"eventos": 16, "eventos_correctos": 8, "error_magnitud_pp": 3.9}}
+    (tmp_path / "historial_eventos.json").write_text(json.dumps(h), "utf-8")
+    monkeypatch.setattr(PK, "activo", lambda: True)
+    monkeypatch.setattr(PK, "ruta", lambda *p: tmp_path.joinpath(*p))
+    assert V.historial() == h

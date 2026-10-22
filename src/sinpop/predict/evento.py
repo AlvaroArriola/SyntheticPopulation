@@ -33,6 +33,33 @@ def banco() -> pl.DataFrame:
     return pl.read_parquet(f).filter(pl.col("grupo") == "nacional")
 
 
+def historial() -> dict | None:
+    """Acierto medido del modo evento en los eventos pasados de la ventana de validación (G9.6),
+    con y sin LLM, para enseñarlo junto a cada resultado (D-086)."""
+    import json
+
+    from sinpop import REPO_ROOT
+    from sinpop import paquete as PK
+
+    if PK.activo():
+        f = PK.ruta("historial_eventos.json")
+        return json.loads(f.read_text("utf-8")) if f.exists() else None
+    out = {}
+    for clave, fichero, campo in (
+        ("sin_llm", "fase_09_validacion.json", "g9_6"),
+        ("con_llm", "fase_09_llm.json", "g9_6_llm"),
+    ):
+        f = REPO_ROOT / "reports" / fichero
+        g = json.loads(f.read_text("utf-8")).get(campo) if f.exists() else None
+        if g:
+            out[clave] = {
+                "eventos": g["eventos"],
+                "eventos_correctos": g["eventos_correctos"],
+                "error_magnitud_pp": round(g["error_magnitud_pp_medio"], 1),
+            }
+    return out or None
+
+
 def tipos() -> dict[str, str]:
     from sinpop.config import load_config
 

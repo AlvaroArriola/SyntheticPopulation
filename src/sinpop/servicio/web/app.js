@@ -1120,6 +1120,7 @@ function pintarEvento(r, enunciado, opciones, pob) {
     <div class="leyenda-barras"><span><i style="background:var(--texto-3)"></i>Antes</span>${conCambio ? `<span><i style="background:var(--serie)"></i>Después</span><span>Valor: cambio en puntos</span>` : ""}</div>
     ${r.justificacion_llm ? `<p class="justificacion">«${escapar(r.justificacion_llm)}»</p>` : ""}
     ${!conCambio ? `<p class="aviso">${escapar(r.motivo || "Sin cambio estimado.")}</p>` : ""}
+    ${notaHistorial(r.historial, conCambio && r.justificacion_llm)}
     <p class="aviso">${escapar(r.aviso)}</p>`;
   caja.querySelectorAll(".pista").forEach((el, i) => {
     const c = r.categorias[i];
@@ -1127,6 +1128,13 @@ function pintarEvento(r, enunciado, opciones, pob) {
     el.addEventListener("mouseleave", ocultarTooltip);
   });
   caja.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// acierto medido en eventos pasados (G9.6): el modo evento es un escenario, no una predicción
+function notaHistorial(h, conLlm) {
+  const x = h?.[conLlm ? "con_llm" : "sin_llm"];
+  if (!x) return "";
+  return `<p class="nota">Fiabilidad medida: en ${x.eventos} eventos pasados, la dirección del cambio acertó en ${x.eventos_correctos} (${pct(x.eventos_correctos / x.eventos)}), con un error medio de ${x.error_magnitud_pp.toLocaleString("es-ES")} puntos. Tómalo como un escenario razonado, no como una predicción.</p>`;
 }
 
 // ------------------------------------------------------------------ LLM

@@ -272,6 +272,11 @@ def auxiliares(destino: Path) -> None:
     if M.RECALIBRACION.exists():
         shutil.copy(M.RECALIBRACION, destino / "confianza" / "recalibracion.pkl")
     shutil.copy(EV.DESTINO, destino / "banco_efectos_eventos.parquet")
+    from sinpop.predict import evento as PE
+
+    hist = PE.historial()
+    if hist:
+        (destino / "historial_eventos.json").write_text(json.dumps(hist, indent=1), "utf-8")
 
 
 def construir(destino: Path = DESTINO, procesos: int = 2) -> dict:
