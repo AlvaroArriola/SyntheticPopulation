@@ -75,11 +75,16 @@ Detalle por pregunta: `reports/fase_09/validacion_preguntas.csv`. *Backtest* de 
 - Varios «fallos» son efectos reales no significativos (el IC 95 % del cambio observado incluye 0: e003 ideología, e004 problema político, e013 y e014). Contarlos como fallos o aciertos es azar.
 - No se ha ajustado el método a estos 15 eventos: con tan pocos casos, cualquier regla elegida mirando el resultado sería sobreajuste.
 
-## Qué hace falta para cerrar la puerta (decisión humana)
+## Qué hace falta para cerrar la puerta
 
-1. **Información del evento que el tipo no tiene:** quién gana o pierde y en qué dirección. Es el primer caso en que un modelo de lenguaje aporta una ventaja real (D-069): leer la descripción del evento y proponer la dirección por partido. También podría darla un analista como parte de la pregunta.
-   - Propuesta: un piloto pequeño con un modelo declarado en `configs/llm.yaml` (menos de 5 $ o un modelo local), con *backtest* sobre estos 16 eventos y la misma métrica.
-2. **Definición de la métrica:** contar solo los pares evento × indicador cuyo efecto observado sea significativo. Cambiar la definición de V-EVENTO es relajar una puerta, así que no se ha hecho sin aprobación.
+**Decisión de la persona responsable (D-071, 2026-10-22):**
+- **El LLM entra al final**, con un tope de 10-15 €.
+- **Capa lista sin gastar nada:** prompts, caché, presupuesto, B2, preguntas nuevas, modo evento y G9.7 (`src/sinpop/llm/`, `src/sinpop/predict/asistido.py`, `src/sinpop/evaluate/llm.py`). Está desactivada (`configs/llm.yaml`).
+- **Para cerrar G9.2, G9.6 y G9.7:**
+  - Hace falta una sola ejecución pagada: `python -m sinpop.evaluate.llm`.
+  - Cota superior estimada sin llamar a nadie: **9,60 €** para 168 peticiones con `claude-opus-5-5` en lotes (`--estimar`). Es el peor caso, con cada respuesta agotando su `max_tokens`; el gasto real será menor.
+- **G9.6 con LLM queda en revisión humana aunque acierte:** los eventos del banco son anteriores a la fecha de corte del modelo, que puede saber qué pasó después.
+- **Sigue sin aplicarse** la propuesta de contar en V-EVENTO solo los efectos significativos: cambia la definición de la puerta.
 
 ## Limitaciones
 
