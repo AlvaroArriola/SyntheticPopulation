@@ -1867,7 +1867,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Banco: ECOPER.** La regla que excluye las recodificaciones del CIS (variables terminadas en «R») dejaba fuera ECOPER, la valoración de la situación económica personal, que se pregunta cada mes. ECOPER no es la recodificación de ninguna otra variable. Se añade por lista (`banco.INCLUIDAS`), con 39 preguntas más. Las otras dos variables afectadas no son preguntas de opinión: la nacionalidad (perfil) y la intención de voto alternativa (D-005).
 - **Fuentes de opinión fuera del CIS:**
   - La ESS (ronda 11, 2023) no entra en el banco: sus etiquetas están en inglés, no está su cuestionario oficial en español y traducir los enunciados sería inventar texto (regla 2). Ya se usa para construir los valores de la población (D-066).
-  - Los centros autonómicos (CEO, Euskobarómetro…) no se pueden descargar desde este entorno (D-011); quedan como mejora con descarga manual.
+  - Los centros autonómicos (CEO, Euskobarómetro…) no se pueden descargar desde este entorno (D-014); quedan como mejora con descarga manual.
   - La población se calibra con cifras de 2026: ECP 2026, EPA del 2T de 2026 y voto oficial.
 
 ## D-083 · Evolución de cada pregunta, retratos y cruces entre preguntas (2026-10-22)
