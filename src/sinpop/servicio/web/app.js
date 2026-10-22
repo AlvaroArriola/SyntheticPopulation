@@ -361,7 +361,7 @@ function tablaDato(d, dim) {
     }).join("");
     return `<tr><th scope="row">${escapar(nombreNivel(dim, nivel))}</th>${celdas}</tr>`;
   });
-  return `<div class="tabla-envoltorio"><table class="tabla-calor dato"><thead><tr><th scope="col"><span class="oculto">Grupo</span></th>${cab}</tr></thead><tbody>${filas.join("")}</tbody></table></div>
+  return `<div class="tabla-envoltorio" tabindex="0" role="region" aria-label="Tabla por grupos"><table class="tabla-calor dato"><thead><tr><th scope="col"><span class="oculto">Grupo</span></th>${cab}</tr></thead><tbody>${filas.join("")}</tbody></table></div>
     <p class="nota">Color más intenso, mayor proporción. Pasa el ratón por una celda para ver su margen de simulación.</p>`;
 }
 
@@ -514,7 +514,7 @@ function tablaSubgrupos(r, dim, opciones) {
     }).join("");
     return `<tr><th scope="row">${escapar(nombreNivel(dim, nivel))}</th>${celdas}</tr>`;
   });
-  return `<div class="tabla-envoltorio"><table class="tabla-calor"><thead><tr><th scope="col"><span class="oculto">Grupo</span></th>${cab}</tr></thead><tbody>${filas.join("")}</tbody></table></div>
+  return `<div class="tabla-envoltorio" tabindex="0" role="region" aria-label="Tabla por grupos"><table class="tabla-calor"><thead><tr><th scope="col"><span class="oculto">Grupo</span></th>${cab}</tr></thead><tbody>${filas.join("")}</tbody></table></div>
     <p class="nota">Color más intenso, mayor proporción. Las celdas rayadas tienen confianza baja (menos del 50 %): pocos datos para ese grupo.</p>`;
 }
 

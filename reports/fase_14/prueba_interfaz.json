@@ -21,10 +21,18 @@
   "evento": {
    "filas": 7,
    "aviso": true
+  },
+  "dato": {
+   "barras": 6,
+   "margen": true,
+   "procedencia": true,
+   "fuentes": 5,
+   "aviso": true
   }
  },
  "errores_js": [],
  "accesibilidad": [],
+ "accesibilidad_dato": [],
  "movil_sin_scroll_horizontal": true,
  "g14_1": true,
  "g14_2": true,

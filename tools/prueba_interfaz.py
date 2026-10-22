@@ -115,6 +115,33 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
         )
         pg.screenshot(path=DESTINO / "6_evento.png")
 
+        # dato de la población (D-077) y asistente de tamaño (D-079)
+        pg.click("#tab-pregunta")
+        pg.evaluate("() => { window.sinpop.ponerNivel('ES'); }")
+        pg.wait_for_timeout(300)
+        pg.fill("#enunciado", "¿Cómo diría que es su estado de salud en general?")
+        pg.wait_for_selector("#grupo-atributos:not([hidden]) li", timeout=60000)
+        pg.click("#lista-atributos button")
+        pg.wait_for_selector("#resultado .sello-dato", timeout=300000)
+        pg.wait_for_timeout(500)
+        res["pantallas"]["dato"] = pg.evaluate(
+            "() => ({barras: document.querySelectorAll('#resultado .pista').length,"
+            " margen: [...document.querySelectorAll('#resultado .pista')].every(p => p.querySelector('.ic80')),"
+            " procedencia: !!document.querySelector('#resultado .procedencia'),"
+            " fuentes: document.querySelectorAll('#resultado .fuentes li').length,"
+            " aviso: (document.querySelector('#resultado .aviso')?.textContent || '').includes('simulado')})"
+        )
+        pg.screenshot(path=DESTINO / "9_dato_poblacion.png")
+        pg.click("#asistente summary")
+        pg.wait_for_selector("#asis-resultado table", timeout=120000)
+        pg.locator("#asistente").scroll_into_view_if_needed()
+        pg.wait_for_timeout(300)
+        pg.screenshot(path=DESTINO / "10_asistente_tamano.png")
+        res["accesibilidad_dato"] = pg.evaluate(
+            "async () => (await axe.run(document, {resultTypes: ['violations']})).violations"
+            ".map(v => ({id: v.id, impacto: v.impact, nodos: v.nodes.length}))"
+        )
+
         # modo oscuro y móvil
         pg.evaluate("document.documentElement.dataset.theme='dark'")
         pg.wait_for_timeout(400)
@@ -130,7 +157,11 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
 
     pr = res["pantallas"]
     g2 = [pr[k] for k in ("pregunta_es", "pregunta_comunidad") if k in pr]
-    graves = [v for v in res["accesibilidad"] if v["impacto"] in ("critical", "serious")]
+    graves = [
+        v
+        for v in res["accesibilidad"] + res.get("accesibilidad_dato", [])
+        if v["impacto"] in ("critical", "serious")
+    ]
     res["g14_1"] = bool(
         "pregunta_es" in pr
         and pr.get("mapa_coloreado")
@@ -145,6 +176,14 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
         and x["aviso"]
         for x in g2
     ) and pr.get("evento", {}).get("aviso", False)
+    d = pr.get("dato", {})
+    res["g14_2"] = res["g14_2"] and bool(
+        d.get("barras")
+        and d.get("margen")
+        and d.get("procedencia")
+        and d.get("fuentes")
+        and d.get("aviso")
+    )
     res["g14_3"] = not graves
     (DESTINO / "prueba_interfaz.json").write_text(
         json.dumps(res, ensure_ascii=False, indent=1), "utf-8"
