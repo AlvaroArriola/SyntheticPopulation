@@ -1555,6 +1555,13 @@ def _f9() -> dict | None:
     return json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else None
 
 
+def _f9_llm() -> dict | None:
+    import json
+
+    ruta = REPO_ROOT / "reports" / "fase_09_llm.json"
+    return json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else None
+
+
 def _sin_f9(id_: str, desc: str, um: str) -> Check:
     falta = "falta reports/fase_09_validacion.json (python -m sinpop.evaluate.validacion)"
     return Check(id_, desc, False, falta, um)
@@ -1578,9 +1585,17 @@ def _g9_2() -> Check:
     t = d["g9_2"]["todas"]
     valor = (
         f"TVD media: medición CIS {t['sistema_cis']:.3f}, B0 {t['b0']:.3f}, B1 {t['b1']:.3f} "
-        f"({t['preguntas']} preguntas); B2 pendiente del modelo de lenguaje (D-069)"
+        f"({t['preguntas']} preguntas)"
     )
-    return Check("G9.2", desc, None, valor, um)
+    llm = _f9_llm()
+    if llm is None or llm["b2"]["total"] is None:
+        return Check("G9.2", desc, None, valor + "; B2 pendiente del modelo de lenguaje", um)
+    b2 = llm["b2"]
+    valor += (
+        f"; B2 {b2['total']:.3f} (subgrupos {b2['subgrupos']:.3f}, CCAA {b2['ccaa']:.3f}; "
+        f"{llm['preguntas']} preguntas)"
+    )
+    return Check("G9.2", desc, True, valor, um)
 
 
 def _g9_3() -> Check:
@@ -1639,24 +1654,55 @@ def _g9_6() -> Check:
     if d is None:
         return _sin_f9("G9.6", desc, um)
     g = d["g9_6"]
-    return Check(
-        "G9.6",
-        desc,
-        g["eventos"] >= 3 and g["eventos_correctos"] / g["eventos"] >= 2 / 3,
-        f"{g['eventos_correctos']}/{g['eventos']} eventos ({g['pares_correctos']}/{g['pares']} "
-        f"evento × indicador); error de magnitud {g['error_magnitud_pp_medio']:.1f} pp",
-        um,
+    ok = g["eventos"] >= 3 and g["eventos_correctos"] / g["eventos"] >= 2 / 3
+    valor = (
+        f"sin LLM {g['eventos_correctos']}/{g['eventos']} eventos ({g['pares_correctos']}/"
+        f"{g['pares']} evento × indicador), error {g['error_magnitud_pp_medio']:.1f} pp"
     )
+    llm = (_f9_llm() or {}).get("g9_6_llm")
+    if ok or llm is None:
+        return Check("G9.6", desc, ok, valor, um)
+    ok_llm = llm["eventos"] >= 3 and llm["eventos_correctos"] / llm["eventos"] >= 2 / 3
+    valor += (
+        f"; con LLM {llm['eventos_correctos']}/{llm['eventos']} eventos, error "
+        f"{llm['error_magnitud_pp_medio']:.1f} pp (contaminado: el modelo conoce lo que pasó "
+        "después de estos eventos; cota superior)"
+    )
+    # una cota superior contaminada no basta para superar la puerta: decide la revisión humana
+    return Check("G9.6", desc, None if ok_llm else False, valor, um)
 
 
 def _g9_7() -> Check:
-    return Check(
-        "G9.7",
-        "Pruebas de estereotipos de la capa de IA",
-        None,
-        "no aplica mientras no intervenga un modelo de lenguaje (docs/06 §5, D-069)",
-        "pruebas superadas",
+    import json
+
+    desc, um = "Pruebas de estereotipos de la capa de IA (docs/06 §5)", "pruebas superadas"
+    llm = _f9_llm()
+    if llm is None:
+        return Check(
+            "G9.7", desc, None, "no aplica mientras no intervenga un modelo de lenguaje", um
+        )
+    g = llm["g9_7"]
+    r = g["razon_brecha_mediana"]
+    um = f"razón de brechas LLM/estadístico ≤ {g['umbral']} ({g['umbral_estado']}); auditoría"
+    auditoria = REPO_ROOT / "reports" / "fase_09" / "llm_auditoria_justificaciones.json"
+    a = json.loads(auditoria.read_text("utf-8")) if auditoria.exists() else None
+    valor = (
+        f"razón mediana {r:.2f} en {g['contrafactual_casos']} pregunta × dimensión "
+        f"(frente a lo observado {g['razon_brecha_mediana_frente_real']:.2f}); homogeneidad: no "
+        "aplica; justificaciones: "
+        + (
+            f"{a['revisadas']} revisadas, {a['problematicas']} problemáticas"
+            if a
+            else "sin auditar"
+        )
+        if r is not None
+        else "sin casos para la prueba contrafactual"
     )
+    if r is None or a is None:
+        return Check("G9.7", desc, None, valor, um)
+    ok = r <= g["umbral"] and a["problematicas"] == 0
+    # con un umbral aún en propuesta, el resultado espera la aprobación humana
+    return Check("G9.7", desc, ok if g["umbral_estado"] == "aprobado" else None, valor, um)
 
 
 def _f10() -> dict | None:

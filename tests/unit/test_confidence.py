@@ -5,8 +5,8 @@ from __future__ import annotations
 import numpy as np
 import polars as pl
 
-from sinpop.config import load_config
 from sinpop.confidence import modelo as M
+from sinpop.config import load_config
 
 
 def test_umbral_de_acierto_coincide_con_thresholds() -> None:

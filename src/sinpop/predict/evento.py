@@ -158,3 +158,92 @@ def backtest() -> pl.DataFrame:
                 }
             )
     return pl.DataFrame(filas)
+
+
+# --------------------------------------------------------------------------- con LLM (D-071)
+
+
+def analogos_texto(indicador: str, tipo: str, ambito: str, excluir: str | None = None) -> str:
+    """Efectos observados (puntos) de los eventos del banco del mismo tipo y ámbito."""
+    from sinpop.config import load_config
+
+    t = tipos()
+    desc = {e.id: e for e in load_config("eventos.yaml").eventos}  # type: ignore[attr-defined]
+    autonomico = ambito.startswith("CCAA:")
+    b = banco().filter(
+        (pl.col("indicador") == indicador)
+        & (pl.col("evento").replace_strict(t, default=None) == tipo)
+        & (pl.col("ambito").str.starts_with("CCAA:") == autonomico)
+    )
+    if excluir:
+        b = b.filter(pl.col("evento") != excluir)
+    filas = []
+    for (ev,), g in b.sort("evento", "categoria").group_by("evento", maintain_order=True):
+        e = desc[ev]
+        cambios = "; ".join(
+            f"{c} {100 * x:+.1f}" for c, x in g.select("categoria", "efecto").iter_rows()
+        )
+        filas.append(f"- {e.fecha} {e.descripcion}: {cambios}")
+    return "\n".join(filas)
+
+
+def peticion_llm(e, indicador: str):
+    """Petición del modo evento para un evento de `configs/eventos.yaml` (o con su misma forma)."""
+    from sinpop.predict import asistido as A
+
+    ccaa = e.ambito.split(":")[1] if e.ambito.startswith("CCAA:") else None
+    a = antes(indicador, e.fecha, ccaa)
+    return A.peticion_evento(
+        e.id,
+        str(e.fecha),
+        e.descripcion,
+        e.ambito,
+        indicador,
+        dict(a.select("categoria", "antes").iter_rows()),
+        analogos_texto(indicador, e.tipo, e.ambito, excluir=e.id),
+    )
+
+
+def backtest_llm(backend=None) -> pl.DataFrame:
+    """V-EVENTO con el LLM proponiendo el cambio (misma métrica que `backtest`).
+
+    **Contaminado:** los eventos del banco son anteriores a la fecha de corte de conocimiento del
+    modelo, que puede saber qué pasó después (por ejemplo, el resultado de unas elecciones y su
+    efecto en las encuestas). Es una cota superior del acierto; la prueba limpia solo es posible
+    con eventos posteriores al corte."""
+    from sinpop.config import load_config
+    from sinpop.llm import cliente as C
+
+    b = banco()
+    casos = []
+    for e in load_config("eventos.yaml").eventos:  # type: ignore[attr-defined]
+        for ind in e.indicadores_afectados:
+            obs = b.filter((pl.col("evento") == e.id) & (pl.col("indicador") == ind))
+            if obs.is_empty():
+                continue
+            casos.append((e, ind, obs, peticion_llm(e, ind)))
+    salidas = C.ejecutar([c[3] for c in casos], backend)
+    filas = []
+    for e, ind, obs, pet in casos:
+        s = salidas.get(pet.id)
+        if s is None:
+            continue
+        cambio = {x["categoria"]: x["cambio_pp"] / 100 for x in s["categorias"]}
+        top = obs.sort(pl.col("efecto").abs(), descending=True).row(0, named=True)
+        pc = cambio.get(top["categoria"], 0.0)
+        filas.append(
+            {
+                "evento": e.id,
+                "tipo": e.tipo,
+                "indicador": ind,
+                "categoria": top["categoria"],
+                "cambio_real": top["efecto"],
+                "ic95_real": [top["ic95_inf"], top["ic95_sup"]],
+                "cambio_predicho": pc,
+                "direccion_correcta": bool(np.sign(pc) == np.sign(top["efecto"]) and pc != 0),
+                "error_magnitud_pp": abs(pc - top["efecto"]) * 100,
+                "justificacion": s["justificacion"],
+                "contaminado": True,
+            }
+        )
+    return pl.DataFrame(filas)

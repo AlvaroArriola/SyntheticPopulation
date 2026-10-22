@@ -1,12 +1,53 @@
-# Modelos de lenguaje (F9). Ningún modelo se declara hasta F8A/F9: la fecha de corte de
-# construcción (D-003, propuesta) se ajusta entonces a la fecha de corte de los modelos.
+# Modelos de lenguaje (F9-F11; D-069, D-071).
+#
+# Plug-and-play: con `activo: false` ninguna parte del sistema llama a un modelo y todo funciona
+# con el componente estadístico. Para activarlo hacen falta `activo: true` y la clave del
+# proveedor en el entorno (ANTHROPIC_API_KEY), nunca en este fichero ni en el repositorio.
+#
+# Contaminación: la fecha de corte de conocimiento de cada modelo no puede ser posterior a la de
+# construcción (se comprueba al cargar). Los modelos de Anthropic de la tabla declaran «Training
+# data cutoff: Jun 2026» (https://platform.claude.com/docs/en/about-claude/models/overview,
+# consultado el 2026-10-22); se toma el último día del mes, la lectura más conservadora.
 fecha_corte_construccion: 2026-06-30
-modelos: []
+activo: false
+modelos:
+  - id: claude-opus-5-5
+    proveedor: anthropic
+    fecha_corte_conocimiento: 2026-06-30
+    uso: [baseline_b2, preguntas_nuevas, eventos]
+    precio_usd_mtok: {entrada: 4.0, salida: 20.0, consultado: 2026-10-22}
+  - id: claude-haiku-5-5
+    proveedor: anthropic
+    fecha_corte_conocimiento: 2026-06-30
+    uso: [baseline_b2, preguntas_nuevas, eventos]
+    precio_usd_mtok: {entrada: 0.10, salida: 0.50, consultado: 2026-10-22}
+# Cada tarea dice qué modelo y qué prompt versionado usa. Cambiar de modelo es una decisión
+# registrada en DECISIONS.md y obliga a revalidar.
+tareas:
+  b2:
+    modelo: claude-opus-5-5
+    prompt: b2@v1
+    esfuerzo: low
+    max_tokens: 6000
+  pregunta_nueva:
+    modelo: claude-opus-5-5
+    prompt: pregunta_nueva@v1
+    esfuerzo: medium
+    max_tokens: 6000
+  evento:
+    modelo: claude-opus-5-5
+    prompt: evento@v1
+    esfuerzo: medium
+    max_tokens: 3000
 presupuesto:
   eur_max_por_prediccion: 1.0
-  eur_max_por_ejecucion: 50.0
+  eur_max_por_ejecucion: 10.0
+  # tope de la persona responsable para todo el proyecto (D-071): 10-15 €
+  eur_max_total: 15.0
   llamadas_max_por_prediccion: 100
+  eur_por_usd: 1.0
+  usar_lotes: true
+  descuento_lotes: 0.5
 reintentos_salida_invalida: 2
-temperatura: 0.0
 cache_dir: logs/llm/cache
 logs_dir: logs/llm

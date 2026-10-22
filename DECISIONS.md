@@ -1592,3 +1592,48 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Límites:**
   - La calibración de los intervalos de F9 (tramos conformales) se aprendió con preguntas de abril a junio de 2026, que están dentro del periodo del *backtest*. Afecta solo a la señal «anchura del IC80», no a los errores medidos. En validación (julio-septiembre) no hay solapamiento, y los resultados son iguales.
   - Sin LLM, la confianza describe el componente estadístico. Si se incorpora un LLM, hay que repetir el *backtest* con él.
+
+## D-071 · Capa de LLM enchufable, presupuesto y orden de las fases restantes (2026-10-22)
+
+- **Fecha:** 2026-10-22
+- **Fase:** F9 a F12
+- **Estado:** decisión de la persona responsable sobre el presupuesto y el orden; el diseño, del agente. Revisable.
+- **Decisión de la persona responsable** (2026-10-22): «Me gustaría incluir el LLM y no me importa gastarme un poco de dinero con la API, pero máximo 10 o 15 €». Pide avanzar en todo e incluir el modelo al final, «prácticamente *plug-and-play*», salvo que sea estrictamente necesario antes.
+- **Orden acordado:**
+  1. **Ahora, sin coste:**
+     - la capa de LLM completa, desactivada (`configs/llm.yaml`, `activo: false`) y probada con un *backend* simulado;
+     - la documentación de F12 que no depende del LLM.
+  2. **Al final, una sola ejecución pagada:**
+     - la validación con LLM (`python -m sinpop.evaluate.llm`), que completa G9.2 (B2), G9.6 y G9.7;
+     - después, congelar el código y ejecutar F11.
+  - **Lo único que tiene que esperar al LLM es F11.** Se ejecuta una sola vez, con el código congelado, sobre datos que nadie ha visto (`docs/04`). Si se hiciera antes, la parte con LLM quedaría sin una evaluación limpia y la ventana de evaluación ya estaría gastada.
+- **Modelos** (`configs/llm.yaml`):
+  - Se declara `claude-opus-5-5`, el modelo recomendado por defecto. Precio: 4 $ por millón de tokens de entrada y 20 $ por millón de salida.
+  - Se declara también `claude-haiku-5-5` como opción mucho más barata (0,10 $ y 0,50 $). Cambiar una tarea a Haiku es una decisión de la persona responsable, no del agente.
+  - Los dos declaran «Training data cutoff: Jun 2026» en la documentación oficial (consultada el 2026-10-22). Se toma el 2026-06-30, igual que la fecha de corte de construcción. La ventana de validación (julio-septiembre de 2026) y la de evaluación (octubre) quedan fuera de lo que conocen.
+- **Usos, solo donde el método gratuito no llega** (D-069; `src/sinpop/predict/asistido.py`):
+  1. **B2** (`docs/04`, F9 tarea 7): el LLM con la composición de la población y sin preguntas del banco. Es el baseline que pide G9.2.
+  2. **Preguntas sin análogas fiables** (similitud < 0,4 o ninguna): el LLM ve además las preguntas más parecidas con sus resultados agregados.
+     - Solo se usa si en validación mejora al componente estadístico (`usar` en `calibracion_llm.json`).
+     - Sus intervalos y su confianza se calibran en validación. Antes de calibrar, el intervalo es [0, 1] y la confianza, 0.
+  3. **Modo evento:** el LLM propone el cambio por categoría.
+     - El *backtest* con eventos pasados está **contaminado**: el modelo puede saber qué pasó después.
+     - Por eso G9.6 con LLM no se da por superada automáticamente, sino que queda para revisión humana.
+     - La prueba limpia exige eventos posteriores al corte.
+  - **Sigue fuera:** la simulación de personas (D-069). Es lo más caro y lo más expuesto a estereotipos.
+- **Operación** (`src/sinpop/llm/`):
+  - **Prompts versionados** en `prompts/<nombre>/<versión>.md`.
+  - **Salida con esquema JSON**, validada otra vez con reglas semánticas: longitud, que sume 1 y los subgrupos pedidos. Se reintenta 2 veces y, si sigue mal, se vuelve al componente estadístico.
+  - **Caché y registro de gasto versionados** (`logs/llm/cache/`, `logs/llm/gasto.jsonl`). Contienen enunciados públicos y agregados, nunca microdatos (regla 8). Hacen reproducible la ejecución: repetirla no vuelve a pagar.
+  - **Lotes de la Message Batches API**, con un 50 % de descuento.
+  - **No se envía `temperature`:** desde el 2026-10-21 la API la rechaza. La reproducibilidad viene de la caché.
+- **Presupuesto:**
+  - Antes de enviar se calcula una **cota superior**: la entrada estimada más `max_tokens` completos de salida.
+  - Si superaría 10 € por ejecución o 15 € en total (incluido lo ya gastado), no se envía nada.
+  - El dólar se cuenta como un euro. Sobrestima el gasto mientras el euro valga más que el dólar.
+  - `python -m sinpop.evaluate.llm --estimar` da la cota sin llamar a nadie.
+- **G9.7 adaptada** (`docs/06` §5, pensada para personas simuladas):
+  - **Contrafactual:** la brecha entre grupos (TVD máxima entre niveles de edad, sexo o estudios) del LLM dividida por la del modelo estadístico. Se usa la mediana sobre pregunta × dimensión con brecha ≥ 0,02.
+  - **Umbral propuesto:** 1,25 (V-LLM-ESTEREOTIPO, `estado: propuesta`). `docs/06` no fija número; **necesita aprobación humana**. Mientras tanto, G9.7 queda en revisión humana aunque se cumpla.
+  - **Homogeneidad:** no aplica, porque no se simulan personas.
+  - **Auditoría de justificaciones:** todas se guardan en `reports/fase_09/llm_justificaciones.csv` y se revisan a mano; el resultado va a `llm_auditoria_justificaciones.json`.

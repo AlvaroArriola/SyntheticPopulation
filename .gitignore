@@ -7,6 +7,11 @@ data/**
 # Caché y registros de LLM
 logs/llm/**
 !logs/llm/.gitkeep
+# la caché de respuestas y el registro de gasto se versionan: hacen reproducibles las
+# ejecuciones con LLM y auditable el gasto (solo contienen enunciados públicos y agregados)
+!logs/llm/cache/
+!logs/llm/cache/*.json
+!logs/llm/gasto.jsonl
 # Python
 __pycache__/
 *.py[cod]

@@ -501,6 +501,15 @@ class VEvento(_Th):
     proporcion_direccion_correcta: float
 
 
+class VLlmEstereotipo(_Th):
+    """Prueba contrafactual de `docs/06` §5 adaptada a distribuciones (D-071). Propuesta del
+    agente pendiente de aprobación humana: `docs/06` no fija el número."""
+
+    razon_brecha_mediana_max: float = Field(gt=0)
+    brecha_minima: float = Field(ge=0)
+    estado: Literal["propuesta", "aprobado"]
+
+
 class VConfCorr(_Th):
     spearman_min: float
 
@@ -551,6 +560,7 @@ class ThresholdsConfig(Strict):
     v_reformulacion: VReformulacion = Field(alias="V-REFORMULACION")
     v_cobertura: VCobertura = Field(alias="V-COBERTURA")
     v_evento: VEvento = Field(alias="V-EVENTO")
+    v_llm_estereotipo: VLlmEstereotipo = Field(alias="V-LLM-ESTEREOTIPO")
     v_conf_corr: VConfCorr = Field(alias="V-CONF-CORR")
     v_conf_ece: VConfEce = Field(alias="V-CONF-ECE")
     v_regresion: VRegresion = Field(alias="V-REGRESION")
@@ -719,25 +729,57 @@ class EventosConfig(Strict):
 # --------------------------------------------------------------------------- llm.yaml
 
 
+class PrecioLLM(Strict):
+    """USD por millón de tokens (tarifa pública del proveedor, con fecha de consulta)."""
+
+    entrada: float = Field(ge=0)
+    salida: float = Field(ge=0)
+    consultado: dt.date
+
+
 class ModeloLLM(Strict):
     id: str
     proveedor: str
     fecha_corte_conocimiento: dt.date
-    uso: list[Literal["traduccion", "simulacion", "eventos", "embeddings"]]
+    uso: list[
+        Literal[
+            "traduccion",
+            "simulacion",
+            "eventos",
+            "embeddings",
+            "baseline_b2",
+            "preguntas_nuevas",
+        ]
+    ]
+    precio_usd_mtok: PrecioLLM | None = None
+
+
+class TareaLLM(Strict):
+    modelo: str
+    prompt: str  # nombre@versión de un fichero de prompts/
+    esfuerzo: Literal["low", "medium", "high", "xhigh", "max"] = "low"
+    max_tokens: int = Field(gt=0, le=128000)
 
 
 class Presupuesto(Strict):
     eur_max_por_prediccion: float = Field(gt=0)
     eur_max_por_ejecucion: float = Field(gt=0)
+    eur_max_total: float = Field(gt=0, default=15.0)
     llamadas_max_por_prediccion: int = Field(gt=0)
+    # cota de conversión: 1 USD se cuenta como `eur_por_usd` EUR (1,0 sobrestima el gasto en
+    # euros mientras el euro valga más que el dólar)
+    eur_por_usd: float = Field(gt=0, default=1.0)
+    usar_lotes: bool = True
+    descuento_lotes: float = Field(gt=0, le=1, default=0.5)
 
 
 class LLMConfig(Strict):
     fecha_corte_construccion: dt.date
+    activo: bool = False
     modelos: list[ModeloLLM] = Field(default_factory=list)
+    tareas: dict[str, TareaLLM] = Field(default_factory=dict)
     presupuesto: Presupuesto
     reintentos_salida_invalida: int = Field(ge=0, le=5)
-    temperatura: float = Field(ge=0, le=2)
     cache_dir: str
     logs_dir: str
 
@@ -749,6 +791,12 @@ class LLMConfig(Strict):
                     f"el modelo {m.id} conoce datos posteriores a la fecha de corte de "
                     "construcción; hay que mover la fecha (D-003)"
                 )
+        ids = {m.id for m in self.modelos}
+        for nombre, t in self.tareas.items():
+            if t.modelo not in ids:
+                raise ValueError(f"la tarea {nombre} usa un modelo no declarado: {t.modelo}")
+        if self.activo and not self.modelos:
+            raise ValueError("activo sin ningún modelo declarado")
         return self
 
 

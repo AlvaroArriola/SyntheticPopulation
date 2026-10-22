@@ -18,7 +18,7 @@ from pathlib import Path
 import jsonschema
 import numpy as np
 
-from sinpop import REPORTS_DIR
+from sinpop import PROCESSED_DIR, REPORTS_DIR
 from sinpop.predict import estimador as E
 
 PREDICCIONES_DIR = REPORTS_DIR / "fase_09" / "predicciones"
@@ -203,6 +203,85 @@ def validar(out: dict, opciones: list[str]) -> None:
                 raise ValueError(f"{out['id']} {k} {o}: intervalos incoherentes")
 
 
+CALIBRACION_LLM = PROCESSED_DIR / "predict" / "calibracion_llm.json"
+
+
+def calibracion_llm() -> dict | None:
+    """Error de las preguntas nuevas con LLM medido en la ventana de validación
+    (`evaluate/llm.py`): escala conformal de los intervalos y tasa de acierto (TVD ≤ 0,10)."""
+    return json.loads(CALIBRACION_LLM.read_text("utf-8")) if CALIBRACION_LLM.exists() else None
+
+
+def _dist_llm(opciones: list[str], mu: np.ndarray, cal: dict | None) -> dict:
+    mu = mu / mu.sum()
+    s = np.maximum(np.sqrt(np.clip(mu * (1 - mu), 0, None)), E.S_MIN)
+    q80, q95 = (cal["q80"], cal["q95"]) if cal else (np.inf, np.inf)
+    return {
+        o: {
+            "p": round(float(mu[j]), 6),
+            "ic80": [
+                round(float(max(mu[j] - q80 * s[j], 0)), 6),
+                round(float(min(mu[j] + q80 * s[j], 1)), 6),
+            ],
+            "ic95": [
+                round(float(max(mu[j] - q95 * s[j], 0)), 6),
+                round(float(min(mu[j] + q95 * s[j], 1)), 6),
+            ],
+        }
+        for j, o in enumerate(opciones)
+    }
+
+
+def construir_asistida(q: E.Pregunta, r: E.Resultado, run_id: str) -> dict:
+    """Salida de una pregunta sin análogas fiables, con el LLM anclado en las más parecidas
+    (`predict/asistido.py`). Sin calibración en validación, los intervalos son [0, 1] y la
+    confianza 0: no se sabe cuánto se equivoca."""
+    from sinpop.llm import cliente as C
+    from sinpop.predict import asistido as A
+
+    pet = A.peticion_nueva(q)
+    salida = C.ejecutar([pet])[pet.id]
+    if salida is None:
+        raise ValueError(f"{q.id}: el modelo de lenguaje no devolvió una salida válida")
+    dist = A.distribuciones(salida)
+    cal = calibracion_llm()
+    reg = C.registro(pet)
+    conf = float(cal["acierto"]) if cal else 0.0
+    out = {
+        "id": q.id,
+        "run_id": run_id,
+        "total": _dist_llm(q.opciones, dist["total"], cal),
+        "medicion_cis": _dist_llm(q.opciones, dist["total"], cal),
+        "por_subgrupo": {k: _dist_llm(q.opciones, v, cal) for k, v in dist.items() if k != "total"},
+        "confianza": {
+            "total": conf,
+            "por_subgrupo": {k: conf for k in dist if k != "total"},
+            "metodo": (
+                "tasa de acierto (TVD ≤ 0,10) de las preguntas nuevas con LLM en la ventana de "
+                "validación"
+                if cal
+                else "sin calibrar: aún no se ha medido el error del LLM en validación"
+            ),
+        },
+        "parametros_llm": {
+            "uso": "pregunta_nueva",
+            "justificacion": salida["justificacion"],
+            "similitud_mejor_analoga": round(r.analogas[0]["similitud"], 4) if r.analogas else None,
+        },
+        "parametros": {"estimador": "llm_anclado", "escala": q.escala},
+        "preguntas_similares": [a["id"] for a in r.analogas],
+        "coste": {
+            "llamadas": reg["llamadas"],
+            "tokens": reg["tokens"],
+            "eur": reg["eur"],
+            "segundos": round(r.segundos, 2),
+        },
+        "versiones": {"modelo_llm": reg["modelo"], "prompts": reg["prompt"], "poblacion": run_id},
+    }
+    validar(out, q.opciones)
+    return out
+
+
 def predecir_fichero(entrada: Path, run_id: str = "2026-01-01_ES_1000000_s1") -> Path:
     """Lee `preguntas/<id>.json`, predice y escribe `predicciones/<id>_<run_id>.json`."""
     q = json.loads(entrada.read_text("utf-8"))
@@ -217,7 +296,16 @@ def predecir_fichero(entrada: Path, run_id: str = "2026-01-01_ES_1000000_s1") ->
         q.get("fecha_referencia", "2026-07"),
         q.get("subgrupos", list(E.SUBGRUPOS)),
     )
-    out = construir(E.predecir(p, run_id=run_id), run_id)
+    from sinpop.llm import cliente as C
+    from sinpop.predict import asistido as A
+
+    r = E.predecir(p, run_id=run_id)
+    sin_analogas = not r.analogas or r.analogas[0]["similitud"] < A.UMBRAL
+    cal = calibracion_llm()
+    if sin_analogas and C.disponible() and (cal is None or cal.get("usar", True)):
+        out = construir_asistida(p, r, run_id)
+    else:
+        out = construir(r, run_id)
     PREDICCIONES_DIR.mkdir(parents=True, exist_ok=True)
     destino = PREDICCIONES_DIR / f"{q['id']}_{run_id}.json"
     destino.write_text(json.dumps(out, ensure_ascii=False, indent=1), "utf-8")
