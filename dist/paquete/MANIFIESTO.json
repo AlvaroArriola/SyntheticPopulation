@@ -24,6 +24,10 @@
   "2026-01-01_CCAA_18_100000_s1",
   "2026-01-01_CCAA_19_100000_s1",
   "2026-01-01_ES_1000000_s1",
+  "2026-01-01_ES_100000_s1",
+  "2026-01-01_ES_10000_s1",
+  "2026-01-01_ES_500000_s1",
+  "2026-01-01_ES_50000_s1",
   "2026-01-01_PROV_44_10000_s1"
  ],
  "contenido": "modelos ajustados (coeficientes), distribuciones y recuentos agregados, banco de enunciados públicos, marcos de poblaciones sintéticas; sin microdatos (D-076)",
