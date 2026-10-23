@@ -1,0 +1,41 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": -2.0,
+    "categoria": "Buena"
+   },
+   {
+    "cambio_pp": 1.2,
+    "categoria": "Mala"
+   },
+   {
+    "cambio_pp": -0.4,
+    "categoria": "Muy buena"
+   },
+   {
+    "cambio_pp": 1.1,
+    "categoria": "Muy mala"
+   },
+   {
+    "cambio_pp": 0.0,
+    "categoria": "N.C."
+   },
+   {
+    "cambio_pp": 0.0,
+    "categoria": "N.S."
+   },
+   {
+    "cambio_pp": 0.1,
+    "categoria": "Regular"
+   }
+  ],
+  "justificacion": "Una subida general del IRPF suele empeorar la percepción de la economía, sobre todo entre votantes de derecha y rentas medias, que la asocian a menor renta disponible y peor perspectiva. No es un shock real inmediato sobre la actividad, así que el efecto debería ser moderado. Los análogos económicos e institucionales (aranceles, apagón) movieron economia_espana en torno a 1-2 puntos, frente a los 5-9 de las elecciones. Por eso se estima un trasvase de unos 2-3 puntos desde 'Buena' hacia 'Mala' y 'Muy mala'."
+ }
+}

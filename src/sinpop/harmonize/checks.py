@@ -300,7 +300,7 @@ def g23_totales() -> list[Total]:
         )
     )
     for nombre, path, col in (
-        ("epa", encuestas.EPA, "FACTOREL"),
+        ("epa", encuestas.ruta_epa(), "FACTOREL"),
         ("tic_h", encuestas.TIC, "FACTOR_P"),
         ("encuesta_salud", encuestas.SAL, "FACTORADULTO"),
     ):

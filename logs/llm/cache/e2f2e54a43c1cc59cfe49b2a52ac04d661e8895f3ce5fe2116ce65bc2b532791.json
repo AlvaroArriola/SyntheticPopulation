@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "pregunta_nueva@v3",
+  "prompt_sha256": "6e480c180504e0bbc71d8a2e2919c40227303fcd99f90c02123d66cb24365e6d",
+  "tarea": "pregunta_nueva"
+ },
+ "salida": {
+  "justificacion": "Una visita papal es un acontecimiento de enorme cobertura mediática, más cercano al conocimiento casi universal de las herramientas de IA (93 %) que a temas técnicos como la situación de las futbolistas (56 %) o la Constitución (49 %). Por eso estimo un conocimiento alto, de en torno al 87 %, con pocos «No sabe» y «No contesta», como en las preguntas de conocimiento de referencia. Supongo algo más de conocimiento entre quienes tienen más estudios y entre los mayores, y algo menos entre los jóvenes. También supongo un conocimiento ligeramente mayor en las comunidades donde estaba prevista la visita: Madrid, Cataluña y Canarias.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.82,
+     0.17,
+     0.006,
+     0.004
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.86,
+     0.132,
+     0.004,
+     0.004
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.89,
+     0.102,
+     0.004,
+     0.004
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.89,
+     0.098,
+     0.007,
+     0.005
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.87,
+     0.121,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.87,
+     0.121,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.84,
+     0.147,
+     0.007,
+     0.006
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.87,
+     0.122,
+     0.004,
+     0.004
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.91,
+     0.084,
+     0.003,
+     0.003
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.86,
+     0.131,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.86,
+     0.131,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.85,
+     0.141,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.85,
+     0.141,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.9,
+     0.091,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.86,
+     0.131,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.86,
+     0.131,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.86,
+     0.131,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.88,
+     0.111,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.86,
+     0.131,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.85,
+     0.141,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.85,
+     0.141,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.91,
+     0.081,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.86,
+     0.131,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.86,
+     0.131,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.84,
+     0.151,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.86,
+     0.131,
+     0.005,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.84,
+     0.15,
+     0.006,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.84,
+     0.15,
+     0.006,
+     0.004
+    ]
+   }
+  ],
+  "total": [
+   0.87,
+   0.121,
+   0.005,
+   0.004
+  ]
+ }
+}

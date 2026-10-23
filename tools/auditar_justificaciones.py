@@ -39,7 +39,7 @@ GRUPO = re.compile(
     re.I,
 )
 RASGO = re.compile(
-    r"cat[oó]lic|religios|practicante|creyente|agenda|ocupad|ocupaci[oó]n|hogares|conviv|"
+    r"cat[oó]lic|religios|practicante|creyente|agenda|\bocupad|\bocupaci[oó]n|hogares|conviv|"
     r"car[aá]cter|mentalidad|tradicional|conservador|progresista|familia numerosa|forma de vida|"
     r"exposici[oó]n digital|consumen|consumir|televisi[oó]n|medios tradicionales|fatiga|"
     r"familiaridad|disponibilidad de tiempo|h[aá]bito|conectad|"

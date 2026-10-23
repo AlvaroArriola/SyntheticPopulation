@@ -1,0 +1,242 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v3",
+  "prompt_sha256": "552adf2ed3016792210d9c4054b4bf3bc4c648528af31f7b863d36f5e5eb8c86",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Se espera un nivel de conocimiento muy alto de Santiago Abascal, en torno al 95 %, con muy pocas respuestas de no conoce. Las diferencias son pequeñas: el conocimiento es algo mayor entre las personas de 50 o más años y en Madrid, y algo menor entre los menores de 35 años, en Cataluña, en el País Vasco y en Ceuta y Melilla.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.93,
+     0.06,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.94,
+     0.05,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.96,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.97,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.96,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.94,
+     0.05,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.95,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.96,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.95,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.95,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.96,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.96,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.95,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.94,
+     0.05,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.96,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.96,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.95,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.92,
+     0.07,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.95,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.95,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.95,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.97,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.95,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.94,
+     0.05,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.92,
+     0.07,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.95,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.91,
+     0.08,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.91,
+     0.08,
+     0.01
+    ]
+   }
+  ],
+  "total": [
+   0.95,
+   0.04,
+   0.01
+  ]
+ }
+}

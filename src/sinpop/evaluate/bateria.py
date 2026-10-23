@@ -225,6 +225,21 @@ def pregunta(q: dict, p: pl.DataFrame, lg: pl.DataFrame, pesos_marco: dict) -> d
     return out
 
 
+def _f11_oficial() -> dict | None:
+    """Resultado oficial de la evaluación final (F11), ejecutada una sola vez con el código
+    congelado antes de corregir las escalas (D-089): se enseña junto al del sistema corregido."""
+    f = REPORTS_DIR / "fase_11_evaluacion.json"
+    if not f.exists():
+        return None
+    d = json.loads(f.read_text("utf-8"))
+    return {
+        "estudio": next(iter(d["estudios"])),
+        "tvd_media": d["todas"]["sistema_final"],
+        "preguntas": d["todas"]["preguntas"],
+        "etiqueta": d["git"]["tag"],
+    }
+
+
 def ejecutar() -> dict:
     estudios = V.VALIDACION | V.EVALUACION_FINAL
     pesos_marco = IM.pesos_marco(P.marco(), DIMENSIONES, "peso_cis")
@@ -264,6 +279,11 @@ def ejecutar() -> dict:
             "Observado: respuestas ponderadas de los españoles de 18 años o más del estudio."
         ),
         "dimensiones": DIMENSIONES,
+        "escalas": (
+            "Escalas 1-10 con solo los extremos etiquetados completadas en el banco (D-089), "
+            "después de la evaluación final"
+        ),
+        "f11_oficial": _f11_oficial(),
         "estudios": bloques,
     }
     DESTINO.parent.mkdir(parents=True, exist_ok=True)

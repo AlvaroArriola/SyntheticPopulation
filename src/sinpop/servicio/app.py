@@ -204,10 +204,13 @@ def _bateria() -> dict | None:
     return json.loads(ruta.read_text("utf-8")) if ruta.exists() else None
 
 
-def _duda(qid: str) -> str | None:
-    """Escalas 1-10 de valoración con codificación dudosa en la ventana (D-089)."""
+def _duda(qid: str, b: dict) -> str | None:
+    """Escalas 1-10 con codificación dudosa (D-089), solo en baterías anteriores a su corrección
+    (las corregidas llevan el campo `escalas`)."""
     import re
 
+    if b.get("escalas"):
+        return None
     return "D-089" if re.search(r"VALMINIS|VALORALIDERES", qid) else None
 
 
@@ -235,7 +238,7 @@ def _resumen_bateria(b: dict) -> dict:
     # de codificación dudosa (D-089)
     por_dim: dict[str, list[tuple[float, float]]] = {}
     for q in todas:
-        if _duda(q["id"]):
+        if _duda(q["id"], b):
             continue
         for g in q.get("grupos", []):
             sd = [(b95 - a95) / (2 * 1.96) for a95, b95 in g["ic95_observado"]]
@@ -243,7 +246,7 @@ def _resumen_bateria(b: dict) -> dict:
             por_dim.setdefault(g["dimension"], []).append((g["tvd"], ruido))
     return {k: v for k, v in b.items() if k != "estudios"} | {
         "total": cifras(todas),
-        "sin_escalas_dudosas": cifras([q for q in todas if not _duda(q["id"])]),
+        "sin_escalas_dudosas": cifras([q for q in todas if not _duda(q["id"], b)]),
         "por_dimension": {
             d: {
                 "error": round(st.mean(x[0] for x in v), 4),
@@ -265,7 +268,7 @@ def _resumen_bateria(b: dict) -> dict:
                         "tvd": q.get("tvd"),
                         "similitud_max": q.get("similitud_max"),
                         "n": q["observado"]["n"],
-                        "duda": _duda(q["id"]),
+                        "duda": _duda(q["id"], b),
                     }
                     for q in e["preguntas"]
                 ],
@@ -615,7 +618,7 @@ def crear_app():
             for q in e["preguntas"]:
                 if q["id"] == id:
                     return q | {
-                        "duda": _duda(q["id"]),
+                        "duda": _duda(q["id"], b),
                         "estudio": {k: v for k, v in e.items() if k != "preguntas"},
                     }
         raise HTTPException(404, "pregunta desconocida")

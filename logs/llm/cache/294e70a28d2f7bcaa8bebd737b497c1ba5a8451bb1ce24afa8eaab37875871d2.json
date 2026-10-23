@@ -1,0 +1,41 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": -2.2,
+    "categoria": "Buena"
+   },
+   {
+    "cambio_pp": 1.3,
+    "categoria": "Mala"
+   },
+   {
+    "cambio_pp": -0.4,
+    "categoria": "Muy buena"
+   },
+   {
+    "cambio_pp": 1.2,
+    "categoria": "Muy mala"
+   },
+   {
+    "cambio_pp": 0,
+    "categoria": "N.C."
+   },
+   {
+    "cambio_pp": 0,
+    "categoria": "N.S."
+   },
+   {
+    "cambio_pp": 0.1,
+    "categoria": "Regular"
+   }
+  ],
+  "justificacion": "Una subida general del IRPF reduce la renta disponible percibida y suele leerse como señal de necesidades fiscales, por lo que cabe esperar un empeoramiento moderado de la valoración económica: pierde «Buena» y ganan «Mala» y «Muy mala». Los análogos políticos y económicos mueven esta pregunta entre 1 y 5 puntos (aranceles −1,1 y apagón −1,7 en «mala»), así que se estima un desplazamiento de unos 2-3 puntos, en parte amortiguado por la polarización partidista de la respuesta."
+ }
+}

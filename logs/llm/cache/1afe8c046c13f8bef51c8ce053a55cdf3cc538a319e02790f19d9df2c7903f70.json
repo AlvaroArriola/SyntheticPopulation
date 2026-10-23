@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v3",
+  "prompt_sha256": "552adf2ed3016792210d9c4054b4bf3bc4c648528af31f7b863d36f5e5eb8c86",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Espero un nivel general alto de conocimiento de la visita (en torno al 80 % responde que sí). El conocimiento es algo menor entre las personas de 18 a 34 años y mayor entre las de 65 o más, y también es algo mayor entre quienes tienen estudios superiores. Cataluña y País Vasco presentan niveles algo inferiores a la media, mientras que Galicia y Andalucía están algo por encima.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.68,
+     0.25,
+     0.06,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.76,
+     0.19,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.83,
+     0.13,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.9,
+     0.07,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.79,
+     0.16,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.81,
+     0.14,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.78,
+     0.16,
+     0.05,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.8,
+     0.15,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.82,
+     0.14,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.84,
+     0.12,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.8,
+     0.15,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.83,
+     0.13,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.79,
+     0.16,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.78,
+     0.17,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.83,
+     0.13,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.84,
+     0.12,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.82,
+     0.14,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.72,
+     0.22,
+     0.05,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.79,
+     0.16,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.83,
+     0.13,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.85,
+     0.11,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.8,
+     0.15,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.81,
+     0.14,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.8,
+     0.15,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.76,
+     0.19,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.82,
+     0.14,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.78,
+     0.17,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.78,
+     0.17,
+     0.04,
+     0.01
+    ]
+   }
+  ],
+  "total": [
+   0.8,
+   0.15,
+   0.04,
+   0.01
+  ]
+ }
+}

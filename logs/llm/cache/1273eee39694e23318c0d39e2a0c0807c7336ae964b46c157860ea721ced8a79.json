@@ -1,0 +1,242 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v3",
+  "prompt_sha256": "552adf2ed3016792210d9c4054b4bf3bc4c648528af31f7b863d36f5e5eb8c86",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Se espera que casi toda la población conozca a Pedro Sánchez, con un nivel de reconocimiento muy alto en todos los grupos. Las personas de 18-34 años y las de estudios hasta obligatoria muestran un porcentaje algo mayor de «No conoce» y «N.C.», mientras que los de 50 o más años y los de estudios superiores aparecen ligeramente más familiarizados con él.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.97,
+     0.025,
+     0.005
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.985,
+     0.012,
+     0.003
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.99,
+     0.008,
+     0.002
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.99,
+     0.008,
+     0.002
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.987,
+     0.011,
+     0.002
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.983,
+     0.013,
+     0.004
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.98,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.987,
+     0.011,
+     0.002
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.99,
+     0.008,
+     0.002
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.985,
+     0.012,
+     0.003
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.988,
+     0.01,
+     0.002
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.985,
+     0.012,
+     0.003
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.986,
+     0.011,
+     0.003
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.982,
+     0.014,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.988,
+     0.01,
+     0.002
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.987,
+     0.011,
+     0.002
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.984,
+     0.013,
+     0.003
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.984,
+     0.013,
+     0.003
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.985,
+     0.012,
+     0.003
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.983,
+     0.014,
+     0.003
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.986,
+     0.011,
+     0.003
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.989,
+     0.009,
+     0.002
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.983,
+     0.013,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.987,
+     0.011,
+     0.002
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.986,
+     0.011,
+     0.003
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.985,
+     0.012,
+     0.003
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.982,
+     0.014,
+     0.004
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.982,
+     0.014,
+     0.004
+    ]
+   }
+  ],
+  "total": [
+   0.985,
+   0.012,
+   0.003
+  ]
+ }
+}

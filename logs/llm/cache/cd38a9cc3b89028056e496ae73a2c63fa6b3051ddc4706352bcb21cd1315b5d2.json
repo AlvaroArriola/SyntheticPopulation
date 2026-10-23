@@ -1,0 +1,358 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v3",
+  "prompt_sha256": "552adf2ed3016792210d9c4054b4bf3bc4c648528af31f7b863d36f5e5eb8c86",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Se espera un nivel alto de preocupación, con alrededor de tres cuartas partes de las personas entre «mucho» y «bastante». Las personas más jóvenes, con estudios superiores, mujeres y residentes en Cataluña, Navarra y País Vasco muestran algo más de preocupación «mucho», mientras que los mayores de 65, las personas con estudios hasta obligatoria y los hombres la muestran algo menos.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.4,
+     0.35,
+     0.15,
+     0.06,
+     0.02,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.38,
+     0.36,
+     0.16,
+     0.06,
+     0.02,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.35,
+     0.36,
+     0.18,
+     0.07,
+     0.03,
+     0.01,
+     0.0
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.32,
+     0.36,
+     0.19,
+     0.07,
+     0.04,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.34,
+     0.36,
+     0.18,
+     0.07,
+     0.04,
+     0.01,
+     0.0
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.38,
+     0.36,
+     0.16,
+     0.06,
+     0.02,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.31,
+     0.35,
+     0.2,
+     0.08,
+     0.04,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.36,
+     0.37,
+     0.16,
+     0.07,
+     0.02,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.42,
+     0.35,
+     0.15,
+     0.05,
+     0.02,
+     0.01,
+     0.0
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.35,
+     0.37,
+     0.17,
+     0.06,
+     0.03,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.36,
+     0.36,
+     0.17,
+     0.06,
+     0.03,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.4,
+     0.35,
+     0.15,
+     0.06,
+     0.02,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.36,
+     0.36,
+     0.16,
+     0.07,
+     0.03,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.37,
+     0.37,
+     0.15,
+     0.06,
+     0.02,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.38,
+     0.36,
+     0.16,
+     0.06,
+     0.02,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.33,
+     0.37,
+     0.19,
+     0.06,
+     0.03,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.34,
+     0.36,
+     0.18,
+     0.07,
+     0.03,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.4,
+     0.35,
+     0.15,
+     0.06,
+     0.02,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.35,
+     0.36,
+     0.18,
+     0.06,
+     0.03,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.34,
+     0.37,
+     0.18,
+     0.06,
+     0.03,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.38,
+     0.37,
+     0.15,
+     0.06,
+     0.02,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.36,
+     0.35,
+     0.17,
+     0.07,
+     0.03,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.35,
+     0.37,
+     0.17,
+     0.07,
+     0.02,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.4,
+     0.36,
+     0.15,
+     0.05,
+     0.02,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.42,
+     0.35,
+     0.15,
+     0.05,
+     0.02,
+     0.01,
+     0.0
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.36,
+     0.36,
+     0.17,
+     0.06,
+     0.03,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.34,
+     0.36,
+     0.18,
+     0.07,
+     0.03,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.34,
+     0.36,
+     0.18,
+     0.07,
+     0.03,
+     0.01,
+     0.01
+    ]
+   }
+  ],
+  "total": [
+   0.36,
+   0.36,
+   0.17,
+   0.06,
+   0.03,
+   0.01,
+   0.01
+  ]
+ }
+}

@@ -2015,7 +2015,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-23
 - **Fase:** F9-F11 (datos de entrada).
-- **Estado:** **duda abierta.** No se ha cambiado nada mientras corre F11 desde el código congelado.
+- **Estado:** **resuelta** (2026-10-23, aprobada por la persona responsable: «corrige las escalas»). Resolución al final de esta entrada.
 - **Qué se ha visto** al listar las preguntas posteriores al corte (`reports/preguntas_posteriores_al_corte.md`):
   - En el estudio 3571, las escalas 1-10 de valoración de líderes y ministros solo traen etiquetadas las opciones extremas («1 Muy mal / 10 Muy bien»). La comparación se hace sobre dos categorías y da errores muy bajos (0,003-0,05), que no son fiables.
   - En el 3577 la escala viene completa (1 a 10) y los errores de Sánchez (0,36), Feijóo (0,49) y Abascal (0,30) son anómalos frente al resto.
@@ -2026,6 +2026,15 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   3. Repetir la medición de esas preguntas.
   - Afecta a G9.2 y G11.2 solo en esas preguntas (unas 30 de 122). Pide decisión humana antes de rehacer evaluaciones.
 - **Comando del listado:** `python -m sinpop.evaluate.preguntas_posteriores [--final]`. Vive en `sinpop.evaluate` porque es el único paquete que puede leer `data/eval/`.
+- **Resolución:**
+  - **Causa** (datos de entrada, no método): algunos estudios del CIS solo etiquetan los extremos de las escalas 1-10 y 0-10 («1 Muy mal» … «10 Muy bien»). Las respuestas ya tenían los valores intermedios (`opinion.latentes._intermedios_numericos`), pero la lista de opciones del banco (`predict.banco._opciones`) no. La predicción y lo observado se comparaban sobre opciones distintas.
+  - **Arreglo:** `_opciones` completa los enteros entre los dos extremos etiquetados con su número, con la misma regla que las respuestas. Los códigos de NS/NC (98, 99) no cuentan como extremos y las preguntas normales no cambian (test `test_escalas_con_solo_los_extremos_etiquetados`). No se inventa ningún código: los valores 2-9 son los que el diseño de registro deja sin etiqueta y que aparecen en los microdatos.
+  - **Se ha recalculado todo** desde el banco: banco, modelos, calibración, confianza, F9, F10, batería y paquete.
+  - **Antes → después:**
+    - F9, TVD media en la ventana de validación: todas 0,065 → 0,056; políticas 0,061 → 0,030; subgrupos 0,068; CCAA 0,090; cobertura IC80 0,78 e IC95 0,94.
+    - F10: Spearman 0,815, ECE 0,029 (puerta superada).
+    - Batería (212 preguntas): error medio 0,114 → 0,075, mediana 0,054, el 80 % por debajo de 10 puntos. Las escalas: 0,064 (3571), 0,047 (3577) y 0,072 (3582).
+  - **F11 no se reescribe:** el resultado oficial sigue siendo 0,158, medido una sola vez con el código congelado. El sistema corregido da 0,078 en ese mismo barómetro, y así se indica en la interfaz, el PDF y `reports/validacion.md`.
 
 ## D-090 · ¿De qué depende la respuesta? Importancia de las variables en cada predicción (2026-10-23)
 
@@ -2056,7 +2065,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Fase:** F9-F11 (resultados) y F14.
 - **Estado:** pedido por la persona responsable: «una interfaz llamada “validación” donde se pueda comparar directamente… viendo cómo debería haber sido. Siempre, documenta la información en la que te basas… es muy importante la división por subgrupo».
 - **Batería** (`sinpop.evaluate.bateria` → `reports/validacion/bateria.json`, copiada al paquete):
-  - **Preguntas:** las 211 preguntas evaluables de los barómetros del CIS posteriores al corte: 3571 (julio), 3577 (septiembre) y 3582 (octubre; F11 ya ejecutada).
+  - **Preguntas:** las 212 preguntas evaluables (211 antes de D-089) de los barómetros del CIS posteriores al corte: 3571 (julio), 3577 (septiembre) y 3582 (octubre; F11 ya ejecutada).
   - **Previsto:** como lo mediría el CIS, con intervalos y confianza.
     - Donde el LLM anclado respondió en la evaluación, su salida en caché. Sin llamadas nuevas: si no está en caché, se usa el estimador estadístico.
     - Por grupos: la población posestratificada, como en F9.
@@ -2077,10 +2086,10 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - por pregunta: veredicto, previsto frente a real con el margen de la encuesta, grupos (posición prevista y real dentro del margen del grupo) e importancia prevista y real;
   - «En qué se basa» y «Cómo se ha hecho».
   - Las escalas de D-089 salen marcadas.
-- **Resultados** (`reports/validacion.md`):
-  - **Error medio:** 11,4 puntos en las 211 preguntas y 7,9 sin las escalas dudosas. La mediana es de 5,3.
-  - **Preguntas por debajo de 10 puntos:** el 67 %, y el 75 % sin las escalas.
-  - **Grupos:** el error medio por grupo (5-11 puntos según la variable) es el del total más el ruido de muestreo del propio grupo (2-5 puntos). No aparece un fallo específico de los subgrupos.
+- **Resultados** (`reports/validacion.md`; actualizados tras corregir las escalas, D-089):
+  - **Error medio:** 7,5 puntos en las 212 preguntas (antes 11,4). La mediana es de 5,4.
+  - **Preguntas por debajo de 10 puntos:** el 80 % (antes 67 %).
+  - **Grupos:** el error medio por grupo (7-12 puntos según la variable) es el del total más el ruido de muestreo del propio grupo (2-7 puntos). No aparece un fallo específico de los subgrupos.
 - **Consistencia entre la CLI y el servicio** (G13.1, al añadir D-086 y D-090):
   - la semilla de los retratos sale del contenido de la pregunta (enunciado, opciones y población), no de su identificador, que es distinto en la CLI (`Q001`) y en el servicio (huella);
   - el `historial` del modo evento se genera en `predict.evento`, no solo en el servicio.
@@ -2097,3 +2106,19 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 
 - **Fecha:** 2026-10-23
 - **Estado:** aprobada por la persona responsable («Apruebo todo»): interfaz, validación, PDF e importancia de las variables (D-084 a D-091).
+
+## D-092 · B2 en la prueba de estereotipos: se corrige el baseline, no la puerta (2026-10-23)
+
+- **Fecha:** 2026-10-23
+- **Fase:** F9 (G9.7).
+- **Estado:** la persona responsable delega la decisión («haz lo que veas en el B2»).
+- **Problema:** con `b2@v2`, Haiku seguía explicando diferencias entre grupos con rasgos que no están en el perfil («siguen más la actualidad», «menor familiaridad»): 11 justificaciones problemáticas (D-086). G9.7 cuenta todas las justificaciones, también las del baseline.
+- **Alternativas:**
+  - (a) Excluir B2 de la auditoría. B2 no se enseña al usuario, pero sería cambiar la definición de la puerta, y la auditoría existe precisamente para el LLM.
+  - (b) Cambiar el modelo de B2 a Opus. Es más caro y cambia el baseline que D-074 fijó.
+  - (c) **Elegida:** `b2@v3`. La justificación describe qué grupos responden distinto y en qué sentido, sin explicar por qué. Así no hay hueco para atribuir hábitos o rasgos. No cambia ni la puerta ni el modelo, y la auditoría se aplica igual que antes.
+- **Resultado** (reevaluación con las escalas corregidas, D-089):
+  - G9.7 **superada**: razón mediana de brechas 0,72 en 265 pregunta × dimensión (umbral 1,25); justificaciones: 165 revisadas, 0 problemáticas (1 candidata del filtro, revisada a mano en `reports/fase_09/revision_justificaciones.yaml`).
+  - La TVD de B2 es 0,258, igual que antes: `b2@v3` cambia el texto de la justificación, no la calidad del baseline.
+  - **Filtro de la auditoría:** «preocupado» y «preocupación» salían como candidatas porque contienen «ocupad» y «ocupación». `tools/auditar_justificaciones.py` exige ahora inicio de palabra. Esto solo quita falsos positivos del filtro: el veredicto sigue siendo manual.
+  - F9 queda fallida solo en G9.6, como limitación aceptada en la aprobación de F9.

@@ -39,9 +39,27 @@ INCLUIDAS = {"ECOPER"}
 
 
 def _opciones(js: str) -> list[str]:
+    """Opciones de una pregunta en orden de código, sin «No procede».
+
+    Escalas numéricas con solo los extremos etiquetados («1 Muy mal» … «10 Muy bien»): se añaden
+    los valores intermedios como su número («2» … «9»), con la misma regla que
+    `opinion.latentes._intermedios_numericos` aplica a las respuestas: solo los enteros entre los
+    dos extremos etiquetados con su número. Así la pregunta tiene las mismas opciones que cuando
+    el diseño de registro las etiqueta todas (D-089); nunca se inventa un código fuera de ella."""
     d = json.loads(js)
     pares = sorted(((float(k), v.strip()) for k, v in d.items()), key=lambda x: x[0])
+    numericos = [
+        c for c, v in pares if ESCALA.match(v) and c == int(c) and v.split()[0] == str(int(c))
+    ]
+    if len(numericos) >= 2:
+        lo, hi = min(numericos), max(numericos)
+        hay = {c for c, _ in pares}
+        pares += [(float(c), str(c)) for c in range(int(lo) + 1, int(hi)) if float(c) not in hay]
+        pares.sort(key=lambda x: x[0])
     return [v for _, v in pares if O.tipo(v) != "NP"]
+
+
+ESCALA = re.compile(r"^\d{1,2}(\s|$)")  # etiqueta que empieza por su número («10 Muy bien»)
 
 
 @cache

@@ -35,7 +35,7 @@ Una página (`src/sinpop/servicio/web/`) servida por `sinpop serve`, sin pasos d
 - **Exportar:** PDF con resumen y gráficos, CSV y JSON (D-078). Las consultas recientes se guardan en el navegador.
 - **Comparar comunidades:** cada comunidad con su propia población (D-080).
 - **«¿De qué depende la respuesta?»** (D-090): fuerza de cada variable del perfil en cada resultado y en el PDF. El botón «Generar PDF» está arriba del resultado, y el informe tiene páginas nuevas de análisis, método y fuentes.
-- **Validación** (`/validacion.html`, D-091): 211 preguntas del CIS posteriores al corte, con lo previsto frente a lo real en total y en ocho variables de grupo, la importancia prevista y real y las fuentes de cada cifra. Resultados en `reports/validacion.md`.
+- **Validación** (`/validacion.html`, D-091): 212 preguntas del CIS posteriores al corte, con lo previsto frente a lo real en total y en ocho variables de grupo, la importancia prevista y real y las fuentes de cada cifra. Resultados en `reports/validacion.md`.
 - **Sin gasto del LLM en pantalla,** por decisión de la persona responsable (D-088, en lugar de la tarea 5 de F14). Se consulta en `/api/llm` y el tope se aplica en el servidor.
 - **Acabado (D-088):**
   - cabecera fija con «Compartir» (enlace que rellena la pregunta) y «Presentación» (solo mapa y resultado);

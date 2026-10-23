@@ -3,23 +3,23 @@
   "3571",
   "3577"
  ],
- "preguntas": 121,
+ "preguntas": 122,
  "b2": {
-  "total": 0.2886262082742947,
-  "subgrupos": 0.295319383867238,
-  "ccaa": 0.25533518980546765,
-  "sistema_cis_mismas_preguntas": 0.06599220712999773
+  "total": 0.25756302953582677,
+  "subgrupos": 0.2653317612995301,
+  "ccaa": 0.26612554988101134,
+  "sistema_cis_mismas_preguntas": 0.055969889052784584
  },
  "nuevas": {
   "preguntas": 19,
-  "tvd_llm": 0.2322190015393532,
+  "tvd_llm": 0.23153032895028064,
   "con_estadistico": 5,
-  "tvd_llm_en_ambas": 0.21484115342841087,
-  "tvd_estadistico_en_ambas": 0.30533717373699315,
+  "tvd_llm_en_ambas": 0.21222419758993535,
+  "tvd_estadistico_en_ambas": 0.30185662319043277,
   "usar": true,
   "calibracion": {
-   "q80": 0.32029929077649943,
-   "q95": 0.6225728627798608,
+   "q80": 0.3202992907764993,
+   "q95": 0.6033751758187328,
    "acierto": 0.15789473684210525,
    "usar": true,
    "preguntas": 19,
@@ -30,16 +30,16 @@
   }
  },
  "g9_7": {
-  "contrafactual_casos": 258,
-  "razon_brecha_mediana": 0.6949332545443223,
-  "razon_brecha_mediana_frente_real": 0.642644303219488,
+  "contrafactual_casos": 265,
+  "razon_brecha_mediana": 0.715063297424471,
+  "razon_brecha_mediana_frente_real": 0.6026944042992081,
   "umbral": 1.25,
-  "umbral_estado": "propuesta",
+  "umbral_estado": "aprobado",
   "homogeneidad": "no aplica: no se simulan personas (D-069)",
-  "justificaciones": 135
+  "justificaciones": 136
  },
  "coste": {
-  "gastado_total_eur": 4.1507
+  "gastado_total_eur": 5.6873
  },
  "g9_6_llm": {
   "pares": 29,

@@ -1,0 +1,358 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v3",
+  "prompt_sha256": "552adf2ed3016792210d9c4054b4bf3bc4c648528af31f7b863d36f5e5eb8c86",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Se espera un nivel general de preocupación alto, con alrededor de un 72 % que responde mucho o bastante. La preocupación es algo mayor entre las personas con estudios superiores y las más jóvenes de 18-34 años, que responden 'mucho' con más frecuencia, mientras que las personas con estudios hasta obligatoria y los mayores de 65 años muestran más respuestas 'regular', 'poco' o 'no sabe'; las mujeres también puntúan algo más alto que los hombres y las diferencias entre comunidades son pequeñas.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.3,
+     0.37,
+     0.19,
+     0.08,
+     0.03,
+     0.01,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.36,
+     0.37,
+     0.14,
+     0.07,
+     0.03,
+     0.01,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.38,
+     0.36,
+     0.13,
+     0.07,
+     0.03,
+     0.01,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.39,
+     0.35,
+     0.12,
+     0.06,
+     0.03,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.34,
+     0.36,
+     0.15,
+     0.08,
+     0.04,
+     0.01,
+     0.02
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.38,
+     0.36,
+     0.13,
+     0.06,
+     0.02,
+     0.02,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.34,
+     0.34,
+     0.15,
+     0.08,
+     0.04,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.36,
+     0.37,
+     0.14,
+     0.07,
+     0.03,
+     0.01,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.39,
+     0.38,
+     0.12,
+     0.06,
+     0.02,
+     0.01,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.36,
+     0.36,
+     0.14,
+     0.07,
+     0.03,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.36,
+     0.36,
+     0.14,
+     0.07,
+     0.03,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.38,
+     0.36,
+     0.13,
+     0.07,
+     0.03,
+     0.01,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.37,
+     0.36,
+     0.13,
+     0.07,
+     0.03,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.34,
+     0.36,
+     0.15,
+     0.08,
+     0.03,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.37,
+     0.36,
+     0.13,
+     0.07,
+     0.03,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.36,
+     0.37,
+     0.14,
+     0.07,
+     0.03,
+     0.01,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.35,
+     0.36,
+     0.14,
+     0.07,
+     0.04,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.37,
+     0.37,
+     0.13,
+     0.07,
+     0.03,
+     0.01,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.36,
+     0.36,
+     0.14,
+     0.07,
+     0.03,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.35,
+     0.36,
+     0.14,
+     0.07,
+     0.04,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.37,
+     0.36,
+     0.13,
+     0.07,
+     0.03,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.35,
+     0.37,
+     0.15,
+     0.07,
+     0.03,
+     0.01,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.35,
+     0.36,
+     0.14,
+     0.07,
+     0.04,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.37,
+     0.36,
+     0.13,
+     0.07,
+     0.03,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.37,
+     0.37,
+     0.13,
+     0.07,
+     0.03,
+     0.01,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.36,
+     0.36,
+     0.14,
+     0.07,
+     0.03,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.35,
+     0.36,
+     0.14,
+     0.07,
+     0.04,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.35,
+     0.36,
+     0.14,
+     0.07,
+     0.04,
+     0.02,
+     0.02
+    ]
+   }
+  ],
+  "total": [
+   0.36,
+   0.36,
+   0.14,
+   0.07,
+   0.03,
+   0.02,
+   0.02
+  ]
+ }
+}

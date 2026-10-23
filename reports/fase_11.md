@@ -1,6 +1,9 @@
 # Fase 11 · Evaluación final sin contaminación
 
-**Estado:** G11.1 y G11.2 superadas. **Pendiente de revisión humana (G11.3).**
+> **Aprobada el 2026-10-23** («Aprobación de F11» en `DECISIONS.md`). Después se corrigieron las escalas (D-089) para el uso del producto. **El resultado oficial de esta evaluación no cambia (0,158)** y no se ha repetido. Con el sistema corregido, el mismo barómetro da 0,078; esa cifra es informativa y está en `reports/validacion.md`. La hipótesis de la línea «Hipótesis pendiente de comprobar» se confirmó: era la lista de opciones del banco, que no tenía los valores intermedios de las escalas con solo los extremos etiquetados.
+
+
+**Estado:** G11.1 y G11.2 superadas. **Revisión humana (G11.3): aprobada.**
 **Fecha:** 2026-10-23 · **Decisiones:** D-086, «Aprobación de F9», D-089
 **Código congelado:** etiqueta `f11-congelacion-2026-10-23`, commit `0e40628e`, árbol limpio. La etiqueta queda en local porque el entorno solo deja subir la rama; el commit está en el remoto.
 **Comando** (una sola vez; si ya existe `reports/fase_11_evaluacion.json`, se niega a repetirse):

@@ -1,75 +1,75 @@
 {
- "filas": 9545,
- "preguntas": 383,
+ "filas": 10199,
+ "preguntas": 407,
  "validacion_cruzada_backtest": {
-  "casos": 9545,
-  "spearman_error": 0.7808180233286061,
-  "spearman_confianza": 0.7650528135851891,
-  "ece": 0.016867615816812377,
-  "spearman_confianza_n_subgrupo": 0.3580787744436545,
-  "spearman_confianza_n_ccaa": 0.2773778107731705,
-  "confianza_media_total": 0.7368193058664285,
-  "confianza_media_subgrupos": 0.5762336533137535,
+  "casos": 10199,
+  "spearman_error": 0.7652267598600223,
+  "spearman_confianza": 0.7842205604998882,
+  "ece": 0.017215918056022114,
+  "spearman_confianza_n_subgrupo": 0.36064121341933,
+  "spearman_confianza_n_ccaa": 0.2916324265941521,
+  "confianza_media_total": 0.7238474843343163,
+  "confianza_media_subgrupos": 0.5433882507406443,
   "diagrama_calibracion": [
    {
     "bin": "0.0-0.1",
-    "casos": 1729,
-    "confianza_media": 0.047764645807197005,
-    "acierto": 0.07692307692307693
+    "casos": 2230,
+    "confianza_media": 0.04770259230304188,
+    "acierto": 0.06950672645739911
    },
    {
     "bin": "0.1-0.2",
-    "casos": 956,
-    "confianza_media": 0.146119053907979,
-    "acierto": 0.12656903765690378
+    "casos": 1117,
+    "confianza_media": 0.14419428347390312,
+    "acierto": 0.11101163831692032
    },
    {
     "bin": "0.2-0.3",
-    "casos": 487,
-    "confianza_media": 0.24349768129157986,
-    "acierto": 0.23408624229979466
+    "casos": 492,
+    "confianza_media": 0.24696815583390883,
+    "acierto": 0.2845528455284553
    },
    {
     "bin": "0.3-0.4",
-    "casos": 426,
-    "confianza_media": 0.34835200502250263,
-    "acierto": 0.36384976525821594
+    "casos": 336,
+    "confianza_media": 0.35268070651806177,
+    "acierto": 0.3333333333333333
    },
    {
     "bin": "0.4-0.5",
-    "casos": 277,
-    "confianza_media": 0.4480300435305982,
-    "acierto": 0.38267148014440433
+    "casos": 268,
+    "confianza_media": 0.4532257273767616,
+    "acierto": 0.4962686567164179
    },
    {
     "bin": "0.5-0.6",
-    "casos": 354,
-    "confianza_media": 0.5489892033418543,
-    "acierto": 0.5310734463276836
+    "casos": 320,
+    "confianza_media": 0.5536886994234262,
+    "acierto": 0.5625
    },
    {
     "bin": "0.6-0.7",
-    "casos": 362,
-    "confianza_media": 0.6496016365233185,
-    "acierto": 0.6602209944751382
+    "casos": 389,
+    "confianza_media": 0.6512332518862763,
+    "acierto": 0.7146529562982005
    },
    {
     "bin": "0.7-0.8",
-    "casos": 630,
-    "confianza_media": 0.7598218210417743,
-    "acierto": 0.7968253968253968
+    "casos": 739,
+    "confianza_media": 0.7599681702254629,
+    "acierto": 0.7537212449255751
    },
    {
     "bin": "0.8-0.9",
-    "casos": 1132,
-    "confianza_media": 0.8506510935339399,
-    "acierto": 0.8498233215547704
+    "casos": 1217,
+    "confianza_media": 0.8505172862113778,
+    "acierto": 0.8553820870994249
    },
    {
     "bin": "0.9-1.0",
-    "casos": 3192,
-    "confianza_media": 0.9640260761726265,
-    "acierto": 0.9552005012531328
+    "casos": 3091,
+    "confianza_media": 0.9574060831406914,
+    "acierto": 0.9524425752183759
    }
   ]
  }

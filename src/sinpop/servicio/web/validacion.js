@@ -57,7 +57,7 @@ function pintarCifras() {
     <div class="cifra"><b data-objetivo="${100 * c.tvd_media}">${pts(c.tvd_media)}</b><span>puntos de error medio<br><small>(TVD media, ${c.con_prediccion} preguntas)</small></span></div>
     <div class="cifra"><b>${pct(c.bajo_10_puntos)}</b><span>de las preguntas con<br>menos de 10 puntos de error</span></div>
     <div class="cifra"><b>${pct(c.opciones_dentro_margen)}</b><span>de las respuestas dentro del<br>margen de muestreo del CIS</span></div>
-    ${estado.estudio ? "" : `<div class="cifra cifra-nota"><b>${pts(s.tvd_media)}</b><span>sin las escalas 1-10 de<br>codificación dudosa (D-089)</span></div>`}`;
+    ${estado.estudio ? "" : r.f11_oficial ? `<div class="cifra cifra-nota" title="Etiqueta ${escapar(r.f11_oficial.etiqueta)}"><b>${pts(r.f11_oficial.tvd_media)}</b><span>evaluación final oficial (F11,<br>antes de corregir las escalas)</span></div>` : `<div class="cifra cifra-nota"><b>${pts(s.tvd_media)}</b><span>sin las escalas 1-10 de<br>codificación dudosa (D-089)</span></div>`}`;
 }
 
 // ------------------------------------------------------------------ lista
@@ -238,11 +238,11 @@ function pintarMetodo() {
       <li><b>Margen de muestreo.</b> Lo real también tiene error: una encuesta de unas 4.000 personas. El margen del 95 % usa el tamaño efectivo de Kish (la ponderación lo reduce). En los grupos pequeños es ancho.</li>
       <li><b>Grupos.</b> Ocho variables del perfil que tienen a la vez la población sintética y los encuestados del CIS. Lo previsto para cada grupo es la población sintética de ese grupo; lo real, los encuestados del grupo.</li>
       <li><b>Importancia de las variables.</b> Fuerza de la asociación η (predict/importancia.py, D-090).</li>
-      <li><b>Escalas dudosas.</b> Las escalas 1-10 de valoración de líderes y ministros tienen un problema de codificación en los datos de entrada (D-089); su error no es fiable hasta revisarlas.</li>
+      ${r.escalas ? `<li><b>Escalas 1-10.</b> En algunos estudios el CIS solo etiqueta los extremos de la escala («1 Muy mal», «10 Muy bien»); los valores intermedios se completan como su número, con la misma regla que las respuestas (D-089). La evaluación final oficial (F11) se hizo antes de esta corrección${r.f11_oficial ? `: ${pts(r.f11_oficial.tvd_media)} puntos de error en octubre` : ""}; lo que se ve aquí es el sistema corregido.</li>` : `<li><b>Escalas dudosas.</b> Las escalas 1-10 de valoración de líderes y ministros tienen un problema de codificación en los datos de entrada (D-089); su error no es fiable hasta revisarlas.</li>`}
     </ul>
     <h4 class="seccion-titulo">¿Acierta en los subgrupos? Error medio en los grupos, por variable</h4>
     <div class="dim-errores">${dims.map(([d, v]) => `<div title="${v.grupos} grupos-pregunta"><span>${NOMBRES_DIM[d] || d}</span><span class="de-barra"><i class="de-err" style="width:${Math.min(100, 600 * v.error)}%"></i><i class="de-ruido" style="width:${Math.min(100, 600 * v.ruido_muestreo)}%"></i></span><b>${pts(v.error)}</b><small>ruido ${pts(v.ruido_muestreo)}</small></div>`).join("")}</div>
-    <p class="nota">Puntos de error (TVD) medios en los grupos de cada variable, sin las escalas dudosas (D-089), y la parte que se espera solo por el <b>ruido de muestreo de lo real</b> (cada grupo tiene pocos cientos de encuestados del CIS). El error del total en esas mismas preguntas es de ${pts(r.sin_escalas_dudosas.tvd_media)} puntos: en los grupos se suma, sobre todo, ese mismo desvío más el ruido de la encuesta, no un fallo propio de los grupos.</p>
+    <p class="nota">Puntos de error (TVD) medios en los grupos de cada variable, ${r.escalas ? "" : "sin las escalas dudosas (D-089), "}y la parte que se espera solo por el <b>ruido de muestreo de lo real</b> (cada grupo tiene pocos cientos de encuestados del CIS). El error del total en esas mismas preguntas es de ${pts((r.escalas ? r.total : r.sin_escalas_dudosas).tvd_media)} puntos: en los grupos se suma, sobre todo, ese mismo desvío más el ruido de la encuesta, no un fallo propio de los grupos.</p>
     <p class="nota">Batería generada el ${escapar(r.generado)} con <code>python -m sinpop.evaluate.bateria</code> · datos hasta ${escapar(r.corte_datos)}.</p>`;
 }
 

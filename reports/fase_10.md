@@ -1,5 +1,8 @@
 # Fase 10 · Modelo de confianza
 
+> **Actualización del 2026-10-23, tras corregir las escalas 1-10 (D-089).** Puerta **superada** de nuevo con el mismo comando (`reports/fase_10_puerta.md`): Spearman 0,815 en 2.825 casos, ECE 0,029, confianza media total 0,89 y subgrupos 0,64 (Spearman 0,50 en subgrupos y 0,40 entre comunidades). Las tablas de abajo son las de antes de la corrección.
+
+
 **Estado:** puerta automática superada (G10.1-G10.3). F10 no tiene revisión humana obligatoria (`docs/04`).
 **Fecha:** 2026-10-21 · **Decisión:** D-070
 **Comando para reproducir** (tras la cadena de `reports/fase_09.md`; el *backtest* tarda unas dos horas):

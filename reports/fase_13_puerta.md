@@ -1,7 +1,7 @@
 # Puerta de la fase F13
 
 **Resultado:** superada  
-**Fecha:** 2026-10-23 · **Versión del código:** git:dd29002-dirty  
+**Fecha:** 2026-10-23 · **Versión del código:** git:fab659d-dirty  
 **Comando:** `sinpop validate --phase 13`
 
 | ID | Comprobación | Resultado | Valor | Umbral |

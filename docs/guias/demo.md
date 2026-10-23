@@ -109,12 +109,12 @@ Debajo de los tamaños, «¿Qué tamaño necesito?»:
 
 Pulsa **«Validación»** en la cabecera.
 
-1. **Arriba:** las cifras de 211 preguntas reales del CIS posteriores al corte (julio, septiembre y octubre de 2026). El error medio es de 7,9 puntos sin las escalas dudosas, y el 75 % de las preguntas queda por debajo de 10 puntos.
+1. **Arriba:** las cifras de 212 preguntas reales del CIS posteriores al corte (julio, septiembre y octubre de 2026). El error medio es de 7,5 puntos y el 80 % de las preguntas queda por debajo de 10 puntos. La cuarta tarjeta recuerda el resultado oficial de F11 (15,8 puntos, con el código congelado antes de corregir las escalas, D-089).
 2. **Una que sale bien:** busca «Valoración de la situación económica general» en septiembre, con 3,3 puntos de error.
    - Verás lo previsto (barra azul) frente a lo real (raya negra) con el margen de muestreo de la encuesta.
    - En **«Por grupos»** pulsa Religiosidad: cada grupo, previsto (punto azul) y real (punto negro), dentro del margen del propio grupo.
    - En **«¿De qué depende la respuesta?»** la fuerza prevista y la real casi coinciden.
-3. **Una que sale mal:** ordena por «Mayor error primero». Son temas nuevos sin precedente, como la visita del papa o los incendios, y las escalas dudosas, marcadas.
+3. **Una que sale mal:** ordena por «Mayor error primero». Son temas nuevos sin precedente, como la visita del papa, los incendios o el desahucio de Maricarmen.
 4. **Abajo, «Cómo se ha hecho»:** el error de los subgrupos frente al ruido de muestreo que se esperaría solo por el tamaño de cada grupo.
 
 Cada pregunta enlaza el cuestionario, la ficha técnica y los microdatos oficiales del CIS de los que sale lo real.
@@ -123,9 +123,10 @@ Cada pregunta enlaza el cuestionario, la ficha técnica y los microdatos oficial
 
 - **¿Son personas reales?** No. Es una población sintética de adultos residentes en España, calibrada con el INE (Censo, ECP 2026, EPA), encuestas oficiales y resultados electorales oficiales.
 - **¿Qué se manda al modelo de lenguaje?** Solo el enunciado y agregados públicos, nunca microdatos.
-- **¿Cuánto acierta?** Está todo en la sección «Validación» y en `reports/validacion.md`. En 211 preguntas reales posteriores al corte:
-  - error medio de 7,9 puntos sin las escalas dudosas (11,4 con ellas);
-  - mediana de 5,3;
-  - error de 3,0 en las preguntas políticas de octubre.
+- **¿Cuánto acierta?** Está todo en la sección «Validación» y en `reports/validacion.md`. En 212 preguntas reales posteriores al corte:
+  - error medio de 7,5 puntos y mediana de 5,4;
+  - el 80 % por debajo de 10 puntos;
+  - unos 3 puntos en las preguntas políticas de cada mes.
+  - El resultado oficial de F11 (octubre, código congelado) fue de 15,8 puntos; con las escalas corregidas, 7,8.
   - Peor en temas nuevos sin precedente.
 - **¿Sustituye a una encuesta?** No. Describe distribuciones de grupo y lo dice en cada resultado (`docs/guias/limites_de_uso.md`).

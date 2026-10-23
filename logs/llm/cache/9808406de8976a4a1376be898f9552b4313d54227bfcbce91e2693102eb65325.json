@@ -1,0 +1,242 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v3",
+  "prompt_sha256": "552adf2ed3016792210d9c4054b4bf3bc4c648528af31f7b863d36f5e5eb8c86",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Se espera que a nivel general una minoría conozca a Jordi Hereu, con mayoría que no lo conoce y un porcentaje muy bajo de N.C. El conocimiento aumenta con la edad y el nivel de estudios (más alto entre mayores de 65 y personas con estudios superiores, y mucho menor entre los de 18-34), es algo mayor entre hombres que entre mujeres, y destaca Cataluña por encima del resto de comunidades, mientras que Ceuta, Melilla y Andalucía quedan por debajo.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.25,
+     0.72,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.36,
+     0.61,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.45,
+     0.51,
+     0.04
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.5,
+     0.44,
+     0.06
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.43,
+     0.53,
+     0.04
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.37,
+     0.59,
+     0.04
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.33,
+     0.62,
+     0.05
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.42,
+     0.54,
+     0.04
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.5,
+     0.47,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.33,
+     0.63,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.38,
+     0.58,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.4,
+     0.56,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.36,
+     0.6,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.33,
+     0.63,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.38,
+     0.58,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.4,
+     0.56,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.37,
+     0.59,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.66,
+     0.31,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.36,
+     0.6,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.35,
+     0.61,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.36,
+     0.6,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.45,
+     0.51,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.32,
+     0.64,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.4,
+     0.56,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.38,
+     0.58,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.38,
+     0.58,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.3,
+     0.66,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.3,
+     0.66,
+     0.04
+    ]
+   }
+  ],
+  "total": [
+   0.4,
+   0.56,
+   0.04
+  ]
+ }
+}

@@ -84,3 +84,23 @@ def test_resumen_de_la_bateria() -> None:
     assert sexo["ruido_muestreo"] == pytest.approx((0.2 / 3.92) * (2 / np.pi) ** 0.5, rel=1e-3)
     assert r["estudios"][0]["preguntas"][1]["duda"] == "D-089"
     assert "grupos" not in r["estudios"][0]["preguntas"][0]
+    # con las escalas corregidas (D-089) ya no se marca ninguna
+    r2 = A._resumen_bateria(b | {"escalas": "completadas"})
+    assert r2["estudios"][0]["preguntas"][1]["duda"] is None
+
+
+def test_escalas_con_solo_los_extremos_etiquetados() -> None:
+    """D-089: «1 Muy mal» … «10 Muy bien» sin etiquetas intermedias da la escala completa, con la
+    misma regla que las respuestas (enteros entre los extremos etiquetados con su número)."""
+    import json
+
+    from sinpop.predict import banco as B
+
+    ext = {"0": "No procede", "1": "1 Muy mal", "10": "10 Muy bien", "98": "N.S.", "99": "N.C."}
+    completa = {str(i): str(i) for i in range(2, 10)} | ext
+    esperado = ["1 Muy mal", *map(str, range(2, 10)), "10 Muy bien", "N.S.", "N.C."]
+    assert B._opciones(json.dumps(ext)) == esperado
+    assert B._opciones(json.dumps(completa)) == esperado
+    # una pregunta normal no cambia, y los códigos de NS/NC no cuentan como extremos
+    normal = {"1": "Muy buena", "2": "Buena", "3": "Regular", "8": "N.S.", "9": "N.C."}
+    assert B._opciones(json.dumps(normal)) == ["Muy buena", "Buena", "Regular", "N.S.", "N.C."]

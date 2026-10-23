@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v3",
+  "prompt_sha256": "552adf2ed3016792210d9c4054b4bf3bc4c648528af31f7b863d36f5e5eb8c86",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Se espera un nivel general de respuesta afirmativa mayoritario, con un porcentaje relevante de no sabe. Las personas con estudios superiores afirman más la existencia de interferencias y las de menor nivel educativo responden más N.S.; los jóvenes de 18 a 34 años también muestran más N.S., y en Ceuta y Melilla el sí es algo mayor, mientras que el resto de diferencias por sexo, edad y comunidad son pequeñas.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.52,
+     0.18,
+     0.25,
+     0.05
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.56,
+     0.19,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.57,
+     0.2,
+     0.18,
+     0.05
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.57,
+     0.2,
+     0.18,
+     0.05
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.53,
+     0.19,
+     0.23,
+     0.05
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.5,
+     0.18,
+     0.27,
+     0.05
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.57,
+     0.2,
+     0.18,
+     0.05
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.62,
+     0.21,
+     0.12,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.52,
+     0.21,
+     0.22,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.66,
+     0.17,
+     0.13,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.66,
+     0.17,
+     0.13,
+     0.04
+    ]
+   }
+  ],
+  "total": [
+   0.55,
+   0.2,
+   0.2,
+   0.05
+  ]
+ }
+}

@@ -1,0 +1,242 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v3",
+  "prompt_sha256": "552adf2ed3016792210d9c4054b4bf3bc4c648528af31f7b863d36f5e5eb8c86",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Se espera un nivel de conocimiento moderado, con algo más de la mitad conociendo a la ministra; el conocimiento crece con la edad y el nivel de estudios, siendo menor entre los más jóvenes y quienes tienen estudios hasta obligatoria, que además responden más «N.C.». Las diferencias por sexo son pequeñas y la comunidad destaca sobre todo en Navarra, con conocimiento claramente superior al resto.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.42,
+     0.42,
+     0.16
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.5,
+     0.36,
+     0.14
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.6,
+     0.28,
+     0.12
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.62,
+     0.2,
+     0.18
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.57,
+     0.31,
+     0.12
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.53,
+     0.31,
+     0.16
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.48,
+     0.33,
+     0.19
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.55,
+     0.32,
+     0.13
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.64,
+     0.28,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.52,
+     0.34,
+     0.14
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.55,
+     0.32,
+     0.13
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.55,
+     0.31,
+     0.14
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.52,
+     0.36,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.5,
+     0.37,
+     0.13
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.56,
+     0.3,
+     0.14
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.57,
+     0.29,
+     0.14
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.56,
+     0.3,
+     0.14
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.52,
+     0.36,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.52,
+     0.36,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.54,
+     0.31,
+     0.15
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.56,
+     0.29,
+     0.15
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.58,
+     0.33,
+     0.09
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.52,
+     0.35,
+     0.13
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.76,
+     0.18,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.5,
+     0.34,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.56,
+     0.31,
+     0.13
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.42,
+     0.42,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.42,
+     0.42,
+     0.16
+    ]
+   }
+  ],
+  "total": [
+   0.55,
+   0.31,
+   0.14
+  ]
+ }
+}

@@ -534,27 +534,38 @@ def _texto_importancia(r: dict) -> list[str]:
 
 
 def _fiabilidad() -> str | None:
-    """Error medido del sistema en preguntas reales posteriores al corte (F9 y F11)."""
+    """Error medido del sistema en preguntas reales posteriores al corte: validación (F9), la
+    evaluación final oficial (F11) y, si existe, el sistema actual en la batería (D-091)."""
     from sinpop import REPORTS_DIR
 
     try:
         v = json.loads((REPORTS_DIR / "fase_09_validacion.json").read_text("utf-8"))
         f = json.loads((REPORTS_DIR / "fase_11_evaluacion.json").read_text("utf-8"))
         ev, ef = v["g9_2"]["todas"]["sistema_cis"], f["todas"]["sistema_final"]
-        import polars as pl
-
-        d = pl.read_csv(REPORTS_DIR / "fase_11" / "preguntas.csv", infer_schema_length=None)
-        sin = d.filter(~pl.col("id").str.contains("VALMINIS|VALORALIDERES"))
-        es = float(sin["tvd_sistema_final"].mean())
     except (FileNotFoundError, KeyError, json.JSONDecodeError):
         return None
-    pv, pf, ps = (f"{100 * x:.1f}".replace(".", ",") for x in (ev, ef, es))
-    return (
+    pv, pf = (f"{100 * x:.1f}".replace(".", ",") for x in (ev, ef))
+    texto = (
         "Fiabilidad medida: en preguntas reales del CIS posteriores al corte de los datos, el "
         f"error medio fue de {pv} puntos en la validación (julio y septiembre de 2026) y de {pf} "
-        f"en la evaluación final (octubre de 2026); {ps} sin las escalas 1-10 de valoración, cuya "
-        "codificación está en revisión (D-089). Detalle en reports/fase_09.md y fase_11.md y, "
-        "pregunta a pregunta y grupo a grupo, en la sección «Validación» de la interfaz."
+        "en la evaluación final oficial de octubre (F11, una sola vez con el código congelado)."
+    )
+    try:
+        b = json.loads((REPORTS_DIR / "validacion" / "bateria.json").read_text("utf-8"))
+        if b.get("escalas"):
+            e = [
+                q["tvd"] for x in b["estudios"] for q in x["preguntas"] if q.get("tvd") is not None
+            ]
+            pb = f"{100 * sum(e) / len(e):.1f}".replace(".", ",")
+            texto += (
+                f" Tras corregir las escalas 1-10 (D-089), el error medio en las {len(e)} "
+                f"preguntas posteriores al corte es de {pb} puntos."
+            )
+    except (FileNotFoundError, KeyError, json.JSONDecodeError, ZeroDivisionError):
+        pass
+    return texto + (
+        " Detalle en reports/fase_09.md, fase_11.md y validacion.md, y pregunta a pregunta y "
+        "grupo a grupo en la sección «Validación» de la interfaz."
     )
 
 

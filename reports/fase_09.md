@@ -1,6 +1,13 @@
 # Fase 09 · Capa de predicción
 
-**Estado:** puerta automática **fallida** en G9.6 (modo evento), también con el modelo de lenguaje. G9.7 espera la aprobación de su umbral. F9 no tiene revisión humana obligatoria en `docs/04`, pero el fallo de G9.6 necesita una decisión humana (D-086).
+> **Actualización del 2026-10-23, tras corregir las escalas 1-10 (D-089) y pasar B2 a `b2@v3` (D-092).** Se ha recalculado todo con el mismo comando. Las tablas de abajo son las de antes de la corrección; las cifras vigentes están en `reports/fase_09_puerta.md`:
+> - **G9.2:** TVD media 0,056 (B0 0,056, B1 0,056; 108 preguntas), antes 0,065. Políticas 0,030, subgrupos 0,068, CCAA 0,090. B2 0,258.
+> - **G9.5:** IC80 0,78 e IC95 0,94 (853 opciones).
+> - **G9.7 ✅ superada:** razón de brechas 0,72 (umbral 1,25, aprobado); 165 justificaciones revisadas, 0 problemáticas.
+> - **Estado de la puerta:** fallida solo en G9.6 (modo evento), aceptada como limitación en la «Aprobación de F9».
+
+
+**Estado:** puerta automática **fallida** solo en G9.6 (modo evento), aceptada como limitación en la «Aprobación de F9» (D-086). G9.7 superada tras D-092.
 **Fecha:** 2026-10-23 (con LLM y semivida de 3 meses) · **Decisiones:** D-069, D-071, D-082, D-085, D-086
 **Comando para reproducir** (tras la cadena de `reports/fase_08c.md`):
 

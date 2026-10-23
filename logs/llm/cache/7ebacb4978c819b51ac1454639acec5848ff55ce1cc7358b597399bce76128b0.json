@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v3",
+  "prompt_sha256": "552adf2ed3016792210d9c4054b4bf3bc4c648528af31f7b863d36f5e5eb8c86",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Se espera un nivel general de apoyo al refuerzo de fronteras por encima de la mitad, con el 'no' como segunda opción. El apoyo crece con la edad y con menor nivel de estudios, siendo mayor entre los de 65 años o más y quienes tienen estudios hasta obligatoria, mientras que el 'no' es más frecuente entre los de 18-34 años y con estudios superiores; por comunidades, el 'sí' es algo menor en Cataluña, País Vasco y Navarra y algo mayor en Murcia, Extremadura y las ciudades autónomas, con diferencias moderadas por sexo.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.42,
+     0.38,
+     0.13,
+     0.07
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.5,
+     0.31,
+     0.12,
+     0.07
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.58,
+     0.24,
+     0.11,
+     0.07
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.62,
+     0.2,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.57,
+     0.26,
+     0.11,
+     0.06
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.53,
+     0.28,
+     0.13,
+     0.06
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.62,
+     0.2,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.54,
+     0.28,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.45,
+     0.36,
+     0.12,
+     0.07
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.56,
+     0.26,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.57,
+     0.25,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.5,
+     0.32,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.52,
+     0.29,
+     0.12,
+     0.07
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.58,
+     0.24,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.55,
+     0.27,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.58,
+     0.24,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.58,
+     0.24,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.48,
+     0.33,
+     0.12,
+     0.07
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.56,
+     0.25,
+     0.13,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.59,
+     0.23,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.54,
+     0.28,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.52,
+     0.31,
+     0.11,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.6,
+     0.23,
+     0.11,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.48,
+     0.34,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.47,
+     0.36,
+     0.11,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.56,
+     0.26,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.62,
+     0.2,
+     0.12,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.62,
+     0.2,
+     0.12,
+     0.06
+    ]
+   }
+  ],
+  "total": [
+   0.55,
+   0.27,
+   0.12,
+   0.06
+  ]
+ }
+}

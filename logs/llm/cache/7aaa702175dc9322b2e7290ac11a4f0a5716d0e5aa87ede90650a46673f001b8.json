@@ -1,0 +1,242 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v3",
+  "prompt_sha256": "552adf2ed3016792210d9c4054b4bf3bc4c648528af31f7b863d36f5e5eb8c86",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Se espera que alrededor de cuatro de cada diez personas digan conocer a Pablo Bustinduy, con una mitad que no le conoce; el conocimiento es mayor entre las personas con estudios superiores, los hombres, los de 50 a 64 años y quienes viven en Madrid y el País Vasco, y menor entre los más jóvenes, las personas con estudios hasta obligatoria y las mujeres. Los mayores de 65 años son quienes más responden no contesta.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.35,
+     0.56,
+     0.09
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.42,
+     0.5,
+     0.08
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.46,
+     0.46,
+     0.08
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.45,
+     0.4,
+     0.15
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.46,
+     0.46,
+     0.08
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.38,
+     0.54,
+     0.08
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.33,
+     0.56,
+     0.11
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.43,
+     0.49,
+     0.08
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.53,
+     0.41,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.4,
+     0.52,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.42,
+     0.5,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.44,
+     0.48,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.42,
+     0.5,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.45,
+     0.47,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.4,
+     0.52,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.38,
+     0.54,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.38,
+     0.54,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.45,
+     0.47,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.43,
+     0.49,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.37,
+     0.55,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.4,
+     0.52,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.5,
+     0.44,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.4,
+     0.52,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.42,
+     0.5,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.48,
+     0.46,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.42,
+     0.5,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.36,
+     0.54,
+     0.1
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.36,
+     0.54,
+     0.1
+    ]
+   }
+  ],
+  "total": [
+   0.42,
+   0.5,
+   0.08
+  ]
+ }
+}
