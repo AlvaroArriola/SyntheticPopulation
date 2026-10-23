@@ -216,7 +216,10 @@ CAMPOS_RETRATO = [
 
 def retratos(r: E.Resultado, run_id: str, n: int = N_RETRATOS) -> list[dict]:
     """Personas sintéticas concretas, elegidas al azar (con su peso) con una semilla fija por
-    pregunta, con su perfil y la probabilidad de cada respuesta para alguien con ese perfil."""
+    pregunta, con su perfil y la probabilidad de cada respuesta para alguien con ese perfil.
+
+    La semilla sale del contenido de la pregunta (enunciado y opciones) y de la población, no de su
+    identificador: la misma pregunta da los mismos retratos desde la CLI y desde el servicio."""
     import hashlib
 
     from sinpop.predict import poblacion as P
@@ -228,7 +231,8 @@ def retratos(r: E.Resultado, run_id: str, n: int = N_RETRATOS) -> list[dict]:
     except FileNotFoundError:  # evaluación con un identificador sin población (F9, F11)
         return []
     w = m["peso"].to_numpy()
-    semilla = int(hashlib.sha256(f"{r.pregunta.id}|{run_id}".encode()).hexdigest()[:8], 16)
+    clave = json.dumps([r.pregunta.enunciado, r.pregunta.opciones, run_id], ensure_ascii=False)
+    semilla = int(hashlib.sha256(clave.encode()).hexdigest()[:8], 16)
     idx = np.random.default_rng(semilla).choice(
         m.height, size=min(n, m.height), replace=False, p=w / w.sum()
     )
@@ -505,10 +509,35 @@ def ajustar_territorio(out: dict, r: E.Resultado, clave: str) -> dict:
 def predecir_dict(
     q: dict, run_id: str = "2026-01-01_ES_1000000_s1", permitir_llm: bool = True
 ) -> dict:
-    """Predicción de una pregunta en formato `docs/03` §2.8 (la usan la CLI y el servicio).
+    """Predicción de una pregunta en formato `docs/03` §2.8 (la usan la CLI y el servicio), con
+    la importancia de cada variable del perfil (`predict/importancia.py`, D-090).
 
     `permitir_llm=False` fuerza el estimador sin modelo de lenguaje (para comparaciones en lote,
     que si no harían una llamada por territorio)."""
+    out = _predecir(q, run_id, permitir_llm)
+    out["importancia"] = importancia_de(out, run_id)
+    return out
+
+
+def importancia_de(out: dict, run_id: str) -> list[dict]:
+    """Qué variables separan más las respuestas en esta predicción (D-090): fuerza η por
+    dimensión, con los pesos de los grupos en el marco de la población."""
+    from sinpop.predict import importancia as IM
+    from sinpop.predict import poblacion as P
+
+    opciones = list(out["total"])
+    sub = {k: np.array([v[o]["p"] for o in opciones]) for k, v in out["por_subgrupo"].items()}
+    dims = sorted({k.split("=", 1)[0] for k in sub} - {"provincia"})
+    try:
+        marco = P.marco(run_id)
+    except (FileNotFoundError, OSError):  # evaluaciones con un run_id simbólico
+        marco = P.marco()
+    pesos = IM.pesos_marco(marco, dims)
+    total = np.array([out["total"][o]["p"] for o in opciones])
+    return IM.importancia(sub, pesos, total, opciones, dimensiones=dims)
+
+
+def _predecir(q: dict, run_id: str, permitir_llm: bool) -> dict:
     jsonschema.validate(q, ESQUEMA_ENTRADA)
     from sinpop.llm import cliente as C
     from sinpop.predict import asistido as A

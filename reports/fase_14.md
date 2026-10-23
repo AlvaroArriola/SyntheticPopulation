@@ -1,7 +1,7 @@
 # Fase 14 · Interfaz web
 
 **Estado:** puertas automáticas superadas (`reports/fase_14_puerta.md`). **Pendiente de revisión humana (G14.4).**
-**Fecha:** 2026-10-22 · **Decisiones:** D-073, D-075 a D-088
+**Fecha:** 2026-10-22 · **Decisiones:** D-073, D-075 a D-091
 **Comando:** `sinpop serve --paquete dist/paquete` y, con el servicio en marcha, `python tools/prueba_interfaz.py http://127.0.0.1:8000 && sinpop validate --phase 14`
 
 ## Qué es
@@ -34,6 +34,8 @@ Una página (`src/sinpop/servicio/web/`) servida por `sinpop serve`, sin pasos d
 - **«¿Y si ocurre…?» (evento):** el cambio esperado por categoría con la explicación del modelo. Sin modelo de lenguaje enseña el antes y explica por qué no hay cambio estimado (D-073).
 - **Exportar:** PDF con resumen y gráficos, CSV y JSON (D-078). Las consultas recientes se guardan en el navegador.
 - **Comparar comunidades:** cada comunidad con su propia población (D-080).
+- **«¿De qué depende la respuesta?»** (D-090): fuerza de cada variable del perfil en cada resultado y en el PDF. El botón «Generar PDF» está arriba del resultado, y el informe tiene páginas nuevas de análisis, método y fuentes.
+- **Validación** (`/validacion.html`, D-091): 211 preguntas del CIS posteriores al corte, con lo previsto frente a lo real en total y en ocho variables de grupo, la importancia prevista y real y las fuentes de cada cifra. Resultados en `reports/validacion.md`.
 - **Sin gasto del LLM en pantalla,** por decisión de la persona responsable (D-088, en lugar de la tarea 5 de F14). Se consulta en `/api/llm` y el tope se aplica en el servidor.
 - **Acabado (D-088):**
   - cabecera fija con «Compartir» (enlace que rellena la pregunta) y «Presentación» (solo mapa y resultado);
@@ -68,7 +70,8 @@ Capturas en `reports/fase_14/`:
 6. evento;
 8. móvil;
 9. dato de la población;
-10. asistente de tamaño.
+10. asistente de tamaño;
+11. validación (previsto frente a real, por grupos).
 
 También se comprueban las opciones propias pegadas con «;» y la plantilla «responsable» (D-085).
 

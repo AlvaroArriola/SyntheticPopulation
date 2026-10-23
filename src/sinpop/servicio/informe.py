@@ -8,8 +8,12 @@ Recibe el mismo JSON que ya enseña la interfaz y lo convierte en un PDF A4:
    ningún modelo de lenguaje: cada frase sale de una cifra del resultado.
 2. **Distribución** con los intervalos del 80 % y del 95 % y, para las preguntas, la comparación
    entre lo que piensa la población y lo que mediría el CIS.
-3. **Por grupos**: un mapa de calor por cada dimensión (edad, sexo, estudios, recuerdo de voto).
-4. **Por comunidad**: mapa coloreado de la opción más frecuente, con Canarias en un recuadro.
+3. **¿De qué depende la respuesta?** (D-090): fuerza de cada variable del perfil, con texto y la
+   respuesta principal en las dos variables que más separan.
+4. **Por grupos**: un mapa de calor por cada dimensión (edad, sexo, estudios, recuerdo de voto).
+5. **Por comunidad**: mapa coloreado de la opción más frecuente, con Canarias en un recuadro.
+6. **Evolución y cómo se ha calculado**: la serie del CIS hasta hoy, el método, la fiabilidad
+   medida en la validación y las fuentes.
 
 Los colores son los de la interfaz (paleta de referencia validada). Sin semilla ni aleatoriedad:
 el mismo resultado da el mismo PDF salvo la fecha de generación.
@@ -104,6 +108,10 @@ def normalizar(tipo: str, datos: dict, etiquetas: dict) -> dict:
         "aviso": datos.get("aviso", ""),
         "llm": (datos.get("versiones") or {}).get("modelo_llm"),
         "justificacion": (datos.get("parametros_llm") or {}).get("justificacion"),
+        "importancia": datos.get("importancia") or [],
+        "evolucion": datos.get("evolucion") or {},
+        "metodo_confianza": (datos.get("confianza") or {}).get("metodo", ""),
+        "estimador": (datos.get("parametros") or {}).get("estimador"),
         "etiquetas": etiquetas,
     }
 
@@ -390,6 +398,210 @@ def _similares(ids: list[str]) -> list[str]:
     return out
 
 
+def _importancia(ax, imp: list[dict]) -> None:
+    imp = [x for x in imp if x["fuerza"] > 0][:10]
+    y = np.arange(len(imp))[::-1]
+    for yi, x in zip(y, imp, strict=True):
+        ax.barh(yi, x["fuerza"], height=0.55, color=SERIE)
+        ax.text(
+            x["fuerza"] + 0.004,
+            yi,
+            f"{x['fuerza']:.2f}".replace(".", ","),
+            va="center",
+            fontsize=7.5,
+            color=TEXTO_2,
+        )
+    ax.set_yticks(
+        y, [DIMENSIONES.get(x["dimension"], x["dimension"]) for x in imp], fontsize=8, color=TEXTO
+    )
+    ax.set_xlim(0, max(0.05, max(x["fuerza"] for x in imp) * 1.18))
+    _estilo(ax)
+
+
+def _grupos_opcion(ax, r: dict, dim: str, opcion: str) -> None:
+    """La respuesta principal en cada grupo de una dimensión, con su intervalo del 80 %."""
+    claves = [k for k in r["por_subgrupo"] if k.split("=", 1)[0] == dim]
+    claves = [k for k in claves if k.split("=", 1)[1] not in ("NC", "NS", "NS_NC")]
+    y = np.arange(len(claves))[::-1]
+    for yi, k in zip(y, claves, strict=True):
+        d = r["por_subgrupo"][k][opcion]
+        if d.get("ic80"):
+            ax.plot(
+                d["ic80"], [yi, yi], color=SEQ[2], linewidth=5, solid_capstyle="round", alpha=0.6
+            )
+        ax.scatter([d["p"]], [yi], s=34, color=SERIE, zorder=3, edgecolor="white", linewidth=1)
+        ax.text(
+            max(d.get("ic80", [0, d["p"]])[1], d["p"]) + 0.01,
+            yi,
+            _pct(d["p"]),
+            va="center",
+            fontsize=7,
+            color=TEXTO,
+        )
+    tot = r["total"][opcion]["p"]
+    ax.axvline(tot, color=TEXTO_3, linewidth=0.8, linestyle=(0, (2, 2)))
+    ax.set_yticks(
+        y,
+        [textwrap.shorten(_nombre(dim, k.split("=", 1)[1], r["etiquetas"]), 30) for k in claves],
+        fontsize=7.5,
+        color=TEXTO,
+    )
+    ax.xaxis.set_major_formatter(lambda v, _: _pct(v))
+    _estilo(ax)
+    ax.set_title(
+        f"{DIMENSIONES.get(dim, dim)} · «{textwrap.shorten(opcion, 30)}» (línea: total)",
+        loc="left",
+        fontsize=9,
+        color=TEXTO,
+        pad=6,
+    )
+
+
+CAT = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
+
+
+def _evolucion(ax, r: dict) -> None:
+    """Cada vez que el CIS hizo la pregunta (o una casi igual) y la estimación de hoy."""
+    import datetime as _dt
+
+    pts = r["evolucion"]["puntos"]
+    ops = [o for o in r["opciones"] if o not in ("N.S.", "N.C.")]
+    xs = [_dt.date.fromisoformat(p["fecha"][:10]) for p in pts]
+    hoy = _dt.date.fromisoformat(r["evolucion"]["hoy"] + "-01")
+    for i, o in enumerate(ops[:8]):
+        c = CAT[i % len(CAT)]
+        ys = [p["dist"].get(o, np.nan) for p in pts]
+        ax.plot(
+            xs,
+            ys,
+            color=c,
+            linewidth=1.6,
+            marker="o",
+            markersize=2.5,
+            label=textwrap.shorten(o, 26),
+        )
+        med = (r["medicion_cis"] or r["total"])[o]
+        ax.scatter([hoy], [med["p"]], color=c, s=40, zorder=3, edgecolor="white", linewidth=1)
+        if med.get("ic80"):
+            ax.plot([hoy, hoy], med["ic80"], color=c, linewidth=2.5, alpha=0.35)
+    ax.axvline(hoy, color=TEXTO_3, linewidth=0.8, linestyle=(0, (2, 2)))
+    ax.text(hoy, ax.get_ylim()[1], " hoy", fontsize=7, color=TEXTO_3, va="top")
+    ax.yaxis.set_major_formatter(lambda v, _: _pct(v))
+    ax.legend(
+        fontsize=7,
+        frameon=False,
+        ncols=min(4, len(ops)),
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.1),
+        labelcolor=TEXTO_2,
+    )
+    for lado in ("top", "right"):
+        ax.spines[lado].set_visible(False)
+    ax.spines["left"].set_color(BORDE)
+    ax.spines["bottom"].set_color(BORDE)
+    ax.tick_params(colors=TEXTO_2, labelsize=7.5, length=0)
+    ax.yaxis.grid(True, color=BORDE, linewidth=0.6)
+
+
+def _texto_importancia(r: dict) -> list[str]:
+    imp = [x for x in r["importancia"] if x["fuerza"] > 0]
+    if not imp:
+        return []
+    et = r["etiquetas"]
+    a = imp[0]
+    dim = DIMENSIONES.get(a["dimension"], a["dimension"]).lower()
+    bajo = _nombre(a["dimension"], a["grupo_bajo"], et)
+    alto = _nombre(a["dimension"], a["grupo_alto"], et)
+    fuerza = f"{a['fuerza']:.2f}".replace(".", ",")
+    fr = [
+        f"Lo que más separa las respuestas es {dim} (fuerza {fuerza}): «{a['opcion']}» va del "
+        f"{_pct(a['valor_bajo'])} ({bajo}) al {_pct(a['valor_alto'])} ({alto})."
+    ]
+    if len(imp) > 2:
+        sig = ", ".join(DIMENSIONES.get(x["dimension"], x["dimension"]).lower() for x in imp[1:3])
+        fr.append(f"Le siguen {sig}.")
+    debiles = [
+        DIMENSIONES.get(x["dimension"], x["dimension"]).lower() for x in imp if x["fuerza"] < 0.05
+    ]
+    if debiles:
+        fr.append(f"Apenas cambia con {', '.join(debiles[:4])}: esos grupos responden casi igual.")
+    fr.append(
+        "La fuerza (η, de 0 a 1) mide cuánto cambian las respuestas de un grupo a otro, según las "
+        "preguntas del CIS en que se apoya la predicción. Es descriptiva, no causal: variables "
+        "relacionadas, como edad y estudios, pueden repartirse el mismo efecto."
+    )
+    return fr
+
+
+def _fiabilidad() -> str | None:
+    """Error medido del sistema en preguntas reales posteriores al corte (F9 y F11)."""
+    from sinpop import REPORTS_DIR
+
+    try:
+        v = json.loads((REPORTS_DIR / "fase_09_validacion.json").read_text("utf-8"))
+        f = json.loads((REPORTS_DIR / "fase_11_evaluacion.json").read_text("utf-8"))
+        ev, ef = v["g9_2"]["todas"]["sistema_cis"], f["todas"]["sistema_final"]
+        import polars as pl
+
+        d = pl.read_csv(REPORTS_DIR / "fase_11" / "preguntas.csv", infer_schema_length=None)
+        sin = d.filter(~pl.col("id").str.contains("VALMINIS|VALORALIDERES"))
+        es = float(sin["tvd_sistema_final"].mean())
+    except (FileNotFoundError, KeyError, json.JSONDecodeError):
+        return None
+    pv, pf, ps = (f"{100 * x:.1f}".replace(".", ",") for x in (ev, ef, es))
+    return (
+        "Fiabilidad medida: en preguntas reales del CIS posteriores al corte de los datos, el "
+        f"error medio fue de {pv} puntos en la validación (julio y septiembre de 2026) y de {pf} "
+        f"en la evaluación final (octubre de 2026); {ps} sin las escalas 1-10 de valoración, cuya "
+        "codificación está en revisión (D-089). Detalle en reports/fase_09.md y fase_11.md y, "
+        "pregunta a pregunta y grupo a grupo, en la sección «Validación» de la interfaz."
+    )
+
+
+def _metodo(r: dict, contexto: dict) -> list[str]:
+    tam, rid = contexto.get("tamano", ""), contexto.get("run_id", "")
+    out = [
+        f"Población: {tam} personas sintéticas ({rid}), adultos residentes en España "
+        "calibrados con el INE (Censo 2021, Estadística Continua de Población a 1 de enero de "
+        "2026, EPA), encuestas oficiales de salud, renta y condiciones de vida, y resultados "
+        "electorales oficiales.",
+    ]
+    if r.get("llm"):
+        out.append(
+            "Estimación: no había preguntas parecidas fiables en el banco del CIS, así que "
+            f"respondió un modelo de lenguaje ({r['llm']}) anclado en las más parecidas y en la "
+            "composición de la población. Solo recibe enunciados públicos y agregados, nunca "
+            "microdatos."
+        )
+    else:
+        out.append(
+            "Estimación: para cada pregunta parecida del banco del CIS se ajusta un modelo de la "
+            "respuesta según el perfil de los encuestados (edad, sexo, estudios, territorio, "
+            "ideología, recuerdo de voto, religiosidad…) y se aplica a cada persona de la "
+            "población sintética. Las preguntas se combinan según su parecido y su antigüedad: "
+            "una medición pierde la mitad de su peso cada 3 meses (D-082)."
+        )
+    out.append(
+        "«Como lo mediría el CIS» reproduce la composición de las muestras del CIS (más voto al "
+        "PSOE y menos abstención que el resultado oficial); «lo que piensa la población» usa la "
+        "población real."
+    )
+    if r.get("metodo_confianza"):
+        out.append(
+            "Confianza: probabilidad de que el error total de la distribución sea menor de 10 "
+            f"puntos ({r['metodo_confianza']})."
+        )
+    f = _fiabilidad()
+    if f:
+        out.append(f)
+    out.append(
+        "Fuentes: INE, CIS (barómetros citados por su número de estudio), Eurostat y encuestas "
+        "oficiales; citas completas en docs/guias/fuentes_y_citas.md. Decisiones de método en "
+        "DECISIONS.md."
+    )
+    return out
+
+
 # ---------------------------------------------------------------- documento
 
 
@@ -420,7 +632,9 @@ def generar(tipo: str, datos: dict, contexto: dict, etiquetas: dict) -> bytes:
     hay_mapa = contexto.get("territorio") == "ES" and any(
         k.startswith("ccaa=") for k in r["por_subgrupo"]
     )
-    total = 2 + (1 if dims else 0) + (1 if hay_mapa else 0)
+    hay_imp = r["tipo"] == "pregunta" and any(x["fuerza"] > 0 for x in r.get("importancia", []))
+    hay_metodo = r["tipo"] == "pregunta"
+    total = 2 + (1 if hay_imp else 0) + (1 if dims else 0) + (1 if hay_mapa else 0) + hay_metodo
     buf = io.BytesIO()
     plt.rcParams.update({"font.family": "DejaVu Sans", "pdf.fonttype": 42})
     meta = {
@@ -530,6 +744,42 @@ def generar(tipo: str, datos: dict, contexto: dict, etiquetas: dict) -> bytes:
         plt.close(fig)
 
         pagina = 3
+        if hay_imp:
+            fig = plt.figure(figsize=A4)
+            _cabecera(fig, "¿De qué depende la respuesta?", pagina, total)
+            y = 0.89
+            for frase in _texto_importancia(r):
+                for linea in textwrap.wrap(frase, 100):
+                    fig.text(0.08, y, linea, fontsize=8.5, color=TEXTO_2)
+                    y -= 0.016
+                y -= 0.006
+            n_imp = len([x for x in r["importancia"] if x["fuerza"] > 0][:10])
+            alto = 0.021 * n_imp + 0.03
+            ax = fig.add_axes([0.32, y - alto - 0.01, 0.6, alto])
+            _importancia(ax, r["importancia"])
+            fig.text(
+                0.32,
+                y - alto - 0.035,
+                "Fuerza de la asociación (η) entre cada variable y la respuesta",
+                fontsize=7,
+                color=TEXTO_3,
+            )
+            base = y - alto - 0.08
+            top = [x for x in r["importancia"] if x["fuerza"] > 0][:2]
+            niveles = [
+                max(2, len([k for k in r["por_subgrupo"] if k.split("=", 1)[0] == x["dimension"]]))
+                for x in top
+            ]
+            libre = base - 0.08 - 0.07 * len(top)
+            for x, n in zip(top, niveles, strict=True):
+                h = libre * n / sum(niveles)
+                ax = fig.add_axes([0.36, base - h, 0.56, h])
+                _grupos_opcion(ax, r, x["dimension"], x["opcion"])
+                base -= h + 0.07
+            _pie(fig, r["aviso"])
+            pdf.savefig(fig)
+            plt.close(fig)
+            pagina += 1
         if dims:
             fig = plt.figure(figsize=A4)
             _cabecera(fig, "Por grupos", pagina, total)
@@ -569,6 +819,36 @@ def generar(tipo: str, datos: dict, contexto: dict, etiquetas: dict) -> bytes:
                 color=TEXTO_2,
             )
             _mapa(fig, r, opcion)
+            _pie(fig, r["aviso"])
+            pdf.savefig(fig)
+            plt.close(fig)
+            pagina += 1
+
+        if hay_metodo:
+            fig = plt.figure(figsize=A4)
+            puntos = r["evolucion"].get("puntos") or []
+            titulo = (
+                "Evolución y cómo se ha calculado" if len(puntos) >= 2 else "Cómo se ha calculado"
+            )
+            _cabecera(fig, titulo, pagina, total)
+            y = 0.89
+            if len(puntos) >= 2:
+                fig.text(
+                    0.08,
+                    y,
+                    f"El CIS hizo esta pregunta (o una casi igual) {len(puntos)} veces; "
+                    "el punto de la derecha es la estimación de hoy.",
+                    fontsize=8.5,
+                    color=TEXTO_2,
+                )
+                ax = fig.add_axes([0.1, 0.56, 0.82, 0.3])
+                _evolucion(ax, r)
+                y = 0.45
+            for frase in _metodo(r, contexto):
+                for linea in textwrap.wrap(frase, 105):
+                    fig.text(0.08, y, linea, fontsize=8, color=TEXTO_2)
+                    y -= 0.015
+                y -= 0.008
             _pie(fig, r["aviso"])
             pdf.savefig(fig)
             plt.close(fig)

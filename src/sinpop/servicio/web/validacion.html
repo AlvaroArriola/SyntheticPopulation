@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Validación · España sintética</title>
+  <meta name="description" content="Lo que predijo la población sintética frente a lo que midió el CIS después del corte de los datos, en total y por grupos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232a78d6'/%3E%3Ccircle cx='11' cy='13' r='3' fill='white'/%3E%3Ccircle cx='21' cy='13' r='3' fill='white' opacity='.7'/%3E%3Ccircle cx='16' cy='21' r='3' fill='white' opacity='.85'/%3E%3C/svg%3E">
+</head>
+<body class="pagina-validacion">
+  <header class="cabecera">
+    <div class="marca">
+      <span class="logo" aria-hidden="true"><i></i><i></i><i></i></span>
+      <div>
+        <h1>España sintética</h1>
+        <p>Validación: lo que predijo frente a lo que midió el CIS</p>
+      </div>
+    </div>
+    <nav class="navegacion" aria-label="Secciones">
+      <a href="/">Consultar</a>
+      <a href="/validacion.html" aria-current="page">Validación</a>
+    </nav>
+  </header>
+
+  <main class="val">
+    <section class="val-cabecera" aria-labelledby="t-val">
+      <div>
+        <h2 id="t-val">¿Acierta la población sintética?</h2>
+        <p class="val-intro">Preguntas reales de los barómetros del CIS <b>posteriores al corte de los datos (junio de 2026)</b>: el sistema las predijo sin ver esas encuestas. Aquí se compara su predicción con lo que el CIS midió después, en total y en cada grupo.</p>
+      </div>
+      <div class="val-cifras" id="val-cifras" aria-live="polite"></div>
+    </section>
+
+    <div class="val-cuerpo">
+      <aside class="val-lista tarjeta" aria-label="Preguntas de la batería">
+        <div class="val-filtros">
+          <input id="val-buscar" type="search" placeholder="Buscar una pregunta…" aria-label="Buscar una pregunta">
+          <div class="val-chips" id="val-estudios" role="group" aria-label="Estudio"></div>
+          <div class="fila">
+            <select id="val-tipo" aria-label="Tipo de pregunta">
+              <option value="">Todas</option>
+              <option value="vida">Vida cotidiana</option>
+              <option value="politica">Políticas</option>
+            </select>
+            <select id="val-orden" aria-label="Orden">
+              <option value="cuestionario">Orden del cuestionario</option>
+              <option value="mejor">Menor error primero</option>
+              <option value="peor">Mayor error primero</option>
+            </select>
+          </div>
+        </div>
+        <p class="val-cuenta" id="val-cuenta"></p>
+        <ul class="val-preguntas" id="val-preguntas"></ul>
+      </aside>
+
+      <section class="val-detalle tarjeta" id="val-detalle" aria-live="polite">
+        <p class="nota">Elige una pregunta de la lista.</p>
+      </section>
+    </div>
+
+    <section class="tarjeta val-metodo" aria-labelledby="t-metodo">
+      <h3 id="t-metodo">Cómo se ha hecho y en qué se basa</h3>
+      <div id="val-metodo"></div>
+    </section>
+    <p class="creditos">Datos: Centro de Investigaciones Sociológicas (CIS), barómetros citados por su número de estudio · INE para la población · Validación documentada en DECISIONS.md (D-091) y reports/fase_09.md, fase_11.md</p>
+  </main>
+
+  <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+  <script type="module" src="validacion.js"></script>
+</body>
+</html>

@@ -2026,3 +2026,62 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   3. Repetir la medición de esas preguntas.
   - Afecta a G9.2 y G11.2 solo en esas preguntas (unas 30 de 122). Pide decisión humana antes de rehacer evaluaciones.
 - **Comando del listado:** `python -m sinpop.evaluate.preguntas_posteriores [--final]`. Vive en `sinpop.evaluate` porque es el único paquete que puede leer `data/eval/`.
+
+## D-090 · ¿De qué depende la respuesta? Importancia de las variables en cada predicción (2026-10-23)
+
+- **Fecha:** 2026-10-23
+- **Fase:** F9 (salida) y F14.
+- **Estado:** pedido por la persona responsable: «para cada pregunta, digas qué variables son las más importantes y sobre las que se basan principalmente las respuestas».
+- **Medida** (`predict/importancia.py`): fuerza de la asociación η entre cada variable del perfil y la respuesta.
+  - Fórmula: η² = Σ_g w_g Σ_o (p_go − p_o)² / Σ_o p_o(1 − p_o).
+  - Es la razón de correlación de un análisis de varianza: 0 si todos los grupos responden igual, 1 si cada grupo da una sola respuesta. Con dos opciones coincide con la η clásica (test unitario).
+  - Se acompaña de la mayor diferencia concreta entre grupos: «“Buena” va del 11 % (derecha radical) al 55 % (izquierda estatal)».
+- **En cada predicción** (`salida.predecir_dict`, campo `importancia`):
+  - `p_go` sale de la predicción por grupos;
+  - `w_g`, del marco de la población;
+  - se calcula en todas las dimensiones de la pregunta menos la provincia.
+  - Se enseña en la interfaz («¿De qué depende la respuesta?») y en el PDF.
+- **En lo observado** (validación, D-091): cada `p_go` tiene ruido de muestreo que infla η. Se descuenta su valor esperado, `Σ_o p_o(1−p_o) · Σ_g w_g / n_g`, con el tamaño efectivo de Kish de cada grupo.
+- **Es descriptiva, no causal:** variables correlacionadas (edad y estudios) pueden repartirse el mismo efecto. Así se dice en la interfaz y en el PDF.
+- **Comprobación con datos reales** (156 preguntas posteriores al corte, sin las escalas dudosas de D-089):
+  - la variable que más separa en la encuesta real es la primera prevista en el 58 % de las preguntas, y está entre las tres primeras previstas en el 90 %;
+  - la diferencia media de fuerza entre lo previsto y lo real es de 0,024.
+- **Alternativas descartadas:**
+  - Importancia por permutación en los modelos de las análogas: no existe para el LLM anclado, depende de la análoga y es más cara.
+  - Coeficientes de los modelos: no son comparables entre variables con distinto número de niveles.
+
+## D-091 · Batería e interfaz de validación: previsto frente a real, por grupos (2026-10-23)
+
+- **Fecha:** 2026-10-23
+- **Fase:** F9-F11 (resultados) y F14.
+- **Estado:** pedido por la persona responsable: «una interfaz llamada “validación” donde se pueda comparar directamente… viendo cómo debería haber sido. Siempre, documenta la información en la que te basas… es muy importante la división por subgrupo».
+- **Batería** (`sinpop.evaluate.bateria` → `reports/validacion/bateria.json`, copiada al paquete):
+  - **Preguntas:** las 211 preguntas evaluables de los barómetros del CIS posteriores al corte: 3571 (julio), 3577 (septiembre) y 3582 (octubre; F11 ya ejecutada).
+  - **Previsto:** como lo mediría el CIS, con intervalos y confianza.
+    - Donde el LLM anclado respondió en la evaluación, su salida en caché. Sin llamadas nuevas: si no está en caché, se usa el estimador estadístico.
+    - Por grupos: la población posestratificada, como en F9.
+  - **Real:** distribución ponderada de los españoles de 18+ del estudio, con margen de muestreo del 95 % por tamaño efectivo de Kish.
+  - **Grupos:** las ocho dimensiones que tienen a la vez la población y los encuestados (edad, sexo, estudios, situación laboral, tamaño del municipio, comunidad, religiosidad, clase social).
+    - Cada grupo lleva su número de encuestados.
+    - Solo se muestran los grupos con 50 encuestados o más.
+  - **Además, por pregunta:** la importancia prevista y la real (D-090), las preguntas del banco en que se apoyó (estudio, fecha, similitud, peso) y las fuentes oficiales del estudio evaluado (cuestionario, ficha técnica y microdatos, con la URL del manifiesto).
+  - **Reproducible:** octubre da exactamente la TVD de F11 (0,158).
+- **Separación de los datos de evaluación (regla 5):**
+  - Solo `sinpop.evaluate` lee `data/eval/`.
+  - El servicio lee el agregado ya calculado.
+  - Ningún resultado de la batería se usa para ajustar nada.
+  - Las predicciones se calculan con el paquete portable, que da lo mismo que el modo completo (`reports/fase_13/comparacion_paquete.json`).
+- **Interfaz** (`/validacion.html`, enlazada desde la cabecera; `GET /api/validacion`):
+  - cifras de la batería;
+  - lista filtrable por estudio y tipo, ordenable por error;
+  - por pregunta: veredicto, previsto frente a real con el margen de la encuesta, grupos (posición prevista y real dentro del margen del grupo) e importancia prevista y real;
+  - «En qué se basa» y «Cómo se ha hecho».
+  - Las escalas de D-089 salen marcadas.
+- **Resultados** (`reports/validacion.md`):
+  - **Error medio:** 11,4 puntos en las 211 preguntas y 7,9 sin las escalas dudosas. La mediana es de 5,3.
+  - **Preguntas por debajo de 10 puntos:** el 67 %, y el 75 % sin las escalas.
+  - **Grupos:** el error medio por grupo (5-11 puntos según la variable) es el del total más el ruido de muestreo del propio grupo (2-5 puntos). No aparece un fallo específico de los subgrupos.
+- **Consistencia entre la CLI y el servicio** (G13.1, al añadir D-086 y D-090):
+  - la semilla de los retratos sale del contenido de la pregunta (enunciado, opciones y población), no de su identificador, que es distinto en la CLI (`Q001`) y en el servicio (huella);
+  - el `historial` del modo evento se genera en `predict.evento`, no solo en el servicio.
+  - No se ha ampliado la lista de campos que la comparación ignora. Resultado: 4 de 4 idénticos.

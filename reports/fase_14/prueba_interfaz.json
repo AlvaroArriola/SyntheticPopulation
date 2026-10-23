@@ -34,11 +34,20 @@
   "opciones_propias": {
    "pegadas": 3,
    "plantilla": 6
+  },
+  "validacion": {
+   "preguntas": 211,
+   "opciones": 4,
+   "grupos": 4,
+   "dimensiones": 4,
+   "importancia": 4,
+   "fuentes": 3
   }
  },
  "errores_js": [],
  "accesibilidad": [],
  "accesibilidad_dato": [],
+ "accesibilidad_validacion": [],
  "movil_sin_scroll_horizontal": true,
  "g14_1": true,
  "g14_2": true,

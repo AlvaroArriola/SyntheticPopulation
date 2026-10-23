@@ -68,6 +68,7 @@ RUTAS_PERMITIDAS = {
     "/api/comparar",
     "/api/cruce",
     "/api/auditoria/{rid}",
+    "/api/validacion",
     "/api/etiquetas",
     "/api/modo",
     "/api/llm",

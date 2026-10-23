@@ -160,6 +160,27 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
             "plantilla": pg.evaluate("() => window.sinpop.estado.opciones.length"),
         }
 
+        # validación (D-091): previsto frente a real, por grupos e importancia de las variables
+        val = b.new_page(viewport={"width": 1440, "height": 900})
+        val.on("pageerror", lambda e: res["errores_js"].append(str(e)))
+        val.goto(url.rstrip("/") + "/validacion.html", wait_until="domcontentloaded")
+        val.wait_for_selector("#val-detalle .vg-tabla .vg-pista", timeout=60000)
+        val.wait_for_timeout(1200)
+        res["pantallas"]["validacion"] = val.evaluate(
+            "() => ({preguntas: document.querySelectorAll('#val-preguntas li').length,"
+            " opciones: document.querySelectorAll('#val-detalle .v-barras .v-pista').length,"
+            " grupos: document.querySelectorAll('#val-detalle .vg-pista').length,"
+            " dimensiones: document.querySelectorAll('#v-dims button').length,"
+            " importancia: document.querySelectorAll('#val-detalle .imp-barras').length,"
+            " fuentes: document.querySelectorAll('#val-detalle .fuentes a').length})"
+        )
+        val.screenshot(path=DESTINO / "11_validacion.png", full_page=True)
+        val.add_script_tag(path=str(AXE))
+        res["accesibilidad_validacion"] = val.evaluate(
+            "async () => (await axe.run(document, {resultTypes: ['violations']})).violations"
+            ".map(v => ({id: v.id, impacto: v.impact, nodos: v.nodes.length}))"
+        )
+
         # móvil (solo hay modo claro, D-081)
         movil = b.new_page(viewport={"width": 390, "height": 844})
         movil.goto(url, wait_until="domcontentloaded")
@@ -174,7 +195,9 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
     g2 = [pr[k] for k in ("pregunta_es", "pregunta_comunidad") if k in pr]
     graves = [
         v
-        for v in res["accesibilidad"] + res.get("accesibilidad_dato", [])
+        for v in res["accesibilidad"]
+        + res.get("accesibilidad_dato", [])
+        + res.get("accesibilidad_validacion", [])
         if v["impacto"] in ("critical", "serious")
     ]
     res["g14_1"] = bool(
@@ -184,6 +207,9 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
         and pr.get("grupos_destacados", 0) >= 5
         and pr.get("fidelidad")
         and pr.get("opciones_propias") == {"pegadas": 3, "plantilla": 6}
+        and all(
+            pr.get("validacion", {}).get(k) for k in ("preguntas", "opciones", "grupos", "fuentes")
+        )
         and not res["errores_js"]
     )
     res["g14_2"] = all(

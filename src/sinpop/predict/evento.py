@@ -389,6 +389,8 @@ def predecir_pregunta(
         "fecha_evento": str(fecha),
         "metodo_antes": metodo_antes,
         "preguntas_similares": [a["id"] for a in r.analogas],
+        # acierto medido en eventos pasados, igual en la CLI y en el servicio (D-086)
+        "historial": historial(),
     }
     if not C.disponible():
         return base | {

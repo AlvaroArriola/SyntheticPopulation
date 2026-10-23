@@ -274,6 +274,11 @@ def auxiliares(destino: Path) -> None:
     shutil.copy(EV.DESTINO, destino / "banco_efectos_eventos.parquet")
     from sinpop.predict import evento as PE
 
+    # batería de validación (D-091): agregados de lo previsto frente a lo medido por el CIS
+    bat = REPORTS_DIR / "validacion" / "bateria.json"
+    if bat.exists():
+        (destino / "validacion").mkdir(exist_ok=True)
+        shutil.copy(bat, destino / "validacion" / "bateria.json")
     hist = PE.historial()
     if hist:
         (destino / "historial_eventos.json").write_text(json.dumps(hist, indent=1), "utf-8")

@@ -33,6 +33,7 @@ import threading
 import traceback
 import uuid
 from concurrent.futures import ThreadPoolExecutor
+from functools import cache
 from pathlib import Path
 
 from pydantic import BaseModel, Field
@@ -188,6 +189,92 @@ def _cruce(qa: dict, qb: dict, rid: str, avance) -> dict:
     return S.cruce(qa, qb, rid)
 
 
+@cache
+def _bateria() -> dict | None:
+    """`reports/validacion/bateria.json` (o su copia en el paquete), generado por
+    `sinpop.evaluate.bateria`. El servicio solo lee el agregado ya calculado."""
+    from sinpop import REPORTS_DIR
+    from sinpop import paquete as PK
+
+    ruta = (
+        PK.ruta("validacion", "bateria.json")
+        if PK.activo()
+        else REPORTS_DIR / "validacion" / "bateria.json"
+    )
+    return json.loads(ruta.read_text("utf-8")) if ruta.exists() else None
+
+
+def _duda(qid: str) -> str | None:
+    """Escalas 1-10 de valoración con codificación dudosa en la ventana (D-089)."""
+    import re
+
+    return "D-089" if re.search(r"VALMINIS|VALORALIDERES", qid) else None
+
+
+def _resumen_bateria(b: dict) -> dict:
+    """Cifras de la batería por estudio y por dimensión, y la lista de preguntas sin detalle."""
+    import statistics as st
+
+    def cifras(qs: list[dict]) -> dict:
+        e = [q["tvd"] for q in qs if q.get("tvd") is not None]
+        dentro = [x for q in qs for x in q.get("dentro_margen", [])]
+        return {
+            "preguntas": len(qs),
+            "con_prediccion": len(e),
+            "tvd_media": round(st.mean(e), 4) if e else None,
+            "tvd_mediana": round(st.median(e), 4) if e else None,
+            "bajo_10_puntos": round(sum(x <= 0.10 for x in e) / len(e), 3) if e else None,
+            "opciones_dentro_margen": round(sum(dentro) / len(dentro), 3) if dentro else None,
+        }
+
+    import math
+
+    todas = [q for e in b["estudios"] for q in e["preguntas"]]
+    # error medio de los grupos por dimensión y el que daría solo el ruido de muestreo de lo real
+    # (E|N(0, sd)| = sd·√(2/π) por opción, con sd sacada de su margen del 95 %); sin las escalas
+    # de codificación dudosa (D-089)
+    por_dim: dict[str, list[tuple[float, float]]] = {}
+    for q in todas:
+        if _duda(q["id"]):
+            continue
+        for g in q.get("grupos", []):
+            sd = [(b95 - a95) / (2 * 1.96) for a95, b95 in g["ic95_observado"]]
+            ruido = 0.5 * sum(math.sqrt(2 / math.pi) * x for x in sd)
+            por_dim.setdefault(g["dimension"], []).append((g["tvd"], ruido))
+    return {k: v for k, v in b.items() if k != "estudios"} | {
+        "total": cifras(todas),
+        "sin_escalas_dudosas": cifras([q for q in todas if not _duda(q["id"])]),
+        "por_dimension": {
+            d: {
+                "error": round(st.mean(x[0] for x in v), 4),
+                "ruido_muestreo": round(st.mean(x[1] for x in v), 4),
+                "grupos": len(v),
+            }
+            for d, v in por_dim.items()
+        },
+        "estudios": [
+            {k: v for k, v in e.items() if k != "preguntas"}
+            | {
+                "cifras": cifras(e["preguntas"]),
+                "preguntas": [
+                    {
+                        "id": q["id"],
+                        "enunciado": q["enunciado"],
+                        "politica": q["politica"],
+                        "metodo": q.get("metodo"),
+                        "tvd": q.get("tvd"),
+                        "similitud_max": q.get("similitud_max"),
+                        "n": q["observado"]["n"],
+                        "duda": _duda(q["id"]),
+                    }
+                    for q in e["preguntas"]
+                ],
+            }
+            for e in b["estudios"]
+        ],
+    }
+
+
 def _evento(q: dict, ev: dict, rid: str, avance) -> dict:
     from sinpop.predict import estimador as E
     from sinpop.predict import evento as V
@@ -213,7 +300,6 @@ def _evento(q: dict, ev: dict, rid: str, avance) -> dict:
         "resultado_simulado": True,
         "aviso": AVISO,
         **out,
-        "historial": V.historial(),
     }
 
 
@@ -514,6 +600,25 @@ def crear_app():
         if detalle not in T.DETALLES or not 0.001 <= margen <= 0.2:
             raise HTTPException(422, "detalle o margen fuera de rango")
         return T.recomendar(territorio, margen, detalle, TAMANOS)
+
+    @app.get("/api/validacion")
+    def validacion(id: str | None = None):
+        """Batería de validación (D-091): lo que predijo el sistema frente a lo que midió el CIS
+        después del corte, en total y por grupos. Agregados, nunca respuestas individuales.
+        Sin `id`, el resumen de la batería; con `id`, el detalle de una pregunta."""
+        b = _bateria()
+        if b is None:
+            raise HTTPException(404, "batería sin generar (python -m sinpop.evaluate.bateria)")
+        if id is None:
+            return _resumen_bateria(b)
+        for e in b["estudios"]:
+            for q in e["preguntas"]:
+                if q["id"] == id:
+                    return q | {
+                        "duda": _duda(q["id"]),
+                        "estudio": {k: v for k, v in e.items() if k != "preguntas"},
+                    }
+        raise HTTPException(404, "pregunta desconocida")
 
     @app.get("/api/auditoria/{rid}")
     def auditoria(rid: str):

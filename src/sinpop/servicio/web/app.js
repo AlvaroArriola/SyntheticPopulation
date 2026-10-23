@@ -540,6 +540,29 @@ function activarTooltipsTabla(raiz) {
   });
 }
 
+// ¿De qué depende la respuesta? Fuerza η de cada variable del perfil (predict/importancia.py, D-090)
+const nombreDim = (d) => estado.etiquetas?.dimensiones?.[d] ?? d;
+function seccionImportancia(r) {
+  const imp = (r.importancia || []).filter((x) => x.fuerza > 0);
+  if (!imp.length) return "";
+  const max = Math.max(0.05, imp[0].fuerza);
+  const f = (x) => x.toFixed(2).replace(".", ",");
+  const [a, b] = imp;
+  const frase = `Lo que más separa las respuestas es <b>${escapar(nombreDim(a.dimension))}</b>: «${escapar(a.opcion)}» va del ${pct(a.valor_bajo)} (${escapar(nombreNivel(a.dimension, a.grupo_bajo))}) al ${pct(a.valor_alto)} (${escapar(nombreNivel(a.dimension, a.grupo_alto))})${b ? `. Le sigue ${escapar(nombreDim(b.dimension).toLowerCase())}` : ""}.`;
+  return `<section class="seccion" aria-labelledby="t-importancia"><h4 class="seccion-titulo" id="t-importancia">¿De qué depende la respuesta?</h4>
+    <p class="destacado-texto">${frase}</p>
+    <div class="importancia">${imp.map((x, i) => `<span class="imp-nombre">${escapar(nombreDim(x.dimension))}</span>
+      <span class="imp-pista" style="--i:${i}" data-tip="<b>${escapar(nombreDim(x.dimension))}</b> · fuerza ${f(x.fuerza)}<br>Mayor diferencia en «${escapar(x.opcion)}»: ${pct(x.valor_bajo)} (${escapar(nombreNivel(x.dimension, x.grupo_bajo))}) a ${pct(x.valor_alto)} (${escapar(nombreNivel(x.dimension, x.grupo_alto))})"><i style="width:${(100 * x.fuerza) / max}%"></i></span>
+      <span class="imp-valor">${f(x.fuerza)}</span>`).join("")}</div>
+    <p class="nota">Fuerza de la asociación (η, de 0 a 1): cuánto cambian las respuestas de un grupo a otro de cada variable, según las preguntas del CIS en que se apoya la predicción. Es descriptiva, no causal: variables relacionadas (edad y estudios) pueden repartirse el mismo efecto. La validación compara esta fuerza con la de las encuestas reales.</p></section>`;
+}
+function conTipsImportancia(raiz) {
+  raiz.querySelectorAll(".imp-pista").forEach((el) => {
+    el.addEventListener("mousemove", (ev) => mostrarTooltip(ev, el.dataset.tip));
+    el.addEventListener("mouseleave", ocultarTooltip);
+  });
+}
+
 const nivelConfianza = (c) => (c >= 0.75 ? "Confianza alta" : c >= 0.5 ? "Confianza media" : "Confianza baja");
 function anilloConfianza(c) {
   const R = 30, L = 2 * Math.PI * R;
@@ -572,7 +595,12 @@ function pintarResultado(r, enunciado, opciones, pob) {
   const llm = r.versiones?.modelo_llm ? `con ${escapar(r.versiones.modelo_llm)}` : "sin modelo de lenguaje";
   const tablaPregunta = (dim) => tablaSubgrupos(r, dim, opciones);
   caja.innerHTML = `
-    <h3>${escapar(enunciado)}</h3>
+    <div class="resultado-cabecera">
+      <h3>${escapar(enunciado)}</h3>
+      <button class="boton-pdf" id="descargar-pdf-arriba" type="button" title="Informe PDF con el análisis, los gráficos y las fuentes">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a1 1 0 0 1 1 1v8.6l2.3-2.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l2.3 2.3V4a1 1 0 0 1 1-1ZM5 17a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/></svg>
+        Generar PDF</button>
+    </div>
     <div class="metas"><span>${escapar(estado.nombre)}</span><span>${pob.tamano.toLocaleString("es-ES")} personas</span><span>Estimador ${llm}</span></div>
     <div class="conmutador" id="vista" role="group" aria-label="Qué se estima">
       <button aria-pressed="true" data-v="total">Lo que piensa la población</button>
@@ -588,6 +616,7 @@ function pintarResultado(r, enunciado, opciones, pob) {
       </div>
     </div>
     ${r.parametros_llm?.justificacion ? `<p class="justificacion">«${escapar(r.parametros_llm.justificacion)}»</p>` : ""}
+    ${seccionImportancia(r)}
     ${seccionEvolucion(r, opciones)}
     ${seccionRegiones(estado.resultado, pob)}
     ${seccionGrupos(estado.resultado, tablaPregunta)}
@@ -612,7 +641,10 @@ function pintarResultado(r, enunciado, opciones, pob) {
   activarCruce(enunciado, opciones, pob);
   $("#descargar").addEventListener("click", () => descargar(`${r.id}.json`, JSON.stringify(r, null, 1), "application/json"));
   $("#descargar-csv").addEventListener("click", () => descargar(`${r.id}.csv`, csvPregunta(r), "text/csv"));
-  $("#descargar-pdf").addEventListener("click", () => informePdf("pregunta", r, { enunciado, run_id: pob.run_id, tamano: pob.tamano.toLocaleString("es-ES") }));
+  const pdf = () => informePdf("pregunta", r, { enunciado, run_id: pob.run_id, tamano: pob.tamano.toLocaleString("es-ES") });
+  $("#descargar-pdf").addEventListener("click", pdf);
+  $("#descargar-pdf-arriba").addEventListener("click", pdf);
+  conTipsImportancia(caja);
   pintarMapaResultado();
   caja.scrollIntoView({ behavior: "smooth", block: "start" });
 }
