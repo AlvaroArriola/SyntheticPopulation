@@ -2085,3 +2085,15 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - la semilla de los retratos sale del contenido de la pregunta (enunciado, opciones y población), no de su identificador, que es distinto en la CLI (`Q001`) y en el servicio (huella);
   - el `historial` del modo evento se genera en `predict.evento`, no solo en el servicio.
   - No se ha ampliado la lista de campos que la comparación ignora. Resultado: 4 de 4 idénticos.
+
+### Aprobación de F11
+
+- **Fecha:** 2026-10-23
+- **Estado:** aprobada por la persona responsable («Apruebo todo»), sobre `reports/fase_11.md`.
+- **El resultado oficial no cambia:** la evaluación del barómetro de octubre, ejecutada una sola vez con el código congelado (`f11-congelacion-2026-10-23`), dio un error de 0,158 (0,080 sin las escalas 1-10).
+- **Corrección posterior de las escalas (D-089):** no reescribe ese resultado. La batería de validación enseña el sistema corregido y lo indica.
+
+### Aprobación de F14
+
+- **Fecha:** 2026-10-23
+- **Estado:** aprobada por la persona responsable («Apruebo todo»): interfaz, validación, PDF e importancia de las variables (D-084 a D-091).
