@@ -1,0 +1,45 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 0.0,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": 2.0,
+    "categoria": "centro_derecha_estatal"
+   },
+   {
+    "cambio_pp": 0.0,
+    "categoria": "derecha_radical"
+   },
+   {
+    "cambio_pp": -1.5,
+    "categoria": "izquierda_estatal"
+   },
+   {
+    "cambio_pp": -2.0,
+    "categoria": "nacionalista_regionalista"
+   },
+   {
+    "cambio_pp": -1.5,
+    "categoria": "ninguno"
+   },
+   {
+    "cambio_pp": 0.0,
+    "categoria": "otros"
+   },
+   {
+    "cambio_pp": 3.0,
+    "categoria": "socialdemocrata"
+   }
+  ],
+  "justificacion": "El PSC ganó claramente las elecciones catalanas y el PP creció con fuerza, mientras ERC se hundió, el independentismo perdió la mayoría y los Comuns retrocedieron. Por eso se espera una subida de la cercanía socialdemócrata y de centro-derecha estatal, y caídas en los nacionalistas y en la izquierda estatal. La magnitud prevista es moderada, de 1-3 puntos, en línea con los análogos de Galicia y País Vasco."
+ }
+}

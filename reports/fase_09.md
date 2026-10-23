@@ -1,13 +1,17 @@
-# Fase 09 · Capa de predicción (sin modelo de lenguaje)
+# Fase 09 · Capa de predicción
 
-**Estado:** puerta automática **fallida** en G9.6 (modo evento). G9.2 (B2) y G9.7 quedan pendientes del modelo de lenguaje (D-069). F9 no tiene revisión humana obligatoria en `docs/04`, pero el fallo de G9.6 necesita una decisión humana (ver «Qué hace falta para cerrar la puerta»).
-**Fecha:** 2026-10-21 · **Decisión:** D-069
+**Estado:** puerta automática **fallida** en G9.6 (modo evento), también con el modelo de lenguaje. G9.7 espera la aprobación de su umbral. F9 no tiene revisión humana obligatoria en `docs/04`, pero el fallo de G9.6 necesita una decisión humana (D-086).
+**Fecha:** 2026-10-23 (con LLM y semivida de 3 meses) · **Decisiones:** D-069, D-071, D-082, D-085, D-086
 **Comando para reproducir** (tras la cadena de `reports/fase_08c.md`):
 
 ```
 python -c "from sinpop.predict import calibracion as C; C.construir()" \
-  && python -m sinpop.evaluate.validacion && sinpop validate --phase 9
+  && python -m sinpop.evaluate.validacion \
+  && python -m sinpop.evaluate.llm && python tools/auditar_justificaciones.py \
+  && sinpop validate --phase 9
 ```
+
+El paso del LLM necesita `SINPOP_ANTHROPIC_API_KEY`. Sin clave, las respuestas salen de la caché versionada en `logs/llm/cache/`.
 
 ## Resumen
 
@@ -32,12 +36,12 @@ python -c "from sinpop.predict import calibracion as C; C.construir()" \
 | ID | Resultado | Valor |
 | --- | --- | --- |
 | G9.1 V-FORMATO | ✅ | 107/107 salidas válidas por esquema |
-| G9.2 Sistema y baselines | ⏸️ | TVD media: medición CIS 0,067; B0 0,067; B1 0,066 (107 preguntas). B2 pendiente del LLM |
+| G9.2 Sistema y baselines | ✅ | TVD media: medición CIS 0,065; B0 0,065; B1 0,064 (107 preguntas); B2 (LLM sin anclaje) 0,289 (121 preguntas) |
 | G9.3 Coste | ✅ | 0 llamadas, 0 € |
-| G9.4 V-REFORMULACION | ✅ | TVD máxima 0,0026 (umbral 0,03) |
-| G9.5 V-COBERTURA | ✅ | IC80 0,76; IC95 0,95 (632 opciones) |
-| G9.6 V-EVENTO | ❌ | 6/15 eventos con dirección correcta (14/26 evento × indicador); error de magnitud 4,3 pp |
-| G9.7 Estereotipos de la IA | ⏸️ | No aplica sin modelo de lenguaje |
+| G9.4 V-REFORMULACION | ✅ | TVD máxima 0,0134 (umbral 0,03) |
+| G9.5 V-COBERTURA | ✅ | IC80 0,74; IC95 0,93 (632 opciones) |
+| G9.6 V-EVENTO | ❌ | Sin LLM: 6/15 eventos con dirección correcta (14/26 evento × indicador), error 4,3 pp. Con LLM: 8/16 (17/29), error 3,9 pp, una cota superior contaminada |
+| G9.7 Estereotipos de la IA | ⏸️ | Razón de brechas LLM/estadístico 0,69 (≤ 1,25, en propuesta). Justificaciones: 164 revisadas; 0 problemáticas en preguntas nuevas y eventos, 11 en el baseline B2 (D-086) |
 
 Puerta generada en `reports/fase_09_puerta.md`.
 
@@ -74,6 +78,13 @@ Detalle por pregunta: `reports/fase_09/validacion_preguntas.csv`. *Backtest* de 
 - Hay aciertos donde el signo es estable entre eventos: la caída de «ninguno» en cercanía tras las elecciones, y «política» como problema.
 - Varios «fallos» son efectos reales no significativos (el IC 95 % del cambio observado incluye 0: e003 ideología, e004 problema político, e013 y e014). Contarlos como fallos o aciertos es azar.
 - No se ha ajustado el método a estos 15 eventos: con tan pocos casos, cualquier regla elegida mirando el resultado sería sobreajuste.
+
+## Con el modelo de lenguaje (D-085, D-086)
+
+- **Preguntas sin análogas fiables** (19 en la ventana): el LLM anclado en las preguntas parecidas da TVD 0,232. En las 5 que también tiene el estimador estadístico, 0,215 frente a 0,305. Se usa, con intervalos conformales medidos en esas 19 y confianza baja.
+- **B2 sin anclaje:** 0,289, frente a 0,066 del sistema. El banco del CIS es lo que da la precisión, no el modelo de lenguaje.
+- **Modo evento:** 8 de 16 eventos, una cota superior porque el modelo conoce lo que pasó. No llega al umbral. La interfaz enseña ese acierto junto a cada resultado y lo presenta como escenario.
+- **Coste total de la evaluación:** unos 3,3 € (`logs/llm/gasto.jsonl`).
 
 ## Qué hace falta para cerrar la puerta
 

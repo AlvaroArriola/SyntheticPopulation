@@ -1,0 +1,29 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 0.2,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": -1.5,
+    "categoria": "buena"
+   },
+   {
+    "cambio_pp": 1.3,
+    "categoria": "mala"
+   },
+   {
+    "cambio_pp": 0,
+    "categoria": "regular"
+   }
+  ],
+  "justificacion": "El anuncio de aranceles generales de EE. UU. (20% a la UE) genera incertidumbre y titulares negativos sobre el comercio y la bolsa, lo que debería empeorar algo la valoración de la economía española. El impacto directo en España es limitado y la percepción económica suele moverse poco, así que cabe esperar un desplazamiento pequeño (1-2 puntos) de «buena» hacia «mala». No hay análogos disponibles, de modo que la magnitud se apoya en el rango habitual de 0-5 puntos."
+ }
+}

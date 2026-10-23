@@ -1,0 +1,12 @@
+{
+ "sin_llm": {
+  "eventos": 15,
+  "eventos_correctos": 6,
+  "error_magnitud_pp": 4.3
+ },
+ "con_llm": {
+  "eventos": 16,
+  "eventos_correctos": 8,
+  "error_magnitud_pp": 3.9
+ }
+}

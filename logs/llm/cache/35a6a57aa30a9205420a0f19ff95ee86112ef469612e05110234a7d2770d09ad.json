@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v2",
+  "prompt_sha256": "58361a31c2ad8b7d689dbde7f9b8a923b3cfba4f12393a3ce8f2a646e5eb72db",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Arcadi España es una figura poco conocida a nivel nacional, por lo que predomina el N.S.; su mayor visibilidad en la Comunitat Valenciana eleva allí la proporción de opiniones formadas. El N.S. es algo mayor entre los jóvenes de 18-34 años y el N.C. crece con la edad y entre quienes tienen menos estudios.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.07,
+     0.05,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.75,
+     0.11
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.73,
+     0.13
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.71,
+     0.15
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.09,
+     0.06,
+     0.73,
+     0.12
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.07,
+     0.06,
+     0.75,
+     0.12
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.07,
+     0.05,
+     0.75,
+     0.13
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.74,
+     0.12
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.09,
+     0.07,
+     0.73,
+     0.11
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.74,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.74,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.73,
+     0.13
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.09,
+     0.06,
+     0.74,
+     0.11
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.08,
+     0.05,
+     0.76,
+     0.11
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.74,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.74,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.08,
+     0.05,
+     0.75,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.09,
+     0.06,
+     0.73,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.11,
+     0.08,
+     0.65,
+     0.16
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.74,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.74,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.08,
+     0.07,
+     0.73,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.09,
+     0.06,
+     0.73,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.74,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.74,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.74,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.74,
+     0.12
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.08,
+     0.06,
+     0.74,
+     0.12
+    ]
+   }
+  ],
+  "total": [
+   0.08,
+   0.06,
+   0.74,
+   0.12
+  ]
+ }
+}

@@ -1,0 +1,45 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": -0.2,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": 0.8,
+    "categoria": "centro_derecha_estatal"
+   },
+   {
+    "cambio_pp": 0.2,
+    "categoria": "derecha_radical"
+   },
+   {
+    "cambio_pp": -0.6,
+    "categoria": "izquierda_estatal"
+   },
+   {
+    "cambio_pp": 0.1,
+    "categoria": "nacionalista_regionalista"
+   },
+   {
+    "cambio_pp": -0.8,
+    "categoria": "ninguno"
+   },
+   {
+    "cambio_pp": 0.0,
+    "categoria": "otros"
+   },
+   {
+    "cambio_pp": 0.5,
+    "categoria": "socialdemocrata"
+   }
+  ],
+  "justificacion": "La investidura de Sánchez, apoyada en la amnistía y en el voto de los nacionalistas, polariza el electorado. El PSOE consolida a su base y el bloque de derecha se moviliza en contra, con el PP como principal beneficiario de las protestas. Los análogos sugieren movimientos de 1-3 puntos, así que se esperan cambios modestos: ligeras subidas de socialdemócratas y centro-derecha a costa de 'ninguno' y de la izquierda estatal, afectada por la fragmentación de Sumar y Podemos."
+ }
+}

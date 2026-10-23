@@ -1,0 +1,29 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 0.1,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": -1.2,
+    "categoria": "buena"
+   },
+   {
+    "cambio_pp": 1.5,
+    "categoria": "mala"
+   },
+   {
+    "cambio_pp": -0.4,
+    "categoria": "regular"
+   }
+  ],
+  "justificacion": "El apagón general del 28 de abril fue un shock de un solo día, con disrupción económica breve y sin daños materiales duraderos comparables a la DANA. Esta movió la percepción económica unos 3 puntos hacia 'mala'. Cabe esperar un efecto menor, de en torno a 1-2 puntos: algo de pérdida en 'buena' y ganancia en 'mala', por la sensación de fragilidad de las infraestructuras y el debate sobre el sistema eléctrico."
+ }
+}

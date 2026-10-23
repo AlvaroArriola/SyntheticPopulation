@@ -1934,3 +1934,37 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Alternativas descartadas:**
   - Reintentar sin límite: gasta presupuesto sin arreglar la causa.
   - Generar una justificación por reglas cuando falta: sería texto que el modelo no escribió.
+
+## D-086 · Puerta F9 con el LLM: eventos por debajo del umbral, auditoría de justificaciones y prompts v3/v2 (2026-10-23)
+
+- **Fecha:** 2026-10-23
+- **Fase:** F9 (G9.2, G9.6, G9.7) y F14.
+- **Estado:** **pendiente de decisión humana** en G9.6 y en el umbral de G9.7 (en propuesta). No se relaja ningún umbral.
+- **Evaluación con LLM en la ventana de validación** (`reports/fase_09_llm.json`, llamadas directas, 107 + 14 preguntas):
+  - **B2** (LLM con perfil, sin anclaje): TVD 0,283 frente a 0,065 del sistema en las mismas preguntas. Es la referencia que el sistema tenía que mejorar, y la mejora con mucho.
+  - **Preguntas nuevas** (LLM anclado, 19): TVD 0,232. En las 5 que también tienen estimador estadístico: 0,215 frente a 0,305. Por eso el LLM se usa en las preguntas sin análogas (`usar: true`), con intervalos conformales de esas 19 (q80 0,32, q95 0,62). Por eso salen anchos y con confianza baja, y así se enseña.
+- **G9.6, modo evento: no se supera.**
+  - **Con LLM:** dirección correcta en 8 de 16 eventos (17 de 29 pares), error medio 3,9 puntos. Es una cota superior, porque el modelo conoce lo que pasó después.
+  - **Sin LLM:** 6 de 15, con un error medio de 4,3 puntos.
+  - **Umbral:** 2 de cada 3 eventos.
+  - **Hipótesis:** la mayoría de los cambios reales entre barómetros son de 1-3 puntos, del orden del ruido de muestreo del CIS, así que la dirección es casi una moneda al aire en los eventos pequeños.
+  - **Propuesta para la decisión humana:**
+    - (a) mantener el umbral y presentar el modo evento como **escenario razonado**, no como predicción, como ya hace la interfaz;
+    - (b) evaluar la dirección solo en los pares donde el cambio real supera el margen de muestreo. Cambiaría la métrica y requiere aprobación.
+  - **Mientras tanto:** cada resultado de evento lleva su acierto medido (`evento.historial`; `historial_eventos.json` en el paquete): «en 16 eventos pasados, la dirección acertó en 8 (50 %), con un error medio de 3,9 puntos. Tómalo como un escenario razonado, no como una predicción».
+- **G9.7, estereotipos:**
+  - **Prueba contrafactual:** razón mediana de brechas LLM/estadístico 0,75, por debajo de 1,25. El LLM no exagera las diferencias entre grupos; las suaviza.
+  - **Auditoría de las justificaciones** (`tools/auditar_justificaciones.py`; veredictos en `reports/fase_09/revision_justificaciones.yaml`):
+    - Primera ronda (prompts `pregunta_nueva@v2` y `b2@v1`): 4 problemáticas. Atribuían rasgos que no están en el perfil: «mujeres… más católicas», «jóvenes con agendas más ocupadas» (dos veces) y «hogares más numerosos».
+    - Como pide docs/06 §5, alimentaron los prompts `pregunta_nueva@v3` y `b2@v2`: las diferencias se explican solo con edad, sexo, estudios, comunidad o lo que dicen las referencias.
+    - Segunda ronda (`pregunta_nueva@v3`, `b2@v2`; 164 justificaciones = 19 de preguntas nuevas, 116 de B2 y 29 de eventos; 18 candidatas revisadas a mano):
+      - preguntas nuevas: 0 problemáticas;
+      - eventos: 0 problemáticas, sin lenguaje cargado sobre ningún electorado (docs/06 §6.5);
+      - **B2: 11 problemáticas.** Haiku sigue explicando diferencias con hábitos que no están en el perfil, como «siguen más la actualidad» o «menor familiaridad», aunque el prompt lo prohíbe.
+    - B2 es solo un baseline de comparación y no se enseña en la interfaz. No se itera más sobre él.
+    - El texto que ve el usuario (preguntas nuevas y eventos, con Opus) está limpio.
+  - **Coste de la segunda ronda:** las preguntas nuevas mantienen su calidad (TVD 0,237 → 0,232). B2 empeora un poco (0,283 → 0,289).
+  - **Contrafactual con `b2@v2`:** razón 0,69.
+  - El umbral de 1,25 sigue en «propuesta»: G9.7 espera la aprobación humana.
+- **F11 no se ejecuta:** su entrada exige la puerta F9, que falla en G9.6. La evaluación final es de un solo uso y no se gasta sin esa decisión.
+- **Gasto LLM acumulado:** ver `logs/llm/gasto.jsonl`, unos 4 € de 15 €.

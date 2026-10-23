@@ -1,0 +1,21 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": -3,
+    "categoria": "no"
+   },
+   {
+    "cambio_pp": 3,
+    "categoria": "si"
+   }
+  ],
+  "justificacion": "La convocatoria por sorpresa de elecciones generales para julio dispara la saliencia de la política y de la confrontación partidista, lo que suele elevar la mención de la política como problema. Los análogos de alta intensidad electoral muestran movimientos de 2 a 8 puntos, con una subida de unos 8 puntos tras las generales. Para un anuncio que abre una campaña, cabe esperar una subida moderada, de unos 3 puntos en el «sí»."
+ }
+}

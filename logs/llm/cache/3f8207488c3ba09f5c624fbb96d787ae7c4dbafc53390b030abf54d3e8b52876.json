@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v2",
+  "prompt_sha256": "58361a31c2ad8b7d689dbde7f9b8a923b3cfba4f12393a3ce8f2a646e5eb72db",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "El cruce de la frontera en Ceuta es un suceso muy localizado, por lo que su conocimiento es mayor entre quienes viven cerca de la zona, como Ceuta, Melilla y Andalucía, y crece con la edad y el nivel de estudios, que facilitan seguir la actualidad; apenas varía por sexo.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.52,
+     0.43,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.57,
+     0.39,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.63,
+     0.32,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.65,
+     0.27,
+     0.05,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.62,
+     0.34,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.58,
+     0.37,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.52,
+     0.4,
+     0.05,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.61,
+     0.36,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.7,
+     0.27,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.68,
+     0.28,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.6,
+     0.36,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.6,
+     0.35,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.58,
+     0.38,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.6,
+     0.36,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.6,
+     0.36,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.6,
+     0.36,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.6,
+     0.36,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.55,
+     0.4,
+     0.03,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.56,
+     0.4,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.6,
+     0.36,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.6,
+     0.36,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.62,
+     0.35,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.58,
+     0.38,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.6,
+     0.36,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.6,
+     0.36,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.6,
+     0.36,
+     0.02,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.9,
+     0.08,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.88,
+     0.1,
+     0.01,
+     0.01
+    ]
+   }
+  ],
+  "total": [
+   0.6,
+   0.35,
+   0.03,
+   0.02
+  ]
+ }
+}

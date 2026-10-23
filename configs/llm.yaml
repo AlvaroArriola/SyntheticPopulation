@@ -27,7 +27,7 @@ tareas:
   b2:
     # Haiku: B2 es un baseline de comparación, no el producto (D-074)
     modelo: claude-haiku-5-5
-    prompt: b2@v1
+    prompt: b2@v2
     esfuerzo: low
     # 6000 cortaba el 19 % de las respuestas (motivo de fin max_tokens) con 28 subgrupos (D-085)
     max_tokens: 12000

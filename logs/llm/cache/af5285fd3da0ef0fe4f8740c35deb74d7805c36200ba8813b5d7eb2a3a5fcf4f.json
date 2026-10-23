@@ -1,0 +1,21 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": -3.5,
+    "categoria": "no"
+   },
+   {
+    "cambio_pp": 3.5,
+    "categoria": "si"
+   }
+  ],
+  "justificacion": "La DANA generó una fuerte polémica sobre la gestión de la Generalitat valenciana y del Gobierno central, con reproches cruzados entre administraciones. Eso debería aumentar la mención de la política y los políticos como problema, aunque la propia catástrofe compite como problema nuevo. El apagón de 2025, otro desastre con choque político, subió esta mención en 4,9 puntos; aquí se estima un efecto algo menor."
+ }
+}

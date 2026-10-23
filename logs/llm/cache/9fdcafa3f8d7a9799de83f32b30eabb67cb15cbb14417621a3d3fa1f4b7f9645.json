@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v2",
+  "prompt_sha256": "58361a31c2ad8b7d689dbde7f9b8a923b3cfba4f12393a3ce8f2a646e5eb72db",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Mónica García es una figura política conocida pero con opinión muy polarizada y un alto porcentaje de no sabe, por lo que la mayoría se abstiene de valorarla; las diferencias por edad, estudios y comunidad son moderadas, con más opiniones definidas entre quienes tienen estudios superiores y menos respuestas de N.S. entre los más jóvenes.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.27,
+     0.09,
+     0.61,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.31,
+     0.09,
+     0.57,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.34,
+     0.08,
+     0.55,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.35,
+     0.07,
+     0.55,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.33,
+     0.08,
+     0.56,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.31,
+     0.08,
+     0.58,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.31,
+     0.06,
+     0.6,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.33,
+     0.08,
+     0.56,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.32,
+     0.11,
+     0.54,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.31,
+     0.08,
+     0.58,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.33,
+     0.08,
+     0.56,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.31,
+     0.08,
+     0.58,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.32,
+     0.09,
+     0.56,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.32,
+     0.07,
+     0.58,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.33,
+     0.08,
+     0.56,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.34,
+     0.07,
+     0.56,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.33,
+     0.07,
+     0.57,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.31,
+     0.09,
+     0.57,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.32,
+     0.08,
+     0.57,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.33,
+     0.07,
+     0.57,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.33,
+     0.08,
+     0.56,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.3,
+     0.11,
+     0.56,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.34,
+     0.07,
+     0.56,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.31,
+     0.08,
+     0.58,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.3,
+     0.09,
+     0.58,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.32,
+     0.08,
+     0.57,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.33,
+     0.07,
+     0.57,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.33,
+     0.07,
+     0.57,
+     0.03
+    ]
+   }
+  ],
+  "total": [
+   0.32,
+   0.08,
+   0.57,
+   0.03
+  ]
+ }
+}

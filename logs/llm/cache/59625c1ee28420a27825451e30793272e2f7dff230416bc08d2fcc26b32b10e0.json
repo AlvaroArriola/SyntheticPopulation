@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v2",
+  "prompt_sha256": "58361a31c2ad8b7d689dbde7f9b8a923b3cfba4f12393a3ce8f2a646e5eb72db",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Diana Morant es una figura pública poco conocida a nivel nacional, por lo que predomina el «N.S.» en todos los grupos. Las valoraciones positivas y negativas son algo más frecuentes entre personas con estudios superiores, que tienen más opinión formada, y en la Comunitat Valenciana, donde su perfil político es más conocido.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.11,
+     0.1,
+     0.75,
+     0.04
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.12,
+     0.11,
+     0.73,
+     0.04
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.13,
+     0.1,
+     0.73,
+     0.04
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.12,
+     0.09,
+     0.75,
+     0.04
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.13,
+     0.11,
+     0.72,
+     0.04
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.11,
+     0.09,
+     0.76,
+     0.04
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.11,
+     0.08,
+     0.77,
+     0.04
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.12,
+     0.1,
+     0.74,
+     0.04
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.14,
+     0.13,
+     0.69,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.12,
+     0.1,
+     0.74,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.12,
+     0.09,
+     0.75,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.12,
+     0.1,
+     0.74,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.12,
+     0.1,
+     0.74,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.11,
+     0.09,
+     0.76,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.12,
+     0.1,
+     0.74,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.12,
+     0.1,
+     0.74,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.12,
+     0.1,
+     0.74,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.13,
+     0.09,
+     0.74,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.15,
+     0.15,
+     0.66,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.12,
+     0.1,
+     0.74,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.11,
+     0.09,
+     0.76,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.13,
+     0.1,
+     0.73,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.12,
+     0.11,
+     0.73,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.12,
+     0.11,
+     0.73,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.13,
+     0.1,
+     0.73,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.12,
+     0.1,
+     0.74,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.1,
+     0.08,
+     0.78,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.1,
+     0.08,
+     0.78,
+     0.04
+    ]
+   }
+  ],
+  "total": [
+   0.12,
+   0.1,
+   0.74,
+   0.04
+  ]
+ }
+}

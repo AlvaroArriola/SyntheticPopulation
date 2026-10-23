@@ -1,0 +1,21 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": -2.0,
+    "categoria": "no"
+   },
+   {
+    "cambio_pp": 2.0,
+    "categoria": "si"
+   }
+  ],
+  "justificacion": "El apagón generó un debate inmediato sobre la gestión del Gobierno, Red Eléctrica y el modelo energético, que puede reforzar la percepción de los políticos como problema, aunque con menos intensidad que la DANA (+6,8 puntos para 'sí'). El efecto de culpabilización es más difuso y el corte se resolvió en horas, y parte de la atención se desvía hacia la energía como problema propio. Por eso se espera un aumento moderado de 'sí', de unos 2 puntos."
+ }
+}

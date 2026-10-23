@@ -1,0 +1,45 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 0,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": -1,
+    "categoria": "centro_derecha_estatal"
+   },
+   {
+    "cambio_pp": 0.8,
+    "categoria": "derecha_radical"
+   },
+   {
+    "cambio_pp": -0.1,
+    "categoria": "izquierda_estatal"
+   },
+   {
+    "cambio_pp": 0.3,
+    "categoria": "nacionalista_regionalista"
+   },
+   {
+    "cambio_pp": 0.3,
+    "categoria": "ninguno"
+   },
+   {
+    "cambio_pp": 0.2,
+    "categoria": "otros"
+   },
+   {
+    "cambio_pp": -0.5,
+    "categoria": "socialdemocrata"
+   }
+  ],
+  "justificacion": "La amnistía era un hecho anunciado desde la investidura y su entrada en vigor tuvo poco contenido nuevo, así que el efecto propio debería ser pequeño. El barómetro siguiente recoge también el clima posterior a las europeas, donde los análogos muestran un trasvase del PP hacia la derecha radical de 2-3 puntos. Por eso espero movimientos de alrededor de un punto: cierta erosión del centro-derecha a favor de la derecha radical y un leve desgaste socialista, con los nacionalistas estables o ligeramente al alza."
+ }
+}

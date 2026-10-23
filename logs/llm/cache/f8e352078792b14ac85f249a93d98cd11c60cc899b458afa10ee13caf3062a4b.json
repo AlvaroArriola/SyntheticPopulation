@@ -1,0 +1,21 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 3.0,
+    "categoria": "no"
+   },
+   {
+    "cambio_pp": -3.0,
+    "categoria": "si"
+   }
+  ],
+  "justificacion": "Las europeas fueron una convocatoria de segundo orden, con menos crispación que unas generales. Tras citas parecidas, como las municipales de 2023, la preocupación por la política bajó unos 2-3 puntos al cerrarse la campaña. El nivel de partida es muy alto (58,5%), así que lo esperable es una corrección moderada a la baja del 'sí', de unos 3 puntos, lejos del repunte de 8 puntos de las generales."
+ }
+}

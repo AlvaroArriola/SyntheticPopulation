@@ -1,0 +1,387 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v2",
+  "prompt_sha256": "58361a31c2ad8b7d689dbde7f9b8a923b3cfba4f12393a3ce8f2a646e5eb72db",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "La fidelidad de voto es bastante estable entre grupos; las personas más jóvenes y de 18-34 años declaran más a menudo que votan según lo que les convence en cada momento y más primeras votaciones, mientras que los mayores de 65 años se declaran más fieles a un mismo partido. Las diferencias por sexo y comunidad son pequeñas y se han mantenido casi iguales al total.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.18,
+     0.28,
+     0.38,
+     0.01,
+     0.03,
+     0.05,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.24,
+     0.31,
+     0.33,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.29,
+     0.32,
+     0.28,
+     0.01,
+     0.02,
+     0.01,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.33,
+     0.32,
+     0.23,
+     0.01,
+     0.02,
+     0.0,
+     0.06,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.28,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.03,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.26,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.05,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.27,
+     0.01,
+     0.02,
+     0.01,
+     0.07,
+     0.04
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.27,
+     0.32,
+     0.31,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.27,
+     0.3,
+     0.33,
+     0.01,
+     0.03,
+     0.03,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.26,
+     0.3,
+     0.32,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.27,
+     0.31,
+     0.3,
+     0.01,
+     0.02,
+     0.02,
+     0.04,
+     0.03
+    ]
+   }
+  ],
+  "total": [
+   0.27,
+   0.31,
+   0.3,
+   0.01,
+   0.02,
+   0.02,
+   0.04,
+   0.03
+  ]
+ }
+}

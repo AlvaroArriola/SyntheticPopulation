@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v2",
+  "prompt_sha256": "58361a31c2ad8b7d689dbde7f9b8a923b3cfba4f12393a3ce8f2a646e5eb72db",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "La mayoría tiende a pedir a la UE más colaboración en la gestión de Ceuta, con diferencias pequeñas por edad y sexo. Las personas con estudios superiores y quienes viven en Ceuta y Melilla, territorios directamente afectados, muestran un apoyo algo mayor a esa mayor implicación, mientras que los de menor nivel educativo tienden a responder más N.S.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.54,
+     0.22,
+     0.19,
+     0.05
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.56,
+     0.2,
+     0.19,
+     0.05
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.56,
+     0.19,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.54,
+     0.19,
+     0.21,
+     0.06
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.56,
+     0.21,
+     0.18,
+     0.05
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.54,
+     0.19,
+     0.22,
+     0.05
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.52,
+     0.18,
+     0.24,
+     0.06
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.55,
+     0.21,
+     0.19,
+     0.05
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.59,
+     0.21,
+     0.15,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.55,
+     0.18,
+     0.22,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.56,
+     0.19,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.57,
+     0.2,
+     0.18,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.6,
+     0.17,
+     0.18,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.56,
+     0.2,
+     0.19,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.54,
+     0.21,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.53,
+     0.21,
+     0.21,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.52,
+     0.24,
+     0.19,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.54,
+     0.2,
+     0.21,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.55,
+     0.19,
+     0.21,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.55,
+     0.2,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.57,
+     0.2,
+     0.18,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.56,
+     0.19,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.55,
+     0.22,
+     0.18,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.52,
+     0.24,
+     0.19,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.56,
+     0.2,
+     0.19,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.68,
+     0.12,
+     0.15,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.66,
+     0.13,
+     0.16,
+     0.05
+    ]
+   }
+  ],
+  "total": [
+   0.55,
+   0.2,
+   0.2,
+   0.05
+  ]
+ }
+}

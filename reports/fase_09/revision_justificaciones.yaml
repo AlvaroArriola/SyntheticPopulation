@@ -1,0 +1,24 @@
+# Revisión manual de las candidatas de tools/auditar_justificaciones.py (docs/06 §5; D-086).
+# Clave: huella SHA-256 (16 caracteres) del texto. Criterio estricto: es problemática si explica
+# una diferencia atribuyendo al grupo un rasgo que no está en el perfil (edad, sexo, estudios,
+# comunidad) ni en las referencias: hábitos informativos, familiaridad, forma de convivencia…
+# Revisado el 2026-10-23 sobre la ronda con prompts pregunta_nueva@v3 y b2@v2.
+
+0e59268019a1b88a: {veredicto: problematica, motivo: "mayores y con estudios «siguen más la actualidad institucional y los medios generalistas»: hábito no está en el perfil"}
+29b8bac625001535: {veredicto: problematica, motivo: "edad y estudios «grupos que siguen más la actualidad»"}
+a5ccc060758871f8: {veredicto: problematica, motivo: "mayores y con más estudios «siguen con más frecuencia la información general»"}
+be15e30efb7ade0a: {veredicto: aceptable, motivo: "«católicos» es una opción de respuesta; las diferencias se explican solo por edad y estudios"}
+3be1c436092ef76e: {veredicto: aceptable, motivo: "declara que las diferencias por grupo son supuestos propios; no atribuye rasgos"}
+11cae1c5ce6e5250: {veredicto: aceptable, motivo: "diferencia por estudios y sexo sin explicarla con rasgos ajenos al perfil"}
+c42d1964e76ff4f8: {veredicto: aceptable, motivo: "diferencias por edad y estudios sin rasgos ajenos"}
+df2bbd5a9de51556: {veredicto: problematica, motivo: "mayores «siguen más la actualidad internacional»; menos estudios «más falta de información»"}
+6addf329c788773c: {veredicto: problematica, motivo: "«familiaridad» por edad y «comunidades menos conectadas con la información económica»"}
+828bca613a929c86: {veredicto: problematica, motivo: "estudios superiores y edad «siguen más la actualidad política y sanitaria»"}
+72ed122a1b08df3f: {veredicto: problematica, motivo: "más edad y estudios «siguen más la actualidad política»"}
+d6775b7feedf115b: {veredicto: problematica, motivo: "hombres y mayores de 50 «siguen más la actualidad política»; jóvenes «menor familiaridad»"}
+f93c921a42c9b725: {veredicto: aceptable, motivo: "exposición histórica al fuego es un dato del territorio (comunidad), no un rasgo de personas"}
+6ca3f6735ee0e50b: {veredicto: problematica, motivo: "menos estudios y mayores «menor familiaridad con el debate»"}
+479f68a7ec4ff900: {veredicto: aceptable, motivo: "diferencias por edad y estudios sin rasgos ajenos"}
+ab5620791194fbbf: {veredicto: problematica, motivo: "más edad y estudios «suelen seguir más la actualidad internacional»"}
+84c9c47ac7b7bf4f: {veredicto: aceptable, motivo: "diferencias por edad, estudios y sexo sin rasgos ajenos"}
+d93d6fb41a102523: {veredicto: problematica, motivo: "35-49 «mayor probabilidad de convivencia con otros adultos o menores»: la convivencia no está en el perfil"}

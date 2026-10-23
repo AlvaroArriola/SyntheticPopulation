@@ -1,0 +1,29 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 0.3,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": -1.0,
+    "categoria": "centro"
+   },
+   {
+    "cambio_pp": 0.3,
+    "categoria": "derecha"
+   },
+   {
+    "cambio_pp": 0.4,
+    "categoria": "izquierda"
+   }
+  ],
+  "justificacion": "Tras unas generales muy polarizadas, en las que el PSOE resistió mejor de lo esperado y el bloque de derechas no logró mayoría, cabe esperar un leve desplazamiento de autoubicación desde el centro hacia los polos, con la izquierda manteniéndose o subiendo ligeramente. Los análogos electorales (municipales de mayo, europeas de 2024) muestran movimientos de 1-1,5 puntos, con el centro casi siempre perdiendo, así que la estimación es de baja magnitud."
+ }
+}

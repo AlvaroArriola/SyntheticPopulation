@@ -1,0 +1,29 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 0.1,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": -1.2,
+    "categoria": "buena"
+   },
+   {
+    "cambio_pp": 0.5,
+    "categoria": "mala"
+   },
+   {
+    "cambio_pp": 0.6,
+    "categoria": "regular"
+   }
+  ],
+  "justificacion": "Los aranceles recíprocos anunciados por Trump generan incertidumbre y caídas bursátiles, pero su impacto directo en la economía personal de los hogares españoles es limitado e inmediato apenas perceptible. Sin análogos disponibles, cabe esperar un leve deterioro de la percepción personal (1-2 puntos), con trasvase de «buena» hacia «regular» y «mala», ya que este indicador suele ser muy estable."
+ }
+}

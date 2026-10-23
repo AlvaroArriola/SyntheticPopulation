@@ -1,0 +1,45 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": -0.3,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": 0.5,
+    "categoria": "centro_derecha_estatal"
+   },
+   {
+    "cambio_pp": 0.3,
+    "categoria": "derecha_radical"
+   },
+   {
+    "cambio_pp": -0.8,
+    "categoria": "izquierda_estatal"
+   },
+   {
+    "cambio_pp": -0.2,
+    "categoria": "nacionalista_regionalista"
+   },
+   {
+    "cambio_pp": -0.8,
+    "categoria": "ninguno"
+   },
+   {
+    "cambio_pp": 1.0,
+    "categoria": "otros"
+   },
+   {
+    "cambio_pp": 0.3,
+    "categoria": "socialdemocrata"
+   }
+  ],
+  "justificacion": "Las europeas dieron la victoria al PP sobre el PSOE, con un PSOE que resistió mejor de lo esperado. La irrupción de Se Acabó la Fiesta de Alvise alimenta la categoría «otros», mientras que la división entre Sumar y Podemos debilita a la izquierda estatal. Los análogos electorales mueven los indicadores entre 1 y 4 puntos, con trasvases desde «ninguno» hacia los partidos; aquí cabe esperar cambios moderados, de alrededor de un punto."
+ }
+}

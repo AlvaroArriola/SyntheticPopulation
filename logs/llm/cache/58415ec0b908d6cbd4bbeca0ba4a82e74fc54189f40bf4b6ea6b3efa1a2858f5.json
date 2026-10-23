@@ -1,0 +1,29 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 0.1,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": 1.2,
+    "categoria": "buena"
+   },
+   {
+    "cambio_pp": -1.0,
+    "categoria": "mala"
+   },
+   {
+    "cambio_pp": -0.3,
+    "categoria": "regular"
+   }
+  ],
+  "justificacion": "La investidura cierra la incertidumbre postelectoral. Puede generar un leve efecto de 'luna de miel' entre los votantes del bloque progresista, que valorarían algo mejor la economía, mientras la polémica por la amnistía refuerza la valoración negativa de los votantes de la oposición. Los análogos de eventos institucionales mueven el indicador entre 3 y 9 puntos, pero buena parte de ese movimiento responde a la coyuntura económica. Por eso espero un cambio pequeño, de alrededor de un punto, favorable a 'buena'."
+ }
+}

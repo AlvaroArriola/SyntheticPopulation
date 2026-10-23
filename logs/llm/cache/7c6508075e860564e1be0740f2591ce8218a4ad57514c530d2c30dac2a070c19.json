@@ -1,0 +1,29 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 0,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": -1.2,
+    "categoria": "buena"
+   },
+   {
+    "cambio_pp": 1.5,
+    "categoria": "mala"
+   },
+   {
+    "cambio_pp": -0.3,
+    "categoria": "regular"
+   }
+  ],
+  "justificacion": "La DANA de Valencia es una catástrofe con fuerte impacto económico regional y gran carga emocional. Cabe esperar un ligero empeoramiento de la valoración de la economía española, con más «mala» y menos «buena». El análogo del apagón apenas movió el indicador (1-2 puntos y en sentido contrario), así que el efecto estimado es pequeño, de 1-2 puntos."
+ }
+}

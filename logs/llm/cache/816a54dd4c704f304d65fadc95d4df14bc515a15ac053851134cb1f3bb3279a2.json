@@ -1,0 +1,45 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": -0.5,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": 0.5,
+    "categoria": "centro_derecha_estatal"
+   },
+   {
+    "cambio_pp": 0,
+    "categoria": "derecha_radical"
+   },
+   {
+    "cambio_pp": -4.0,
+    "categoria": "izquierda_estatal"
+   },
+   {
+    "cambio_pp": 4.0,
+    "categoria": "nacionalista_regionalista"
+   },
+   {
+    "cambio_pp": -0.5,
+    "categoria": "ninguno"
+   },
+   {
+    "cambio_pp": 0,
+    "categoria": "otros"
+   },
+   {
+    "cambio_pp": 0.5,
+    "categoria": "socialdemocrata"
+   }
+  ],
+  "justificacion": "Las elecciones vascas dieron un empate en escaños entre PNV y un EH Bildu en máximos, mientras Sumar quedó con un escaño y Podemos desapareció del Parlamento, por lo que se espera que los nacionalistas ganen cercanía a costa sobre todo de la izquierda estatal. El PSE y el PP mantuvieron resultados estables o algo mejores, con apenas pequeñas ganancias. Como en Galicia y Cataluña, el voto nacionalista sube unos 4-6 puntos y la izquierda estatal cae; el efecto se modera aquí porque la submuestra vasca del CIS es pequeña y ruidosa."
+ }
+}

@@ -1,0 +1,329 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v2",
+  "prompt_sha256": "58361a31c2ad8b7d689dbde7f9b8a923b3cfba4f12393a3ce8f2a646e5eb72db",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Las respuestas se reparten entre mantener las competencias autonómicas y trasladarlas al Gobierno central, con una opción de colaboración no leída que apenas se recoge; las personas mayores y con estudios hasta obligatoria tienden algo más a mantener las competencias autonómicas, mientras que los de estudios superiores y los más jóvenes se inclinan algo más por el traspaso, y las diferencias por sexo y comunidad son pequeñas.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.38,
+     0.4,
+     0.0,
+     0.02,
+     0.17,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.4,
+     0.36,
+     0.0,
+     0.02,
+     0.19,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.43,
+     0.32,
+     0.0,
+     0.02,
+     0.2,
+     0.03
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.46,
+     0.27,
+     0.0,
+     0.02,
+     0.22,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.43,
+     0.33,
+     0.0,
+     0.02,
+     0.19,
+     0.03
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.41,
+     0.33,
+     0.0,
+     0.02,
+     0.21,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.44,
+     0.28,
+     0.0,
+     0.02,
+     0.23,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.42,
+     0.33,
+     0.0,
+     0.02,
+     0.2,
+     0.03
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.39,
+     0.39,
+     0.0,
+     0.02,
+     0.18,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.4,
+     0.36,
+     0.0,
+     0.02,
+     0.19,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.45,
+     0.3,
+     0.0,
+     0.02,
+     0.19,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.4,
+     0.35,
+     0.0,
+     0.02,
+     0.2,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.4,
+     0.36,
+     0.0,
+     0.02,
+     0.19,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.4,
+     0.37,
+     0.0,
+     0.02,
+     0.18,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.44,
+     0.31,
+     0.0,
+     0.02,
+     0.2,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.46,
+     0.3,
+     0.0,
+     0.02,
+     0.19,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.44,
+     0.31,
+     0.0,
+     0.02,
+     0.2,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.4,
+     0.37,
+     0.0,
+     0.02,
+     0.18,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.42,
+     0.34,
+     0.0,
+     0.02,
+     0.19,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.44,
+     0.31,
+     0.0,
+     0.02,
+     0.2,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.43,
+     0.33,
+     0.0,
+     0.02,
+     0.19,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.42,
+     0.35,
+     0.0,
+     0.02,
+     0.19,
+     0.02
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.43,
+     0.32,
+     0.0,
+     0.02,
+     0.2,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.4,
+     0.36,
+     0.0,
+     0.02,
+     0.19,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.36,
+     0.4,
+     0.0,
+     0.02,
+     0.19,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.43,
+     0.32,
+     0.0,
+     0.02,
+     0.2,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.42,
+     0.34,
+     0.0,
+     0.02,
+     0.19,
+     0.03
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.42,
+     0.34,
+     0.0,
+     0.02,
+     0.19,
+     0.03
+    ]
+   }
+  ],
+  "total": [
+   0.42,
+   0.33,
+   0.0,
+   0.02,
+   0.2,
+   0.03
+  ]
+ }
+}

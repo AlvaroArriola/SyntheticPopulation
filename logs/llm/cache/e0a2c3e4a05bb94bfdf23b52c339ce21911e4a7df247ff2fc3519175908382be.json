@@ -1,0 +1,45 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 0,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": 1.5,
+    "categoria": "centro_derecha_estatal"
+   },
+   {
+    "cambio_pp": 1.5,
+    "categoria": "derecha_radical"
+   },
+   {
+    "cambio_pp": -1.0,
+    "categoria": "izquierda_estatal"
+   },
+   {
+    "cambio_pp": 1.5,
+    "categoria": "nacionalista_regionalista"
+   },
+   {
+    "cambio_pp": -1.0,
+    "categoria": "ninguno"
+   },
+   {
+    "cambio_pp": -0.5,
+    "categoria": "otros"
+   },
+   {
+    "cambio_pp": -2.0,
+    "categoria": "socialdemocrata"
+   }
+  ],
+  "justificacion": "Los comicios aragoneses llegan con un PP en el gobierno que aspira a revalidar y un Vox en clara tendencia al alza, como en Extremadura (+8,6 para la derecha radical). Cabe esperar que el PSOE pierda cercanía y que CHA, dentro del espacio regionalista, gane algo. Los análogos mueven entre 1 y 9 puntos, pero la cercanía de partido ya refleja buena parte del clima previo, así que se esperan cambios moderados, de 1 a 2 puntos."
+ }
+}

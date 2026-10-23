@@ -1,0 +1,45 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": -0.3,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": 2.5,
+    "categoria": "centro_derecha_estatal"
+   },
+   {
+    "cambio_pp": -1.0,
+    "categoria": "derecha_radical"
+   },
+   {
+    "cambio_pp": -0.3,
+    "categoria": "izquierda_estatal"
+   },
+   {
+    "cambio_pp": 0.5,
+    "categoria": "nacionalista_regionalista"
+   },
+   {
+    "cambio_pp": -2.0,
+    "categoria": "ninguno"
+   },
+   {
+    "cambio_pp": -0.4,
+    "categoria": "otros"
+   },
+   {
+    "cambio_pp": 1.0,
+    "categoria": "socialdemocrata"
+   }
+  ],
+  "justificacion": "Las autonómicas suelen movilizar la identificación partidista y reducir 'ninguno' (entre -2 y -6 puntos en los análogos). Es previsible que el PP, partido de gobierno y favorito, gane algo de cercanía, y que el PSOE mejore ligeramente con la campaña. Vox parte de un nivel inusualmente alto en esta submuestra, por lo que cabe esperar cierta corrección, como ocurrió en Aragón. Los regionalistas leoneses y provinciales podrían subir algo, en movimientos de 0-3 puntos, menores que en los casos más volátiles."
+ }
+}

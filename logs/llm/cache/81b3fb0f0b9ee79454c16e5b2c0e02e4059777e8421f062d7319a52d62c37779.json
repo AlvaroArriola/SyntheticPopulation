@@ -1,0 +1,242 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v2",
+  "prompt_sha256": "58361a31c2ad8b7d689dbde7f9b8a923b3cfba4f12393a3ce8f2a646e5eb72db",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "El reconocimiento de un cargo ministerial poco mediático es bajo en el conjunto de la población y crece con la edad y el nivel de estudios, al estar más expuestos los mayores y las personas con estudios superiores a la información política. Cataluña muestra un conocimiento notablemente superior por la mayor relevancia pública de este dirigente en esa comunidad, mientras que el sexo introduce diferencias pequeñas.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.18,
+     0.76,
+     0.06
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.28,
+     0.66,
+     0.06
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.36,
+     0.56,
+     0.08
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.37,
+     0.52,
+     0.11
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.36,
+     0.58,
+     0.06
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.29,
+     0.64,
+     0.07
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.25,
+     0.66,
+     0.09
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.33,
+     0.61,
+     0.06
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.44,
+     0.52,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.3,
+     0.62,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.28,
+     0.66,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.3,
+     0.64,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.28,
+     0.66,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.22,
+     0.72,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.3,
+     0.64,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.3,
+     0.64,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.3,
+     0.64,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.52,
+     0.44,
+     0.04
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.3,
+     0.64,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.28,
+     0.66,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.28,
+     0.64,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.36,
+     0.58,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.26,
+     0.68,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.28,
+     0.66,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.3,
+     0.64,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.28,
+     0.66,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.2,
+     0.72,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.2,
+     0.72,
+     0.08
+    ]
+   }
+  ],
+  "total": [
+   0.32,
+   0.61,
+   0.07
+  ]
+ }
+}

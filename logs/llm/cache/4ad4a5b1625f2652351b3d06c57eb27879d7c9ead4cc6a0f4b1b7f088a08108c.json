@@ -1,0 +1,271 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "pregunta_nueva@v3",
+  "prompt_sha256": "6e480c180504e0bbc71d8a2e2919c40227303fcd99f90c02123d66cb24365e6d",
+  "tarea": "pregunta_nueva"
+ },
+ "salida": {
+  "justificacion": "No hay una referencia directa. Me apoyo en la valoración del papa Francisco (2025-05), que muestra que la figura papal es muy conocida y tiene pocos N.S./N.C., y en preguntas de conocimiento como la del Código Penal (2023-01), donde una mayoría declara poco o ningún conocimiento de temas concretos. Estimo que algo menos de la mitad dice conocer la opinión de León XIV sobre la inmigración, con más conocimiento entre las personas mayores y las de estudios superiores. También supongo algo más de conocimiento en Canarias y Madrid, donde la inmigración y la actividad papal suelen tener más eco mediático.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.35,
+     0.62,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.42,
+     0.55,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.47,
+     0.5,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.49,
+     0.47,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.45,
+     0.52,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.43,
+     0.54,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.37,
+     0.59,
+     0.03,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.43,
+     0.54,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.53,
+     0.45,
+     0.01,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.42,
+     0.55,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.43,
+     0.54,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.42,
+     0.55,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.43,
+     0.54,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.53,
+     0.44,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.43,
+     0.54,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.45,
+     0.52,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.43,
+     0.54,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.42,
+     0.55,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.43,
+     0.54,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.42,
+     0.55,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.42,
+     0.55,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.5,
+     0.47,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.43,
+     0.54,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.44,
+     0.53,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.41,
+     0.56,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.44,
+     0.53,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.45,
+     0.52,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.45,
+     0.52,
+     0.02,
+     0.01
+    ]
+   }
+  ],
+  "total": [
+   0.44,
+   0.53,
+   0.02,
+   0.01
+  ]
+ }
+}

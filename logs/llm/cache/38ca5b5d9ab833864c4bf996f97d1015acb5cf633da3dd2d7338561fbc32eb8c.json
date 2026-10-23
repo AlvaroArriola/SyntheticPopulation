@@ -1,0 +1,21 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 2.2,
+    "categoria": "no"
+   },
+   {
+    "cambio_pp": -2.2,
+    "categoria": "si"
+   }
+  ],
+  "justificacion": "Las municipales y autonómicas del 28M cierran una campaña muy politizada. La convocatoria inmediata de generales sitúa el siguiente barómetro en una fase de expectativa electoral, en la que la mención de la política como problema tiende a moderarse ligeramente. El análogo más cercano, la disolución de las Cortes en la misma ventana, movió unos 2,4 puntos de «sí» a «no», así que espero un descenso moderado de similar magnitud."
+ }
+}

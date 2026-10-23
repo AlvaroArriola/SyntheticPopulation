@@ -1,0 +1,215 @@
+{
+ "criterio": "docs/06 §5: solo atributos del perfil o lo que dicen las referencias",
+ "revisadas": 164,
+ "candidatas": 18,
+ "problematicas": 11,
+ "problematicas_por_uso": {
+  "b2": 11,
+  "evento": 0,
+  "nueva": 0
+ },
+ "sin_revisar": 0,
+ "detalle": [
+  {
+   "id": "CIS-3571-P1",
+   "uso": "b2",
+   "huella": "0e59268019a1b88a",
+   "rasgos": [
+    "siguen más la actualidad"
+   ],
+   "veredicto": "problematica",
+   "motivo": "mayores y con estudios «siguen más la actualidad institucional y los medios generalistas»: hábito no está en el perfil",
+   "justificacion": "El conocimiento de una visita papal reciente es mayor entre las personas de más edad y con más estudios, que siguen más la actualidad institucional y los medios generalistas. Las diferencias por sexo y comunidad son pequeñas, con algo más de desconocimiento en Canarias, Cataluña, País Vasco y las ciudades autónomas."
+  },
+  {
+   "id": "CIS-3571-P4",
+   "uso": "b2",
+   "huella": "29b8bac625001535",
+   "rasgos": [
+    "siguen más la actualidad"
+   ],
+   "veredicto": "problematica",
+   "motivo": "edad y estudios «grupos que siguen más la actualidad»",
+   "justificacion": "Es probable que la mayoría no conozca la opinión del papa sobre inmigración, y que el conocimiento crezca con la edad y el nivel de estudios, grupos que siguen más la actualidad. Las diferencias por sexo y comunidad son pequeñas y se han mantenido moderadas."
+  },
+  {
+   "id": "CIS-3571-P5",
+   "uso": "b2",
+   "huella": "a5ccc060758871f8",
+   "rasgos": [
+    "religios"
+   ],
+   "veredicto": "problematica",
+   "motivo": "mayores y con más estudios «siguen con más frecuencia la información general»",
+   "justificacion": "El conocimiento de la opinión de un líder religioso sobre un asunto político suele ser mayor entre las personas de más edad y con más estudios, que siguen con más frecuencia la información general. Las diferencias por sexo y comunidad autónoma se estiman pequeñas, por lo que las distribuciones se mantienen cercanas a la media."
+  },
+  {
+   "id": "CIS-3571-P6",
+   "uso": "b2",
+   "huella": "be15e30efb7ade0a",
+   "rasgos": [
+    "católic"
+   ],
+   "veredicto": "aceptable",
+   "motivo": "«católicos» es una opción de respuesta; las diferencias se explican solo por edad y estudios",
+   "justificacion": "La opción de referente solo para católicos y la de referente para la sociedad en su conjunto varían poco por sexo y comunidad; las diferencias se concentran en la edad y los estudios, siendo los mayores de 65 años y las personas con estudios básicos quienes más reconocen una dimensión general, mientras que los más jóvenes y con estudios superiores optan más por no considerarlo referente."
+  },
+  {
+   "id": "CIS-3571-P6",
+   "uso": "nueva",
+   "huella": "3be1c436092ef76e",
+   "rasgos": [
+    "católic"
+   ],
+   "veredicto": "aceptable",
+   "motivo": "declara que las diferencias por grupo son supuestos propios; no atribuye rasgos",
+   "justificacion": "Las preguntas de referencia no tratan sobre el Papa ni sobre religión; solo sirven para calibrar niveles bajos de N.S. y N.C. y un tono social abierto, como el amplio apoyo al matrimonio LGTBI+. Por eso estimo un reparto parecido entre «solo para católicos» y «para toda la sociedad», con algo de rechazo espontáneo y un N.S. moderado por tratarse de un papa reciente. Las diferencias por edad, estudios y comunidad son supuestos propios, no salen de los datos: más «sociedad» entre mayores y en comunidades del sur y del interior, y más «solo católicos» o «no es referente» entre jóvenes, universitarios, Cataluña y País Vasco."
+  },
+  {
+   "id": "CIS-3571-P8",
+   "uso": "b2",
+   "huella": "11cae1c5ce6e5250",
+   "rasgos": [
+    "ocupación"
+   ],
+   "veredicto": "aceptable",
+   "motivo": "diferencia por estudios y sexo sin explicarla con rasgos ajenos al perfil",
+   "justificacion": "La preocupación por el cambio climático es mayoritariamente alta en España y tiende a ser algo mayor entre las personas con más estudios y entre las mujeres, mientras que los grupos con menor nivel educativo muestran más respuestas intermedias o de baja preocupación. Las diferencias por edad y comunidad autónoma son reducidas, por lo que las estimaciones se mantienen cercanas a la media."
+  },
+  {
+   "id": "CIS-3571-P9",
+   "uso": "b2",
+   "huella": "c42d1964e76ff4f8",
+   "rasgos": [
+    "ocupación"
+   ],
+   "veredicto": "aceptable",
+   "motivo": "diferencias por edad y estudios sin rasgos ajenos",
+   "justificacion": "La preocupación por la guerra en Ucrania es mayoritaria en toda España y crece ligeramente con la edad y el nivel de estudios, mientras que las diferencias por sexo y comunidad autónoma son pequeñas y se concentran en la proporción de no sabe y no contesta."
+  },
+  {
+   "id": "CIS-3571-P10",
+   "uso": "b2",
+   "huella": "df2bbd5a9de51556",
+   "rasgos": [
+    "ocupación"
+   ],
+   "veredicto": "problematica",
+   "motivo": "mayores «siguen más la actualidad internacional»; menos estudios «más falta de información»",
+   "justificacion": "La preocupación por un conflicto lejano suele ser algo mayor entre las personas de más edad, que tienden a seguir más la actualidad internacional, y entre quienes tienen menos estudios, que muestran más falta de información; las diferencias por sexo y comunidad autónoma son reducidas."
+  },
+  {
+   "id": "CIS-3571-CONOMINIS_5",
+   "uso": "b2",
+   "huella": "6addf329c788773c",
+   "rasgos": [
+    "conectad",
+    "familiaridad"
+   ],
+   "veredicto": "problematica",
+   "motivo": "«familiaridad» por edad y «comunidades menos conectadas con la información económica»",
+   "justificacion": "Es una pregunta de conocimiento de un ministro, y el conocimiento crece con el nivel de estudios, que es la diferencia más marcada en las estimaciones. Por edad, los menores de 35 años muestran algo menos de familiaridad, y por comunidad, Madrid y el País Vasco o Navarra destacan ligeramente frente a comunidades menos conectadas con la información económica nacional."
+  },
+  {
+   "id": "CIS-3571-CONOMINIS_8",
+   "uso": "b2",
+   "huella": "828bca613a929c86",
+   "rasgos": [
+    "siguen más la actualidad"
+   ],
+   "veredicto": "problematica",
+   "motivo": "estudios superiores y edad «siguen más la actualidad política y sanitaria»",
+   "justificacion": "Mónica García, ministra de Sanidad, es más conocida entre personas con estudios superiores y de mayor edad madura, que siguen más la actualidad política y sanitaria. Su mayor notoriedad en Madrid, sede de su trayectoria política, eleva el conocimiento en esa comunidad, mientras que es algo menor en ciudades autónomas y en las comunidades con menos cobertura mediática de su figura."
+  },
+  {
+   "id": "CIS-3571-CONOMINIS_15",
+   "uso": "b2",
+   "huella": "72ed122a1b08df3f",
+   "rasgos": [
+    "siguen más la actualidad"
+   ],
+   "veredicto": "problematica",
+   "motivo": "más edad y estudios «siguen más la actualidad política»",
+   "justificacion": "El conocimiento de una ministra es mayor entre las personas de más edad y con estudios superiores, que siguen más la actualidad política. La mayor notoriedad en Castilla y León y Castilla-La Mancha responde a la vinculación territorial de la figura, mientras que el sexo apenas introduce diferencias."
+  },
+  {
+   "id": "CIS-3571-CONOMINIS_20",
+   "uso": "b2",
+   "huella": "d6775b7feedf115b",
+   "rasgos": [
+    "familiaridad",
+    "siguen más la actualidad"
+   ],
+   "veredicto": "problematica",
+   "motivo": "hombres y mayores de 50 «siguen más la actualidad política»; jóvenes «menor familiaridad»",
+   "justificacion": "Se trata de una figura pública de perfil medio, cuyo reconocimiento crece con el nivel de estudios y es algo mayor entre los hombres y los mayores de 50 años, que siguen más la actualidad política. La mayor visibilidad en Madrid, donde el conocimiento es algo superior, explica las diferencias territoriales, mientras que los más jóvenes y las personas con menos estudios muestran menor familiaridad y más no respuestas."
+  },
+  {
+   "id": "CIS-3577-P8",
+   "uso": "b2",
+   "huella": "f93c921a42c9b725",
+   "rasgos": [
+    "ocupación",
+    "ocupad"
+   ],
+   "veredicto": "aceptable",
+   "motivo": "exposición histórica al fuego es un dato del territorio (comunidad), no un rasgo de personas",
+   "justificacion": "La preocupación por los incendios es mayor entre las personas de más edad y en comunidades con mayor exposición histórica al fuego (Galicia, Asturias, Cantabria), mientras que los más jóvenes se muestran algo menos preocupados. Las diferencias por sexo y nivel de estudios son pequeñas."
+  },
+  {
+   "id": "CIS-3577-P12",
+   "uso": "b2",
+   "huella": "6ca3f6735ee0e50b",
+   "rasgos": [
+    "familiaridad"
+   ],
+   "veredicto": "problematica",
+   "motivo": "menos estudios y mayores «menor familiaridad con el debate»",
+   "justificacion": "La mayoría apoyaría un pacto de Estado climático, con diferencias leves: las personas con estudios superiores lo respaldan algo más y los grupos con menor nivel educativo y de mayor edad registran más 'N.S.' por menor familiaridad con el debate."
+  },
+  {
+   "id": "CIS-3577-P13",
+   "uso": "b2",
+   "huella": "479f68a7ec4ff900",
+   "rasgos": [
+    "ocupación"
+   ],
+   "veredicto": "aceptable",
+   "motivo": "diferencias por edad y estudios sin rasgos ajenos",
+   "justificacion": "La preocupación por el cambio climático suele ser algo mayor entre los más jóvenes y las personas con estudios superiores, mientras que las diferencias por sexo y comunidad autónoma son pequeñas."
+  },
+  {
+   "id": "CIS-3577-P14",
+   "uso": "b2",
+   "huella": "ab5620791194fbbf",
+   "rasgos": [
+    "ocupación"
+   ],
+   "veredicto": "problematica",
+   "motivo": "más edad y estudios «suelen seguir más la actualidad internacional»",
+   "justificacion": "La preocupación por la guerra en Ucrania es alta en el conjunto, con mayores niveles de inquietud entre las personas de más edad y con más estudios, que suelen seguir más la actualidad internacional, mientras que los tramos más jóvenes y quienes tienen estudios básicos muestran algo menos de intensidad y más no sabe. Las diferencias por sexo y comunidad autónoma son reducidas."
+  },
+  {
+   "id": "CIS-3577-P15",
+   "uso": "b2",
+   "huella": "84c9c47ac7b7bf4f",
+   "rasgos": [
+    "ocupación"
+   ],
+   "veredicto": "aceptable",
+   "motivo": "diferencias por edad, estudios y sexo sin rasgos ajenos",
+   "justificacion": "Estimación basada en que la preocupación por un conflicto internacional lejano suele ser algo mayor entre los mayores y las personas con más estudios, con diferencias moderadas por edad y sexo; las diferencias territoriales se consideran pequeñas y se mantienen cerca de la media."
+  },
+  {
+   "id": "CIS-3577-V3",
+   "uso": "b2",
+   "huella": "d93d6fb41a102523",
+   "rasgos": [
+    "conviv"
+   ],
+   "veredicto": "problematica",
+   "motivo": "35-49 «mayor probabilidad de convivencia con otros adultos o menores»: la convivencia no está en el perfil",
+   "justificacion": "La detección de terceras personas durante la entrevista es poco frecuente en general, y las diferencias son pequeñas; se estima algo más alta en 35-49 años, por la mayor probabilidad de convivencia con otros adultos o menores, y algo más baja en mayores de 65 años y en quienes tienen estudios hasta obligatoria."
+  }
+ ]
+}

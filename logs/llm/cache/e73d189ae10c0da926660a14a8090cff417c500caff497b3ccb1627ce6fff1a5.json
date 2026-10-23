@@ -1,0 +1,21 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": -1.5,
+    "categoria": "no"
+   },
+   {
+    "cambio_pp": 1.5,
+    "categoria": "si"
+   }
+  ],
+  "justificacion": "Los aranceles generales de EE. UU. del 2 de abril de 2025 generaron una fuerte cobertura mediática y caídas bursátiles, lo que puede elevar algo la preocupación por la economía. Sin embargo, la exposición directa de España al mercado estadounidense es moderada y la economía española crecía con fuerza. Por eso cabe esperar un aumento pequeño, de entre 1 y 2 puntos, en quienes citan la economía como problema. No hay análogos disponibles, así que la magnitud se apoya en el rango habitual de 0-5 puntos para eventos económicos externos."
+ }
+}

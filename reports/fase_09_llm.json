@@ -1,0 +1,52 @@
+{
+ "estudios": [
+  "3571",
+  "3577"
+ ],
+ "preguntas": 121,
+ "b2": {
+  "total": 0.2886262082742947,
+  "subgrupos": 0.295319383867238,
+  "ccaa": 0.25533518980546765,
+  "sistema_cis_mismas_preguntas": 0.06599220712999773
+ },
+ "nuevas": {
+  "preguntas": 19,
+  "tvd_llm": 0.2322190015393532,
+  "con_estadistico": 5,
+  "tvd_llm_en_ambas": 0.21484115342841087,
+  "tvd_estadistico_en_ambas": 0.30533717373699315,
+  "usar": true,
+  "calibracion": {
+   "q80": 0.32029929077649943,
+   "q95": 0.6225728627798608,
+   "acierto": 0.15789473684210525,
+   "usar": true,
+   "preguntas": 19,
+   "estudios": [
+    "3571",
+    "3577"
+   ]
+  }
+ },
+ "g9_7": {
+  "contrafactual_casos": 258,
+  "razon_brecha_mediana": 0.6949332545443223,
+  "razon_brecha_mediana_frente_real": 0.642644303219488,
+  "umbral": 1.25,
+  "umbral_estado": "propuesta",
+  "homogeneidad": "no aplica: no se simulan personas (D-069)",
+  "justificaciones": 135
+ },
+ "coste": {
+  "gastado_total_eur": 4.1507
+ },
+ "g9_6_llm": {
+  "pares": 29,
+  "pares_correctos": 17,
+  "eventos": 16,
+  "eventos_correctos": 8,
+  "error_magnitud_pp_medio": 3.8846974432422896,
+  "contaminado": true
+ }
+}

@@ -1,0 +1,21 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": -1.5,
+    "categoria": "no"
+   },
+   {
+    "cambio_pp": 1.5,
+    "categoria": "si"
+   }
+  ],
+  "justificacion": "La entrada en vigor de la amnistía reaviva la polarización y el debate político, lo que puede elevar algo la mención de la política como problema. Sin embargo, llega justo tras las europeas, y en los análogos los periodos poselectorales tienden a reducir esa mención (europeas: -6,5). Los análogos de alta tensión institucional, como la investidura, movieron el indicador alrededor de 1,5 puntos, así que estimo un aumento moderado de 'sí'."
+ }
+}

@@ -1,0 +1,45 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": -0.5,
+    "categoria": "NS_NC"
+   },
+   {
+    "cambio_pp": 3.0,
+    "categoria": "centro_derecha_estatal"
+   },
+   {
+    "cambio_pp": 1.5,
+    "categoria": "derecha_radical"
+   },
+   {
+    "cambio_pp": 1.0,
+    "categoria": "izquierda_estatal"
+   },
+   {
+    "cambio_pp": 0.0,
+    "categoria": "nacionalista_regionalista"
+   },
+   {
+    "cambio_pp": -2.0,
+    "categoria": "ninguno"
+   },
+   {
+    "cambio_pp": 0.0,
+    "categoria": "otros"
+   },
+   {
+    "cambio_pp": -3.0,
+    "categoria": "socialdemocrata"
+   }
+  ],
+  "justificacion": "El PP de Guardiola ganó con claridad, el PSOE se hundió a mínimos históricos y Vox y Unidas por Extremadura subieron. Por eso cabe esperar que la cercanía se desplace hacia el centro-derecha y, en menor medida, hacia Vox y la izquierda alternativa, a costa del PSOE y de quienes no se sienten cercanos a ningún partido. Los análogos autonómicos mueven las categorías principales entre 2 y 9 puntos, pero las submuestras regionales son ruidosas, así que la estimación es moderada (unos 3 puntos)."
+ }
+}
