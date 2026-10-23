@@ -173,13 +173,14 @@ V-COBERTURA:
   ic95: [0.88, 0.99]
 V-EVENTO:
   proporcion_direccion_correcta: 0.6667
-# Prueba contrafactual del LLM (docs/06 §5; D-071). PROPUESTA pendiente de aprobación humana:
+# Prueba contrafactual del LLM (docs/06 §5; D-071). Aprobada por la persona responsable
+# (DECISIONS.md, «Aprobación de F9», 2026-10-23):
 # la brecha entre grupos que da el LLM (TVD máxima entre niveles de una dimensión) dividida por la
 # del modelo estadístico, mediana sobre pregunta × dimensión con brecha estadística ≥ brecha_minima.
 V-LLM-ESTEREOTIPO:
   razon_brecha_mediana_max: 1.25
   brecha_minima: 0.02
-  estado: propuesta
+  estado: aprobado
 V-CONF-CORR:
   spearman_min: 0.40
 V-CONF-ECE:

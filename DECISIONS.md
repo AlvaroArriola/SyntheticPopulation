@@ -1968,3 +1968,16 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - El umbral de 1,25 sigue en «propuesta»: G9.7 espera la aprobación humana.
 - **F11 no se ejecuta:** su entrada exige la puerta F9, que falla en G9.6. La evaluación final es de un solo uso y no se gasta sin esa decisión.
 - **Gasto LLM acumulado:** 4,28 € de 15 € (`logs/llm/gasto.jsonl`), incluidas las pruebas de la demo, que quedan en caché y responden al instante.
+
+### Aprobación de F9
+
+- **Fecha:** 2026-10-23
+- **Estado:** cerrada por decisión de la persona responsable («Adelante. Cerramos F9 y vamos con F11»), sobre la recomendación del agente. **La puerta automática sigue FALLIDA:** la decisión no la convierte en superada.
+- **G9.6 (modo evento):** no se supera; queda como **limitación conocida y aceptada**.
+  - Comprobado antes de decidir: contar solo los cambios reales significativos no la salvaría (con LLM, 6 de 12 eventos; sin LLM, 5 de 12). No se cambia ni la métrica ni el umbral.
+  - El modo evento sigue en la interfaz como escenario experimental, con su acierto medido junto a cada resultado (D-086), y no se usa para conclusiones.
+  - La prueba limpia será prospectiva (F11, tarea 5): registrar con fecha predicciones de eventos futuros y compararlas después.
+- **G9.7:** se aprueba el umbral de la prueba contrafactual (razón ≤ 1,25; `configs/thresholds.yaml`, `estado: aprobado`). El resultado medido es 0,69.
+  - La auditoría de justificaciones (D-086) da 0 problemáticas en lo que ve el usuario (preguntas nuevas y eventos) y 11 en el baseline B2. Con el criterio actual, que cuenta todas, **G9.7 no se supera por B2**.
+  - Si B2 debe contar o no es una decisión que no se ha tomado: queda pendiente de la persona responsable y no se ha cambiado el código de la puerta.
+- **F11** se ejecuta a continuación desde una etiqueta congelada, por decisión de la persona responsable.
