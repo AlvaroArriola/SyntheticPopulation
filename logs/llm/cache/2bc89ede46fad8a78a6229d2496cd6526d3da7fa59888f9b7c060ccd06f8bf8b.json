@@ -1,0 +1,242 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v2",
+  "prompt_sha256": "58361a31c2ad8b7d689dbde7f9b8a923b3cfba4f12393a3ce8f2a646e5eb72db",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "Es un ministro de perfil medio-alto, con más conocimiento entre personas con estudios superiores, en edades centrales y en Madrid y Cataluña, donde la visibilidad política es mayor; el desconocimiento y la falta de respuesta crecen en los grupos con menos estudios y en los de mayor edad.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.6,
+     0.33,
+     0.07
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.66,
+     0.28,
+     0.06
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.65,
+     0.28,
+     0.07
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.57,
+     0.32,
+     0.11
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.66,
+     0.28,
+     0.06
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.59,
+     0.33,
+     0.08
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.54,
+     0.36,
+     0.1
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.64,
+     0.3,
+     0.06
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.72,
+     0.23,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.58,
+     0.34,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.62,
+     0.31,
+     0.07
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.66,
+     0.27,
+     0.07
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.64,
+     0.29,
+     0.07
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.63,
+     0.3,
+     0.07
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.6,
+     0.32,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.52,
+     0.37,
+     0.11
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.55,
+     0.36,
+     0.09
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.7,
+     0.24,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.6,
+     0.32,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.52,
+     0.37,
+     0.11
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.55,
+     0.36,
+     0.09
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.75,
+     0.2,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.58,
+     0.34,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.62,
+     0.31,
+     0.07
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.66,
+     0.27,
+     0.07
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.6,
+     0.32,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.55,
+     0.36,
+     0.09
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.52,
+     0.37,
+     0.11
+    ]
+   }
+  ],
+  "total": [
+   0.62,
+   0.3,
+   0.08
+  ]
+ }
+}

@@ -1,0 +1,242 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v2",
+  "prompt_sha256": "58361a31c2ad8b7d689dbde7f9b8a923b3cfba4f12393a3ce8f2a646e5eb72db",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "El conocimiento de una ministra de ámbito estatal crece con el nivel de estudios y con la edad madura, y es claramente mayor en Navarra, comunidad de origen de Elma Saiz. Las diferencias por sexo son moderadas.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.3,
+     0.62,
+     0.08
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.38,
+     0.54,
+     0.08
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.43,
+     0.49,
+     0.08
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.44,
+     0.45,
+     0.11
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.44,
+     0.48,
+     0.08
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.36,
+     0.56,
+     0.08
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.32,
+     0.58,
+     0.1
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.4,
+     0.52,
+     0.08
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.5,
+     0.44,
+     0.06
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.37,
+     0.55,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.4,
+     0.52,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.4,
+     0.52,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.38,
+     0.54,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.36,
+     0.56,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.4,
+     0.52,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.42,
+     0.5,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.4,
+     0.52,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.38,
+     0.54,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.38,
+     0.54,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.4,
+     0.52,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.41,
+     0.51,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.42,
+     0.5,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.36,
+     0.56,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.68,
+     0.27,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.45,
+     0.47,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.42,
+     0.5,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.35,
+     0.57,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.35,
+     0.57,
+     0.08
+    ]
+   }
+  ],
+  "total": [
+   0.4,
+   0.52,
+   0.08
+  ]
+ }
+}

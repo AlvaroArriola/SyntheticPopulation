@@ -1,0 +1,242 @@
+{
+ "meta": {
+  "modelo": "claude-haiku-5-5",
+  "prompt": "b2@v2",
+  "prompt_sha256": "58361a31c2ad8b7d689dbde7f9b8a923b3cfba4f12393a3ce8f2a646e5eb72db",
+  "tarea": "b2"
+ },
+ "salida": {
+  "justificacion": "La mayoría de entrevistados no tiene prisa por terminar, con variaciones mínimas por sexo y comunidad; las personas de mayor edad y con menos estudios muestran algo más de no sabe, y los más jóvenes y con estudios superiores algo más de respuestas de no prisa.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.1,
+     0.84,
+     0.06
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.13,
+     0.8,
+     0.07
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.13,
+     0.79,
+     0.08
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.11,
+     0.78,
+     0.11
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.12,
+     0.78,
+     0.1
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.13,
+     0.8,
+     0.07
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.12,
+     0.83,
+     0.05
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.12,
+     0.8,
+     0.08
+    ]
+   }
+  ],
+  "total": [
+   0.12,
+   0.8,
+   0.08
+  ]
+ }
+}

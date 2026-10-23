@@ -1,0 +1,177 @@
+{
+ "fecha": "2026-10-23",
+ "git": {
+  "tag": "f11-congelacion-2026-10-23",
+  "commit": "0e40628ec5868753164222f1ad93a0901dcb02f3",
+  "limpio": true
+ },
+ "estudios": {
+  "3582": "2026-10-01"
+ },
+ "sin_analogas": [
+  "CIS-3582-P1",
+  "CIS-3582-P3",
+  "CIS-3582-P6A",
+  "CIS-3582-P6B",
+  "CIS-3582-P7"
+ ],
+ "todas": {
+  "preguntas": 90,
+  "sistema_final": 0.15839869703603074,
+  "sistema_cis": 0.18970624517354612,
+  "b0": 0.18970624517354612,
+  "b1": 0.18920260821531582,
+  "b2": 0.2618543060566992,
+  "subgrupos": {
+   "sistema": 0.1958620658021331,
+   "b1": 0.19352955356487225
+  },
+  "ccaa": {
+   "sistema": 0.20622405043168895,
+   "b1": 0.20399564116108074
+  },
+  "cobertura80": 0.568075117370892,
+  "cobertura95": 0.9420970266040689
+ },
+ "politicas": {
+  "preguntas": 16,
+  "sistema_final": 0.09488535654120675,
+  "sistema_cis": 0.09488535654120675,
+  "b0": 0.09488535654120675,
+  "b1": 0.09389147453379909,
+  "b2": 0.18134861134951052,
+  "subgrupos": {
+   "sistema": 0.10362039018851535,
+   "b1": 0.10369669350492353
+  },
+  "ccaa": {
+   "sistema": 0.12596962122080282,
+   "b1": 0.12618819933363107
+  },
+  "cobertura80": 0.7647058823529411,
+  "cobertura95": 0.9882352941176471
+ },
+ "vida_cotidiana": {
+  "preguntas": 74,
+  "sistema_final": 0.17213131119707376,
+  "sistema_cis": 0.2116936976100306,
+  "b0": 0.2116936976100306,
+  "b1": 0.21130374066320382,
+  "b2": 0.278173027956805,
+  "subgrupos": {
+   "sistema": 0.21725143985746476,
+   "b1": 0.2143603616947153
+  },
+  "ccaa": {
+   "sistema": 0.22510744554013282,
+   "b1": 0.22230327453224524
+  },
+  "cobertura80": 0.4968017057569296,
+  "cobertura95": 0.9253731343283582
+ },
+ "llm": {
+  "estudios": [
+   "3582"
+  ],
+  "preguntas": 90,
+  "b2": {
+   "total": 0.2618543060566992,
+   "subgrupos": 0.2701266595448536,
+   "ccaa": 0.2687446640638395,
+   "sistema_cis_mismas_preguntas": 0.1911984127139443
+  },
+  "nuevas": {
+   "preguntas": 18,
+   "tvd_llm": 0.17921881205015694,
+   "con_estadistico": 13,
+   "tvd_llm_en_ambas": 0.176653367628895,
+   "tvd_estadistico_en_ambas": 0.3919297479547294,
+   "usar": true
+  },
+  "g9_7": {
+   "contrafactual_casos": 231,
+   "razon_brecha_mediana": 0.7599430304134372,
+   "razon_brecha_mediana_frente_real": 0.49184229768924237,
+   "umbral": 1.25,
+   "umbral_estado": "aprobado",
+   "homogeneidad": "no aplica: no se simulan personas (D-069)",
+   "justificaciones": 107
+  },
+  "coste": {
+   "gastado_total_eur": 5.2254
+  }
+ },
+ "usa_llm_en_preguntas_nuevas": true,
+ "confianza": {
+  "casos": 1981,
+  "spearman_error": 0.807459700695345,
+  "spearman_confianza": 0.8203323868731771,
+  "ece": 0.057935210468754404,
+  "spearman_confianza_n_subgrupo": 0.5611372835630122,
+  "spearman_confianza_n_ccaa": 0.5834393879324474,
+  "confianza_media_total": 0.6494230512290857,
+  "confianza_media_subgrupos": 0.45734719758510456,
+  "diagrama_calibracion": [
+   {
+    "bin": "0.0-0.1",
+    "casos": 527,
+    "confianza_media": 0.04628042684295361,
+    "acierto": 0.015180265654648957
+   },
+   {
+    "bin": "0.1-0.2",
+    "casos": 239,
+    "confianza_media": 0.126890631135665,
+    "acierto": 0.05439330543933055
+   },
+   {
+    "bin": "0.2-0.3",
+    "casos": 87,
+    "confianza_media": 0.24369747899159658,
+    "acierto": 0.12643678160919541
+   },
+   {
+    "bin": "0.3-0.4",
+    "casos": 84,
+    "confianza_media": 0.3818181818181819,
+    "acierto": 0.17857142857142858
+   },
+   {
+    "bin": "0.4-0.5",
+    "casos": 110,
+    "confianza_media": 0.45907294286740924,
+    "acierto": 0.39090909090909093
+   },
+   {
+    "bin": "0.5-0.6",
+    "casos": 50,
+    "confianza_media": 0.5344827586206896,
+    "acierto": 0.66
+   },
+   {
+    "bin": "0.6-0.7",
+    "casos": 256,
+    "confianza_media": 0.6432397547181804,
+    "acierto": 0.71875
+   },
+   {
+    "bin": "0.7-0.8",
+    "casos": 57,
+    "confianza_media": 0.7922816482447085,
+    "acierto": 0.8596491228070176
+   },
+   {
+    "bin": "0.8-0.9",
+    "casos": 101,
+    "confianza_media": 0.8471422921697506,
+    "acierto": 0.7722772277227723
+   },
+   {
+    "bin": "0.9-1.0",
+    "casos": 470,
+    "confianza_media": 0.9398451658080361,
+    "acierto": 0.9595744680851064
+   }
+  ]
+ }
+}

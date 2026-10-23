@@ -6,7 +6,7 @@ Preguntas reales que el sistema no vio al construirse. Los estudios están en `d
 | --- | --- | --- | --- |
 | 3571 | julio de 2026 | validación (F9-F10) | 80 |
 | 3577 | septiembre de 2026 | validación (F9-F10) | 42 |
-| 3582 | octubre de 2026 | evaluación final (F11), una sola vez | se añade tras F11 |
+| 3582 | octubre de 2026 | evaluación final (F11), ya ejecutada | 90 |
 
 **Columna «Error»:** TVD entre lo que predijo el sistema y lo que midió el CIS. 0 es perfecto; 0,10 equivale a desviarse 10 puntos en total. Va con el método que se usó:
 - **análogas:** preguntas parecidas del banco;
@@ -19,20 +19,21 @@ Preguntas reales que el sistema no vio al construirse. Los estudios están en `d
 - En 3577 los errores de Sánchez (0,36), Feijóo (0,49) y Abascal (0,30) son anómalos.
 - Hay que revisar la armonización de esas escalas antes de sacar conclusiones de ellas.
 
-Generado con `python -m sinpop.evaluate.preguntas_posteriores [--final]` (consulta de solo lectura a través de `sinpop.evaluate.validacion`).
+Generado con `python -m sinpop.evaluate.preguntas_posteriores --final` (consulta de solo lectura a través de `sinpop.evaluate.validacion`).
+
 
 ## Estudio 3571 · 2026-07 · validación (F9-F10) · 80 preguntas
 
 | Pregunta | Opciones | Tipo | Error (TVD) |
 | --- | --- | --- | --- |
 | Conocimiento de la reciente visita el papa León XIV a España | Sí / No | vida cotidiana | 0.415 (análogas) |
-| Valoración de la visita del papa León XIV a España | Muy positiva / Positiva / Ni positiva ni negativa / Negativa / Muy negativa | vida cotidiana | 0.168 (LLM anclado) |
-| Efectos de la visita del papa León XIV en la imagen de España | La ha mejorado / La ha empeorado / Ni mejorado, ni empeorado / En algunos aspectos la ha mejorado y en otros la ha empeorado | vida cotidiana | 0.242 (LLM anclado) |
+| Valoración de la visita del papa León XIV a España | Muy positiva / Positiva / Ni positiva ni negativa / Negativa / Muy negativa | vida cotidiana | — |
+| Efectos de la visita del papa León XIV en la imagen de España | La ha mejorado / La ha empeorado / Ni mejorado, ni empeorado / En algunos aspectos la ha mejorado y en otros la ha empeorado | vida cotidiana | — |
 | Conocimiento de la opinión del papa León XIV sobre la inmigración | Sí / No | vida cotidiana | 0.206 (análogas) |
 | Grado de acuerdo con las manifestaciones del papa León XIV sobre la inmigración | Muy de acuerdo / De acuerdo / Ni de acuerdo, ni en desacuerdo / En desacuerdo / Muy en desacuerdo | vida cotidiana | 0.061 (análogas) |
 | Conocimiento de la opinión del papa León XIV sobre la polarización política | Sí / No | vida cotidiana | 0.373 (análogas) |
 | Grado de acuerdo con las manifestaciones del papa León XIV sobre la polarización política | Muy de acuerdo / De acuerdo / Ni de acuerdo, ni en desacuerdo / En desacuerdo / Muy en desacuerdo | vida cotidiana | 0.039 (análogas) |
-| Consideración del papa León XIV como referente ético y moral para los/as católicos/as o la sociedad en su conjunto | Es un referente ético y moral solamente para los/as católicos/as / Es un referente ético y moral también para la sociedad en su conjunto / No es un referente | vida cotidiana | 0.178 (LLM anclado) |
+| Consideración del papa León XIV como referente ético y moral para los/as católicos/as o la sociedad en su conjunto | Es un referente ético y moral solamente para los/as católicos/as / Es un referente ético y moral también para la sociedad en su conjunto / No es un referente | vida cotidiana | — |
 | Evolución de la imagen que tiene del papa León XIV tras su visita a España | Mucho mejor / Algo mejor / Igual / Algo peor / Mucho peor | vida cotidiana | 0.415 (análogas) |
 | Grado de preocupación por el cambio climático | Mucho / Bastante / Regular / Poco / Nada | vida cotidiana | 0.119 (análogas) |
 | Grado de preocupación por la invasión de Rusia a Ucrania | Muy preocupado/a / Bastante preocupado/a / Algo preocupado/a / Poco preocupado/a / Nada preocupado/a / No tiene criterio / Le es indiferente | vida cotidiana | 0.117 (análogas) |
@@ -110,21 +111,21 @@ Generado con `python -m sinpop.evaluate.preguntas_posteriores [--final]` (consul
 
 | Pregunta | Opciones | Tipo | Error (TVD) |
 | --- | --- | --- | --- |
-| Conocimiento del cruce de la frontera en Ceuta ocurrido en el verano del 2026 | Sí, está informado/a / No, no está informado/a | vida cotidiana | 0.331 (LLM anclado) |
-| Necesidad de refuerzo de las fronteras para evitar entradas masivas de personas | Sí, cree que es necesario / No, cree que no es necesario / N.S., no tiene información suficiente | vida cotidiana | 0.190 (LLM anclado) |
-| Grado de importancia del entendimiento entre España y Marruecos para garantizar la seguridad de las fronteras | Mucha importancia / Bastante importancia / Ni mucha ni poca importancia / Poca importancia / Ninguna importancia | vida cotidiana | 0.205 (LLM anclado) |
-| Colaboración o no de la Unión Europea con España para gestionar la situación de Ceuta | Sí, debería colaborar más / No, la colaboración actual es suficiente | vida cotidiana | 0.174 (LLM anclado) |
-| Opinión sobre la situación de integración territorial de Ceuta y Melilla | Son territorios tan españoles como cualquier otro territorio de la península / Tienen una situación ambigua y especial que debe ser objeto de acuerdos y entendimiento con Marruecos / Otra respuesta / N.S., no tiene información suficiente o tiene dudas | vida cotidiana | 0.116 (LLM anclado) |
-| Grado de importancia de mantener una política amistosa entre España y Marruecos | Mucha importancia / Bastante importancia / Ni mucha ni poca importancia / Poca importancia / Ninguna importancia | vida cotidiana | 0.189 (LLM anclado) |
+| Conocimiento del cruce de la frontera en Ceuta ocurrido en el verano del 2026 | Sí, está informado/a / No, no está informado/a | vida cotidiana | — |
+| Necesidad de refuerzo de las fronteras para evitar entradas masivas de personas | Sí, cree que es necesario / No, cree que no es necesario / N.S., no tiene información suficiente | vida cotidiana | — |
+| Grado de importancia del entendimiento entre España y Marruecos para garantizar la seguridad de las fronteras | Mucha importancia / Bastante importancia / Ni mucha ni poca importancia / Poca importancia / Ninguna importancia | vida cotidiana | — |
+| Colaboración o no de la Unión Europea con España para gestionar la situación de Ceuta | Sí, debería colaborar más / No, la colaboración actual es suficiente | vida cotidiana | — |
+| Opinión sobre la situación de integración territorial de Ceuta y Melilla | Son territorios tan españoles como cualquier otro territorio de la península / Tienen una situación ambigua y especial que debe ser objeto de acuerdos y entendimiento con Marruecos / Otra respuesta / N.S., no tiene información suficiente o tiene dudas | vida cotidiana | — |
+| Grado de importancia de mantener una política amistosa entre España y Marruecos | Mucha importancia / Bastante importancia / Ni mucha ni poca importancia / Poca importancia / Ninguna importancia | vida cotidiana | — |
 | Existencia de actores que han interferido en las relaciones entre España y Marruecos con motivo de los incidentes fronterizos del verano del 2026 | Sí / No / N.S. o no tiene información | vida cotidiana | 0.119 (análogas) |
-| Primer actor | Estados Unidos, algunos sectores de Estados Unidos / La Unión Europea, algunos sectores de la Unión Europea / Marruecos, algunos sectores de la sociedad marroquí / Israel, algunos sectores de Israel / Donald Trump / Giorgia Meloni / Rusia, algunos sectores de Rusia / Netanyahu / La derecha y/o la ultraderecha internacional / España, algunos sectores de España / Sectores de la derecha y ultraderecha española / Pedro Sánchez / Mohamed VI de Marruecos / Otros países / Putin / Todos o casi todos los/as mencionados anteriormente / Otra respuesta / Ninguno / N.S., no tiene información suficiente | vida cotidiana | 0.399 (LLM anclado) |
-| Segundo actor | Estados Unidos, algunos sectores de Estados Unidos / La Unión Europea, algunos sectores de la Unión Europea / Marruecos, algunos sectores de la sociedad marroquí / Israel, algunos sectores de Israel / Donald Trump / Giorgia Meloni / Rusia, algunos sectores de Rusia / Netanyahu / La derecha y/o la ultraderecha internacional / España, algunos sectores de España / Sectores de la derecha y ultraderecha española / Pedro Sánchez / Mohamed VI de Marruecos / Otros países / Putin / Todos o casi todos los/as mencionados anteriormente / Otra respuesta / Ninguno / N.S., no tiene información suficiente | vida cotidiana | 0.585 (LLM anclado) |
-| Tercer actor | Estados Unidos, algunos sectores de Estados Unidos / La Unión Europea, algunos sectores de la Unión Europea / Marruecos, algunos sectores de la sociedad marroquí / Israel, algunos sectores de Israel / Donald Trump / Giorgia Meloni / Rusia, algunos sectores de Rusia / Netanyahu / La derecha y/o la ultraderecha internacional / España, algunos sectores de España / Sectores de la derecha y ultraderecha española / Pedro Sánchez / Mohamed VI de Marruecos / Otros países / Putin / Todos o casi todos los/as mencionados anteriormente / Otra respuesta / Ninguno / N.S., no tiene información suficiente | vida cotidiana | 0.458 (LLM anclado) |
+| Primer actor | Estados Unidos, algunos sectores de Estados Unidos / La Unión Europea, algunos sectores de la Unión Europea / Marruecos, algunos sectores de la sociedad marroquí / Israel, algunos sectores de Israel / Donald Trump / Giorgia Meloni / Rusia, algunos sectores de Rusia / Netanyahu / La derecha y/o la ultraderecha internacional / España, algunos sectores de España / Sectores de la derecha y ultraderecha española / Pedro Sánchez / Mohamed VI de Marruecos / Otros países / Putin / Todos o casi todos los/as mencionados anteriormente / Otra respuesta / Ninguno / N.S., no tiene información suficiente | vida cotidiana | — |
+| Segundo actor | Estados Unidos, algunos sectores de Estados Unidos / La Unión Europea, algunos sectores de la Unión Europea / Marruecos, algunos sectores de la sociedad marroquí / Israel, algunos sectores de Israel / Donald Trump / Giorgia Meloni / Rusia, algunos sectores de Rusia / Netanyahu / La derecha y/o la ultraderecha internacional / España, algunos sectores de España / Sectores de la derecha y ultraderecha española / Pedro Sánchez / Mohamed VI de Marruecos / Otros países / Putin / Todos o casi todos los/as mencionados anteriormente / Otra respuesta / Ninguno / N.S., no tiene información suficiente | vida cotidiana | — |
+| Tercer actor | Estados Unidos, algunos sectores de Estados Unidos / La Unión Europea, algunos sectores de la Unión Europea / Marruecos, algunos sectores de la sociedad marroquí / Israel, algunos sectores de Israel / Donald Trump / Giorgia Meloni / Rusia, algunos sectores de Rusia / Netanyahu / La derecha y/o la ultraderecha internacional / España, algunos sectores de España / Sectores de la derecha y ultraderecha española / Pedro Sánchez / Mohamed VI de Marruecos / Otros países / Putin / Todos o casi todos los/as mencionados anteriormente / Otra respuesta / Ninguno / N.S., no tiene información suficiente | vida cotidiana | — |
 | Grado de preocupación por los incendios | Mucho / Bastante / Regular / Poco / Nada | vida cotidiana | 0.453 (análogas) |
 | Afectación personal o familiar por los incendios del verano del 2026 | Sí / No | vida cotidiana | 0.013 (análogas) |
 | Afectación personal o familiar futura por algún incendio | Sí / No | vida cotidiana | 0.055 (análogas) |
-| Atribución de competencias en la prevención y lucha contra los incendios | Deben continuar en las comunidades autónomas / Deben pasar a ser competencia del Gobierno central / De ambos en colaboración / Otras respuestas | vida cotidiana | 0.039 (LLM anclado) |
-| Necesidad de un pacto de Estado para hacer frente a las emergencias del cambio climático | Sí es necesario / No es necesario / Depende de la evolución de la situación / Otras respuestas | vida cotidiana | 0.064 (LLM anclado) |
+| Atribución de competencias en la prevención y lucha contra los incendios | Deben continuar en las comunidades autónomas / Deben pasar a ser competencia del Gobierno central / De ambos en colaboración / Otras respuestas | vida cotidiana | — |
+| Necesidad de un pacto de Estado para hacer frente a las emergencias del cambio climático | Sí es necesario / No es necesario / Depende de la evolución de la situación / Otras respuestas | vida cotidiana | — |
 | Grado de preocupación por el cambio climático | Mucho / Bastante / Regular / Poco / Nada | vida cotidiana | 0.171 (análogas) |
 | Grado de preocupación por la invasión de Rusia a Ucrania | Muy preocupado/a / Bastante preocupado/a / Algo preocupado/a / Poco preocupado/a / Nada preocupado/a / No tiene criterio / Le es indiferente | vida cotidiana | 0.061 (análogas) |
 | Grado de preocupación por el conflicto en Oriente Próximo | Muy preocupado/a / Bastante preocupado/a / Algo preocupado/a / Poco preocupado/a / Nada preocupado/a / No tiene criterio / Le es indiferente / No tiene información, no sabe de qué guerra se trata | vida cotidiana | 0.052 (análogas) |
@@ -152,3 +153,98 @@ Generado con `python -m sinpop.evaluate.preguntas_posteriores [--final]` (consul
 | Detección de terceras personas en el transcurso de la entrevista | Sí / No | vida cotidiana | 0.004 (análogas) |
 | Voto+simpatía en supuestas elecciones generales [recodificada] | PSOE / PP / VOX / PACMA / Podemos / Sumar / Se Acabó la Fiesta / Coalición de izquierdas / Adelante Andalucía / CCa / ERC / Junts / BNG / UPN / EAJ-PNV / EH Bildu / Otro partido / En blanco / Voto nulo / Ninguno | política | 0.061 (análogas) |
 | Participación + Recuerdo de voto en las elecciones generales de 2023 | PSOE / PP / VOX / PACMA / Sumar / CCa / ERC / Junts / BNG / UPN / EAJ-PNV / EH Bildu / Otro partido / En blanco / Nulo / No tenía edad / No tenía derecho a voto / No votó / N.R. | política | 0.038 (análogas) |
+
+## Estudio 3582 · 2026-10 · evaluación final (F11) · 90 preguntas
+
+| Pregunta | Opciones | Tipo | Error (TVD) |
+| --- | --- | --- | --- |
+| Conocimiento del caso del desahucio de Maricarmen | Sí, con bastante detalle / Sí, pero solo de forma general / Me suena, pero sé muy poco / No lo conozco | vida cotidiana | 0.479 (LLM anclado) |
+| Grado de importancia del desahucio de Maricarmen | Mucha / Bastante / Regular / Poca / Ninguna | vida cotidiana | 0.221 (LLM anclado) |
+| Mayor importancia del cumplimiento de la ley o la protección de personas vulnerables en una situación de desahucio | El cumplimiento de la ley y los contratos / La protección de personas vulnerables / Ambos por igual / Ninguno de los anteriores | vida cotidiana | 0.099 (LLM anclado) |
+| Conocimiento de la aprobación el 29 de septiembre de 2026 de dos decretos sobre vivienda | Sí / No | vida cotidiana | 0.358 (LLM anclado) |
+| Valoración de los dos decretos sobre vivienda aprobados el 29 de septiembre de 2026 | Muy positivamente / Bastante positivamente / Ni positiva ni negativamente / Bastante negativamente / Muy negativamente | vida cotidiana | 0.217 (final) |
+| Prohibición de los desahucios para hogares vulnerables hasta 2030 | A favor / En contra / Ni a favor ni en contra | vida cotidiana | 0.079 (LLM anclado) |
+| Prórroga automática de hasta dos años de los contratos de alquiler que finalicen antes del 31 de diciembre de 2028 | A favor / En contra / Ni a favor ni en contra | vida cotidiana | 0.184 (LLM anclado) |
+| Endurecimiento de las condiciones de los alquileres de temporada y por habitaciones | A favor / En contra / Ni a favor ni en contra | vida cotidiana | 0.166 (LLM anclado) |
+| Prohibición temporal de compra de viviendas por determinados fondos buitre o grandes inversores especulativos hasta 2028 | A favor / En contra / Ni a favor ni en contra | vida cotidiana | 0.170 (LLM anclado) |
+| Mayores recargos en el IBI a viviendas vacías y viviendas turísticas | A favor / En contra / Ni a favor ni en contra | vida cotidiana | 0.165 (LLM anclado) |
+| Rebajas de impuestos a propietarios/as que bajen o congelen el alquiler | A favor / En contra / Ni a favor ni en contra | vida cotidiana | 0.154 (LLM anclado) |
+| Rebajas de impuestos a los/as inquilinos/as | A favor / En contra / Ni a favor ni en contra | vida cotidiana | 0.107 (LLM anclado) |
+| Impuesto generalizado del 10% a los pisos turísticos | A favor / En contra / Ni a favor ni en contra | vida cotidiana | 0.141 (LLM anclado) |
+| La prórroga automática de los alquileres y que estos sean indefinidos | A favor / En contra / Ni a favor ni en contra | vida cotidiana | 0.221 (LLM anclado) |
+| Línea de crédito de 50.000 euros del ICO sin intereses ni comisiones para la compra de la primera vivienda | A favor / En contra / Ni a favor ni en contra | vida cotidiana | 0.119 (LLM anclado) |
+| IVA rebajado al 4% en la construcción de vivienda protegida | A favor / En contra / Ni a favor ni en contra | vida cotidiana | 0.211 (LLM anclado) |
+| Nivel de Administración con mayores competencias en tema de vivienda | El Estado / Las CC.AA. / Los ayuntamientos / Todas por igual | vida cotidiana | 0.107 (LLM anclado) |
+| Nivel de Administración que debería tener mayores competencias en vivienda | El Estado / Las CC.AA. / Los ayuntamientos / Todas por igual / Ninguna | vida cotidiana | 0.139 (LLM anclado) |
+| Prioridad de vivienda como derecho o como bien de mercado | El derecho a la vivienda como un derecho constitucional / La vivienda como bien de mercado / Las dos por igual | vida cotidiana | 0.106 (LLM anclado) |
+| Grado de preocupación por el cambio climático | Mucho / Bastante / Regular / Poco / Nada | vida cotidiana | 0.050 (final) |
+| Grado de preocupación por la invasión de Rusia a Ucrania | Muy preocupado/a / Bastante preocupado/a / Algo preocupado/a / Poco preocupado/a / Nada preocupado/a / No tiene criterio / Le es indiferente | vida cotidiana | 0.051 (final) |
+| Grado de preocupación por el conflicto en Oriente Próximo | Muy preocupado/a / Bastante preocupado/a / Algo preocupado/a / Poco preocupado/a / Nada preocupado/a / No tiene criterio / Le es indiferente / No tiene información, no sabe de qué guerra se trata | vida cotidiana | 0.065 (final) |
+| Valoración de la situación económica general de España | Muy buena / Buena / Regular / Mala / Muy mala | vida cotidiana | 0.031 (final) |
+| Preferencia personal como presidente del Gobierno central [recodificada] | Pedro Sánchez / Alberto Núñez Feijóo / Santiago Abascal / Yolanda Díaz / Alberto Garzón / Inés Arrimadas / Íñigo Errejón / Isabel Díaz Ayuso / Irene Montero / Ione Belarra / Pablo Iglesias / Alvise Pérez / Gabriel Rufián / Juan Manuel Moreno Bonilla / Emiliano García-Page / Otro/a / Ninguno/a de ellos/as | política | 0.060 (final) |
+| Escala de probabilidad (0-10) de ir a votar en elecciones generales | 0 Con toda seguridad no iría a votar / 1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Con toda seguridad, iría a votar | política | 0.043 (final) |
+| Pedro Sánchez | Conoce / No conoce | política | 0.001 (final) |
+| Alberto Núñez Feijóo | Conoce / No conoce | política | 0.003 (final) |
+| Yolanda Díaz | Conoce / No conoce | política | 0.003 (final) |
+| Santiago Abascal | Conoce / No conoce | política | 0.001 (final) |
+| Pedro Sánchez | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | política | 0.385 (final) |
+| Alberto Núñez Feijóo | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | política | 0.466 (final) |
+| Yolanda Díaz | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | política | 0.034 (final) |
+| Santiago Abascal | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | política | 0.278 (final) |
+| Grado de confianza en el presidente del Gobierno central: Pedro Sánchez | Mucha confianza / Bastante confianza / Poca confianza / Ninguna confianza | política | 0.005 (final) |
+| Grado de confianza en el líder del principal partido de la oposición (PP): Alberto Núñez Feijóo | Mucha confianza / Bastante confianza / Poca confianza / Ninguna confianza | política | 0.049 (final) |
+| Sara Aagesen | Conoce / No conoce | vida cotidiana | 0.000 (final) |
+| José Manuel Albares | Conoce / No conoce | vida cotidiana | 0.028 (final) |
+| Félix Bolaños | Conoce / No conoce | vida cotidiana | 0.010 (final) |
+| Pablo Bustinduy | Conoce / No conoce | vida cotidiana | 0.063 (final) |
+| Carlos Cuerpo | Conoce / No conoce | vida cotidiana | 0.048 (final) |
+| Yolanda Díaz | Conoce / No conoce | vida cotidiana | 0.006 (final) |
+| Arcadi España | Conoce / No conoce | vida cotidiana | 0.006 (final) |
+| Mónica García | Conoce / No conoce | vida cotidiana | 0.063 (final) |
+| Fernando Grande-Marlaska | Conoce / No conoce | vida cotidiana | 0.021 (final) |
+| Jordi Hereu | Conoce / No conoce | vida cotidiana | 0.005 (final) |
+| Óscar López | Conoce / No conoce | vida cotidiana | 0.058 (final) |
+| Diana Morant | Conoce / No conoce | vida cotidiana | 0.019 (final) |
+| Luis Planas | Conoce / No conoce | vida cotidiana | 0.004 (final) |
+| Óscar Puente | Conoce / No conoce | vida cotidiana | 0.040 (final) |
+| Ana Redondo | Conoce / No conoce | vida cotidiana | 0.044 (final) |
+| Sira Rego | Conoce / No conoce | vida cotidiana | 0.073 (final) |
+| Margarita Robles | Conoce / No conoce | vida cotidiana | 0.024 (final) |
+| Isabel Rodríguez | Conoce / No conoce | vida cotidiana | 0.067 (final) |
+| Elma Saiz | Conoce / No conoce | vida cotidiana | 0.109 (final) |
+| Milagros Tolón | Conoce / No conoce | vida cotidiana | 0.022 (final) |
+| Ángel Víctor Torres | Conoce / No conoce | vida cotidiana | 0.077 (final) |
+| Ernest Urtasun | Conoce / No conoce | vida cotidiana | 0.019 (final) |
+| Sara Aagesen | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.413 (final) |
+| José Manuel Albares | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.349 (final) |
+| Félix Bolaños | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.332 (final) |
+| Pablo Bustinduy | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.374 (final) |
+| Carlos Cuerpo | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.347 (final) |
+| Yolanda Díaz | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.060 (final) |
+| Arcadi España | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.759 (final) |
+| Mónica García | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.323 (final) |
+| Fernando Grande-Marlaska | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.262 (final) |
+| Jordi Hereu | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.406 (final) |
+| Óscar López | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.329 (final) |
+| Diana Morant | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.359 (final) |
+| Luis Planas | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.359 (final) |
+| Óscar Puente | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.262 (final) |
+| Ana Redondo | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.375 (final) |
+| Sira Rego | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.365 (final) |
+| Margarita Robles | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.409 (final) |
+| Isabel Rodríguez | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.354 (final) |
+| Elma Saiz | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.327 (final) |
+| Milagros Tolón | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.509 (final) |
+| Ángel Víctor Torres | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.334 (final) |
+| Ernest Urtasun | 1 Muy mal / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 Muy bien | vida cotidiana | 0.366 (final) |
+| Participación electoral en las elecciones generales de 2023 | Votó / No votó / No tenía edad para votar / No tenía derecho a voto / N.R. | política | 0.020 (final) |
+| Recuerdo de voto en las elecciones generales de 2023 de los votantes | PSOE / PP / VOX / PACMA / Sumar / CCa / ERC / Junts / BNG / UPN / EAJ-PNV / EH Bildu / Otros partidos / En blanco / Voto nulo / N.R. | política | 0.047 (final) |
+| Consistencia del voto respecto a las elecciones generales de 2023 | Sí / No / No votó en 2023 | vida cotidiana | 0.088 (final) |
+| Fidelidad de voto | Votan siempre por el mismo partido / Por lo general suele votar por el mismo partido / Según lo que más le convenza en ese momento votan por un partido u otro o no votan / Votan en blanco o nulo / No suelen votar / Es la primera vez que votan | vida cotidiana | 0.082 (final) |
+| Momento de la decisión del voto | Lo decide mucho antes del inicio de la campaña electoral / Lo decide al comienzo de la campaña electoral / Lo decide durante la última semana de la campaña electoral / Lo decide durante la jornada de reflexión, la víspera de las elecciones / Lo decide el mismo día de las elecciones / Aún no ha votado en ningunas elecciones | vida cotidiana | 0.129 (final) |
+| Ha expresado deseo de abandonar la entrevista antes de finalizarla | Sí / No | vida cotidiana | 0.001 (final) |
+| Se ha sentido incómoda por el tema de la entrevista | Sí / No | vida cotidiana | 0.008 (final) |
+| Ha tenido prisa por acabar la entrevista | Sí / No | vida cotidiana | 0.005 (final) |
+| Detección de terceras personas en el transcurso de la entrevista | Sí / No | vida cotidiana | 0.002 (final) |
+| Voto+simpatía en supuestas elecciones generales | PSOE / PP / VOX / PACMA / Podemos / Sumar / Se Acabó la Fiesta / Coalición de izquierdas / Frente Amplio / Adelante Andalucía / CCa / ERC / Junts / BNG / UPN / EAJ-PNV / EH Bildu / Otro partido / En blanco / Voto nulo / Ninguno | política | 0.064 (final) |
+| Participación + Recuerdo de voto en las elecciones generales de 2023 | PSOE / PP / VOX / PACMA / Sumar / CCa / ERC / Junts / BNG / UPN / EAJ-PNV / EH Bildu / Otro partido / En blanco / Nulo / No tenía edad / No tenía derecho a voto / No votó / N.R. | política | 0.058 (final) |

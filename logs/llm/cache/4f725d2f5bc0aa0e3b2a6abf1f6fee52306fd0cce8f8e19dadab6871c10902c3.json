@@ -1,0 +1,329 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "pregunta_nueva@v3",
+  "prompt_sha256": "6e480c180504e0bbc71d8a2e2919c40227303fcd99f90c02123d66cb24365e6d",
+  "tarea": "pregunta_nueva"
+ },
+ "salida": {
+  "justificacion": "Las referencias sobre conocimiento de noticias concretas oscilan entre el 23 % (un ministro recién nombrado) y casi el 70 % (decisiones o hechos muy mediáticos). Por eso supongo que un caso de desahucio con nombre propio lo conoce, al menos de forma general, algo más de la mitad, aunque pocos con detalle. Atribuyo algo más de conocimiento detallado a las personas con estudios superiores y a las de mediana edad y mayores, y apenas hago diferencias entre comunidades, porque no hay datos de referencia sobre dónde ocurrió el caso.",
+  "subgrupos": [
+   {
+    "clave": "edad_4=18-34",
+    "distribucion": [
+     0.09,
+     0.27,
+     0.2,
+     0.42,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "edad_4=35-49",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "edad_4=50-64",
+    "distribucion": [
+     0.12,
+     0.31,
+     0.2,
+     0.35,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "edad_4=65+",
+    "distribucion": [
+     0.12,
+     0.3,
+     0.19,
+     0.36,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "sexo=hombre",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "sexo=mujer",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "estudios_3=hasta_obligatoria",
+    "distribucion": [
+     0.09,
+     0.27,
+     0.2,
+     0.41,
+     0.022,
+     0.008
+    ]
+   },
+   {
+    "clave": "estudios_3=secundaria_2a_etapa",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.375,
+     0.01,
+     0.005
+    ]
+   },
+   {
+    "clave": "estudios_3=superior",
+    "distribucion": [
+     0.14,
+     0.33,
+     0.2,
+     0.32,
+     0.007,
+     0.003
+    ]
+   },
+   {
+    "clave": "ccaa=01",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=02",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=03",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=04",
+    "distribucion": [
+     0.1,
+     0.29,
+     0.2,
+     0.39,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=05",
+    "distribucion": [
+     0.1,
+     0.29,
+     0.2,
+     0.39,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=06",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=07",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=08",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=09",
+    "distribucion": [
+     0.1,
+     0.29,
+     0.2,
+     0.39,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=10",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=11",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=12",
+    "distribucion": [
+     0.1,
+     0.29,
+     0.2,
+     0.39,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=13",
+    "distribucion": [
+     0.12,
+     0.31,
+     0.2,
+     0.35,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=14",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=15",
+    "distribucion": [
+     0.1,
+     0.29,
+     0.2,
+     0.39,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=16",
+    "distribucion": [
+     0.1,
+     0.29,
+     0.2,
+     0.39,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=17",
+    "distribucion": [
+     0.11,
+     0.3,
+     0.2,
+     0.37,
+     0.015,
+     0.005
+    ]
+   },
+   {
+    "clave": "ccaa=18",
+    "distribucion": [
+     0.1,
+     0.28,
+     0.2,
+     0.39,
+     0.02,
+     0.01
+    ]
+   },
+   {
+    "clave": "ccaa=19",
+    "distribucion": [
+     0.1,
+     0.28,
+     0.2,
+     0.39,
+     0.02,
+     0.01
+    ]
+   }
+  ],
+  "total": [
+   0.11,
+   0.3,
+   0.2,
+   0.37,
+   0.015,
+   0.005
+  ]
+ }
+}

@@ -1,0 +1,32 @@
+{
+ "estudios": [
+  "3582"
+ ],
+ "preguntas": 90,
+ "b2": {
+  "total": 0.2618543060566992,
+  "subgrupos": 0.2701266595448536,
+  "ccaa": 0.2687446640638395,
+  "sistema_cis_mismas_preguntas": 0.1911984127139443
+ },
+ "nuevas": {
+  "preguntas": 18,
+  "tvd_llm": 0.17921881205015694,
+  "con_estadistico": 13,
+  "tvd_llm_en_ambas": 0.176653367628895,
+  "tvd_estadistico_en_ambas": 0.3919297479547294,
+  "usar": true
+ },
+ "g9_7": {
+  "contrafactual_casos": 231,
+  "razon_brecha_mediana": 0.7599430304134372,
+  "razon_brecha_mediana_frente_real": 0.49184229768924237,
+  "umbral": 1.25,
+  "umbral_estado": "aprobado",
+  "homogeneidad": "no aplica: no se simulan personas (D-069)",
+  "justificaciones": 107
+ },
+ "coste": {
+  "gastado_total_eur": 5.2254
+ }
+}
