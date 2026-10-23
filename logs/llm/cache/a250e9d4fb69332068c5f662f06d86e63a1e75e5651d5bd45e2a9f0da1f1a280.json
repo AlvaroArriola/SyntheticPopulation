@@ -1,0 +1,45 @@
+{
+ "meta": {
+  "modelo": "claude-opus-5-5",
+  "prompt": "evento@v2",
+  "prompt_sha256": "2adc42f104ae8739dff0c18284ba7995a7e0a7f19a3a446ed64631241fc8fde4",
+  "tarea": "evento"
+ },
+ "salida": {
+  "categorias": [
+   {
+    "cambio_pp": 0,
+    "categoria": "A la Unión Europea"
+   },
+   {
+    "cambio_pp": -0.3,
+    "categoria": "A ninguno"
+   },
+   {
+    "cambio_pp": -2.0,
+    "categoria": "A todos por igual"
+   },
+   {
+    "cambio_pp": 1.2,
+    "categoria": "Al Gobierno central"
+   },
+   {
+    "cambio_pp": 0.2,
+    "categoria": "Al ayuntamiento"
+   },
+   {
+    "cambio_pp": 1.3,
+    "categoria": "Al gobierno de la comunidad autónoma"
+   },
+   {
+    "cambio_pp": 0,
+    "categoria": "N.C."
+   },
+   {
+    "cambio_pp": -0.4,
+    "categoria": "N.S."
+   }
+  ],
+  "justificacion": "Un tope estatal al alquiler sitúa al Gobierno central como protagonista visible de la política de vivienda, lo que puede elevar algo la atribución de responsabilidad hacia él. A la vez, el conflicto previsible con las comunidades autónomas que se nieguen a aplicarlo desplaza parte de la culpa hacia ellas, a costa sobre todo de «todos por igual». Los análogos mueven los indicadores entre 1 y 5 puntos, así que se esperan cambios modestos de 1-2 puntos."
+ }
+}

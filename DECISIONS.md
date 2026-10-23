@@ -1967,4 +1967,4 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - **Contrafactual con `b2@v2`:** razón 0,69.
   - El umbral de 1,25 sigue en «propuesta»: G9.7 espera la aprobación humana.
 - **F11 no se ejecuta:** su entrada exige la puerta F9, que falla en G9.6. La evaluación final es de un solo uso y no se gasta sin esa decisión.
-- **Gasto LLM acumulado:** ver `logs/llm/gasto.jsonl`, unos 4 € de 15 €.
+- **Gasto LLM acumulado:** 4,28 € de 15 € (`logs/llm/gasto.jsonl`), incluidas las pruebas de la demo, que quedan en caché y responden al instante.
