@@ -1,7 +1,7 @@
 # Fase 14 · Interfaz web
 
 **Estado:** puertas automáticas superadas (`reports/fase_14_puerta.md`). **Pendiente de revisión humana (G14.4).**
-**Fecha:** 2026-10-22 · **Decisiones:** D-073, D-075 a D-085
+**Fecha:** 2026-10-22 · **Decisiones:** D-073, D-075 a D-088
 **Comando:** `sinpop serve --paquete dist/paquete` y, con el servicio en marcha, `python tools/prueba_interfaz.py http://127.0.0.1:8000 && sinpop validate --phase 14`
 
 ## Qué es
@@ -34,7 +34,16 @@ Una página (`src/sinpop/servicio/web/`) servida por `sinpop serve`, sin pasos d
 - **«¿Y si ocurre…?» (evento):** el cambio esperado por categoría con la explicación del modelo. Sin modelo de lenguaje enseña el antes y explica por qué no hay cambio estimado (D-073).
 - **Exportar:** PDF con resumen y gráficos, CSV y JSON (D-078). Las consultas recientes se guardan en el navegador.
 - **Comparar comunidades:** cada comunidad con su propia población (D-080).
-- **Gasto del LLM** frente al tope, siempre visible arriba. Solo modo claro (D-081), con diseño para móvil.
+- **Sin gasto del LLM en pantalla,** por decisión de la persona responsable (D-088, en lugar de la tarea 5 de F14). Se consulta en `/api/llm` y el tope se aplica en el servidor.
+- **Acabado (D-088):**
+  - cabecera fija con «Compartir» (enlace que rellena la pregunta) y «Presentación» (solo mapa y resultado);
+  - preguntas de ejemplo para empezar;
+  - esqueleto y barra de progreso con el tiempo mientras se calcula;
+  - barras que crecen desde el eje y confianza en un anillo con su nivel (alta, media o baja);
+  - el mapa vuela al territorio elegido y cambia de color con suavidad;
+  - avisos flotantes y atajos de teclado.
+  - Todo el movimiento se desactiva si el sistema pide menos animación.
+- Solo modo claro (D-081), con diseño para móvil.
 - Colores, marcas y accesibilidad siguen la guía de visualización: paleta validada, escala secuencial de un solo tono, texto en tinta y no en el color de la serie, tabla con valores escritos.
 
 ## Pruebas (con el paquete, en una copia limpia del repositorio sin `data/`)

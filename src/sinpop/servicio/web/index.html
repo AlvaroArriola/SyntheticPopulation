@@ -18,11 +18,19 @@
       <span class="logo" aria-hidden="true"><i></i><i></i><i></i></span>
       <div>
         <h1>España sintética</h1>
-        <p>Población sintética de 18 años o más · datos hasta junio de 2026</p>
+        <p>Pregunta a una población sintética de los adultos residentes en España</p>
       </div>
     </div>
     <div class="cabecera-acciones">
-      <span class="pildora" id="llm" title="Gasto acumulado del modelo de lenguaje frente al tope del proyecto">LLM —</span>
+      <span class="pildora pildora-viva" title="Población calibrada con el INE y encuestas oficiales hasta junio de 2026"><i aria-hidden="true"></i>Datos a junio de 2026</span>
+      <button class="boton-cabecera" id="compartir" type="button" title="Copiar un enlace con esta pregunta">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.6 13.4a1 1 0 0 1 0-1.4l3.5-3.5a3 3 0 1 1 4.2 4.2l-1.8 1.8a1 1 0 1 1-1.4-1.4l1.8-1.8a1 1 0 1 0-1.4-1.4L12 13.4a1 1 0 0 1-1.4 0Zm2.8-2.8a1 1 0 0 1 0 1.4l-3.5 3.5a3 3 0 1 1-4.2-4.2l1.8-1.8a1 1 0 0 1 1.4 1.4l-1.8 1.8a1 1 0 1 0 1.4 1.4l3.5-3.5a1 1 0 0 1 1.4 0Z"/></svg>
+        <span>Compartir</span>
+      </button>
+      <button class="boton-cabecera" id="presentacion" type="button" aria-pressed="false" title="Modo presentación: solo el mapa y el resultado (Esc para salir)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-7v2h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-2H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1 2v8h14V7H5Z"/></svg>
+        <span>Presentación</span>
+      </button>
     </div>
   </header>
 
@@ -97,6 +105,9 @@
           <span>Enunciado</span>
           <textarea id="enunciado" rows="3" placeholder="Por ejemplo: ¿Cómo calificaría usted la situación económica actual de España?"></textarea>
         </label>
+        <div class="ejemplos" id="ejemplos" aria-label="Preguntas de ejemplo">
+          <span class="ejemplos-titulo">Prueba con</span>
+        </div>
         <div class="sugerencias" id="sugerencias" hidden>
           <div id="grupo-atributos" hidden>
             <p class="sugerencias-titulo">Dato oficial disponible</p>
@@ -141,7 +152,7 @@
             <input id="evento-fecha" type="date" value="2026-11-01">
           </label>
         </div>
-        <button class="primario" id="preguntar" type="button">Preguntar a la población</button>
+        <button class="primario" id="preguntar" type="button"><span id="preguntar-texto">Preguntar a la población</span><kbd aria-hidden="true">Ctrl ↵</kbd></button>
         <p class="trabajo" id="trabajo" aria-live="polite"></p>
         <details class="historial" id="historial" hidden>
           <summary>Consultas recientes</summary>
@@ -156,6 +167,7 @@
   </main>
 
   <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+  <div class="avisos-flotantes" id="avisos-flotantes" aria-live="polite"></div>
   <script src="vendor/leaflet/leaflet.js"></script>
   <script type="module" src="app.js"></script>
 </body>

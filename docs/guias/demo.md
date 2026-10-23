@@ -10,7 +10,12 @@ export SINPOP_ANTHROPIC_API_KEY=…            # opcional: preguntas sin precede
 sinpop serve --paquete dist/paquete          # http://127.0.0.1:8000
 ```
 
-- **Clave del modelo de lenguaje:** arriba a la derecha se ve el gasto («LLM 0,93 € de 15,00 €»). Sin clave, la interfaz lo dice y todo lo demás funciona igual.
+- **Clave del modelo de lenguaje:** la interfaz no enseña el gasto (D-088). El tope de 15 € se sigue aplicando en el servidor y el gasto se consulta en `/api/llm` o en `logs/llm/gasto.jsonl`. Sin clave, los resultados dicen «Estimador sin modelo de lenguaje» y todo lo demás funciona igual.
+- **Atajos para la demo:**
+  - **Presentación** (arriba a la derecha) deja solo el mapa y el resultado, en grande; se sale con Esc.
+  - **Compartir** copia un enlace que, al abrirlo, rellena la misma pregunta, sus opciones y el territorio.
+  - **Ctrl + Intro** pregunta y **/** lleva al enunciado.
+  - Los botones **«Prueba con»** cargan las preguntas de esta guía.
 - **Fondo del mapa:** las teselas de OpenStreetMap necesitan internet. Sin conexión se ven solo los límites del INE.
 
 ## 1. Una pregunta que el CIS ya ha hecho (30 s)
@@ -65,7 +70,7 @@ Sale cómo responde a la segunda pregunta cada grupo de respuesta a la primera:
 
 Qué pasa:
 - Como el CIS no ha hecho esa pregunta, responde el modelo de lenguaje, anclado en las preguntas más parecidas del banco (D-071).
-- El resultado trae la **justificación** del modelo y el coste, unos 0,05 €.
+- El resultado trae la **justificación** del modelo, que también sale en el PDF.
 - Los intervalos son anchos y la confianza baja, porque así lo dice su historial en validación. Es lo honesto.
 
 ## 7. «¿Y si ocurre…?» (30 s, con clave)

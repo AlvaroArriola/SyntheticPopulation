@@ -141,6 +141,7 @@ function elegirTerritorio(codigo, nombre) {
   estado.territorio = codigo;
   estado.nombre = nombre;
   $("#territorio-nombre").textContent = nombre;
+  volarA(codigo);
   if (codigo !== "ES" && estado.tamano === 1_000_000) estado.tamano = 100_000;
   // si el tamaño elegido no está listo y hay otro que sí, se pasa a ese
   const listos = estado.poblaciones.filter((p) => p.territorio === codigo && p.lista && p.semilla === 1);
@@ -150,6 +151,16 @@ function elegirTerritorio(codigo, nombre) {
   pintarTamanos();
   refrescarEstilos();
   asistente();
+}
+
+// el mapa vuela al territorio elegido; con España vuelve a la vista inicial
+let vistaInicial = null;
+function volarA(codigo) {
+  if (!capas.CCAA) return;
+  const lento = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (codigo === "ES") { if (vistaInicial) mapa.flyToBounds(vistaInicial, { padding: [24, 24], maxZoom: 7, duration: lento ? 0.9 : 0 }); return; }
+  const capa = (codigo.startsWith("PROV") ? capas.PROV : capas.CCAA).getLayers().find((c) => c.feature.properties.territorio === codigo);
+  if (capa) mapa.flyToBounds(capa.getBounds(), { padding: [60, 60], maxZoom: 8, duration: lento ? 0.9 : 0 });
 }
 
 // ------------------------------------------------------------------ poblaciones
@@ -210,14 +221,26 @@ async function generarPoblacion() {
 
 // ------------------------------------------------------------------ trabajos
 async function seguir(id, destino) {
+  const inicio = Date.now();
   for (;;) {
     const t = await api(`/api/trabajos/${id}`);
-    destino.innerHTML = `<span class="girando" aria-hidden="true"></span> ${escapar(t.mensaje)}`;
+    const s = Math.round((Date.now() - inicio) / 1000);
+    destino.innerHTML = `<span class="progreso" aria-hidden="true"><i></i></span><span class="progreso-texto">${escapar(t.mensaje)}</span><span class="progreso-tiempo">${s} s</span>`;
     if (t.estado === "hecho") { destino.textContent = ""; return t.resultado; }
     if (t.estado === "error") throw new Error(t.mensaje);
-    await new Promise((r) => setTimeout(r, 1200));
+    await new Promise((r) => setTimeout(r, 1000));
   }
 }
+
+// esqueleto del resultado mientras se calcula (sin cifras: no hay nada que enseñar aún)
+function mostrarEsqueleto() {
+  const caja = $("#resultado");
+  caja.hidden = false;
+  caja.classList.add("calculando");
+  caja.innerHTML = `<div class="esqueleto" aria-hidden="true"><i class="e-titulo"></i><i class="e-chips"></i>${"<i class=\"e-barra\"></i>".repeat(5)}<i class="e-bloque"></i></div><p class="oculto">Calculando el resultado…</p>`;
+  caja.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+function quitarEsqueleto() { $("#resultado").classList.remove("calculando"); }
 
 // ------------------------------------------------------------------ pregunta
 function pintarOpciones() {
@@ -254,7 +277,7 @@ document.querySelectorAll(".pestanas button").forEach((b) => b.addEventListener(
   estado.modo = b.dataset.modo;
   document.querySelectorAll(".pestanas button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
   $("#evento-campos").hidden = estado.modo !== "evento";
-  $("#preguntar").textContent = estado.modo === "evento" ? "Calcular el efecto del evento" : "Preguntar a la población";
+  $("#preguntar-texto").textContent = estado.modo === "evento" ? "Calcular el efecto del evento" : "Preguntar a la población";
 }));
 
 let temporizador = null;
@@ -425,6 +448,8 @@ $("#preguntar").addEventListener("click", async () => {
   const opciones = [...estado.opciones, ...($("#nsnc").checked ? NSNC.filter((x) => !estado.opciones.includes(x)) : [])];
   const boton = $("#preguntar");
   boton.disabled = true;
+  const habia = !$("#resultado").hidden && !$("#resultado").classList.contains("calculando");
+  mostrarEsqueleto();
   try {
     let r;
     if (estado.modo === "evento") {
@@ -439,10 +464,12 @@ $("#preguntar").addEventListener("click", async () => {
       pintarResultado(r, enunciado, opciones, p);
       guardarHistorial({ tipo: "pregunta", titulo: enunciado, opciones, r, run_id: p.run_id, territorio: estado.territorio, nombre: estado.nombre });
     }
-    actualizarLLM();
   } catch (e) {
     msg.textContent = `No se pudo calcular: ${e.message}`;
+    $("#resultado").hidden = !habia;
+    if (habia) $("#resultado").innerHTML = "";
   } finally {
+    quitarEsqueleto();
     boton.disabled = false;
   }
 });
@@ -455,10 +482,10 @@ function nombreNivel(dim, valor) {
 }
 
 function barras(dist, opciones) {
-  const filas = opciones.map((o) => {
+  const filas = opciones.map((o, i) => {
     const d = dist[o];
     return `<div class="etiqueta" title="${escapar(o)}">${escapar(o)}</div>
-      <div class="pista" data-o="${escapar(o)}" data-p="${d.p}" data-a80="${d.ic80[0]}" data-b80="${d.ic80[1]}" data-a95="${d.ic95[0]}" data-b95="${d.ic95[1]}">
+      <div class="pista" style="--i:${i}" data-o="${escapar(o)}" data-p="${d.p}" data-a80="${d.ic80[0]}" data-b80="${d.ic80[1]}" data-a95="${d.ic95[0]}" data-b95="${d.ic95[1]}">
         <span class="ic95" style="left:${100 * d.ic95[0]}%;width:${100 * (d.ic95[1] - d.ic95[0])}%"></span>
         <span class="ic80" style="left:${100 * d.ic80[0]}%;width:${100 * (d.ic80[1] - d.ic80[0])}%"></span>
         <span class="barra" style="width:${100 * d.p}%"></span>
@@ -513,6 +540,29 @@ function activarTooltipsTabla(raiz) {
   });
 }
 
+const nivelConfianza = (c) => (c >= 0.75 ? "Confianza alta" : c >= 0.5 ? "Confianza media" : "Confianza baja");
+function anilloConfianza(c) {
+  const R = 30, L = 2 * Math.PI * R;
+  const color = c >= 0.75 ? "var(--bueno)" : c >= 0.5 ? "var(--aviso)" : "var(--critico)";
+  return `<span class="anillo" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(100 * c)}" aria-label="Confianza">
+    <svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="${R}" class="anillo-fondo"/>
+    <circle cx="36" cy="36" r="${R}" class="anillo-valor" style="stroke:${color};stroke-dasharray:${L};--fin:${L * (1 - c)};--inicio:${L}"/></svg>
+    <span class="numero" data-objetivo="${100 * c}">${pct(c)}</span></span>`;
+}
+// las cifras grandes suben desde 0 (solo animación: el valor final es el mismo)
+function animarCifras(raiz) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  raiz.querySelectorAll("[data-objetivo]").forEach((el) => {
+    const fin = +el.dataset.objetivo, t0 = performance.now(), dur = 900;
+    const paso = (t) => {
+      const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = `${Math.round(fin * e).toLocaleString("es-ES")} %`;
+      if (k < 1) requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+  });
+}
+
 function pintarResultado(r, enunciado, opciones, pob) {
   estado.resultado = { ...r, opciones, enunciado };
   prepararMapa(estado.resultado);
@@ -531,9 +581,11 @@ function pintarResultado(r, enunciado, opciones, pob) {
     ${r.resumen?.length ? `<div class="en-resumen"><b>En resumen</b><ul>${r.resumen.slice(0, 4).map((f) => `<li>${escapar(f)}</li>`).join("")}</ul></div>` : ""}
     <div id="zona-barras">${barras(r.total, opciones)}</div>
     <div class="confianza">
-      <span class="numero">${pct(conf)}</span>
-      <span class="medidor" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(100 * conf)}" aria-label="Confianza"><i style="width:${100 * conf}%"></i></span>
-      <p title="${escapar(r.confianza.metodo || "")}">Confianza: probabilidad de que el error total de la distribución sea menor de 10 puntos, según el historial de aciertos del sistema en preguntas parecidas.</p>
+      ${anilloConfianza(conf)}
+      <div>
+        <span class="confianza-nivel">${nivelConfianza(conf)}</span>
+        <p title="${escapar(r.confianza.metodo || "")}">Probabilidad de que el error total de la distribución sea menor de 10 puntos, según el historial de aciertos del sistema en preguntas parecidas.</p>
+      </div>
     </div>
     ${r.parametros_llm?.justificacion ? `<p class="justificacion">«${escapar(r.parametros_llm.justificacion)}»</p>` : ""}
     ${seccionEvolucion(r, opciones)}
@@ -543,10 +595,11 @@ function pintarResultado(r, enunciado, opciones, pob) {
     ${seccionCruce()}
     ${r.preguntas_similares?.length ? `<p class="seccion-titulo">Se apoya en estas preguntas del CIS</p><ol class="parecidas">${r.preguntas_similares.map((x) => `<li>${escapar(x)}</li>`).join("")}</ol>` : ""}
     <p class="aviso">${escapar(r.aviso)}</p>
-    <p class="coste">Coste: ${r.coste.llamadas} llamadas al modelo de lenguaje · ${r.coste.eur.toLocaleString("es-ES", { maximumFractionDigits: 3 })} € · ${Math.round(r.coste.segundos)} s</p>
+    ${r.coste?.segundos ? `<p class="coste">Calculado en ${Math.max(1, Math.round(r.coste.segundos))} s</p>` : ""}
     <div class="acciones-resultado"><button class="secundario" id="descargar-pdf" type="button">Informe PDF</button><button class="secundario" id="descargar-csv" type="button">Descargar CSV</button><button class="secundario" id="descargar" type="button">Descargar JSON</button></div>`;
   activarTooltipsBarras(caja);
   activarTooltipsTabla(caja);
+  animarCifras(caja);
   caja.querySelectorAll("#vista button").forEach((b) => b.addEventListener("click", () => {
     caja.querySelectorAll("#vista button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
     $("#zona-barras").innerHTML = barras(r[b.dataset.v], opciones);
@@ -1050,6 +1103,7 @@ async function informePdf(tipo, datos, extra = {}) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     descargar(`informe_${(datos.id || datos.variable || "resultado")}.pdf`, await res.blob());
     msg.textContent = "";
+    avisar("Informe PDF descargado");
   } catch (e) {
     msg.textContent = `No se pudo generar el informe: ${e.message}`;
   }
@@ -1137,14 +1191,90 @@ function notaHistorial(h, conLlm) {
   return `<p class="nota">Fiabilidad medida: en ${x.eventos} eventos pasados, la dirección del cambio acertó en ${x.eventos_correctos} (${pct(x.eventos_correctos / x.eventos)}), con un error medio de ${x.error_magnitud_pp.toLocaleString("es-ES")} puntos. Tómalo como un escenario razonado, no como una predicción.</p>`;
 }
 
-// ------------------------------------------------------------------ LLM
-async function actualizarLLM() {
-  try {
-    const r = await api("/api/llm");
-    const f = (x) => x.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    $("#llm").textContent = r.activo ? `LLM ${f(r.gastado_eur)} € de ${f(r.tope_total_eur)} €` : "LLM desactivado";
-  } catch (_) { /* informativo */ }
+// ------------------------------------------------------------------ avisos, ejemplos, enlaces y presentación (D-088)
+function avisar(texto) {
+  const caja = $("#avisos-flotantes");
+  const a = document.createElement("div");
+  a.className = "aviso-flotante";
+  a.textContent = texto;
+  caja.append(a);
+  setTimeout(() => a.classList.add("saliendo"), 2600);
+  setTimeout(() => a.remove(), 3100);
 }
+
+const EJEMPLOS = [
+  { corto: "Economía de España", enunciado: "¿Cómo calificaría usted la situación económica actual de España?", opciones: "valoracion" },
+  { corto: "¿Quién tiene la culpa de la vivienda?", enunciado: "¿A quién culpa usted principalmente del problema del acceso a la vivienda en España?", opciones: "responsable" },
+  { corto: "Economía personal", enunciado: "¿Cómo calificaría usted su situación económica personal en la actualidad?", opciones: "valoracion" },
+  { corto: "Situación laboral (dato INE)", enunciado: "¿Cuál es su situación laboral actual?", opciones: null },
+];
+function pintarEjemplos() {
+  const cont = $("#ejemplos");
+  for (const e of EJEMPLOS) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "ejemplo";
+    b.textContent = e.corto;
+    b.title = e.enunciado;
+    b.addEventListener("click", () => {
+      if (estado.modo !== "pregunta") $("#tab-pregunta").click();
+      $("#enunciado").value = e.enunciado;
+      if (e.opciones) { estado.opciones = [...PLANTILLAS[e.opciones]]; pintarOpciones(); }
+      buscarParecidas(e.enunciado);
+      $("#enunciado").focus();
+    });
+    cont.append(b);
+  }
+}
+
+// enlace con la pregunta, las opciones y el territorio (no se calcula solo al abrirlo)
+function enlaceActual() {
+  const q = new URLSearchParams({ q: $("#enunciado").value.trim(), o: estado.opciones.join("|"), t: estado.territorio, n: estado.nombre, s: String(estado.tamano) });
+  return `${location.origin}${location.pathname}#${q}`;
+}
+$("#compartir").addEventListener("click", async () => {
+  const url = enlaceActual();
+  try { await navigator.clipboard.writeText(url); avisar("Enlace copiado: al abrirlo se rellena esta pregunta"); }
+  catch (_) { history.replaceState(null, "", url); avisar("Enlace listo en la barra de direcciones"); }
+});
+function leerEnlace() {
+  if (!location.hash.includes("q=")) return;
+  const q = new URLSearchParams(location.hash.slice(1));
+  if (q.get("q")) $("#enunciado").value = q.get("q");
+  if (q.get("o")) { estado.opciones = q.get("o").split("|").filter(Boolean); pintarOpciones(); }
+  const t = q.get("t");
+  if (t && t !== "ES") {
+    ponerNivelSinSeleccion(t.startsWith("PROV") ? "PROV" : "CCAA");
+    estado.nivel = t.startsWith("PROV") ? "PROV" : "CCAA";
+    elegirTerritorio(t, q.get("n") || t);
+  }
+  if (q.get("s")) { estado.tamano = +q.get("s"); pintarTamanos(); }
+  avisar("Pregunta compartida cargada: pulsa «Preguntar a la población»");
+}
+
+function ponerPresentacion(activo) {
+  document.body.classList.toggle("presentacion", activo);
+  $("#presentacion").setAttribute("aria-pressed", String(activo));
+  setTimeout(() => { mapa.invalidateSize(); mapaCanarias.invalidateSize(); }, 350);
+  if (activo) {
+    avisar("Modo presentación · Esc para salir");
+    if (!$("#resultado").hidden) setTimeout(() => $("#resultado").scrollIntoView({ block: "start" }), 50);
+  }
+}
+$("#presentacion").addEventListener("click", () => ponerPresentacion(!document.body.classList.contains("presentacion")));
+
+// atajos: Ctrl/⌘ + Intro pregunta, «/» lleva al enunciado, Esc sale de la presentación
+document.addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+    e.preventDefault();
+    if (!$("#preguntar").disabled) $("#preguntar").click();
+  } else if (e.key === "/" && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName)) {
+    e.preventDefault();
+    $("#enunciado").focus();
+  } else if (e.key === "Escape" && document.body.classList.contains("presentacion")) {
+    ponerPresentacion(false);
+  }
+});
 
 // gancho para las pruebas de extremo a extremo (tools/prueba_interfaz.py)
 window.sinpop = { elegirTerritorio, ponerNivel, estado };
@@ -1152,6 +1282,7 @@ window.sinpop = { elegirTerritorio, ponerNivel, estado };
 // ------------------------------------------------------------------ arranque
 (async function iniciar() {
   pintarOpciones();
+  pintarEjemplos();
   try {
     const [g, et] = await Promise.all([api("/api/territorios"), api("/api/etiquetas")]);
     geo = g;
@@ -1171,12 +1302,13 @@ window.sinpop = { elegirTerritorio, ponerNivel, estado };
     if (window.ResizeObserver) new ResizeObserver(encuadrar).observe($("#mapa-canarias"));
     // vista inicial: península, Baleares, Ceuta y Melilla (Canarias va en su recuadro)
     const sinCanarias = L.featureGroup(capas.CCAA.getLayers().filter((c) => !CANARIAS.has(c.feature.properties.territorio)));
-    mapa.fitBounds(sinCanarias.getBounds(), { padding: [24, 24], maxZoom: 7 });
+    vistaInicial = sinCanarias.getBounds();
+    mapa.fitBounds(vistaInicial, { padding: [24, 24], maxZoom: 7 });
   } catch (e) {
     $("#estado-poblacion").textContent = `No se pudo cargar el mapa: ${e.message}`;
   }
   try { estado.paquete = (await api("/api/modo")).paquete; } catch { estado.paquete = false; }
   await cargarPoblaciones();
   pintarHistorial();
-  actualizarLLM();
+  leerEnlace();
 })();

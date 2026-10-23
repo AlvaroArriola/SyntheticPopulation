@@ -153,7 +153,8 @@ En la interfaz:
 - **Exportar:** cada resultado se descarga como **informe PDF** (resumen automático y cuatro páginas de gráficos), **CSV** (para Excel en español) o **JSON** (D-078).
 - **Comparar comunidades:** sobre una pregunta de España, repite la pregunta en cada comunidad con su propia población y colorea el mapa con esos valores (D-080).
 - **Consultas recientes:** las últimas diez se guardan en tu navegador y se reabren sin recalcular.
-- **Modelo de lenguaje (opcional):** con `SINPOP_ANTHROPIC_API_KEY` en el entorno, las preguntas sin precedentes y los eventos usan el modelo, con los topes de la sección 6. Cada respuesta tarda unos 30-40 segundos, cuesta unos 0,05 € y trae la justificación del modelo. El gasto acumulado se ve arriba a la derecha. Si el modelo falla, se muestra la estimación sin él, con un aviso. Sin clave, la interfaz lo dice y devuelve solo lo que se puede calcular sin él.
+- **Modelo de lenguaje (opcional):** con `SINPOP_ANTHROPIC_API_KEY` en el entorno, las preguntas sin precedentes y los eventos usan el modelo, con los topes de la sección 6. Cada respuesta tarda unos 30-40 segundos, cuesta unos 0,05 € y trae la justificación del modelo. La interfaz no enseña el gasto (D-088): se consulta en `/api/llm` o en `logs/llm/gasto.jsonl`, y el tope se aplica igual. Si el modelo falla, se muestra la estimación sin él, con un aviso. Sin clave, los resultados dicen «Estimador sin modelo de lenguaje».
+- **Presentación, compartir y atajos:** «Presentación» deja solo el mapa y el resultado (Esc para salir); «Compartir» copia un enlace que rellena la pregunta, las opciones y el territorio; Ctrl + Intro pregunta y «/» lleva al enunciado.
 
 Donde están los datos, el paquete se rehace con `python -m sinpop.paquete.exportar` (≈ 1-2 h) y la interfaz completa, que sí genera poblaciones, se abre con `sinpop serve`.
 

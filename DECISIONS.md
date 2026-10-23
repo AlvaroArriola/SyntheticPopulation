@@ -1981,3 +1981,32 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - La auditoría de justificaciones (D-086) da 0 problemáticas en lo que ve el usuario (preguntas nuevas y eventos) y 11 en el baseline B2. Con el criterio actual, que cuenta todas, **G9.7 no se supera por B2**.
   - Si B2 debe contar o no es una decisión que no se ha tomado: queda pendiente de la persona responsable y no se ha cambiado el código de la puerta.
 - **F11** se ejecuta a continuación desde una etiqueta congelada, por decisión de la persona responsable.
+
+## D-088 · Interfaz sin gasto del LLM y acabado profesional (2026-10-23)
+
+- **Fecha:** 2026-10-23
+- **Fase:** F14.
+- **Estado:** pedido por la persona responsable: «Quiero que también elimines de la interfaz el gasto de la API. Haz la interfaz lo más profesional posible y añade funcionalidades de estética que estén guays».
+- **Gasto fuera de la pantalla.** Sustituye a la tarea 5 de F14 (`docs/04`, «Coste visible»), como D-081 hizo con el modo oscuro.
+  - Desaparecen la píldora de gasto de la cabecera y la línea «Coste: … €» de cada resultado. Queda el tiempo de cálculo.
+  - Las garantías no cambian:
+    - el tope de 15 € y el de 1 € por predicción se aplican en el servidor (G13.4);
+    - el gasto se consulta en `GET /api/llm` (F13, tarea 2) y en `logs/llm/gasto.jsonl`;
+    - cada salida JSON sigue llevando su `coste`.
+- **Acabado** (solo ficheros estáticos de `src/sinpop/servicio/web/`; no cambia ningún cálculo):
+  - **Cabecera fija y translúcida** con:
+    - la marca;
+    - el sello «Datos a junio de 2026»;
+    - **Compartir**: copia un enlace con la pregunta, las opciones, el territorio y el tamaño. Al abrirlo se rellenan, pero no se calcula solo;
+    - **Presentación**: deja solo el mapa y el resultado en grande; se sale con Esc.
+  - **Preguntas de ejemplo («Prueba con»)** con las de la guía de la demo.
+  - **Mientras se calcula:** esqueleto del resultado (sin cifras) y barra de progreso con el mensaje del servidor y los segundos transcurridos.
+  - **Movimiento con sentido:**
+    - las barras crecen desde el eje, una detrás de otra, y los intervalos aparecen después;
+    - la confianza sube desde 0 en un anillo coloreado con su nivel. Mantiene `role="meter"`;
+    - el mapa vuela al territorio elegido y sus colores cambian con transición;
+    - las celdas de la tabla se levantan al pasar el ratón.
+  - **Atajos:** Ctrl/⌘ + Intro pregunta, «/» lleva al enunciado.
+  - Avisos flotantes al copiar o descargar.
+  - Con `prefers-reduced-motion` se desactiva todo el movimiento.
+- **Lo que no cambia:** colores de datos (paleta validada), intervalos y confianza en cada cifra (G14.2), aviso de simulación, accesibilidad (G14.3) y modo solo claro (D-081).
