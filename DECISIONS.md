@@ -2010,3 +2010,19 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - Avisos flotantes al copiar o descargar.
   - Con `prefers-reduced-motion` se desactiva todo el movimiento.
 - **Lo que no cambia:** colores de datos (paleta validada), intervalos y confianza en cada cifra (G14.2), aviso de simulación, accesibilidad (G14.3) y modo solo claro (D-081).
+
+## D-089 · Duda: escalas 1-10 de valoración de líderes en la ventana de validación (2026-10-23)
+
+- **Fecha:** 2026-10-23
+- **Fase:** F9-F11 (datos de entrada).
+- **Estado:** **duda abierta.** No se ha cambiado nada mientras corre F11 desde el código congelado.
+- **Qué se ha visto** al listar las preguntas posteriores al corte (`reports/preguntas_posteriores_al_corte.md`):
+  - En el estudio 3571, las escalas 1-10 de valoración de líderes y ministros solo traen etiquetadas las opciones extremas («1 Muy mal / 10 Muy bien»). La comparación se hace sobre dos categorías y da errores muy bajos (0,003-0,05), que no son fiables.
+  - En el 3577 la escala viene completa (1 a 10) y los errores de Sánchez (0,36), Feijóo (0,49) y Abascal (0,30) son anómalos frente al resto.
+- **Hipótesis** (siguiendo el orden de CLAUDE.md, primero los datos de entrada): las etiquetas de los valores intermedios (2-9) no están en el diseño de registro de 3571, o se pierden al armonizar. Las análogas del banco pueden tener la misma escala etiquetada de otra forma, así que la alineación de opciones las empareja mal.
+- **Propuesta:**
+  1. Revisar en el cuestionario original de 3571 y 3577 cómo se codifican las escalas.
+  2. Tratar las escalas 1-10 como numéricas (valores 1 a 10) en todo el banco, con NS/NC aparte.
+  3. Repetir la medición de esas preguntas.
+  - Afecta a G9.2 y G11.2 solo en esas preguntas (unas 30 de 122). Pide decisión humana antes de rehacer evaluaciones.
+- **Comando del listado:** `python -m sinpop.evaluate.preguntas_posteriores [--final]`. Vive en `sinpop.evaluate` porque es el único paquete que puede leer `data/eval/`.
