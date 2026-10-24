@@ -2122,3 +2122,37 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
   - La TVD de B2 es 0,258, igual que antes: `b2@v3` cambia el texto de la justificación, no la calidad del baseline.
   - **Filtro de la auditoría:** «preocupado» y «preocupación» salían como candidatas porque contienen «ocupad» y «ocupación». `tools/auditar_justificaciones.py` exige ahora inicio de palabra. Esto solo quita falsos positivos del filtro: el veredicto sigue siendo manual.
   - F9 queda fallida solo en G9.6, como limitación aceptada en la aprobación de F9.
+
+## D-093 · Interfaz, ronda 6: cartografía propia, comparación con el CIS explicada y espera animada (2026-10-24)
+
+- **Fecha:** 2026-10-24
+- **Fase:** F14 (interfaz; ya aprobada). Pedido por la persona responsable sobre su instalación en Windows.
+- **Estado:** cambios de interfaz con libertad de diseño («Toda la libertad tienes»), sin tocar ningún cálculo ni ninguna puerta.
+- **Lo que pidió y cómo se ha resuelto:**
+  1. **«No entiendo lo de qué diría el CIS».**
+     - El conmutador «Lo que piensa la población / Como lo mediría el CIS» desaparece.
+     - Las barras enseñan siempre la estimación de la población. Un interruptor «Comparar con el CIS» añade una raya oscura con lo que publicaría un barómetro (`medicion_cis`) y una explicación.
+     - La explicación da los datos de D-068: la muestra del CIS tiene un 31 % de recuerdo del PSOE frente al 22 % oficial y un 16 % de abstención frente al 30 %. Dice para qué sirve (comparar con las cifras publicadas; la validación se mide con esta versión) y la mayor diferencia en esa pregunta.
+  2. **Rectángulo al pulsar un territorio.** Era el contorno de foco del navegador sobre el polígono SVG.
+     - Se quita (`.leaflet-interactive:focus`).
+     - Lo elegido se rellena con el color de acento, con borde blanco y un halo.
+     - Con teclado se sigue marcando el borde, por accesibilidad.
+  3. **Página en blanco mientras calcula.** Causa: el texto oculto para lectores de pantalla («Calculando el resultado…») tenía `position: absolute` sin un antecesor posicionado. Alargaba el documento hasta 1818 px, y `scrollIntoView` desplazaba la página entera 521 px.
+     - Arreglo: el panel es el contenedor posicionado y la página no se desplaza en escritorio.
+     - Los saltos al resultado mueven solo el panel (`irA`).
+     - Comprobado con Playwright: 900 px y desplazamiento 0, antes y después de calcular.
+  4. **Bordes redondeados alrededor de las islas.** No eran los límites del INE, sino el fondo de OpenStreetMap, que dibuja las aguas territoriales.
+     - El mapa deja de usar teselas de fondo: tierra «de papel» con sombra sobre un mar liso, solo con los límites del INE.
+     - Funciona sin internet.
+     - Los nombres de ciudades quedan como capa opcional (botón «Ciudades», apagado por defecto). Usa la capa de solo rótulos de CARTO, con crédito «© OpenStreetMap, © CARTO» al pie del panel.
+- **Además:**
+  - **Rótulo del territorio** sobre el mapa.
+  - **Espera animada:** unos cientos de puntos dentro del territorio elegido cambian de color entre las respuestas posibles. Es solo una animación y no enseña ningún dato; con «reducir movimiento» queda quieta.
+  - **Titular del resultado:** la respuesta más frecuente con su IC 80 % y la confianza.
+  - **Índice de secciones** fijo arriba del resultado.
+  - **Panel algo más ancho** y nueva paleta de acabado.
+  - **Selectores de la prueba de extremo a extremo** (`tools/prueba_interfaz.py`) sin cambios.
+- **Sin verificar aquí:** las teselas de rótulos de CARTO, porque el proxy del contenedor las bloquea. Si no cargan, el mapa sigue igual, sin nombres.
+- **Alternativas descartadas:**
+  - Mantener OpenStreetMap de fondo: trae las líneas de aguas territoriales y rótulos en otros alfabetos (Marruecos, Argelia) que la persona responsable no quería.
+  - Colorear los puntos de la espera con la respuesta real al terminar: podría confundirse con datos de personas concretas.

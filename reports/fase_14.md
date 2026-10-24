@@ -8,7 +8,7 @@
 
 Una página (`src/sinpop/servicio/web/`) servida por `sinpop serve`, sin pasos de compilación. Recorrido de la demo: `docs/guias/demo.md`.
 
-- **Mapa** (Leaflet 1.9.4 con teselas de OpenStreetMap, crédito al pie del panel):
+- **Mapa** (Leaflet 1.9.4; desde D-093, cartografía propia con los límites del INE, sin teselas de fondo, y nombres de ciudades opcionales de CARTO, con crédito al pie del panel):
   - selector de nivel (España, comunidades, provincias);
   - Canarias en un recuadro con sus islas;
   - se pulsa un territorio para elegirlo.
@@ -22,7 +22,7 @@ Una página (`src/sinpop/servicio/web/`) servida por `sinpop serve`, sin pasos d
 - **Resultado:**
   - «En resumen», un texto por reglas a partir de las cifras;
   - barras con intervalos del 80 % y del 95 % y la confianza en una cifra grande;
-  - «Lo que piensa la población» frente a «Como lo mediría el CIS»;
+  - la estimación de la población, con el interruptor «Comparar con el CIS» (D-093);
   - evolución en el tiempo;
   - desglose por comunidades y provincias con el mapa coloreado;
   - grupos ampliados (ideología, voto, religiosidad, clase, tamaño de municipio…), con los más distintos destacados;
@@ -75,7 +75,7 @@ Capturas en `reports/fase_14/`:
 
 También se comprueban las opciones propias pegadas con «;» y la plantilla «responsable» (D-085).
 
-En el contenedor de trabajo las teselas de OpenStreetMap están bloqueadas, por eso las capturas muestran solo los límites del INE. En un equipo con internet se ve el mapa de fondo.
+Desde D-093 el mapa no usa teselas de fondo, así que las capturas son iguales con y sin internet. Los nombres de ciudades (opcionales) no se han podido comprobar aquí, porque el contenedor bloquea el servidor de CARTO.
 
 ## Paquete portable frente al modo completo
 

@@ -46,9 +46,30 @@
         <button role="radio" aria-checked="false" data-nivel="CCAA">Comunidades</button>
         <button role="radio" aria-checked="false" data-nivel="PROV">Provincias</button>
       </div>
+      <div class="mapa-rotulo" id="mapa-rotulo" aria-live="polite">
+        <span class="rotulo-nivel" id="rotulo-nivel">País</span>
+        <b id="rotulo-nombre">España</b>
+        <span class="rotulo-detalle" id="rotulo-detalle"></span>
+      </div>
+      <button class="mapa-ciudades" id="ciudades" type="button" aria-pressed="false" title="Mostrar los nombres de las ciudades (necesita internet)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 1 7 7c0 5.2-6.1 12.2-6.4 12.5a.8.8 0 0 1-1.2 0C11.1 21.2 5 14.2 5 9a7 7 0 0 1 7-7Zm0 4.5A2.5 2.5 0 1 0 12 11.5 2.5 2.5 0 0 0 12 6.5Z"/></svg>
+        <span>Ciudades</span>
+      </button>
       <div class="leyenda-mapa" id="leyenda-mapa" hidden></div>
       <div class="recuadro-canarias" role="region" aria-label="Recuadro de Canarias">
+        <span class="nombre-recuadro" aria-hidden="true">Canarias</span>
         <div id="mapa-canarias"></div>
+      </div>
+      <div class="pensando" id="pensando" hidden>
+        <canvas id="lienzo-pensando" aria-hidden="true"></canvas>
+        <div class="pensando-tarjeta" role="status">
+          <span class="pensando-anillo" aria-hidden="true"></span>
+          <div>
+            <b id="pensando-titulo">Preguntando a la población</b>
+            <span id="pensando-mensaje">Preparando…</span>
+          </div>
+          <span class="pensando-tiempo" id="pensando-tiempo">0 s</span>
+        </div>
       </div>
     </section>
 
@@ -166,7 +187,7 @@
       </section>
 
       <section class="tarjeta resultado" id="resultado" hidden aria-live="polite"></section>
-      <p class="creditos">Mapa: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">colaboradores de OpenStreetMap</a> · Límites: INE · Datos: INE, CIS y otras fuentes oficiales (citas en docs/guias/fuentes_y_citas.md)</p>
+      <p class="creditos">Límites: INE (secciones censales 2024) · Nombres de ciudades, opcionales: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">colaboradores de OpenStreetMap</a>, © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a> · Datos: INE, CIS y otras fuentes oficiales (citas en docs/guias/fuentes_y_citas.md)</p>
     </aside>
   </main>
 

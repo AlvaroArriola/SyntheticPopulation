@@ -58,17 +58,44 @@ function mostrarTooltip(ev, html) {
 }
 const ocultarTooltip = () => { tooltip.hidden = true; };
 
+// lleva un bloque a la vista dentro del panel, que tiene su propio desplazamiento. scrollIntoView
+// movía también la página entera y dejaba un hueco en blanco debajo del mapa.
+function irA(el, suave = true, margen = 12) {
+  const panel = document.querySelector(".panel");
+  const comportamiento = suave && !matchMedia("(prefers-reduced-motion: reduce)").matches ? "smooth" : "auto";
+  if (panel && panel.scrollHeight > panel.clientHeight && getComputedStyle(panel).overflowY !== "visible") {
+    const arriba = el.getBoundingClientRect().top - panel.getBoundingClientRect().top + panel.scrollTop - margen;
+    panel.scrollTo({ top: arriba, behavior: comportamiento });
+  } else {
+    el.scrollIntoView({ behavior: comportamiento, block: "start" });
+  }
+}
+
 // ------------------------------------------------------------------ mapa
-// sin atribución sobre el mapa: el crédito obligatorio de OpenStreetMap va al pie del panel (D-084)
-const mapa = L.map("mapa", { zoomControl: true, attributionControl: false, minZoom: 4 }).setView([40.2, -3.6], 6);
-const TESELAS = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
-L.tileLayer(TESELAS, { maxZoom: 12 }).addTo(mapa);
+// cartografía propia, sin teselas de fondo (D-093): solo los límites del INE sobre un mar liso.
+// El fondo de OpenStreetMap dibujaba las aguas territoriales alrededor de cada isla. Los nombres de
+// las ciudades son una capa opcional (solo rótulos); su crédito va al pie del panel (D-084).
+const mapa = L.map("mapa", { zoomControl: false, attributionControl: false, minZoom: 4, maxZoom: 11, zoomSnap: 0.25 }).setView([40.2, -3.6], 6);
+L.control.zoom({ position: "topright" }).addTo(mapa);
 // recuadro de Canarias: un segundo mapa fijo, con las islas en su sitio y las mismas capas
 const mapaCanarias = L.map("mapa-canarias", {
   zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false,
   doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false, zoomSnap: 0.25,
 }).setView([28.4, -15.9], 6);
-L.tileLayer(TESELAS, { maxZoom: 12 }).addTo(mapaCanarias);
+// rótulos de ciudades por encima de los territorios y sin capturar el ratón
+const ROTULOS = "https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png";
+const capasRotulos = [mapa, mapaCanarias].map((m) => {
+  m.createPane("rotulos");
+  m.getPane("rotulos").style.zIndex = 450;
+  m.getPane("rotulos").style.pointerEvents = "none";
+  return [m, L.tileLayer(ROTULOS, { pane: "rotulos", subdomains: "abcd", maxZoom: 11 })];
+});
+function ponerCiudades(activo) {
+  for (const [m, c] of capasRotulos) { if (activo) c.addTo(m); else if (m.hasLayer(c)) m.removeLayer(c); }
+  $("#ciudades").setAttribute("aria-pressed", String(activo));
+  try { localStorage.setItem("ciudades", activo ? "1" : "0"); } catch (_) { /* sin almacenamiento */ }
+}
+$("#ciudades").addEventListener("click", () => ponerCiudades($("#ciudades").getAttribute("aria-pressed") !== "true"));
 const CANARIAS = new Set(["CCAA:05", "PROV:35", "PROV:38"]);
 const capas = { CCAA: null, PROV: null };
 const capasCanarias = { CCAA: null, PROV: null };
@@ -83,16 +110,30 @@ function mostrarNivel(nivel) {
 }
 let geo = null;
 
+// tierra «de papel» sobre el mar; lo elegido se rellena con el color de acento y se levanta.
+// Los territorios sin población lista quedan algo más apagados.
 function estiloBase(f) {
   const sel = f.properties.territorio === estado.territorio;
   const lista = estado.poblaciones.some((p) => p.territorio === f.properties.territorio && p.lista);
+  if (sel) return { color: "#ffffff", weight: 2, opacity: 1, fillColor: css("--acento"), fillOpacity: 0.92 };
   return {
-    color: sel ? css("--acento-fuerte") : css("--acento"),
-    weight: sel ? 3 : 1,
-    opacity: 0.9,
-    fillColor: css("--acento"),
-    fillOpacity: sel ? 0.32 : lista ? 0.14 : 0.05,
+    color: "#b4c2d1",
+    weight: f.properties.nivel === "PROV" ? 0.7 : 0.9,
+    opacity: 1,
+    fillColor: lista || !estado.poblaciones.length ? css("--tierra") : css("--tierra-apagada"),
+    fillOpacity: 1,
   };
+}
+function marcarElegido() {
+  for (const n of ["CCAA", "PROV"]) for (const c of todas(n)) {
+    c.eachLayer((l) => {
+      const el = l.getElement?.();
+      if (!el) return;
+      const sel = l.feature.properties.territorio === estado.territorio && estado.opcionMapa == null;
+      el.classList.toggle("territorio-elegido", sel);
+      if (sel) l.bringToFront();
+    });
+  }
 }
 
 function crearCapa(nivel, soloCanarias = false) {
@@ -100,10 +141,16 @@ function crearCapa(nivel, soloCanarias = false) {
     filter: (f) => f.properties.nivel === nivel && (!soloCanarias || CANARIAS.has(f.properties.territorio)),
     style: estiloBase,
     onEachFeature: (f, capa) => {
-      capa.bindTooltip(() => etiquetaTerritorio(f), { sticky: true, className: "etiqueta-territorio" });
+      capa.bindTooltip(() => etiquetaTerritorio(f), { sticky: true, className: "etiqueta-territorio", direction: "top", offset: [0, -10] });
       capa.on({
-        mouseover: (e) => e.target.setStyle({ weight: 2.5, fillOpacity: 0.28 }),
-        mouseout: () => refrescarEstilos(),
+        mouseover: (e) => {
+          const pintado = estado.opcionMapa != null && f.properties.nivel === estado.nivelMapa;
+          e.target.setStyle(pintado ? { color: css("--texto"), weight: 2 }
+            : f.properties.territorio === estado.territorio ? { weight: 2.5 }
+            : { fillColor: css("--acento-suave"), color: css("--acento"), weight: 1.4 });
+          e.target.bringToFront();
+        },
+        mouseout: () => { refrescarEstilos(); },
         click: () => elegirTerritorio(f.properties.territorio, f.properties.nombre),
       });
     },
@@ -123,6 +170,19 @@ function etiquetaTerritorio(f) {
 
 function refrescarEstilos() {
   for (const n of ["CCAA", "PROV"]) for (const c of todas(n)) c.setStyle(estado.opcionMapa != null && n === estado.nivelMapa ? estiloMapa : estiloBase);
+  marcarElegido();
+}
+
+// rótulo del territorio elegido, arriba a la izquierda del mapa
+function pintarRotulo() {
+  const p = poblacionActual();
+  $("#rotulo-nivel").textContent = estado.territorio === "ES" ? "País" : estado.territorio.startsWith("PROV") ? "Provincia" : "Comunidad";
+  $("#rotulo-nombre").textContent = estado.nombre;
+  $("#rotulo-detalle").textContent = p?.lista ? `${p.tamano.toLocaleString("es-ES")} personas sintéticas` : "Sin población lista con este tamaño";
+  const r = $("#mapa-rotulo");
+  r.classList.remove("cambia");
+  void r.offsetWidth;
+  r.classList.add("cambia");
 }
 
 function ponerNivel(nivel) {
@@ -160,7 +220,7 @@ function volarA(codigo) {
   const lento = !matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (codigo === "ES") { if (vistaInicial) mapa.flyToBounds(vistaInicial, { padding: [24, 24], maxZoom: 7, duration: lento ? 0.9 : 0 }); return; }
   const capa = (codigo.startsWith("PROV") ? capas.PROV : capas.CCAA).getLayers().find((c) => c.feature.properties.territorio === codigo);
-  if (capa) mapa.flyToBounds(capa.getBounds(), { padding: [60, 60], maxZoom: 8, duration: lento ? 0.9 : 0 });
+  if (capa) mapa.flyToBounds(capa.getBounds(), { padding: [90, 90], maxZoom: 7.25, duration: lento ? 1.1 : 0 });
 }
 
 // ------------------------------------------------------------------ poblaciones
@@ -199,6 +259,7 @@ function pintarTamanos() {
     e.append(b);
   }
   $("#preguntar").disabled = !p?.lista;
+  pintarRotulo();
 }
 
 async function cargarPoblaciones() {
@@ -219,12 +280,98 @@ async function generarPoblacion() {
   }
 }
 
+// ------------------------------------------------------------------ mientras se calcula
+// Sobre el mapa, unos cientos de puntos dentro del territorio elegido cambian de color entre las
+// respuestas posibles. Es solo una animación de espera: no enseña ningún dato.
+const pensando = { activo: false, puntos: [], inicio: 0, marco: 0 };
+function poligonos(capa) {
+  let ll = capa.getLatLngs();
+  if (L.LineUtil.isFlat(ll)) ll = [[ll]];
+  else if (L.LineUtil.isFlat(ll[0])) ll = [ll];
+  return ll;
+}
+function enAnillo(lat, lng, anillo) {
+  let dentro = false;
+  for (let i = 0, j = anillo.length - 1; i < anillo.length; j = i++) {
+    const a = anillo[i], b = anillo[j];
+    if ((a.lat > lat) !== (b.lat > lat) && lng < ((b.lng - a.lng) * (lat - a.lat)) / (b.lat - a.lat) + a.lng) dentro = !dentro;
+  }
+  return dentro;
+}
+function puntosEn(capasObjetivo, n) {
+  const polis = capasObjetivo.map((c) => ({ b: c.getBounds(), p: poligonos(c) }));
+  const total = L.latLngBounds(polis.map((x) => x.b));
+  const sw = total.getSouthWest(), ne = total.getNorthEast();
+  const out = [];
+  for (let k = 0; k < n * 40 && out.length < n; k++) {
+    const lat = sw.lat + Math.random() * (ne.lat - sw.lat), lng = sw.lng + Math.random() * (ne.lng - sw.lng);
+    if (polis.some((x) => x.b.contains([lat, lng]) && x.p.some((r) => enAnillo(lat, lng, r[0]) && !r.slice(1).some((h) => enAnillo(lat, lng, h))))) {
+      out.push({ ll: L.latLng(lat, lng), fase: Math.random() * 6, ritmo: 0.8 + Math.random() * 1.6, color: 0 });
+    }
+  }
+  return out;
+}
+function empezarPensando(titulo) {
+  const caja = $("#pensando");
+  $("#pensando-titulo").textContent = titulo;
+  $("#pensando-mensaje").textContent = "Preparando…";
+  $("#pensando-tiempo").textContent = "0 s";
+  caja.hidden = false;
+  caja.classList.remove("saliendo");
+  pensando.activo = true;
+  pensando.inicio = performance.now();
+  const objetivo = estado.territorio === "ES"
+    ? capas.CCAA.getLayers().filter((c) => !CANARIAS.has(c.feature.properties.territorio))
+    : (estado.territorio.startsWith("PROV") ? capas.PROV : capas.CCAA).getLayers().filter((c) => c.feature.properties.territorio === estado.territorio);
+  try { pensando.puntos = objetivo.length ? puntosEn(objetivo, estado.territorio === "ES" ? 520 : 260) : []; } catch (_) { pensando.puntos = []; }
+  const colores = [...sustantivas(estado.opciones).slice(0, CAT.length).map((_, i) => CAT[i]), GRIS];
+  const lienzo = $("#lienzo-pensando");
+  const ctx = lienzo.getContext("2d");
+  const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const dibujar = (t) => {
+    if (!pensando.activo && !caja.classList.contains("saliendo")) return;
+    const r = lienzo.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    if (lienzo.width !== Math.round(r.width * dpr)) { lienzo.width = Math.round(r.width * dpr); lienzo.height = Math.round(r.height * dpr); }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, r.width, r.height);
+    const s = (t - pensando.inicio) / 1000;
+    for (const p of pensando.puntos) {
+      const c = mapa.latLngToContainerPoint(p.ll);
+      const ciclo = (s * p.ritmo + p.fase) % 3;
+      if (!quieto && ciclo < 0.05) p.color = Math.floor(Math.random() * colores.length);
+      const pulso = quieto ? 0 : Math.max(0, 1 - ciclo / 0.6);
+      ctx.globalAlpha = 0.55 + 0.4 * pulso;
+      ctx.fillStyle = colores[p.color % colores.length];
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, 2 + 2.2 * pulso, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    pensando.marco = requestAnimationFrame(dibujar);
+  };
+  cancelAnimationFrame(pensando.marco);
+  pensando.marco = requestAnimationFrame(dibujar);
+}
+function actualizarPensando(mensaje, segundos) {
+  if (!pensando.activo) return;
+  $("#pensando-mensaje").textContent = mensaje;
+  $("#pensando-tiempo").textContent = `${segundos} s`;
+}
+function terminarPensando() {
+  if (!pensando.activo) return;
+  pensando.activo = false;
+  const caja = $("#pensando");
+  caja.classList.add("saliendo");
+  setTimeout(() => { caja.hidden = true; caja.classList.remove("saliendo"); cancelAnimationFrame(pensando.marco); }, 450);
+}
+
 // ------------------------------------------------------------------ trabajos
 async function seguir(id, destino) {
   const inicio = Date.now();
   for (;;) {
     const t = await api(`/api/trabajos/${id}`);
     const s = Math.round((Date.now() - inicio) / 1000);
+    actualizarPensando(t.mensaje, s);
     destino.innerHTML = `<span class="progreso" aria-hidden="true"><i></i></span><span class="progreso-texto">${escapar(t.mensaje)}</span><span class="progreso-tiempo">${s} s</span>`;
     if (t.estado === "hecho") { destino.textContent = ""; return t.resultado; }
     if (t.estado === "error") throw new Error(t.mensaje);
@@ -238,7 +385,7 @@ function mostrarEsqueleto() {
   caja.hidden = false;
   caja.classList.add("calculando");
   caja.innerHTML = `<div class="esqueleto" aria-hidden="true"><i class="e-titulo"></i><i class="e-chips"></i>${"<i class=\"e-barra\"></i>".repeat(5)}<i class="e-bloque"></i></div><p class="oculto">Calculando el resultado…</p>`;
-  caja.scrollIntoView({ behavior: "smooth", block: "start" });
+  irA(caja);
 }
 function quitarEsqueleto() { $("#resultado").classList.remove("calculando"); }
 
@@ -428,7 +575,7 @@ function pintarAtributo(d, pob) {
   $("#descargar-csv").addEventListener("click", () => descargar(`${d.variable}_${pob.run_id}.csv`, csvDato(d), "text/csv"));
   $("#descargar-pdf").addEventListener("click", () => informePdf("dato", d, { run_id: pob.run_id, tamano: pob.tamano.toLocaleString("es-ES") }));
   pintarMapaResultado();
-  caja.scrollIntoView({ behavior: "smooth", block: "start" });
+  irA(caja);
 }
 
 function csvDato(d) {
@@ -450,6 +597,10 @@ $("#preguntar").addEventListener("click", async () => {
   boton.disabled = true;
   const habia = !$("#resultado").hidden && !$("#resultado").classList.contains("calculando");
   mostrarEsqueleto();
+  const donde = estado.territorio === "ES" ? "España" : estado.nombre;
+  empezarPensando(estado.modo === "evento"
+    ? `Simulando el evento en ${donde}`
+    : `Preguntando a ${p.tamano.toLocaleString("es-ES")} personas sintéticas de ${donde}`);
   try {
     let r;
     if (estado.modo === "evento") {
@@ -469,6 +620,7 @@ $("#preguntar").addEventListener("click", async () => {
     $("#resultado").hidden = !habia;
     if (habia) $("#resultado").innerHTML = "";
   } finally {
+    terminarPensando();
     quitarEsqueleto();
     boton.disabled = false;
   }
@@ -481,27 +633,45 @@ function nombreNivel(dim, valor) {
   return e[dim]?.[valor] ?? valor;
 }
 
-function barras(dist, opciones) {
+// barras de la distribución; con `cis`, una raya oscura marca lo que publicaría un barómetro del CIS
+function barras(dist, opciones, cis = null) {
   const filas = opciones.map((o, i) => {
     const d = dist[o];
+    const c = cis?.[o];
     return `<div class="etiqueta" title="${escapar(o)}">${escapar(o)}</div>
-      <div class="pista" style="--i:${i}" data-o="${escapar(o)}" data-p="${d.p}" data-a80="${d.ic80[0]}" data-b80="${d.ic80[1]}" data-a95="${d.ic95[0]}" data-b95="${d.ic95[1]}">
+      <div class="pista" style="--i:${i}" data-o="${escapar(o)}" data-p="${d.p}" data-a80="${d.ic80[0]}" data-b80="${d.ic80[1]}" data-a95="${d.ic95[0]}" data-b95="${d.ic95[1]}"${c ? ` data-cis="${c.p}"` : ""}>
         <span class="ic95" style="left:${100 * d.ic95[0]}%;width:${100 * (d.ic95[1] - d.ic95[0])}%"></span>
         <span class="ic80" style="left:${100 * d.ic80[0]}%;width:${100 * (d.ic80[1] - d.ic80[0])}%"></span>
         <span class="barra" style="width:${100 * d.p}%"></span>
+        ${c ? `<span class="marca-cis" style="left:calc(${100 * c.p}% - 1.5px)"></span>` : ""}
       </div>
-      <div class="valor">${pct(d.p)}</div>`;
+      <div class="valor">${pct(d.p)}${c ? `<small>${pct(c.p)}</small>` : ""}</div>`;
   });
-  return `<div class="barras">${filas.join("")}</div>
-    <div class="leyenda-barras"><span><i style="background:var(--serie)"></i>Estimación</span><span><i style="background:var(--rango)"></i>Intervalo del 80 %</span><span><i style="background:var(--texto-3);height:2px"></i>Intervalo del 95 %</span></div>`;
+  return `<div class="barras${cis ? " con-cis" : ""}">${filas.join("")}</div>
+    <div class="leyenda-barras"><span><i style="background:var(--serie)"></i>Estimación</span><span><i style="background:var(--rango)"></i>Intervalo del 80 %</span><span><i style="background:var(--texto-3);height:2px"></i>Intervalo del 95 %</span>${cis ? '<span><i class="ley-cis"></i>Como lo publicaría el CIS (cifra pequeña)</span>' : ""}</div>`;
 }
 
 function activarTooltipsBarras(raiz) {
   raiz.querySelectorAll(".pista").forEach((el) => {
     el.addEventListener("mousemove", (ev) => mostrarTooltip(ev,
-      `<b>${escapar(el.dataset.o)}</b>: ${pct(+el.dataset.p, 1)}<br>IC 80 %: ${pct(+el.dataset.a80, 1)} – ${pct(+el.dataset.b80, 1)}<br>IC 95 %: ${pct(+el.dataset.a95, 1)} – ${pct(+el.dataset.b95, 1)}`));
+      `<b>${escapar(el.dataset.o)}</b>: ${pct(+el.dataset.p, 1)}<br>IC 80 %: ${pct(+el.dataset.a80, 1)} – ${pct(+el.dataset.b80, 1)}<br>IC 95 %: ${pct(+el.dataset.a95, 1)} – ${pct(+el.dataset.b95, 1)}${el.dataset.cis ? `<br>Como lo publicaría el CIS: ${pct(+el.dataset.cis, 1)}` : ""}`));
     el.addEventListener("mouseleave", ocultarTooltip);
   });
+}
+
+// «Como lo publicaría el CIS» (D-068): la muestra del CIS no tiene la composición de la población
+function explicacionCis(r, opciones) {
+  if (!r.medicion_cis) return "";
+  const difs = opciones.map((o) => ({ o, d: r.medicion_cis[o].p - r.total[o].p })).sort((a, b) => Math.abs(b.d) - Math.abs(a.d));
+  const m = difs[0];
+  const puntos = (x) => (100 * Math.abs(x)).toLocaleString("es-ES", { maximumFractionDigits: 1 });
+  const cuanto = Math.abs(m.d) < 0.01
+    ? "En esta pregunta apenas cambia nada (menos de 1 punto en cada respuesta)."
+    : `En esta pregunta, la mayor diferencia está en «${escapar(m.o)}»: ${puntos(m.d)} puntos ${m.d > 0 ? "más" : "menos"} en el CIS.`;
+  return `<div class="explica-cis" id="explica-cis" hidden>
+    <p><b>¿Por qué un barómetro del CIS daría otra cifra?</b> Su muestra no se parece del todo a la población: tiene más gente que recuerda haber votado al PSOE en 2023 (31 % frente al 22 % de los resultados oficiales) y menos abstencionistas (16 % frente al 30 %). La raya oscura enseña lo que saldría si el CIS hiciera hoy esta pregunta con esa muestra.</p>
+    <p><b>Para qué sirve:</b> para comparar con las cifras que publica el CIS. Las barras azules son la mejor estimación de lo que piensa la población. El acierto de la página «Validación» se mide con la versión del CIS, porque es la que se puede comparar con sus barómetros. ${cuanto}</p>
+  </div>`;
 }
 
 function colorSecuencial(v, min, max) {
@@ -594,27 +764,41 @@ function pintarResultado(r, enunciado, opciones, pob) {
   const conf = r.confianza.total;
   const llm = r.versiones?.modelo_llm ? `con ${escapar(r.versiones.modelo_llm)}` : "sin modelo de lenguaje";
   const tablaPregunta = (dim) => tablaSubgrupos(r, dim, opciones);
+  const top = opcionPrincipal({ ...r, opciones });
+  const dTop = r.total[top];
   caja.innerHTML = `
     <div class="resultado-cabecera">
-      <h3>${escapar(enunciado)}</h3>
+      <div>
+        <span class="sobretitulo">${escapar(estado.nombre)} · ${pob.tamano.toLocaleString("es-ES")} personas sintéticas</span>
+        <h3>${escapar(enunciado)}</h3>
+      </div>
       <button class="boton-pdf" id="descargar-pdf-arriba" type="button" title="Informe PDF con el análisis, los gráficos y las fuentes">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a1 1 0 0 1 1 1v8.6l2.3-2.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l2.3 2.3V4a1 1 0 0 1 1-1ZM5 17a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/></svg>
         Generar PDF</button>
     </div>
-    <div class="metas"><span>${escapar(estado.nombre)}</span><span>${pob.tamano.toLocaleString("es-ES")} personas</span><span>Estimador ${llm}</span></div>
-    <div class="conmutador" id="vista" role="group" aria-label="Qué se estima">
-      <button aria-pressed="true" data-v="total">Lo que piensa la población</button>
-      <button aria-pressed="false" data-v="medicion_cis">Como lo mediría el CIS</button>
-    </div>
-    ${r.resumen?.length ? `<div class="en-resumen"><b>En resumen</b><ul>${r.resumen.slice(0, 4).map((f) => `<li>${escapar(f)}</li>`).join("")}</ul></div>` : ""}
-    <div id="zona-barras">${barras(r.total, opciones)}</div>
-    <div class="confianza">
-      ${anilloConfianza(conf)}
-      <div>
-        <span class="confianza-nivel">${nivelConfianza(conf)}</span>
-        <p title="${escapar(r.confianza.metodo || "")}">Probabilidad de que el error total de la distribución sea menor de 10 puntos, según el historial de aciertos del sistema en preguntas parecidas.</p>
+    <div class="metas"><span>Estimador ${llm}</span>${r.preguntas_similares?.length ? `<span>Apoyada en ${r.preguntas_similares.length} preguntas del CIS</span>` : ""}</div>
+    <div class="titular confianza">
+      <div class="titular-cifra">
+        <b data-objetivo="${100 * dTop.p}">${pct(dTop.p)}</b>
+        <span>responde <q>${escapar(top)}</q></span>
+        <small>la respuesta más frecuente · IC 80 %: ${pct(dTop.ic80[0])} – ${pct(dTop.ic80[1])}</small>
+      </div>
+      <div class="titular-confianza">
+        ${anilloConfianza(conf)}
+        <div>
+          <span class="confianza-nivel">${nivelConfianza(conf)}</span>
+          <p title="${escapar(r.confianza.metodo || "")}">Probabilidad de que el error total sea menor de 10 puntos, medida en preguntas reales parecidas.</p>
+        </div>
       </div>
     </div>
+    <nav class="indice-resultado" aria-label="Secciones del resultado"></nav>
+    ${r.resumen?.length ? `<div class="en-resumen" id="s-resumen"><b>En resumen</b><ul>${r.resumen.slice(0, 4).map((f) => `<li>${escapar(f)}</li>`).join("")}</ul></div>` : ""}
+    <section class="seccion" id="s-respuestas" aria-labelledby="t-respuestas">
+      <div class="cabecera-seccion"><h4 class="seccion-titulo" id="t-respuestas">Todas las respuestas</h4>
+        ${r.medicion_cis ? `<label class="interruptor" title="Añade lo que publicaría un barómetro del CIS"><input type="checkbox" id="ver-cis"><span class="interruptor-pista" aria-hidden="true"></span>Comparar con el CIS</label>` : ""}</div>
+      ${explicacionCis(r, opciones)}
+      <div id="zona-barras">${barras(r.total, opciones)}</div>
+    </section>
     ${r.parametros_llm?.justificacion ? `<p class="justificacion">«${escapar(r.parametros_llm.justificacion)}»</p>` : ""}
     ${seccionImportancia(r)}
     ${seccionEvolucion(r, opciones)}
@@ -622,18 +806,20 @@ function pintarResultado(r, enunciado, opciones, pob) {
     ${seccionGrupos(estado.resultado, tablaPregunta)}
     ${seccionRetratos(r, opciones)}
     ${seccionCruce()}
-    ${r.preguntas_similares?.length ? `<p class="seccion-titulo">Se apoya en estas preguntas del CIS</p><ol class="parecidas">${r.preguntas_similares.map((x) => `<li>${escapar(x)}</li>`).join("")}</ol>` : ""}
+    ${r.preguntas_similares?.length ? `<section class="seccion" id="s-fuentes"><h4 class="seccion-titulo">Se apoya en estas preguntas del CIS</h4><ol class="parecidas">${r.preguntas_similares.map((x) => `<li>${escapar(x)}</li>`).join("")}</ol></section>` : ""}
     <p class="aviso">${escapar(r.aviso)}</p>
     ${r.coste?.segundos ? `<p class="coste">Calculado en ${Math.max(1, Math.round(r.coste.segundos))} s</p>` : ""}
     <div class="acciones-resultado"><button class="secundario" id="descargar-pdf" type="button">Informe PDF</button><button class="secundario" id="descargar-csv" type="button">Descargar CSV</button><button class="secundario" id="descargar" type="button">Descargar JSON</button></div>`;
   activarTooltipsBarras(caja);
   activarTooltipsTabla(caja);
   animarCifras(caja);
-  caja.querySelectorAll("#vista button").forEach((b) => b.addEventListener("click", () => {
-    caja.querySelectorAll("#vista button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-    $("#zona-barras").innerHTML = barras(r[b.dataset.v], opciones);
+  $("#ver-cis")?.addEventListener("change", (e) => {
+    const con = e.target.checked;
+    $("#explica-cis").hidden = !con;
+    $("#zona-barras").innerHTML = barras(r.total, opciones, con ? r.medicion_cis : null);
     activarTooltipsBarras($("#zona-barras"));
-  }));
+  });
+  pintarIndice(caja);
   activarGrupos(tablaPregunta, activarTooltipsTabla);
   activarRegiones(enunciado, opciones);
   activarEvolucion(caja);
@@ -646,7 +832,23 @@ function pintarResultado(r, enunciado, opciones, pob) {
   $("#descargar-pdf-arriba").addEventListener("click", pdf);
   conTipsImportancia(caja);
   pintarMapaResultado();
-  caja.scrollIntoView({ behavior: "smooth", block: "start" });
+  irA(caja);
+}
+
+// índice del resultado: un chip por sección presente; se queda arriba al desplazarse
+const INDICE = [
+  ["s-respuestas", "Respuestas"], ["t-importancia", "De qué depende"], ["t-evolucion", "Evolución"],
+  ["t-regiones", "Regiones"], ["t-grupos", "Grupos"], ["t-retratos", "Personas"], ["t-cruce", "Cruzar"], ["s-fuentes", "Fuentes"],
+];
+function pintarIndice(caja) {
+  const nav = caja.querySelector(".indice-resultado");
+  if (!nav) return;
+  const presentes = INDICE.filter(([id]) => caja.querySelector(`#${id}`));
+  nav.innerHTML = presentes.map(([id, t]) => `<button type="button" data-ir="${id}">${t}</button>`).join("");
+  nav.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+    const destino = caja.querySelector(`#${b.dataset.ir}`);
+    irA(destino.closest(".seccion") || destino, true, 64);
+  }));
 }
 
 // ------------------------------------------------------------------ fidelidad (D-081)
@@ -733,7 +935,7 @@ function seccionEvolucion(r, opciones) {
       <text x="${X(hoy)}" y="${m.t + 2}" class="eje" text-anchor="middle">hoy</text>
       ${lineas}
     </svg>
-    <p class="nota">Puntos: lo que midió el CIS en cada barómetro. Rombo: estimación de hoy, como la mediría el CIS, con su intervalo del 80 %.</p>
+    <p class="nota">Puntos: lo que midió el CIS en cada barómetro. Rombo: estimación de hoy tal como la publicaría el CIS, para que se pueda comparar con los puntos, con su intervalo del 80 %.</p>
   </section>`;
 }
 function activarEvolucion(raiz) {
@@ -1089,8 +1291,10 @@ async function compararComunidades(enunciado, opciones) {
   const boton = $("#comparar");
   boton.disabled = true;
   try {
+    empezarPensando("Preguntando a cada comunidad con su propia población");
     const t = await post("/api/comparar", { enunciado, opciones, nivel: "CCAA" });
     estado.resultado.comparacion = await seguir(t.trabajo, zona);
+    terminarPensando();
     zona.innerHTML = '<p class="nota"><b>Mostrando cada comunidad con su propia población.</b></p>';
     estado.nivelMapa = "CCAA";
     document.querySelectorAll("#nivel-region button").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.n === "CCAA")));
@@ -1098,6 +1302,7 @@ async function compararComunidades(enunciado, opciones) {
     pintarMapaResultado();
   } catch (e) {
     zona.textContent = `No se pudo comparar: ${e.message}`;
+    terminarPensando();
   } finally {
     boton.disabled = false;
   }
@@ -1156,8 +1361,8 @@ function valorMapa(prop) {
 }
 function estiloMapa(f) {
   const v = valorMapa(f.properties);
-  if (!v) return { color: css("--texto-3"), weight: 0.6, fillOpacity: 0.05 };
-  return { color: "#ffffff", weight: 1.2, opacity: 1, fillColor: colorSecuencial(v.p, ...rangoMapa), fillOpacity: v.c < 0.5 ? 0.45 : 0.85 };
+  if (!v) return { color: "#b4c2d1", weight: 0.7, opacity: 1, fillColor: css("--tierra-apagada"), fillOpacity: 1 };
+  return { color: "#ffffff", weight: 1, opacity: 1, fillColor: colorSecuencial(v.p, ...rangoMapa), fillOpacity: v.c < 0.5 ? 0.5 : 0.95 };
 }
 function pintarMapaResultado() {
   const ley = $("#leyenda-mapa");
@@ -1170,6 +1375,7 @@ function pintarMapaResultado() {
   rangoMapa = [Math.min(...vals), Math.max(...vals)];
   ponerNivelSinSeleccion(nivel);
   for (const c of todas(nivel)) c.setStyle(estiloMapa);
+  marcarElegido();
   ley.hidden = false;
   ley.innerHTML = `<b>${escapar(op)}</b> por ${nivel === "CCAA" ? "comunidad" : "provincia"}${r.comparacion && nivel === "CCAA" ? " (población propia)" : ""}
     <div class="escala">${SEQ.map((v) => `<i style="background:var(${v})"></i>`).join("")}</div>
@@ -1213,7 +1419,7 @@ function pintarEvento(r, enunciado, opciones, pob) {
     el.addEventListener("mousemove", (ev) => mostrarTooltip(ev, `<b>${escapar(c.categoria)}</b><br>Antes: ${pct(c.antes, 1)}${c.despues != null ? `<br>Después: ${pct(c.despues, 1)}<br>Cambio (IC 80 %): ${pct(c.ic80_cambio[0], 1)} a ${pct(c.ic80_cambio[1], 1)}` : ""}`));
     el.addEventListener("mouseleave", ocultarTooltip);
   });
-  caja.scrollIntoView({ behavior: "smooth", block: "start" });
+  irA(caja);
 }
 
 // acierto medido en eventos pasados (G9.6): el modo evento es un escenario, no una predicción
@@ -1290,7 +1496,7 @@ function ponerPresentacion(activo) {
   setTimeout(() => { mapa.invalidateSize(); mapaCanarias.invalidateSize(); }, 350);
   if (activo) {
     avisar("Modo presentación · Esc para salir");
-    if (!$("#resultado").hidden) setTimeout(() => $("#resultado").scrollIntoView({ block: "start" }), 50);
+    if (!$("#resultado").hidden) setTimeout(() => irA($("#resultado"), false), 50);
   }
 }
 $("#presentacion").addEventListener("click", () => ponerPresentacion(!document.body.classList.contains("presentacion")));
@@ -1339,6 +1545,9 @@ window.sinpop = { elegirTerritorio, ponerNivel, estado };
   } catch (e) {
     $("#estado-poblacion").textContent = `No se pudo cargar el mapa: ${e.message}`;
   }
+  let ciudades = false;
+  try { ciudades = localStorage.getItem("ciudades") === "1"; } catch (_) { /* sin almacenamiento */ }
+  ponerCiudades(ciudades);
   try { estado.paquete = (await api("/api/modo")).paquete; } catch { estado.paquete = false; }
   await cargarPoblaciones();
   pintarHistorial();

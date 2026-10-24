@@ -97,7 +97,7 @@ def main(url: str = "http://127.0.0.1:8000", chromium: str = CHROMIUM) -> dict:
         if lista:
             pg.click("#preguntar")
             pg.wait_for_function(
-                "document.querySelector('#resultado .metas')?.textContent.includes('Madrid')",
+                "document.querySelector('#resultado .sobretitulo')?.textContent.includes('Madrid')",
                 timeout=600000,
             )
             pg.wait_for_timeout(500)

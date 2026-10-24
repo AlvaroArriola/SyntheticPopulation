@@ -16,7 +16,7 @@ sinpop serve --paquete dist/paquete          # http://127.0.0.1:8000
   - **Compartir** copia un enlace que, al abrirlo, rellena la misma pregunta, sus opciones y el territorio.
   - **Ctrl + Intro** pregunta y **/** lleva al enunciado.
   - Los botones **«Prueba con»** cargan las preguntas de esta guía.
-- **Fondo del mapa:** las teselas de OpenStreetMap necesitan internet. Sin conexión se ven solo los límites del INE.
+- **Mapa:** se dibuja con los límites del INE, sin teselas de fondo, así que funciona sin internet (D-093). El botón **Ciudades** añade los nombres de las ciudades; ese sí necesita conexión.
 
 ## 1. Una pregunta que el CIS ya ha hecho (30 s)
 
@@ -28,7 +28,7 @@ Qué enseñar:
 - **«En resumen»:** el texto se escribe solo a partir de las cifras.
 - **Barras con intervalos del 80 % y del 95 %.**
 - **La confianza en grande:** es la probabilidad de que el error total sea menor de 10 puntos, medida en preguntas reales.
-- **«Lo que piensa la población» frente a «Como lo mediría el CIS»:** la muestra del CIS tiene más votantes del PSOE y menos abstencionistas que la realidad (D-068).
+- **Interruptor «Comparar con el CIS»:** añade una raya oscura con lo que publicaría un barómetro del CIS. Su muestra tiene más votantes del PSOE y menos abstencionistas que la población real (D-068), así que puede dar otra cifra. La explicación sale al activarlo (D-093).
 - **Evolución:** cada vez que el CIS hizo la pregunta, hasta la estimación de hoy, con más peso para lo reciente (D-082).
 - **Regiones:** el mapa se colorea solo por comunidad. Pasa a «Provincias» para ver el detalle.
 - **Grupos:** edad, sexo, estudios, ideología, recuerdo de voto, religiosidad, clase, tamaño de municipio… Las diferencias más grandes llevan una estrella.
