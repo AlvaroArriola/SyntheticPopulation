@@ -2156,3 +2156,7 @@ Formato de cada entrada en `docs/07_plantillas.md`. Las decisiones no se borran:
 - **Alternativas descartadas:**
   - Mantener OpenStreetMap de fondo: trae las líneas de aguas territoriales y rótulos en otros alfabetos (Marruecos, Argelia) que la persona responsable no quería.
   - Colorear los puntos de la espera con la respuesta real al terminar: podría confundirse con datos de personas concretas.
+- **Ajuste del 2026-10-24 (petición de la persona responsable):**
+  - Se quita el título «Canarias» del recuadro.
+  - La pestaña «¿Y si ocurre…?» explica en qué consiste y trae seis ejemplos (BCE, salario mínimo, corrupción, elecciones anticipadas, tope al alquiler, apagón). Todos usan preguntas con precedentes en el banco del CIS, así que el «antes» sale de datos.
+  - La explicación da el acierto medido en G9.6: dirección correcta en 8 de 16 eventos con el modelo de lenguaje y en 6 de 15 sin él, con un error medio de unos 4 puntos.

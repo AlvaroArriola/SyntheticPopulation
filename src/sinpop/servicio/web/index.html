@@ -57,7 +57,6 @@
       </button>
       <div class="leyenda-mapa" id="leyenda-mapa" hidden></div>
       <div class="recuadro-canarias" role="region" aria-label="Recuadro de Canarias">
-        <span class="nombre-recuadro" aria-hidden="true">Canarias</span>
         <div id="mapa-canarias"></div>
       </div>
       <div class="pensando" id="pensando" hidden>
@@ -125,6 +124,11 @@
         <div class="pestanas" role="tablist">
           <button role="tab" aria-selected="true" data-modo="pregunta" id="tab-pregunta">Pregunta</button>
           <button role="tab" aria-selected="false" data-modo="evento" id="tab-evento">¿Y si ocurre…?</button>
+        </div>
+        <div class="explica-evento" id="explica-evento" hidden>
+          <b>¿Y si ocurre…?</b> Escribe una pregunta y un acontecimiento con su fecha. Verás cómo respondería la población <b>antes</b> (con datos del CIS) y el <b>cambio</b> que provocaría el evento, en puntos, con su margen.
+          El cambio lo razona el modelo de lenguaje con el orden de magnitud de 16 eventos reales (elecciones, amnistía, DANA, aranceles, apagón…). Sin clave solo verás el «antes».
+          Es un escenario razonado, no una predicción: en 16 eventos pasados acertó la dirección del cambio en 8 con el modelo de lenguaje (6 de 15 sin él), con un error medio de unos 4 puntos.
         </div>
         <label class="campo">
           <span>Enunciado</span>

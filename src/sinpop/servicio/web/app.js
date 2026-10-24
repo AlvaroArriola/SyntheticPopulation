@@ -425,6 +425,8 @@ document.querySelectorAll(".pestanas button").forEach((b) => b.addEventListener(
   document.querySelectorAll(".pestanas button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
   $("#evento-campos").hidden = estado.modo !== "evento";
   $("#preguntar-texto").textContent = estado.modo === "evento" ? "Calcular el efecto del evento" : "Preguntar a la población";
+  $("#explica-evento").hidden = estado.modo !== "evento";
+  pintarEjemplosEvento();
 }));
 
 let temporizador = null;
@@ -1446,24 +1448,43 @@ const EJEMPLOS = [
   { corto: "Economía personal", enunciado: "¿Cómo calificaría usted su situación económica personal en la actualidad?", opciones: "valoracion" },
   { corto: "Situación laboral (dato INE)", enunciado: "¿Cuál es su situación laboral actual?", opciones: null },
 ];
-function pintarEjemplos() {
+// ejemplos del modo evento: preguntas con precedentes en el banco del CIS (el «antes» sale de datos)
+const EJEMPLOS_EVENTO = [
+  { corto: "Subida de tipos del BCE", enunciado: "¿Cómo calificaría usted la situación económica actual de España?", opciones: "valoracion",
+    evento: "El Banco Central Europeo sube los tipos de interés un punto de golpe para frenar la inflación", fecha: "2026-11-15" },
+  { corto: "Salario mínimo +8 %", enunciado: "¿Cómo calificaría usted su situación económica personal en la actualidad?", opciones: "valoracion",
+    evento: "El Gobierno aprueba una subida del salario mínimo interprofesional del 8 % para 2027", fecha: "2026-12-01" },
+  { corto: "Caso de corrupción", enunciado: "¿Qué grado de confianza le inspira el presidente del Gobierno?", opciones: "confianza",
+    evento: "Un juez imputa a dos ministros por cobrar comisiones en contratos públicos", fecha: "2026-11-10" },
+  { corto: "Elecciones anticipadas", enunciado: "¿Qué grado de confianza le inspira el presidente del Gobierno?", opciones: "confianza",
+    evento: "El presidente del Gobierno disuelve las Cortes y convoca elecciones generales anticipadas", fecha: "2027-01-15" },
+  { corto: "Tope al alquiler", enunciado: "¿Considera usted la vivienda uno de los principales problemas de España?", opciones: "si_no",
+    evento: "El Gobierno aprueba un tope estatal a los precios del alquiler en todas las zonas tensionadas", fecha: "2026-11-20" },
+  { corto: "Apagón general", enunciado: "¿Cómo calificaría usted la situación económica actual de España?", opciones: "valoracion",
+    evento: "Un apagón eléctrico deja sin luz a toda la península durante un día entero", fecha: "2026-11-05" },
+];
+function pintarEjemplosEvento() {
   const cont = $("#ejemplos");
-  for (const e of EJEMPLOS) {
+  cont.querySelectorAll(".ejemplo").forEach((b) => b.remove());
+  const lista = estado.modo === "evento" ? EJEMPLOS_EVENTO : EJEMPLOS;
+  for (const e of lista) {
     const b = document.createElement("button");
     b.type = "button";
     b.className = "ejemplo";
     b.textContent = e.corto;
-    b.title = e.enunciado;
+    b.title = e.evento ? `${e.evento} · ${e.enunciado}` : e.enunciado;
     b.addEventListener("click", () => {
-      if (estado.modo !== "pregunta") $("#tab-pregunta").click();
       $("#enunciado").value = e.enunciado;
       if (e.opciones) { estado.opciones = [...PLANTILLAS[e.opciones]]; pintarOpciones(); }
+      if (e.evento) { $("#evento-descripcion").value = e.evento; $("#evento-fecha").value = e.fecha; }
+      else if (estado.modo !== "pregunta") $("#tab-pregunta").click();
       buscarParecidas(e.enunciado);
-      $("#enunciado").focus();
+      (e.evento ? $("#evento-descripcion") : $("#enunciado")).focus();
     });
     cont.append(b);
   }
 }
+function pintarEjemplos() { pintarEjemplosEvento(); }
 
 // enlace con la pregunta, las opciones y el territorio (no se calcula solo al abrirlo)
 function enlaceActual() {

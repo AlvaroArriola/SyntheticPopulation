@@ -765,3 +765,5 @@ q { quotes: "«" "»"; }
 .pensando-tarjeta > div { min-width: 0; }
 .leaflet-overlay-pane path { animation: aparecer 0.7s ease both; }
 @media (max-width: 860px) { .niveles { left: 12px; right: 12px; } }
+.explica-evento { font-size: 12.8px; color: var(--texto-2); background: linear-gradient(135deg, #f2f7fe, #eef0fb); border: 1px solid #dfe8f6; border-radius: 12px; padding: 10px 12px; margin: -2px 0 12px; line-height: 1.5; animation: subir 0.3s ease both; }
+.explica-evento b { color: var(--texto); }
